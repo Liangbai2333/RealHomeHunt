@@ -22,7 +22,7 @@ public final class ImportCommand implements ISubCommand {
     public void execute(CommandSender sender, String label, String[] args) {
         Locale locale = LocaleUtil.require(sender);
 
-        if (args.length < 4) {
+        if (args.length < 5) {
             sender.sendMessage(locale.asString("command.admin.import.usage", label));
 
             return;
