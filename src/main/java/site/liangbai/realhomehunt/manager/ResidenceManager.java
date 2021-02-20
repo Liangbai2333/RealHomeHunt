@@ -39,6 +39,8 @@ public final class ResidenceManager {
 
         ResidenceManager.storageType = storageType;
 
+        ConsoleUtil.sendRawMessage(ChatColor.GREEN + "Using storage: " + ChatColor.YELLOW + storageType.name());
+
         ConsoleUtil.sendRawMessage(ChatColor.GREEN + "Loading player residence data...");
 
         List<Residence> residenceList = storage.loadAll();

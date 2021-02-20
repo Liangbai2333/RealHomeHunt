@@ -69,11 +69,6 @@ command:
     help:
       - "&e=================================="
       - "{prefix}&2/{0} import <YAML文件夹/数据库文件名> <是否覆盖(true/false)> <清除原数据(true/false)> &e - 导入一个YAML文件夹/数据库文件的内容到当前存储系统中"
-      - "{prefix}&2/{0} create <玩家名> &e - 为某玩家强制创建领地(前提必须没有领地)"
-      - "{prefix}&2/{0} remove <玩家名> &e - 强制删除某玩家的领地(前提必须有领地)"
-      - "{prefix}&2/{0} set <玩家名> <属性类型> <属性值> &e - 设置某玩家的领地属性"
-      - "{prefix}&2/{0} setspawn <玩家名> &e - 设置当前位置为某玩家的领地出生点"
-      - "{prefix}&2/{0} administrator <玩家名> <要设置权限的玩家名> <true/false> &e - 设置某人在某人领地中的管理员权限"
     import:
       usage: "&c使用方法: /{0} import <文件夹/数据库文件名> <是否覆盖(true/false)> <清除原数据(true/false)>"
       unknownParam4: "&c第四个参数必须为 <true/false>"
