@@ -1,0 +1,32 @@
+plugins {
+    id 'java'
+}
+
+group 'site.liangbai'
+version '0.8.5'
+
+repositories {
+    maven {
+        url 'http://lss233.littleservice.cn/repositories/minecraft'
+    }
+}
+
+jar {
+    manifest {
+        attributes([
+                "Implementation-Project"    : project.name,
+                "Implementation-Version"  : project.version,
+                "Implementation-Author"   : "Liangbai",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                "Implementation-Builder": System.properties.getProperty('user.name'),
+                "Implementation-Os": System.properties.getProperty('os.name') + System.properties.getProperty('os.arch') + System.properties.getProperty('os.version')
+        ])
+    }
+}
+
+dependencies {
+    compileOnly fileTree(dir: 'libs', includes: ['*.jar'])
+    compileOnly group: 'org.spigotmc', name: 'spigot', version: "${spigot_version}"
+
+    annotationProcessor fileTree(dir: 'libs', includes: ['*.jar'])
+}

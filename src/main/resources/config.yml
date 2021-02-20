@@ -1,0 +1,44 @@
+prefix: "&f[&6&l繁梦之都&f] &r"
+
+openWorlds:
+  - sc
+
+teleportMills: 200
+
+maxWaitMills: 100
+
+unloadPlayerAttackMills: 12000
+
+gunDamageMultiple: 4
+
+defaultBlockHardnessMultiple: 2.4
+
+perPowerLevelDamage: 1
+
+consoleLanguage: zh_cn
+
+actionBarShowMills: 600
+
+storage:
+  type: YAML
+
+residence:
+  limit: 1
+  sizeLimit:
+    x: 32
+    y: 32
+    z: 32
+  tool:
+    leftSelect: STICK
+    rightSelect: STICK
+
+block:
+  ignore:
+    oak_door:
+      type: OAK_DOOR
+      amount: 1
+      upBreak: true
+  custom:
+    obsidian:
+      type: OBSIDIAN
+      hardness: 30.0

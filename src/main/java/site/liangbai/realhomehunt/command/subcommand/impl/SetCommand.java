@@ -1,0 +1,68 @@
+package site.liangbai.realhomehunt.command.subcommand.impl;
+
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import site.liangbai.realhomehunt.command.subcommand.ISubCommand;
+import site.liangbai.realhomehunt.locale.impl.Locale;
+import site.liangbai.realhomehunt.locale.manager.LocaleManager;
+import site.liangbai.realhomehunt.manager.ResidenceManager;
+import site.liangbai.realhomehunt.residence.Residence;
+import site.liangbai.realhomehunt.residence.attribute.IAttributable;
+import site.liangbai.realhomehunt.residence.attribute.map.AttributeMap;
+
+public final class SetCommand implements ISubCommand {
+    @Override
+    public void execute(CommandSender sender, String label, String[] args) {
+        if (!(sender instanceof Player)) return;
+
+        Player player = ((Player) sender);
+
+        Locale locale = LocaleManager.require(player);
+
+        if (args.length < 3) {
+            sender.sendMessage(locale.asString("command.set.usage", label));
+
+            return;
+        }
+
+        String name = player.getName();
+
+        Residence residence = ResidenceManager.getResidenceByOwner(name);
+
+        if (residence == null) {
+            sender.sendMessage(locale.asString("command.set.haveNotResidence"));
+
+            return;
+        }
+
+        String attributeType = args[1].toLowerCase();
+
+        Class<? extends IAttributable<?>> attributeClass = AttributeMap.getMap(attributeType);
+
+        if (attributeClass == null) {
+            sender.sendMessage(locale.asString("command.set.unknownAttribute", attributeType));
+
+            return;
+        }
+
+        try {
+            IAttributable<?> attribute = residence.getAttributeWithoutType(attributeClass);
+
+            String value = args[2];
+
+            if (attribute.allow(value)) {
+                String attributeName = attribute.getName();
+
+                attribute.force(value);
+
+                sender.sendMessage(locale.asString("command.set.success", attributeName, value));
+
+                residence.save();
+            } else {
+                sender.sendMessage(locale.asString("command.set.notAllow", attribute.allowValues()));
+            }
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
+    }
+}
