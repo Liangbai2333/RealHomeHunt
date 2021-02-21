@@ -21,11 +21,7 @@ public final class AdministratorTabCompiler implements ISubTabCompiler {
             List<String> players = Bukkit.getOnlinePlayers()
                     .stream()
                     .map(Player::getName)
-                    .filter(it -> {
-                        if (residence != null) return !residence.isAdministrator(it);
-
-                        return true;
-                    })
+                    .filter(it -> residence == null || !residence.isAdministrator(it))
                     .collect(Collectors.toList());
 
             players.addAll(residence != null ? residence.getAdministrators() : Collections.emptyList());
