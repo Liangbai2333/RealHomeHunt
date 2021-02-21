@@ -166,6 +166,10 @@ public final class Residence implements ConfigurationSerializable {
         administrators.add(player);
     }
 
+    public List<String> getAdministrators() {
+        return administrators;
+    }
+
     public void removeAdministrator(String player) {
         administrators.remove(player);
     }

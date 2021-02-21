@@ -8,6 +8,7 @@ import site.liangbai.realhomehunt.manager.ResidenceManager;
 import site.liangbai.realhomehunt.residence.Residence;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,7 +18,7 @@ public final class AdministratorTabCompiler implements ISubTabCompiler {
         if (length == 2) {
             Residence residence = ResidenceManager.getResidenceByOwner(sender.getName());
 
-            return Bukkit.getOnlinePlayers()
+            List<String> players = Bukkit.getOnlinePlayers()
                     .stream()
                     .map(Player::getName)
                     .filter(it -> {
@@ -26,6 +27,10 @@ public final class AdministratorTabCompiler implements ISubTabCompiler {
                         return true;
                     })
                     .collect(Collectors.toList());
+
+            players.addAll(residence != null ? residence.getAdministrators() : Collections.emptyList());
+
+            return players;
         }
 
         if (length == 3) {
