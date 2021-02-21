@@ -22,6 +22,10 @@ public final class YamlStorage implements IStorage {
     public YamlStorage(Plugin plugin, String path) {
         dataFolder = new File(plugin.getDataFolder(), path);
 
+        if (!dataFolder.exists()) {
+            if (!dataFolder.mkdirs()) throw new IllegalStateException("can not create new folder: " + dataFolder.getAbsolutePath());
+        }
+
         playerData = dataFolder.listFiles();
 
         if (playerData == null) throw new IllegalStateException("can not load data in file.");
@@ -69,10 +73,6 @@ public final class YamlStorage implements IStorage {
 
     @Override
     public List<Residence> loadAll() {
-        if (!dataFolder.exists()) {
-            if (!dataFolder.mkdirs()) throw new IllegalStateException("can not create new folder: " + dataFolder.getAbsolutePath());
-        }
-
         return Arrays.stream(playerData)
                 .filter(it -> it.getName().endsWith(".yml"))
                 .map(it -> {
