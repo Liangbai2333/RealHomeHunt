@@ -32,7 +32,7 @@ public final class DynamicActionBar implements IActionBar, Cancellable {
 
             @Override
             public void run() {
-                if (isCancelled()) {
+                if (DynamicActionBar.this.isCancelled()) {
                     cancel();
 
                     return;
