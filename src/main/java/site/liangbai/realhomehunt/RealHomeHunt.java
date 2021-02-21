@@ -14,12 +14,11 @@ import site.liangbai.realhomehunt.locale.manager.LocaleManager;
 import site.liangbai.realhomehunt.manager.ResidenceManager;
 import site.liangbai.realhomehunt.residence.Residence;
 import site.liangbai.realhomehunt.residence.attribute.impl.*;
-import site.liangbai.realhomehunt.storage.StorageType;
 import site.liangbai.realhomehunt.task.PlayerMoveToResidenceMessageTask;
 import site.liangbai.realhomehunt.util.ConsoleUtil;
 
 @Plugin(
-        info = @Info(name = "RealHomeHunt", version = "0.8.7", authors = "Liangbai"),
+        info = @Info(name = "RealHomeHunt", version = "0.9.2", authors = "Liangbai"),
         apiVersion = "1.13",
         softDepend = "Multiverse-Core",
         permissions = {
@@ -55,9 +54,7 @@ public final class RealHomeHunt extends JavaPlugin {
 
         LocaleManager.init(this);
 
-        StorageType storageType = StorageType.matchStorageType(Config.storageType);
-
-        ResidenceManager.init(this, storageType);
+        ResidenceManager.init(this, Config.storage.type);
 
         initCommandTabCompiler();
 
@@ -111,6 +108,6 @@ public final class RealHomeHunt extends JavaPlugin {
     }
 
     private void processSuccess() {
-        ConsoleUtil.sendRawMessage(ChatColor.GREEN + "Succeed in enabling " + getName() + " plugin.");
+        ConsoleUtil.sendRawMessage(ChatColor.GREEN + "Succeed in enabling " + getName() + " v" + getDescription().getVersion() + " plugin, author: " + getDescription().getAuthors() + ".");
     }
 }

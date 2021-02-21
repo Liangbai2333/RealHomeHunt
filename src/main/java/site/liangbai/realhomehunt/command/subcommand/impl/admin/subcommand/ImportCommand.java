@@ -3,6 +3,7 @@ package site.liangbai.realhomehunt.command.subcommand.impl.admin.subcommand;
 import org.bukkit.command.CommandSender;
 import site.liangbai.realhomehunt.RealHomeHunt;
 import site.liangbai.realhomehunt.command.subcommand.ISubCommand;
+import site.liangbai.realhomehunt.config.Config;
 import site.liangbai.realhomehunt.locale.impl.Locale;
 import site.liangbai.realhomehunt.manager.ResidenceManager;
 import site.liangbai.realhomehunt.residence.Residence;
@@ -55,7 +56,7 @@ public final class ImportCommand implements ISubCommand {
         String storageType = ResidenceManager.getStorageType().name();
 
         if (file.isFile()) {
-            SqliteStorage storage = new SqliteStorage(RealHomeHunt.plugin, file.getName());
+            SqliteStorage storage = new SqliteStorage(RealHomeHunt.plugin, Config.storage.sqliteSetting);
 
             if (cleanOld) {
                 ResidenceManager.getResidences().forEach(Residence::remove);

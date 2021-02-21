@@ -7,6 +7,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+import site.liangbai.realhomehunt.storage.StorageType;
 import site.liangbai.realhomehunt.util.ConsoleUtil;
 
 import java.io.File;
@@ -18,6 +19,8 @@ public final class Config {
     private static File configFile;
 
     public static String prefix;
+
+    public static StorageSetting storage;
 
     public static ResidenceSetting residence;
 
@@ -40,8 +43,6 @@ public final class Config {
     public static String consoleLanguage;
 
     public static long actionBarShowMills;
-
-    public static String storageType;
 
     public static void init(Plugin plugin) {
         File file = new File(plugin.getDataFolder(), "config.yml");
@@ -80,7 +81,11 @@ public final class Config {
 
         actionBarShowMills = yamlConfiguration.getLong("actionBarShowMills", 600);
 
-        storageType = yamlConfiguration.getString("storage.type");
+        ConsoleUtil.sendRawMessage(ChatColor.GREEN + "Linking storage settings...");
+
+        linkStorageConfig(yamlConfiguration);
+
+        ConsoleUtil.sendRawMessage(ChatColor.GREEN + "Linking storage settings successful.");
 
         ConsoleUtil.sendRawMessage(ChatColor.GREEN + "Linking residence settings...");
 
@@ -103,8 +108,6 @@ public final class Config {
         if (residenceSection == null) throw new IllegalStateException("can not load config part: residence");
 
         residence = new ResidenceSetting();
-
-        residence.limit = residenceSection.getInt("limit");
 
         ConfigurationSection residenceSizeLimitSection = residenceSection.getConfigurationSection("sizeLimit");
 
@@ -211,13 +214,117 @@ public final class Config {
         block.custom = custom;
     }
 
+    private static void linkStorageConfig(ConfigurationSection section) {
+        ConfigurationSection storageSection = section.getConfigurationSection("storage");
+
+        if (storageSection == null) throw new IllegalStateException("can not load config part: storage");
+
+        storage = new StorageSetting();
+
+        String type = storageSection.getString("type");
+
+        storage.type = StorageType.matchStorageType(type);
+
+        ConfigurationSection tableSection = storageSection.getConfigurationSection("table");
+
+        if (tableSection == null) throw new IllegalStateException("can not load config part: storage.table");
+
+        StorageSetting.TableSetting tableSetting = new StorageSetting.TableSetting();
+
+        String residenceTable = tableSection.getString("residenceTable", "residences");
+
+        if (residenceTable == null) throw new IllegalStateException("can not load config part: storage.table.residenceTable");
+
+        tableSetting.residenceTable = residenceTable;
+
+        storage.tableSetting = tableSetting;
+
+        ConfigurationSection sqliteSection = storageSection.getConfigurationSection("sqlite");
+
+        if (sqliteSection == null) throw new IllegalStateException("can not load config part: storage.sqlite");
+
+        StorageSetting.SqliteSetting sqliteSetting = new StorageSetting.SqliteSetting();
+
+        sqliteSetting.onlyInPluginFolder = sqliteSection.getBoolean("onlyInPluginFolder", true);
+
+        String databaseFile = sqliteSection.getString("databaseFile", "residences.db");
+
+        if (databaseFile == null) throw new IllegalStateException("can not load config part: storage.sqlite.databaseFile");
+
+        sqliteSetting.databaseFile = databaseFile;
+
+        storage.sqliteSetting = sqliteSetting;
+
+        ConfigurationSection mySqlSection = storageSection.getConfigurationSection("mysql");
+
+        if (mySqlSection == null) throw new IllegalStateException("can not load config part: storage.mysql");
+
+        StorageSetting.MySqlSetting mySqlSetting = new StorageSetting.MySqlSetting();
+
+        String address = mySqlSection.getString("address", "localhost");
+
+        if (address == null) throw new IllegalStateException("can not load config part: storage.mysql.address");
+
+        int port = mySqlSection.getInt("port", 3306);
+
+        String user = mySqlSection.getString("user", "root");
+
+        if (user == null) throw new IllegalStateException("can not load config part: storage.mysql.user");
+
+        String password = mySqlSection.getString("password", "123456");
+
+        if (password == null) throw new IllegalStateException("can not load config part: storage.mysql.password");
+
+        String options = mySqlSection.getString("options", "");
+
+        if (options == null) options = "";
+
+        mySqlSetting.address = address;
+        mySqlSetting.port = port;
+        mySqlSetting.user = user;
+        mySqlSetting.password = password;
+        mySqlSetting.options = options;
+
+        storage.mySqlSetting = mySqlSetting;
+    }
+
     public static String asColored(String message) {
         return ChatColor.translateAlternateColorCodes('&', message);
     }
 
-    public static final class ResidenceSetting {
-        public int limit;
+    public static final class StorageSetting {
+        public StorageType type;
 
+        public TableSetting tableSetting;
+
+        public SqliteSetting sqliteSetting;
+
+        public MySqlSetting mySqlSetting;
+
+        public static final class TableSetting {
+            public String residenceTable;
+        }
+
+        public static final class SqliteSetting {
+            public boolean onlyInPluginFolder;
+
+            public String databaseFile;
+        }
+
+        public static final class MySqlSetting {
+            public String address;
+
+            public int port;
+
+            public String user;
+
+            public String password;
+
+            public String options;
+        }
+    }
+
+    public static final class ResidenceSetting {
         public ResidenceSizeSetting sizeLimit;
 
         public ResidenceToolSetting tool;

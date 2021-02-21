@@ -7,7 +7,6 @@ import site.liangbai.realhomehunt.config.Config;
 import site.liangbai.realhomehunt.locale.impl.Locale;
 import site.liangbai.realhomehunt.locale.manager.LocaleManager;
 import site.liangbai.realhomehunt.manager.ResidenceManager;
-import site.liangbai.realhomehunt.storage.StorageType;
 import site.liangbai.realhomehunt.util.LocaleUtil;
 
 public final class ReloadCommand implements ISubCommand {
@@ -23,11 +22,9 @@ public final class ReloadCommand implements ISubCommand {
 
         Config.init(RealHomeHunt.plugin);
 
-        StorageType storageType = StorageType.matchStorageType(Config.storageType);
-
-        ResidenceManager.init(RealHomeHunt.plugin, storageType);
-
         LocaleManager.init(RealHomeHunt.plugin);
+
+        ResidenceManager.init(RealHomeHunt.plugin, Config.storage.type);
 
         sender.sendMessage(locale.asString("command.reload.success"));
     }

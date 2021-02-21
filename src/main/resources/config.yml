@@ -1,44 +1,108 @@
+# 插件前缀
 prefix: "&f[&6&l繁梦之都&f] &r"
 
+# 开放的世界
 openWorlds:
   - sc
 
+# 传送回家的tick数，20tick为1秒
 teleportMills: 200
 
+# 恢复方块裂纹的tick数
 maxWaitMills: 100
 
+# 卸载玩家打击领地缓存的tick数
 unloadPlayerAttackMills: 12000
 
+# 打击的算法, (方块硬度 + (perPowerLevelDamage * 枪械力量附魔等级)) / gunDamageMultiple
 gunDamageMultiple: 4
-
-defaultBlockHardnessMultiple: 2.4
 
 perPowerLevelDamage: 1
 
+# 方块硬度的倍数, (方块原硬度 * defaultBlockHardnessMultiple)
+defaultBlockHardnessMultiple: 3.2
+
+# 控制台使用的语言文件
 consoleLanguage: zh_cn
 
+# 物品栏上方的文字的显示时间
 actionBarShowMills: 600
 
+# 存储
 storage:
-  type: YAML
+  # 可以填写SQLITE、MYSQL与YAML
+  type: SQLITE
 
+  # 数据表配置
+  table:
+    # 领地数据表
+    residenceTable: "residences"
+
+  # SQLite配置
+  sqlite:
+    # 仅仅在插件配置目录下查找文件，如果填false则在全盘中获取
+    onlyInPluginFolder: true
+    # 数据库文件名
+    databaseFile: "residences.db"
+  # MySQL配置
+  mysql:
+    # 地址
+    address: localhost
+    # 端口
+    port: 3306
+    # 用户名
+    user: root
+    # 密码
+    password: 123456
+    # 附加参数
+    options: "web_study?useSSL=false"
+# 领地设置
 residence:
-  limit: 1
+  # 大小限制
   sizeLimit:
     x: 32
     y: 32
     z: 32
+  # 圈地工具设置
   tool:
+    # 左键圈地工具, 默认木棍
     leftSelect: STICK
+    # 右键圈地工具, 默认木棍
     rightSelect: STICK
 
+# 方块设置
 block:
+  # 屏蔽打击的方块
   ignore:
     oak_door:
+      # 类型，橡木门
       type: OAK_DOOR
+      # 限制放置数量
       amount: 1
+      # 打击他下方的方块，他是否会被破坏，比如木门下方的方块被摧毁，木门也会跟着被摧毁
       upBreak: true
+    oak_leaves:
+      type: OAK_LEAVES
+      amount: 0
+    spruce_leaves:
+      type: SPRUCE_LEAVES
+      amount: 0
+     birch_leaves:
+      type: BIRCH_LEAVES
+      amount: 0
+    jungle_leaves:
+      type: JUNGLE_LEAVES
+      amount: 0
+    acacia_leaves:
+      type: ACACIA_LEAVES
+      amount: 0
+    dark_oak_leaves:
+      type: DARK_OAK_LEAVES
+      amount: 0
+  # 自定义硬度
   custom:
     obsidian:
+      # 类型，黑曜石
       type: OBSIDIAN
-      hardness: 30.0
+      # 硬度
+      hardness: 160.0

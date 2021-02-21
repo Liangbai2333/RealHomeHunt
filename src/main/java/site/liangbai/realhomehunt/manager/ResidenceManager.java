@@ -9,6 +9,7 @@ import site.liangbai.realhomehunt.config.Config;
 import site.liangbai.realhomehunt.residence.Residence;
 import site.liangbai.realhomehunt.storage.IStorage;
 import site.liangbai.realhomehunt.storage.StorageType;
+import site.liangbai.realhomehunt.storage.impl.MySqlStorage;
 import site.liangbai.realhomehunt.storage.impl.SqliteStorage;
 import site.liangbai.realhomehunt.storage.impl.YamlStorage;
 import site.liangbai.realhomehunt.util.ConsoleUtil;
@@ -28,11 +29,15 @@ public final class ResidenceManager {
         residences.clear();
 
         if (storageType == StorageType.SQLITE) {
-            storage = new SqliteStorage(plugin, "residences.db");
+            storage = new SqliteStorage(plugin, Config.storage.sqliteSetting);
         }
 
         if (storageType == StorageType.YAML) {
             storage = new YamlStorage(plugin, "data");
+        }
+
+        if (storageType == StorageType.MYSQL) {
+            storage = new MySqlStorage(Config.storage.mySqlSetting);
         }
 
         if (storage == null) throw new IllegalStateException("can not receive a null storage type.");

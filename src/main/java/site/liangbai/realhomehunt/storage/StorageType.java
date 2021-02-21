@@ -4,7 +4,8 @@ import org.jetbrains.annotations.NotNull;
 
 public enum StorageType {
     SQLITE,
-    YAML;
+    YAML,
+    MYSQL;
 
     public static StorageType getDefault() {
         return YAML;
