@@ -15,7 +15,7 @@ import site.liangbai.realhomehunt.residence.Residence;
 
 @Plugin.EventSubscriber
 public final class ListenerBlockPlace implements Listener {
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
         if (!ResidenceManager.isOpened(event.getPlayer().getWorld())) return;
 

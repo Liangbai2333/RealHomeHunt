@@ -13,7 +13,7 @@ import site.liangbai.realhomehunt.manager.ResidenceManager;
 
 @Plugin.EventSubscriber
 public final class ListenerBlockBreak implements Listener {
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
         if (!ResidenceManager.isOpened(event.getPlayer().getWorld())) return;
 

@@ -17,7 +17,7 @@ import site.liangbai.realhomehunt.manager.ResidenceManager;
 
 @Plugin.EventSubscriber
 public final class ListenerPlayerInteract implements Listener {
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
 
