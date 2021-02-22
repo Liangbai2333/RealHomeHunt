@@ -1,11 +1,12 @@
 package site.liangbai.realhomehunt.listener.player.block;
 
 import org.bukkit.block.Block;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
-import site.liangbai.craftingdeadapi.event.bukkit.block.GunHitBlockEvent;
+import site.liangbai.craftingdeadapi.api.event.bukkit.block.GunHitBlockEvent;
 import site.liangbai.lrainylib.annotation.Plugin;
 import site.liangbai.realhomehunt.RealHomeHunt;
 import site.liangbai.realhomehunt.cache.DamageCachePool;
@@ -26,13 +27,17 @@ public final class ListenerGunHitBlock implements Listener {
 
     @EventHandler
     public void onGunHitBlock(GunHitBlockEvent event) {
-        if (!ResidenceManager.isOpened(event.getPlayer().getWorld())) return;
+        LivingEntity entity = event.getEntity();
+
+        if (!(entity instanceof Player)) return;
+
+        Player player = ((Player) entity);
+
+        if (!ResidenceManager.isOpened(player.getWorld())) return;
 
         ItemStack gun = event.getGun();
 
         if (gun == null) return;
-
-        Player player = event.getPlayer();
 
         if (!damageCachePoolMap.containsKey(player.getUniqueId())) damageCachePoolMap.put(player.getUniqueId(), new DamageCachePool());
 

@@ -22,8 +22,8 @@ public final class PacketUtil {
     }
 
     public static void sendPacketToAll(Packet<?> packet, World world) {
-        Bukkit.getOnlinePlayers().forEach(it -> {
-            if (it.getWorld().equals(world)) sendPacket(it, packet);
-        });
+        Bukkit.getOnlinePlayers().stream()
+                .filter(it -> it.getWorld().equals(world))
+                .forEach(it -> sendPacket(it, packet));
     }
 }
