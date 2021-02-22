@@ -39,7 +39,7 @@ public final class AdministratorCommand implements ISubCommand {
 
         String name = player.getName();
 
-        Residence residence = ResidenceManager.getResidenceByName(name);
+        Residence residence = ResidenceManager.getResidenceByOwner(name);
 
         if (residence == null) {
             sender.sendMessage(locale.asString("command.administrator.haveNotResidence"));
