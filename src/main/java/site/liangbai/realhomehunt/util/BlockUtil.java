@@ -9,6 +9,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.type.Door;
 import org.bukkit.craftbukkit.v1_16_R3.CraftWorld;
+import site.liangbai.realhomehunt.config.Config;
 import site.liangbai.realhomehunt.residence.Residence;
 
 public final class BlockUtil {
@@ -52,7 +53,7 @@ public final class BlockUtil {
         return block.getBlockData() instanceof Door;
     }
 
-    public static int containsBlockAndReturnCount(Material material, Residence residence) {
+    public static int containsBlockAndReturnCount(Config.BlockSetting.BlockIgnoreSetting.IgnoreBlockInfo info, Residence residence) {
         LocationUtil.LocationSortInfo sortInfo = LocationUtil.sort(residence.getLeft(), residence.getRight());
 
         Location min = sortInfo.getMin();
@@ -70,7 +71,11 @@ public final class BlockUtil {
 
                     if (block.getType() == Material.AIR) continue;
 
-                    if (block.getType() != material) continue;
+                    String name = block.getType().name().toUpperCase();
+
+                    if (info.full != null && !name.equalsIgnoreCase(info.full)) continue;
+
+                    if (!name.startsWith(info.prefix) || !name.endsWith(info.suffix)) continue;
 
                     count++;
                 }

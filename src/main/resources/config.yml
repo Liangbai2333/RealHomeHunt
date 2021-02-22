@@ -25,6 +25,8 @@ defaultBlockHardnessMultiple: 3.2
 # 控制台使用的语言文件
 consoleLanguage: zh_cn
 
+# 显示物品栏上方的提示文字
+showActionBar: true
 # 物品栏上方的文字的显示时间
 actionBarShowMills: 600
 
@@ -60,9 +62,9 @@ storage:
 residence:
   # 大小限制
   sizeLimit:
-    x: 32
-    y: 32
-    z: 32
+    x: 16
+    y: 16
+    z: 16
   # 圈地工具设置
   tool:
     # 左键圈地工具, 默认木棍
@@ -74,30 +76,18 @@ residence:
 block:
   # 屏蔽打击的方块
   ignore:
-    oak_door:
-      # 类型，橡木门
-      type: OAK_DOOR
+    door:
+      # 类型，物品名称尾缀为DOOR，即门，可选的还有prefix, full，分别代表物品名前缀，全名，可选。
+      suffix: DOOR
       # 限制放置数量
       amount: 1
       # 打击他下方的方块，他是否会被破坏，比如木门下方的方块被摧毁，木门也会跟着被摧毁
       upBreak: true
-    oak_leaves:
-      type: OAK_LEAVES
+    leaves:
+      suffix: LEAVES
       amount: 0
-    spruce_leaves:
-      type: SPRUCE_LEAVES
-      amount: 0
-     birch_leaves:
-      type: BIRCH_LEAVES
-      amount: 0
-    jungle_leaves:
-      type: JUNGLE_LEAVES
-      amount: 0
-    acacia_leaves:
-      type: ACACIA_LEAVES
-      amount: 0
-    dark_oak_leaves:
-      type: DARK_OAK_LEAVES
+    glass:
+      suffix: GLASS
       amount: 0
   # 自定义硬度
   custom:

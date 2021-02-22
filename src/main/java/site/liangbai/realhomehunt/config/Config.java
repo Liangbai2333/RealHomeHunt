@@ -42,6 +42,8 @@ public final class Config {
 
     public static String consoleLanguage;
 
+    public static boolean showActionBar;
+
     public static long actionBarShowMills;
 
     public static void init(Plugin plugin) {
@@ -78,6 +80,8 @@ public final class Config {
         perPowerLevelDamage = yamlConfiguration.getDouble("perPowerLevelDamage");
 
         consoleLanguage = yamlConfiguration.getString("consoleLanguage", "zh_cn");
+
+        showActionBar = yamlConfiguration.getBoolean("showActionBar", true);
 
         actionBarShowMills = yamlConfiguration.getLong("actionBarShowMills", 600);
 
@@ -163,9 +167,11 @@ public final class Config {
                     .map(blockIgnoreSection::getConfigurationSection)
                     .filter(Objects::nonNull)
                     .forEach(it -> {
-                        String type = it.getString("type");
+                        String prefix = Objects.requireNonNull(it.getString("prefix", "")).toUpperCase();
 
-                        if (type == null) throw new IllegalStateException("can not load config part: block.ignore." + it + ".type");
+                        String suffix = Objects.requireNonNull(it.getString("suffix", "")).toUpperCase();
+
+                        String full = it.getString("full");
 
                         int amount = it.getInt("amount");
 
@@ -173,7 +179,11 @@ public final class Config {
 
                         BlockSetting.BlockIgnoreSetting.IgnoreBlockInfo info = new BlockSetting.BlockIgnoreSetting.IgnoreBlockInfo();
 
-                        info.type = type;
+                        info.full = full;
+
+                        info.prefix = prefix;
+
+                        info.suffix = suffix;
 
                         info.amount = amount;
 
@@ -353,7 +363,11 @@ public final class Config {
             public final List<IgnoreBlockInfo> ignoreBlockInfoList = new LinkedList<>();
 
             public static final class IgnoreBlockInfo {
-                public String type;
+                public String prefix;
+
+                public String suffix;
+
+                public String full;
 
                 public int amount;
 
@@ -365,11 +379,7 @@ public final class Config {
             }
 
             public boolean contains(@NotNull Material material) {
-                for (IgnoreBlockInfo info : ignoreBlockInfoList) {
-                    if (info.type.equalsIgnoreCase(material.name())) return true;
-                }
-
-                return false;
+                return getByMaterial(material) != null;
             }
 
             public int containsAndReturnLimit(@NotNull Material material) {
@@ -379,8 +389,12 @@ public final class Config {
             }
 
             public IgnoreBlockInfo getByMaterial(@NotNull Material material) {
+                String name = material.name().toUpperCase();
+
                 for (IgnoreBlockInfo info : ignoreBlockInfoList) {
-                    if (info.type.equalsIgnoreCase(material.name())) return info;
+                    if (info.full != null && info.full.equalsIgnoreCase(name)) return info;
+
+                    if (name.startsWith(info.prefix) && name.endsWith(info.suffix)) return info;
                 }
 
                 return null;

@@ -104,9 +104,11 @@ public final class Residence implements ConfigurationSerializable {
 
             TitleUtil.sendTitle(owner, locale.asString("action.hitBlock.self.title", attack), locale.asString("action.hitBlock.self.subTitle", attack));
 
-            DynamicActionBar actionBar = new DynamicActionBar(locale.asString("action.hitBlock.self.actionBar.show", attack), 5, 20);
+            if (Config.showActionBar) {
+                DynamicActionBar actionBar = new DynamicActionBar(locale.asString("action.hitBlock.self.actionBar.show", attack), 5, 20);
 
-            actionBar.show(owner, Config.actionBarShowMills);
+                actionBar.show(owner, Config.actionBarShowMills);
+            }
         }
 
         MessageUtil.sendToAll("action.hitBlock.all.message", getOwner(), attack);

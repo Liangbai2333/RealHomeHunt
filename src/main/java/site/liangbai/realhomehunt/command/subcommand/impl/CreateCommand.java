@@ -1,7 +1,6 @@
 package site.liangbai.realhomehunt.command.subcommand.impl;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import site.liangbai.realhomehunt.cache.SelectCache;
@@ -84,14 +83,10 @@ public final class CreateCommand implements ISubCommand {
         Residence residence = new Residence.Builder().owner(player).left(loc1).right(loc2).build();
 
         for (Config.BlockSetting.BlockIgnoreSetting.IgnoreBlockInfo info : Config.block.ignore.ignoreBlockInfoList) {
-            Material material = Material.matchMaterial(info.type);
-
-            if (material == null) continue;
-
-            int count = BlockUtil.containsBlockAndReturnCount(material, residence);
+            int count = BlockUtil.containsBlockAndReturnCount(info, residence);
 
             if (count > info.amount) {
-                sender.sendMessage(locale.asString("command.create.containsIgnoreBlock", material.name().toLowerCase()));
+                sender.sendMessage(locale.asString("command.create.containsIgnoreBlock", info.full != null ? info.full : (info.suffix.isEmpty() ? info.prefix : info.suffix)));
 
                 return;
             }
