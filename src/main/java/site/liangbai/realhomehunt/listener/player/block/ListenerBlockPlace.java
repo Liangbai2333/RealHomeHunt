@@ -39,11 +39,17 @@ public final class ListenerBlockPlace implements Listener {
             Residence.IgnoreBlockInfo info = residence.getIgnoreBlockInfo(ignoreBlockInfo);
 
             if (info.getCount() >= limit) {
-                Locale locale = LocaleManager.require(player);
+                if (!player.hasPermission("rh.place")) {
+                    Locale locale = LocaleManager.require(player);
 
-                player.sendMessage(locale.asString("action.place.limit", type.name().toLowerCase()));
+                    player.sendMessage(locale.asString("action.place.limit", type.name().toLowerCase()));
 
-                if (!player.hasPermission("rh.place")) event.setCancelled(true);
+                    event.setCancelled(true);
+                } else {
+                    info.increaseCount();
+
+                    residence.save();
+                }
 
                 return;
             }
