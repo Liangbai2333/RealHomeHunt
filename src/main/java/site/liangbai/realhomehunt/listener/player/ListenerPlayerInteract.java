@@ -43,7 +43,7 @@ public final class ListenerPlayerInteract implements Listener {
             return;
         }
 
-        if (ResidenceManager.hasResidence(player.getName())) {
+        if (ResidenceManager.getResidenceByOwner(player.getName()) != null) {
             player.sendMessage(locale.asString("action.select.alreadyHaveResidence"));
 
             return;

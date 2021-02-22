@@ -17,7 +17,7 @@ public final class PlayerMoveToResidenceMessageTask extends BukkitRunnable {
     private final Map<String, String> moveToResidenceCache = new ConcurrentHashMap<>();
 
     public static void init(Plugin plugin) {
-        new PlayerMoveToResidenceMessageTask().runTaskTimerAsynchronously(plugin, 3, 3);
+        new PlayerMoveToResidenceMessageTask().runTaskTimerAsynchronously(plugin, 1, 1);
     }
 
     @Override
@@ -42,8 +42,14 @@ public final class PlayerMoveToResidenceMessageTask extends BukkitRunnable {
                             moveToResidenceCache.remove(name);
                         }
                     } else {
-                        if (!moveToResidenceCache.containsKey(name)) {
+                        String lastResidence = moveToResidenceCache.get(name);
+
+                        if (!residence.getOwner().equals(lastResidence)) {
                             String other = residence.getOwner();
+
+                            if (lastResidence != null) {
+                                it.sendMessage(locale.asString("action.residence.moveOut", lastResidence));
+                            }
 
                             it.sendMessage(locale.asString("action.residence.moveIn", other));
 

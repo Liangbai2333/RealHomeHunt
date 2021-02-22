@@ -105,10 +105,6 @@ public final class ResidenceManager {
         return null;
     }
 
-    public static boolean hasResidence(String player) {
-        return getResidenceByName(player) != null;
-    }
-
     public static List<Residence> getResidences() {
         return residences;
     }
