@@ -382,12 +382,6 @@ public final class Config {
                 return getByMaterial(material) != null;
             }
 
-            public int containsAndReturnLimit(@NotNull Material material) {
-                IgnoreBlockInfo info = getByMaterial(material);
-
-                return info != null ? info.amount : -1;
-            }
-
             public IgnoreBlockInfo getByMaterial(@NotNull Material material) {
                 String name = material.name().toUpperCase();
 

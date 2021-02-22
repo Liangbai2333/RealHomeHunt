@@ -15,22 +15,24 @@ import site.liangbai.realhomehunt.manager.ResidenceManager;
 public final class ListenerBlockBreak implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-        if (event.getPlayer().hasPermission("rh.break")) return;
-
         if (!ResidenceManager.isOpened(event.getPlayer().getWorld())) return;
 
         Residence residence = ResidenceManager.getResidenceByLocation(event.getBlock().getLocation());
 
         if (residence == null) return;
 
-        if (!residence.isAdministrator(event.getPlayer())) event.setCancelled(true);
+        if (!residence.isAdministrator(event.getPlayer()) && !event.getPlayer().hasPermission("rh.break")) event.setCancelled(true);
 
-        if (Config.block.ignore.contains(event.getBlock().getType())) {
-            Residence.IgnoreBlockInfo info = residence.getIgnoreBlockInfo(event.getBlock().getType());
+        Config.BlockSetting.BlockIgnoreSetting.IgnoreBlockInfo ignoreBlockInfo = Config.block.ignore.getByMaterial(event.getBlock().getType());
 
-            info.deleteCount();
+        if (ignoreBlockInfo != null) {
+            Residence.IgnoreBlockInfo info = residence.getIgnoreBlockInfo(ignoreBlockInfo);
 
-            residence.save();
+            if (info.getCount() > 0) {
+                info.deleteCount();
+
+                residence.save();
+            }
         } else {
 
             Block upBlock = event.getBlock().getRelative(0, 1, 0);
@@ -47,11 +49,13 @@ public final class ListenerBlockBreak implements Listener {
         if (info != null) {
             if (!info.isUpBreak()) return;
 
-            Residence.IgnoreBlockInfo residenceIgnoreBlockInfo = residence.getIgnoreBlockInfo(upType);
+            Residence.IgnoreBlockInfo residenceIgnoreBlockInfo = residence.getIgnoreBlockInfo(info);
 
-            residenceIgnoreBlockInfo.deleteCount();
+            if (residenceIgnoreBlockInfo.getCount() > 0) {
+                residenceIgnoreBlockInfo.deleteCount();
 
-            residence.save();
+                residence.save();
+            }
         }
     }
 }

@@ -2,7 +2,6 @@ package site.liangbai.realhomehunt.residence;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -65,12 +64,26 @@ public final class Residence implements ConfigurationSerializable {
     }
 
     @NotNull
-    public IgnoreBlockInfo getIgnoreBlockInfo(@NotNull Material type) {
+    public IgnoreBlockInfo getIgnoreBlockInfo(Config.BlockSetting.BlockIgnoreSetting.IgnoreBlockInfo ignoreBlockInfo) {
         for (IgnoreBlockInfo info : ignoreBlockInfoList) {
-            if (info.type.equals(type.name())) return info;
+            String name = info.type.toUpperCase();
+
+            if (ignoreBlockInfo.full != null && ignoreBlockInfo.full.equalsIgnoreCase(name)) return info;
+
+            if (name.startsWith(ignoreBlockInfo.prefix) && name.endsWith(ignoreBlockInfo.suffix)) return info;
         }
 
-        IgnoreBlockInfo info = new IgnoreBlockInfo(type.name());
+        IgnoreBlockInfo info;
+
+        if (ignoreBlockInfo.full != null) {
+            info = new IgnoreBlockInfo(ignoreBlockInfo.full);
+        } else {
+            String typeName = ignoreBlockInfo.prefix + ignoreBlockInfo.suffix;
+
+            if (typeName.isEmpty()) typeName = "null";
+
+            info = new IgnoreBlockInfo(typeName);
+        }
 
         ignoreBlockInfoList.add(info);
 

@@ -17,15 +17,13 @@ import site.liangbai.realhomehunt.residence.Residence;
 public final class ListenerBlockPlace implements Listener {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
-        if (event.getPlayer().hasPermission("rh.place")) return;
-
         if (!ResidenceManager.isOpened(event.getPlayer().getWorld())) return;
 
         Residence residence = ResidenceManager.getResidenceByLocation(event.getBlock().getLocation());
 
         if (residence == null) return;
 
-        if (!residence.isAdministrator(event.getPlayer())) event.setCancelled(true);
+        if (!residence.isAdministrator(event.getPlayer()) && !event.getPlayer().hasPermission("rh.place")) event.setCancelled(true);
 
         Block block = event.getBlock();
 
@@ -33,17 +31,19 @@ public final class ListenerBlockPlace implements Listener {
 
         Player player = event.getPlayer();
 
-        int limit = Config.block.ignore.containsAndReturnLimit(type);
+        Config.BlockSetting.BlockIgnoreSetting.IgnoreBlockInfo ignoreBlockInfo = Config.block.ignore.getByMaterial(type);
+
+        int limit = ignoreBlockInfo != null ? ignoreBlockInfo.amount : -1;
 
         if (limit >= 0) {
-            Residence.IgnoreBlockInfo info = residence.getIgnoreBlockInfo(type);
+            Residence.IgnoreBlockInfo info = residence.getIgnoreBlockInfo(ignoreBlockInfo);
 
             if (info.getCount() >= limit) {
                 Locale locale = LocaleManager.require(player);
 
                 player.sendMessage(locale.asString("action.place.limit", type.name().toLowerCase()));
 
-                event.setCancelled(true);
+                if (!player.hasPermission("rh.place")) event.setCancelled(true);
 
                 return;
             }
