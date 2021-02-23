@@ -79,6 +79,8 @@ public final class PlayerBackTask extends BukkitRunnable {
 
         this.cancel = true;
 
+        if (player.isDead()) return;
+
         Chunk chunk = location.getChunk();
 
         if (!chunk.isLoaded()) chunk.load();

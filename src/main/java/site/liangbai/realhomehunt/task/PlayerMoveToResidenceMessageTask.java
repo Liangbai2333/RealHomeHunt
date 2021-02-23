@@ -23,7 +23,7 @@ public final class PlayerMoveToResidenceMessageTask extends BukkitRunnable {
     @Override
     public void run() {
         Bukkit.getOnlinePlayers().stream()
-                .filter(it -> ResidenceManager.isOpened(it.getWorld()))
+                .filter(it -> !it.isDead() && ResidenceManager.isOpened(it.getWorld()))
                 .forEach(it -> {
                     Locale locale = LocaleManager.require(it);
 

@@ -21,13 +21,13 @@ import java.util.List;
 public abstract class SqlStorage implements IStorage {
     private static final String INIT_TABLE_SQL = "create table if not exists %s (residence blob not null, owner text not null)";
 
-    private static final String QUERY_RESIDENCES_SQL = "select * from residences";
+    private static final String QUERY_RESIDENCES_SQL = "select * from %s";
 
-    private static final String INSERT_RESIDENCE_SQL = "insert into residences (residence, owner) values (?, ?)";
+    private static final String INSERT_RESIDENCE_SQL = "insert into %s (residence, owner) values (?, ?)";
 
-    private static final String UPDATE_RESIDENCE_SQL = "update residences set residence = ? where owner = ?";
+    private static final String UPDATE_RESIDENCE_SQL = "update %s set residence = ? where owner = ?";
 
-    private static final String DELETE_RESIDENCE_SQL = "delete from residences where owner = ?";
+    private static final String DELETE_RESIDENCE_SQL = "delete from %s where owner = ?";
 
     private final List<String> owners = new ArrayList<>();
 
@@ -90,12 +90,12 @@ public abstract class SqlStorage implements IStorage {
     @Override
     public void save(Residence residence) {
         if (!owners.contains(residence.getOwner())) {
-            handlePrepared(INSERT_RESIDENCE_SQL, it -> doUpdateResidence(it, residence, false));
+            handlePrepared(String.format(INSERT_RESIDENCE_SQL, Config.storage.tableSetting.residenceTable), it -> doUpdateResidence(it, residence, false));
 
             return;
         }
 
-        handlePrepared(UPDATE_RESIDENCE_SQL, it -> doUpdateResidence(it, residence, true));
+        handlePrepared(String.format(UPDATE_RESIDENCE_SQL, Config.storage.tableSetting.residenceTable), it -> doUpdateResidence(it, residence, true));
     }
 
     private void doUpdateResidence(PreparedStatement statement, Residence residence, boolean update) {
@@ -120,7 +120,7 @@ public abstract class SqlStorage implements IStorage {
 
     @Override
     public void remove(Residence residence) {
-        handlePrepared(DELETE_RESIDENCE_SQL, it -> {
+        handlePrepared(String.format(DELETE_RESIDENCE_SQL, Config.storage.tableSetting.residenceTable), it -> {
             try {
                 it.setString(1, residence.getOwner());
 
@@ -137,7 +137,7 @@ public abstract class SqlStorage implements IStorage {
     public List<Residence> loadAll() {
         List<Residence> list = new LinkedList<>();
 
-        handlePrepared(QUERY_RESIDENCES_SQL, it -> {
+        handlePrepared(String.format(QUERY_RESIDENCES_SQL, Config.storage.tableSetting.residenceTable), it -> {
             try {
                 ResultSet resultSet = it.executeQuery();
 
