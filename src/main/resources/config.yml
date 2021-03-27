@@ -14,7 +14,7 @@ maxWaitMills: 100
 # 卸载玩家打击领地缓存的tick数
 unloadPlayerAttackMills: 12000
 
-# 打击的算法, (方块硬度 + (perPowerLevelDamage * 枪械力量附魔等级)) / gunDamageMultiple
+# 打击的算法, (枪械伤害 + (perPowerLevelDamage * 枪械力量附魔等级)) / gunDamageMultiple
 gunDamageMultiple: 4
 
 perPowerLevelDamage: 1

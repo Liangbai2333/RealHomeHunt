@@ -177,7 +177,8 @@ public final class Config {
 
                         boolean upBreak = it.getBoolean("upBreak", false);
 
-                        BlockSetting.BlockIgnoreSetting.IgnoreBlockInfo info = new BlockSetting.BlockIgnoreSetting.IgnoreBlockInfo();
+                        BlockSetting.BlockIgnoreSetting.IgnoreBlockInfo info
+                                = new BlockSetting.BlockIgnoreSetting.IgnoreBlockInfo();
 
                         info.full = full;
 
@@ -376,6 +377,18 @@ public final class Config {
                 public boolean isUpBreak() {
                     return upBreak;
                 }
+
+                public IgnoreBlockInfo(String prefix, String suffix, String full, int amount, boolean upBreak) {
+                    this.prefix = prefix;
+                    this.suffix = suffix;
+                    this.full = full;
+                    this.amount = amount;
+                    this.upBreak = upBreak;
+                }
+
+                public IgnoreBlockInfo() {
+
+                }
             }
 
             public boolean contains(@NotNull Material material) {
@@ -389,6 +402,10 @@ public final class Config {
                     if (info.full != null && info.full.equalsIgnoreCase(name)) return info;
 
                     if (name.startsWith(info.prefix) && name.endsWith(info.suffix)) return info;
+                }
+
+                if (!material.isSolid()) {
+                    return new IgnoreBlockInfo(null, null, null, 0, false);
                 }
 
                 return null;
