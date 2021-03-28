@@ -14,6 +14,7 @@ import site.liangbai.lrainylib.annotation.plugin.Permission;
 import site.liangbai.realhomehunt.command.CommandTabCompiler;
 import site.liangbai.realhomehunt.config.Config;
 import site.liangbai.realhomehunt.listener.forge.player.EventHolderGunHitBlock;
+import site.liangbai.realhomehunt.listener.player.block.ListenerGunHitBlock;
 import site.liangbai.realhomehunt.locale.manager.LocaleManager;
 import site.liangbai.realhomehunt.manager.ResidenceManager;
 import site.liangbai.realhomehunt.residence.Residence;
@@ -60,7 +61,7 @@ public final class RealHomeHunt extends JavaPlugin {
 
         ResidenceManager.init(this, Config.storage.type);
 
-        initForgeEventHolderIfUse();
+        initForgeEventHolderIfUseOrBukkitListener();
 
         initCommandTabCompiler();
 
@@ -88,8 +89,10 @@ public final class RealHomeHunt extends JavaPlugin {
         pluginCommand.setTabCompleter(new CommandTabCompiler());
     }
 
-    private void initForgeEventHolderIfUse() {
+    private void initForgeEventHolderIfUseOrBukkitListener() {
         if (!Config.useForgeEventBridge) {
+            Bukkit.getPluginManager().registerEvents(new ListenerGunHitBlock(), this);
+
             return;
         }
 
