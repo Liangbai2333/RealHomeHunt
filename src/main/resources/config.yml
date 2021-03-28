@@ -1,6 +1,11 @@
 # 插件前缀
 prefix: "&f[&6&l繁梦之都&f] &r"
 
+# 是否使用Forge-Event-Bridge (需要服务端有Forge-Event-Bridge MOD)
+# 用于提高效率
+# 目前暂不推荐开放 (等待Pull Request #101 (https://github.com/nexusnode/crafting-dead/pull/101) 合并)
+useForgeEventBridge: false
+
 # 开放的世界
 openWorlds:
   - sc

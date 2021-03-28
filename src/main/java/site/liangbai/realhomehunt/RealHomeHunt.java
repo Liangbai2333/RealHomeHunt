@@ -22,7 +22,7 @@ import site.liangbai.realhomehunt.task.PlayerMoveToResidenceMessageTask;
 import site.liangbai.realhomehunt.util.ConsoleUtil;
 
 @Plugin(
-        info = @Info(name = "RealHomeHunt", version = "1.0.5", authors = "Liangbai"),
+        info = @Info(name = "RealHomeHunt", version = "1.0.6", authors = "Liangbai"),
         apiVersion = "1.13",
         softDepend = "Multiverse-Core",
         permissions = {
@@ -60,7 +60,7 @@ public final class RealHomeHunt extends JavaPlugin {
 
         ResidenceManager.init(this, Config.storage.type);
 
-        initForgeEventHolder();
+        initForgeEventHolderIfUse();
 
         initCommandTabCompiler();
 
@@ -88,7 +88,11 @@ public final class RealHomeHunt extends JavaPlugin {
         pluginCommand.setTabCompleter(new CommandTabCompiler());
     }
 
-    private void initForgeEventHolder() {
+    private void initForgeEventHolderIfUse() {
+        if (!Config.useForgeEventBridge) {
+            return;
+        }
+
         EventHolder<?> gunHitBlockEventHolder = new EventHolderGunHitBlock();
 
         gunHitBlockEventHolder.register(EventBridge.builder()

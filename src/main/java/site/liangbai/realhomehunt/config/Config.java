@@ -20,6 +20,8 @@ public final class Config {
 
     public static String prefix;
 
+    public static boolean useForgeEventBridge;
+
     public static StorageSetting storage;
 
     public static ResidenceSetting residence;
@@ -64,6 +66,8 @@ public final class Config {
         YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(configFile);
 
         prefix = asColored(yamlConfiguration.getString("prefix"));
+
+        useForgeEventBridge = yamlConfiguration.getBoolean("useForgeEventBridge");
 
         openWorlds = yamlConfiguration.getStringList("openWorlds");
 
