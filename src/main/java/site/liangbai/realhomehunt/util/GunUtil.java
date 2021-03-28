@@ -20,6 +20,6 @@ public final class GunUtil {
 
         int powerLevel = gun.getEnchantmentLevel(Enchantment.ARROW_DAMAGE);
 
-        return (gunApi.getDamage() + (Config.perPowerLevelDamage * powerLevel)) / Config.gunDamageMultiple;
+        return (gunApi.getFinalDamage() + (Config.perPowerLevelDamage * powerLevel)) / Config.gunDamageMultiple;
     }
 }
