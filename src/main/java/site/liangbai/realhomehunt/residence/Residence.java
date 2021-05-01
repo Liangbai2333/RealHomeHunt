@@ -65,29 +65,32 @@ public final class Residence implements ConfigurationSerializable {
 
     @NotNull
     public IgnoreBlockInfo getIgnoreBlockInfo(Config.BlockSetting.BlockIgnoreSetting.IgnoreBlockInfo ignoreBlockInfo) {
-        for (IgnoreBlockInfo info : ignoreBlockInfoList) {
-            String name = info.type.toUpperCase();
+        return ignoreBlockInfoList.stream()
+                .filter(info -> {
+                    String name = info.type.toUpperCase();
 
-            if (ignoreBlockInfo.full != null && ignoreBlockInfo.full.equalsIgnoreCase(name)) return info;
+                    if (ignoreBlockInfo.full != null && ignoreBlockInfo.full.equalsIgnoreCase(name)) return true;
 
-            if (name.startsWith(ignoreBlockInfo.prefix) && name.endsWith(ignoreBlockInfo.suffix)) return info;
-        }
+                    return name.startsWith(ignoreBlockInfo.prefix) && name.endsWith(ignoreBlockInfo.suffix);
+                })
+                .findFirst()
+                .orElseGet(() -> {
+                    IgnoreBlockInfo info;
 
-        IgnoreBlockInfo info;
+                    if (ignoreBlockInfo.full != null) {
+                        info = new IgnoreBlockInfo(ignoreBlockInfo.full);
+                    } else {
+                        String typeName = ignoreBlockInfo.prefix + ignoreBlockInfo.suffix;
 
-        if (ignoreBlockInfo.full != null) {
-            info = new IgnoreBlockInfo(ignoreBlockInfo.full);
-        } else {
-            String typeName = ignoreBlockInfo.prefix + ignoreBlockInfo.suffix;
+                        if (typeName.isEmpty()) typeName = "null";
 
-            if (typeName.isEmpty()) typeName = "null";
+                        info = new IgnoreBlockInfo(typeName);
+                    }
 
-            info = new IgnoreBlockInfo(typeName);
-        }
+                    ignoreBlockInfoList.add(info);
 
-        ignoreBlockInfoList.add(info);
-
-        return info;
+                    return info;
+                });
     }
 
     @SuppressWarnings("unchecked")

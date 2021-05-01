@@ -21,7 +21,7 @@ public final class SetSpawnCommand implements ISubCommand {
 
         String name = player.getName();
 
-        Residence residence = ResidenceManager.getResidenceByName(name);
+        Residence residence = ResidenceManager.getResidenceByOwner(name);
 
         if (residence == null) {
             sender.sendMessage(locale.asString("command.setspawn.haveNotResidence"));

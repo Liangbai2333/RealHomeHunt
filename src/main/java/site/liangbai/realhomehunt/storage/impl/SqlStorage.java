@@ -1,15 +1,11 @@
 package site.liangbai.realhomehunt.storage.impl;
 
 import org.bukkit.util.Consumer;
-import org.bukkit.util.io.BukkitObjectInputStream;
-import org.bukkit.util.io.BukkitObjectOutputStream;
 import site.liangbai.realhomehunt.config.Config;
 import site.liangbai.realhomehunt.residence.Residence;
 import site.liangbai.realhomehunt.storage.IStorage;
+import site.liangbai.realhomehunt.util.Serialization;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -100,20 +96,14 @@ public abstract class SqlStorage implements IStorage {
 
     private void doUpdateResidence(PreparedStatement statement, Residence residence, boolean update) {
         try {
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-
-            BukkitObjectOutputStream objectOutputStream = new BukkitObjectOutputStream(byteArrayOutputStream);
-
-            objectOutputStream.writeObject(residence);
-
-            statement.setBytes(1, byteArrayOutputStream.toByteArray());
+            statement.setBytes(1, Serialization.toByteArray(residence));
 
             statement.setString(2, residence.getOwner());
 
             statement.executeUpdate();
 
             if (!update) owners.add(residence.getOwner());
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -140,7 +130,6 @@ public abstract class SqlStorage implements IStorage {
         handlePrepared(String.format(QUERY_RESIDENCES_SQL, Config.storage.tableSetting.residenceTable), it -> {
             try {
                 ResultSet resultSet = it.executeQuery();
-
                 while (resultSet.next()) {
                     byte[] residenceBytes = resultSet.getBytes("residence");
 
@@ -148,21 +137,13 @@ public abstract class SqlStorage implements IStorage {
 
                     owners.add(owner);
 
-                    ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(residenceBytes);
-
-                    BukkitObjectInputStream objectInputStream = new BukkitObjectInputStream(byteArrayInputStream);
-
-                    Object resObj = objectInputStream.readObject();
+                    Residence residence = Serialization.fromByteArray(residenceBytes);
 
                     count++;
 
-                    if (!(resObj instanceof Residence)) continue;
-
-                    Residence residence = ((Residence) resObj);
-
                     list.add(residence);
                 }
-            } catch (SQLException | IOException | ClassNotFoundException e) {
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
         });

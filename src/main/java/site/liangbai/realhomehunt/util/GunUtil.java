@@ -1,9 +1,9 @@
 package site.liangbai.realhomehunt.util;
 
+import com.craftingdead.core.item.GunItem;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import site.liangbai.craftingdeadapi.api.gun.Gun;
 import site.liangbai.realhomehunt.config.Config;
 
 public final class GunUtil {
@@ -14,12 +14,20 @@ public final class GunUtil {
     }
 
     public static double countDamage(@NotNull ItemStack gun) {
-        Gun gunApi = new Gun(gun);
+        net.minecraft.item.ItemStack itemStack = ItemStackUtil.getMinecraftItemStack(gun);
 
-        if (!gunApi.isGun()) return 0.0D;
+        if (itemStack == null) return 0.0D;
+
+        if (!isGun(itemStack)) return 0.0D;
+
+        GunItem gunItem = (GunItem) itemStack.getItem();
 
         int powerLevel = gun.getEnchantmentLevel(Enchantment.ARROW_DAMAGE);
 
-        return (gunApi.getFinalDamage() + (Config.perPowerLevelDamage * powerLevel)) / Config.gunDamageMultiple;
+        return (gunItem.getGunType().getDamage() + (Config.perPowerLevelDamage * powerLevel)) / Config.gunDamageMultiple;
+    }
+
+    public static boolean isGun(net.minecraft.item.ItemStack itemStack) {
+        return itemStack.getItem() instanceof GunItem;
     }
 }

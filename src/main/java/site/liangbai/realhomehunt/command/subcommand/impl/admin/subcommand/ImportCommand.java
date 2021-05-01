@@ -23,7 +23,7 @@ public final class ImportCommand implements ISubCommand {
     public void execute(CommandSender sender, String label, String[] args) {
         Locale locale = LocaleUtil.require(sender);
 
-        if (args.length < 5) {
+        if (args.length < 4) {
             sender.sendMessage(locale.asString("command.admin.import.usage", label));
 
             return;
@@ -35,15 +35,7 @@ public final class ImportCommand implements ISubCommand {
             return;
         }
 
-        if (!booleanPattern.matcher(args[4]).matches()) {
-            sender.sendMessage(locale.asString("command.admin.import.unknownParam5"));
-
-            return;
-        }
-
-        boolean replaceOld = Boolean.parseBoolean(args[3]);
-
-        boolean cleanOld = Boolean.parseBoolean(args[4]);
+        boolean cleanOld = Boolean.parseBoolean(args[3]);
 
         File file = new File(RealHomeHunt.plugin.getDataFolder(), args[2]);
 
@@ -66,7 +58,7 @@ public final class ImportCommand implements ISubCommand {
 
             residenceList.stream()
                     .filter(Objects::nonNull)
-                    .forEach(it -> ResidenceManager.register(it, replaceOld));
+                    .forEach(ResidenceManager::register);
 
             ResidenceManager.getResidences().forEach(Residence::save);
 
@@ -82,7 +74,7 @@ public final class ImportCommand implements ISubCommand {
 
             List<Residence> residenceList = storage.loadAll();
 
-            residenceList.forEach(it -> ResidenceManager.register(it, replaceOld));
+            residenceList.forEach(ResidenceManager::register);
 
             ResidenceManager.getResidences().forEach(Residence::save);
 

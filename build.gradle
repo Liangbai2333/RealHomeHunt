@@ -1,14 +1,42 @@
+buildscript {
+    repositories {
+        maven { url = 'https://files.minecraftforge.net/maven' }
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.+', changing: true
+    }
+}
+
 plugins {
     id 'java'
 }
 
-group 'site.liangbai'
-version '1.0.7'
+apply plugin: 'net.minecraftforge.gradle'
+
+group = 'site.liangbai'
+version = '1.1.0'
+
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 repositories {
     maven {
         url 'http://lss233.littleservice.cn/repositories/minecraft'
     }
+}
+
+minecraft {
+    mappings channel: 'official', version: "${minecraft_version}"
+}
+
+dependencies {
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+
+    implementation group: 'org.spigotmc', name: 'spigot', version: "${spigot_version}"
+
+    implementation fileTree(dir: 'libs', includes: ['*.jar'])
+    annotationProcessor fileTree(dir: 'libs', includes: ['*.jar'])
 }
 
 jar {
@@ -24,9 +52,4 @@ jar {
     }
 }
 
-dependencies {
-    compileOnly fileTree(dir: 'libs', includes: ['*.jar'])
-    compileOnly group: 'org.spigotmc', name: 'spigot', version: "${spigot_version}"
-
-    annotationProcessor fileTree(dir: 'libs', includes: ['*.jar'])
-}
+jar.finalizedBy('reobfJar')

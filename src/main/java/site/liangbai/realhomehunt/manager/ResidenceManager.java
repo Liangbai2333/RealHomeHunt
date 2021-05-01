@@ -70,39 +70,23 @@ public final class ResidenceManager {
     }
 
     public static void register(Residence residence) {
-        register(residence, true);
-    }
+        getResidences().stream()
+                .filter(existResidence -> existResidence.getOwner().equals(residence.getOwner()))
+                .findFirst()
+                .ifPresent(getResidences()::remove);
 
-    public static void register(Residence residence, boolean replaceOld) {
-        for (Residence exist : residences) {
-            if (exist.getOwner().equals(residence.getOwner())) {
-                if (replaceOld) {
-                    residences.remove(exist);
-                } else return;
-            }
-        }
-
-        residences.add(residence);
+        getResidences().add(residence);
     }
 
     public static void unregister(Residence residence) {
-        residences.remove(residence);
-    }
-
-    public static Residence getResidenceByName(String player) {
-        for (Residence residence : residences) {
-            if (residence.isAdministrator(player)) return residence;
-        }
-
-        return null;
+        getResidences().remove(residence);
     }
 
     public static Residence getResidenceByOwner(String owner) {
-        for (Residence residence : residences) {
-            if (residence.isOwner(owner)) return residence;
-        }
-
-        return null;
+        return getResidences().stream()
+                .filter(residence -> residence.isOwner(owner))
+                .findFirst()
+                .orElse(null);
     }
 
     public static List<Residence> getResidences() {
@@ -110,11 +94,10 @@ public final class ResidenceManager {
     }
 
     public static Residence getResidenceByLocation(Location location) {
-        for (Residence value : residences) {
-            if (LocationUtil.isInResidence(location, value)) return value;
-        }
-
-        return null;
+        return getResidences().stream()
+                .filter(residence -> LocationUtil.isInResidence(location, residence))
+                .findFirst()
+                .orElse(null);
     }
 
     public static boolean isInResidence(Location location, Residence residence) {
@@ -124,11 +107,8 @@ public final class ResidenceManager {
     public static boolean containsResidence(Location loc1, Location loc2) {
         if (getResidenceByLocation(loc1) != null || getResidenceByLocation(loc2) != null) return true;
 
-        for (Residence value : residences) {
-            if (LocationUtil.isInZone(value.getLeft(), loc1, loc2) || LocationUtil.isInZone(value.getRight(), loc1, loc2)) return true;
-        }
-
-        return false;
+        return getResidences().stream()
+                .anyMatch(residence -> LocationUtil.isInZone(residence.getLeft(), loc1, loc2) || LocationUtil.isInZone(residence.getRight(), loc1, loc2));
     }
 
     public static boolean isOpened(@NotNull World world) {

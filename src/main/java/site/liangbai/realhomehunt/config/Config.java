@@ -20,8 +20,6 @@ public final class Config {
 
     public static String prefix;
 
-    public static boolean useForgeEventBridge;
-
     public static StorageSetting storage;
 
     public static ResidenceSetting residence;
@@ -67,15 +65,13 @@ public final class Config {
 
         prefix = asColored(yamlConfiguration.getString("prefix"));
 
-        useForgeEventBridge = yamlConfiguration.getBoolean("useForgeEventBridge");
-
         openWorlds = yamlConfiguration.getStringList("openWorlds");
 
-        maxWaitMills = yamlConfiguration.getLong("maxWaitMills");
+        maxWaitMills = asMills(yamlConfiguration.getLong("maxWaitMills"));
 
-        teleportMills = yamlConfiguration.getLong("teleportMills");
+        teleportMills = asMills(yamlConfiguration.getLong("teleportMills"));
 
-        unloadPlayerAttackMills = yamlConfiguration.getLong("unloadPlayerAttackMills");
+        unloadPlayerAttackMills = asMills(yamlConfiguration.getLong("unloadPlayerAttackMills"));
 
         gunDamageMultiple = yamlConfiguration.getDouble("gunDamageMultiple");
 
@@ -87,7 +83,7 @@ public final class Config {
 
         showActionBar = yamlConfiguration.getBoolean("showActionBar", true);
 
-        actionBarShowMills = yamlConfiguration.getLong("actionBarShowMills", 600);
+        actionBarShowMills = asMills(yamlConfiguration.getLong("actionBarShowMills", 600));
 
         ConsoleUtil.sendRawMessage(ChatColor.GREEN + "Linking storage settings...");
 
@@ -307,6 +303,10 @@ public final class Config {
         return ChatColor.translateAlternateColorCodes('&', message);
     }
 
+    public static long asMills(long seconds) {
+        return seconds * 20;
+    }
+
     public static final class StorageSetting {
         public StorageType type;
 
@@ -402,17 +402,20 @@ public final class Config {
             public IgnoreBlockInfo getByMaterial(@NotNull Material material) {
                 String name = material.name().toUpperCase();
 
-                for (IgnoreBlockInfo info : ignoreBlockInfoList) {
-                    if (info.full != null && info.full.equalsIgnoreCase(name)) return info;
+                return ignoreBlockInfoList.stream()
+                        .filter(info -> {
+                            if (info.full != null && info.full.equalsIgnoreCase(name)) return true;
 
-                    if (name.startsWith(info.prefix) && name.endsWith(info.suffix)) return info;
-                }
+                            return name.startsWith(info.prefix) && name.endsWith(info.suffix);
+                        })
+                        .findFirst()
+                        .orElseGet(() -> {
+                            if (!material.isSolid()) {
+                                return new IgnoreBlockInfo(null, null, null, 0, false);
+                            }
 
-                if (!material.isSolid()) {
-                    return new IgnoreBlockInfo(null, null, null, 0, false);
-                }
-
-                return null;
+                            return null;
+                        });
             }
         }
 
@@ -426,11 +429,11 @@ public final class Config {
             }
 
             public double getHardness(@NotNull Block block) {
-                for (CustomBlockInfo customBlockInfo : customSettingList) {
-                    if (customBlockInfo.type.equalsIgnoreCase(block.getType().name())) return customBlockInfo.hardness;
-                }
-
-                return block.getType().getHardness() * Config.defaultBlockHardnessMultiple;
+                return customSettingList.stream()
+                        .filter(customBlockInfo -> customBlockInfo.type.equalsIgnoreCase(block.getType().name()))
+                        .map(it -> it.hardness)
+                        .findFirst()
+                        .orElse(block.getType().getHardness() * Config.defaultBlockHardnessMultiple);
             }
         }
     }

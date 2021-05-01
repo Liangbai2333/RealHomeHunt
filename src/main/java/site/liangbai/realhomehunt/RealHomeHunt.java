@@ -1,6 +1,7 @@
 package site.liangbai.realhomehunt;
 
 import com.craftingdead.core.event.GunEvent;
+import net.minecraftforge.fml.ModList;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.PluginCommand;
@@ -14,7 +15,6 @@ import site.liangbai.lrainylib.annotation.plugin.Permission;
 import site.liangbai.realhomehunt.command.CommandTabCompiler;
 import site.liangbai.realhomehunt.config.Config;
 import site.liangbai.realhomehunt.listener.forge.player.EventHolderGunHitBlock;
-import site.liangbai.realhomehunt.listener.player.block.ListenerGunHitBlock;
 import site.liangbai.realhomehunt.locale.manager.LocaleManager;
 import site.liangbai.realhomehunt.manager.ResidenceManager;
 import site.liangbai.realhomehunt.residence.Residence;
@@ -23,7 +23,7 @@ import site.liangbai.realhomehunt.task.PlayerMoveToResidenceMessageTask;
 import site.liangbai.realhomehunt.util.ConsoleUtil;
 
 @Plugin(
-        info = @Info(name = "RealHomeHunt", version = "1.0.7", authors = "Liangbai"),
+        info = @Info(name = "RealHomeHunt", version = "1.1.0", authors = "Liangbai"),
         apiVersion = "1.13",
         softDepend = "Multiverse-Core",
         permissions = {
@@ -53,6 +53,8 @@ public final class RealHomeHunt extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        checkForgeEventBridgeInst();
+
         initConfigurationConfigurationSerializer();
 
         Config.init(this);
@@ -61,7 +63,7 @@ public final class RealHomeHunt extends JavaPlugin {
 
         ResidenceManager.init(this, Config.storage.type);
 
-        initForgeEventHolderIfUseOrBukkitListener();
+        initForgeEventHolder();
 
         initCommandTabCompiler();
 
@@ -89,18 +91,19 @@ public final class RealHomeHunt extends JavaPlugin {
         pluginCommand.setTabCompleter(new CommandTabCompiler());
     }
 
-    private void initForgeEventHolderIfUseOrBukkitListener() {
-        if (!Config.useForgeEventBridge) {
-            Bukkit.getPluginManager().registerEvents(new ListenerGunHitBlock(), this);
-
-            return;
-        }
-
+    private void initForgeEventHolder() {
         EventHolder<?> gunHitBlockEventHolder = new EventHolderGunHitBlock();
-
         gunHitBlockEventHolder.register(EventBridge.builder()
                 .target(GunEvent.HitBlock.class)
                 .build());
+    }
+
+    private void checkForgeEventBridgeInst() {
+        if (!ModList.get().isLoaded("forgeeventbridge")) {
+            Bukkit.getPluginManager().disablePlugin(this);
+
+            throw new IllegalStateException("can not found Forge-Event-Bridge mod, please install it.");
+        }
     }
 
     private void initConfigurationConfigurationSerializer() {

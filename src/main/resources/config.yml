@@ -1,22 +1,17 @@
 # 插件前缀
 prefix: "&f[&6&l繁梦之都&f] &r"
 
-# 是否使用Forge-Event-Bridge (需要服务端有Forge-Event-Bridge MOD)
-# 用于提高效率
-# 目前暂不推荐开放 (等待Pull Request #101 (https://github.com/nexusnode/crafting-dead/pull/101) 合并)
-useForgeEventBridge: false
-
 # 开放的世界
 openWorlds:
   - sc
 
-# 传送回家的tick数，20tick为1秒
+# 传送回家的秒数
 teleportMills: 200
 
-# 恢复方块裂纹的tick数
+# 恢复方块裂纹的秒数
 maxWaitMills: 100
 
-# 卸载玩家打击领地缓存的tick数
+# 卸载玩家打击领地缓存的秒数
 unloadPlayerAttackMills: 12000
 
 # 打击的算法, (枪械伤害 + (perPowerLevelDamage * 枪械力量附魔等级)) / gunDamageMultiple
@@ -32,7 +27,7 @@ consoleLanguage: zh_cn
 
 # 显示物品栏上方的提示文字
 showActionBar: true
-# 物品栏上方的文字的显示时间
+# 物品栏上方的文字的显示秒数
 actionBarShowMills: 600
 
 # 存储
