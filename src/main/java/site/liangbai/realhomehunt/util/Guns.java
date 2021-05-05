@@ -6,7 +6,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import site.liangbai.realhomehunt.config.Config;
 
-public final class GunUtil {
+public final class Guns {
     public static int countBlockSit(double count, double hardness) {
         int realHardness = (int) ((count / hardness) * 9);
 
@@ -14,7 +14,7 @@ public final class GunUtil {
     }
 
     public static double countDamage(@NotNull ItemStack gun) {
-        net.minecraft.item.ItemStack itemStack = ItemStackUtil.getMinecraftItemStack(gun);
+        net.minecraft.item.ItemStack itemStack = ItemStacks.getMinecraftItemStack(gun);
 
         if (itemStack == null) return 0.0D;
 

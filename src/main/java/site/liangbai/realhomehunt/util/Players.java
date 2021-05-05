@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Predicate;
 
-public final class PlayerMoveUtil {
+public final class Players {
     private static final List<Predicate<Player>> listenerList = new LinkedList<>();
 
     public static void addListenerOnce(Predicate<Player> playerPredicate) {

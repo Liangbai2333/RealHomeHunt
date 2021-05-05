@@ -12,8 +12,8 @@ import site.liangbai.realhomehunt.storage.StorageType;
 import site.liangbai.realhomehunt.storage.impl.MySqlStorage;
 import site.liangbai.realhomehunt.storage.impl.SqliteStorage;
 import site.liangbai.realhomehunt.storage.impl.YamlStorage;
-import site.liangbai.realhomehunt.util.ConsoleUtil;
-import site.liangbai.realhomehunt.util.LocationUtil;
+import site.liangbai.realhomehunt.util.Console;
+import site.liangbai.realhomehunt.util.Locations;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -44,25 +44,25 @@ public final class ResidenceManager {
 
         ResidenceManager.storageType = storageType;
 
-        ConsoleUtil.sendRawMessage(ChatColor.GREEN + "Using storage: " + ChatColor.YELLOW + storageType.name());
+        Console.sendRawMessage(ChatColor.GREEN + "Using storage: " + ChatColor.YELLOW + storageType.name());
 
-        ConsoleUtil.sendRawMessage(ChatColor.GREEN + "Loading player residence data...");
+        Console.sendRawMessage(ChatColor.GREEN + "Loading player residence data...");
 
         List<Residence> residenceList = storage.loadAll();
 
         residences.addAll(residenceList);
 
-        ConsoleUtil.sendRawMessage(ChatColor.GREEN + "Loading player residence data successful.");
+        Console.sendRawMessage(ChatColor.GREEN + "Loading player residence data successful.");
 
-        ConsoleUtil.sendRawMessage(ChatColor.GREEN + "Player residence data load info: ");
+        Console.sendRawMessage(ChatColor.GREEN + "Player residence data load info: ");
 
         int count = storage.count();
 
-        ConsoleUtil.sendRawMessage(ChatColor.GREEN + "  count: " + count);
+        Console.sendRawMessage(ChatColor.GREEN + "  count: " + count);
 
-        ConsoleUtil.sendRawMessage(ChatColor.GREEN + "  success: " + residences.size());
+        Console.sendRawMessage(ChatColor.GREEN + "  success: " + residences.size());
 
-        ConsoleUtil.sendRawMessage(ChatColor.GREEN + "  failed: " + (count - residences.size()));
+        Console.sendRawMessage(ChatColor.GREEN + "  failed: " + (count - residences.size()));
     }
 
     public static StorageType getStorageType() {
@@ -95,20 +95,20 @@ public final class ResidenceManager {
 
     public static Residence getResidenceByLocation(Location location) {
         return getResidences().stream()
-                .filter(residence -> LocationUtil.isInResidence(location, residence))
+                .filter(residence -> Locations.isInResidence(location, residence))
                 .findFirst()
                 .orElse(null);
     }
 
     public static boolean isInResidence(Location location, Residence residence) {
-        return LocationUtil.isInResidence(location, residence);
+        return Locations.isInResidence(location, residence);
     }
 
     public static boolean containsResidence(Location loc1, Location loc2) {
         if (getResidenceByLocation(loc1) != null || getResidenceByLocation(loc2) != null) return true;
 
         return getResidences().stream()
-                .anyMatch(residence -> LocationUtil.isInZone(residence.getLeft(), loc1, loc2) || LocationUtil.isInZone(residence.getRight(), loc1, loc2));
+                .anyMatch(residence -> Locations.isInZone(residence.getLeft(), loc1, loc2) || Locations.isInZone(residence.getRight(), loc1, loc2));
     }
 
     public static boolean isOpened(@NotNull World world) {

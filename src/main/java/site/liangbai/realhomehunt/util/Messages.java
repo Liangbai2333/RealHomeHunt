@@ -5,7 +5,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import site.liangbai.realhomehunt.locale.impl.Locale;
 import site.liangbai.realhomehunt.locale.manager.LocaleManager;
 
-public final class MessageUtil {
+public final class Messages {
     public static void sendToAll(String node, Object... args) {
         Bukkit.getOnlinePlayers().forEach(it -> {
             Locale locale = LocaleManager.require(it);
@@ -15,7 +15,7 @@ public final class MessageUtil {
 
         ConsoleCommandSender sender = Bukkit.getConsoleSender();
 
-        Locale locale = LocaleUtil.require(sender);
+        Locale locale = Locales.require(sender);
 
         sender.sendMessage(locale.asString(node, args));
     }

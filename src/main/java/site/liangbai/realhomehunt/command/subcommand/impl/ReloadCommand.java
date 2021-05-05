@@ -7,12 +7,12 @@ import site.liangbai.realhomehunt.config.Config;
 import site.liangbai.realhomehunt.locale.impl.Locale;
 import site.liangbai.realhomehunt.locale.manager.LocaleManager;
 import site.liangbai.realhomehunt.manager.ResidenceManager;
-import site.liangbai.realhomehunt.util.LocaleUtil;
+import site.liangbai.realhomehunt.util.Locales;
 
 public final class ReloadCommand implements ISubCommand {
     @Override
     public void execute(CommandSender sender, String label, String[] args) {
-        Locale locale = LocaleUtil.require(sender);
+        Locale locale = Locales.require(sender);
 
         if (!sender.hasPermission("rh.reload")) {
             sender.sendMessage(locale.asString("command.reload.haveNotPermission", "rh.reload"));

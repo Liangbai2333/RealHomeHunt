@@ -10,10 +10,10 @@ import site.liangbai.realhomehunt.locale.impl.Locale;
 import site.liangbai.realhomehunt.locale.manager.LocaleManager;
 import site.liangbai.realhomehunt.manager.ResidenceManager;
 import site.liangbai.realhomehunt.residence.Residence;
-import site.liangbai.realhomehunt.util.BlockUtil;
-import site.liangbai.realhomehunt.util.LocationUtil;
-import site.liangbai.realhomehunt.util.MessageUtil;
-import site.liangbai.realhomehunt.util.TitleUtil;
+import site.liangbai.realhomehunt.util.Blocks;
+import site.liangbai.realhomehunt.util.Locations;
+import site.liangbai.realhomehunt.util.Messages;
+import site.liangbai.realhomehunt.util.Titles;
 
 import java.util.Objects;
 
@@ -57,7 +57,7 @@ public final class CreateCommand implements ISubCommand {
             return;
         }
 
-        LocationUtil.DistanceInfo distanceInfo = LocationUtil.countDistanceInfo(loc1, loc2);
+        Locations.DistanceInfo distanceInfo = Locations.countDistanceInfo(loc1, loc2);
 
         Config.ResidenceSetting.ResidenceSizeSetting sizeSetting = Config.residence.sizeLimit;
 
@@ -83,7 +83,7 @@ public final class CreateCommand implements ISubCommand {
         Residence residence = new Residence.Builder().owner(player).left(loc1).right(loc2).build();
 
         for (Config.BlockSetting.BlockIgnoreSetting.IgnoreBlockInfo info : Config.block.ignore.ignoreBlockInfoList) {
-            int count = BlockUtil.containsBlockAndReturnCount(info, residence);
+            int count = Blocks.containsBlockAndReturnCount(info, residence);
 
             if (count > info.amount) {
                 sender.sendMessage(locale.asString("command.create.containsIgnoreBlock", info.full != null ? info.full : (info.suffix.isEmpty() ? info.prefix : info.suffix)));
@@ -92,7 +92,7 @@ public final class CreateCommand implements ISubCommand {
             }
         }
 
-        Location defaultSpawn = LocationUtil.getAverageLocation(loc1.getWorld(), loc1, loc2);
+        Location defaultSpawn = Locations.getAverageLocation(loc1.getWorld(), loc1, loc2);
 
         residence.setSpawn(defaultSpawn);
 
@@ -102,8 +102,8 @@ public final class CreateCommand implements ISubCommand {
 
         SelectCache.pop(name);
 
-        TitleUtil.sendTitle(player, locale.asString("command.create.successTitle"), locale.asString("command.create.successSubTitle"));
+        Titles.sendTitle(player, locale.asString("command.create.successTitle"), locale.asString("command.create.successSubTitle"));
 
-        MessageUtil.sendToAll("command.create.sendToAll", name);
+        Messages.sendToAll("command.create.sendToAll", name);
     }
 }

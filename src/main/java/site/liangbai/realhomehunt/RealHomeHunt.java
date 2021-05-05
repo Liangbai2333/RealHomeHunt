@@ -18,12 +18,12 @@ import site.liangbai.realhomehunt.listener.forge.player.EventHolderGunHitBlock;
 import site.liangbai.realhomehunt.locale.manager.LocaleManager;
 import site.liangbai.realhomehunt.manager.ResidenceManager;
 import site.liangbai.realhomehunt.residence.Residence;
-import site.liangbai.realhomehunt.residence.attribute.impl.*;
+import site.liangbai.realhomehunt.residence.attribute.map.AttributeMap;
 import site.liangbai.realhomehunt.task.PlayerMoveToResidenceMessageTask;
-import site.liangbai.realhomehunt.util.ConsoleUtil;
+import site.liangbai.realhomehunt.util.Console;
 
 @Plugin(
-        info = @Info(name = "RealHomeHunt", version = "1.1.0", authors = "Liangbai"),
+        info = @Info(name = "RealHomeHunt", version = "1.1.1", authors = "Liangbai"),
         apiVersion = "1.13",
         softDepend = "Multiverse-Core",
         permissions = {
@@ -55,7 +55,7 @@ public final class RealHomeHunt extends JavaPlugin {
     public void onEnable() {
         checkForgeEventBridgeInst();
 
-        initConfigurationConfigurationSerializer();
+        initConfigurationSerializer();
 
         Config.init(this);
 
@@ -106,21 +106,11 @@ public final class RealHomeHunt extends JavaPlugin {
         }
     }
 
-    private void initConfigurationConfigurationSerializer() {
+    private void initConfigurationSerializer() {
         ConfigurationSerialization.registerClass(Residence.class);
         ConfigurationSerialization.registerClass(Residence.IgnoreBlockInfo.class);
 
-        initAttributeConfigurationConfigurationSerializer();
-    }
-
-    private void initAttributeConfigurationConfigurationSerializer() {
-        ConfigurationSerialization.registerClass(CreatureAttribute.class);
-        ConfigurationSerialization.registerClass(AnimalsAttribute.class);
-        ConfigurationSerialization.registerClass(MonsterAttribute.class);
-        ConfigurationSerialization.registerClass(ExplodeAttribute.class);
-        ConfigurationSerialization.registerClass(BurnAttribute.class);
-        ConfigurationSerialization.registerClass(IgniteAttribute.class);
-        ConfigurationSerialization.registerClass(SpreadFireAttribute.class);
+        AttributeMap.registerAttributeSerializer();
     }
 
     private void initTasks() {
@@ -132,6 +122,6 @@ public final class RealHomeHunt extends JavaPlugin {
     }
 
     private void processSuccess() {
-        ConsoleUtil.sendRawMessage(ChatColor.GREEN + "Succeed in enabling " + getName() + " v" + getDescription().getVersion() + " plugin, author: " + getDescription().getAuthors() + ".");
+        Console.sendRawMessage(ChatColor.GREEN + "Succeed in enabling " + getName() + " v" + getDescription().getVersion() + " plugin, author: " + getDescription().getAuthors() + ".");
     }
 }

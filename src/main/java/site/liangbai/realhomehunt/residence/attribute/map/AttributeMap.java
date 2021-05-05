@@ -1,5 +1,6 @@
 package site.liangbai.realhomehunt.residence.attribute.map;
 
+import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import site.liangbai.realhomehunt.residence.attribute.IAttributable;
 import site.liangbai.realhomehunt.residence.attribute.impl.*;
 
@@ -29,6 +30,10 @@ public final class AttributeMap {
 
     public static void registerAttribute(String type, Class<? extends IAttributable<?>> attributeClass) {
         map.put(type.toLowerCase(), attributeClass);
+    }
+
+    public static void registerAttributeSerializer() {
+        map.values().forEach(ConfigurationSerialization::registerClass);
     }
 
     public static Class<? extends IAttributable<?>> getMap(String type) {

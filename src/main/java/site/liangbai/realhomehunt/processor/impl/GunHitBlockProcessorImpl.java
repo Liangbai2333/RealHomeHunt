@@ -12,8 +12,8 @@ import site.liangbai.realhomehunt.manager.ResidenceManager;
 import site.liangbai.realhomehunt.processor.IGunHitBlockProcessor;
 import site.liangbai.realhomehunt.residence.Residence;
 import site.liangbai.realhomehunt.task.UnloadDamageCacheTask;
-import site.liangbai.realhomehunt.util.BlockUtil;
-import site.liangbai.realhomehunt.util.GunUtil;
+import site.liangbai.realhomehunt.util.Blocks;
+import site.liangbai.realhomehunt.util.Guns;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,26 +42,26 @@ public class GunHitBlockProcessorImpl implements IGunHitBlockProcessor {
 
         damageCachePool.addDamageCache(damageCache);
 
-        damageCache.increaseDamage(GunUtil.countDamage(gun));
+        damageCache.increaseDamage(Guns.countDamage(gun));
 
         double hardness = Config.block.custom.getHardness(block);
 
         if (hardness <= 0) return;
 
         if (damageCache.getDamage() >= hardness) {
-            BlockUtil.sendClearBreakAnimationPacket(damageCache.getId(), damageCache.getBlock());
+            Blocks.sendClearBreakAnimationPacket(damageCache.getId(), damageCache.getBlock());
 
             Block upBlock = block.getRelative(BlockFace.UP);
 
             ListenerBlockBreak.saveUpBlock(upBlock, residence);
 
-            BlockUtil.sendBreakBlockPacket(damageCache.getBlock());
+            Blocks.sendBreakBlockPacket(damageCache.getBlock());
 
             damageCachePool.removeDamageCache(damageCache);
         } else {
-            int blockSit = GunUtil.countBlockSit(damageCache.getDamage(), hardness);
+            int blockSit = Guns.countBlockSit(damageCache.getDamage(), hardness);
 
-            BlockUtil.sendBreakAnimationPacket(damageCache.getId(), damageCache.getBlock(), blockSit);
+            Blocks.sendBreakAnimationPacket(damageCache.getId(), damageCache.getBlock(), blockSit);
 
             new UnloadDamageCacheTask(damageCachePool, damageCache).runTaskLater(RealHomeHunt.plugin, Config.maxWaitMills);
         }

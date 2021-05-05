@@ -9,7 +9,7 @@ import site.liangbai.realhomehunt.manager.ResidenceManager;
 import site.liangbai.realhomehunt.residence.Residence;
 import site.liangbai.realhomehunt.storage.impl.SqliteStorage;
 import site.liangbai.realhomehunt.storage.impl.YamlStorage;
-import site.liangbai.realhomehunt.util.LocaleUtil;
+import site.liangbai.realhomehunt.util.Locales;
 
 import java.io.File;
 import java.util.List;
@@ -21,7 +21,7 @@ public final class ImportCommand implements ISubCommand {
 
     @Override
     public void execute(CommandSender sender, String label, String[] args) {
-        Locale locale = LocaleUtil.require(sender);
+        Locale locale = Locales.require(sender);
 
         if (args.length < 4) {
             sender.sendMessage(locale.asString("command.admin.import.usage", label));

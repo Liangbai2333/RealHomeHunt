@@ -5,7 +5,7 @@ import site.liangbai.realhomehunt.command.subcommand.ISubCommand;
 import site.liangbai.realhomehunt.command.subcommand.impl.admin.subcommand.HelpCommand;
 import site.liangbai.realhomehunt.command.subcommand.impl.admin.subcommand.ImportCommand;
 import site.liangbai.realhomehunt.locale.impl.Locale;
-import site.liangbai.realhomehunt.util.LocaleUtil;
+import site.liangbai.realhomehunt.util.Locales;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,7 +35,7 @@ public final class AdminCommand implements ISubCommand {
 
         String commandName = args[1].toLowerCase();
 
-        Locale locale = LocaleUtil.require(sender);
+        Locale locale = Locales.require(sender);
 
         if (!map.containsKey(commandName)) {
             sender.sendMessage(locale.asString("command.common.unknownSubCommand", label + " " + args[0]));

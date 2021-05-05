@@ -8,7 +8,7 @@ import site.liangbai.realhomehunt.locale.impl.Locale;
 import site.liangbai.realhomehunt.locale.manager.LocaleManager;
 import site.liangbai.realhomehunt.manager.ResidenceManager;
 import site.liangbai.realhomehunt.residence.Residence;
-import site.liangbai.realhomehunt.util.LocationUtil;
+import site.liangbai.realhomehunt.util.Locations;
 
 public final class SetSpawnCommand implements ISubCommand {
     @Override
@@ -37,7 +37,7 @@ public final class SetSpawnCommand implements ISubCommand {
 
         Location location = player.getLocation();
 
-        Location blockLocation = LocationUtil.toBlockLocation(location);
+        Location blockLocation = Locations.toBlockLocation(location);
 
         if (!ResidenceManager.isInResidence(blockLocation, residence)) {
             sender.sendMessage(locale.asString("command.setspawn.notInResidence"));

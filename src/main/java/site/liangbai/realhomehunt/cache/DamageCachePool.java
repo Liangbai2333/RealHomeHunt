@@ -1,7 +1,7 @@
 package site.liangbai.realhomehunt.cache;
 
 import org.bukkit.block.Block;
-import site.liangbai.realhomehunt.util.BlockUtil;
+import site.liangbai.realhomehunt.util.Blocks;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -24,7 +24,7 @@ public final class DamageCachePool {
             if (damageCache.getBlock().equals(block)) return damageCache;
         }
 
-        return new DamageCache(block, BlockUtil.nextId());
+        return new DamageCache(block, Blocks.nextId());
     }
 
     public static final class DamageCache {

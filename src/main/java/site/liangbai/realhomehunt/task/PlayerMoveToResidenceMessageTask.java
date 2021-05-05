@@ -8,7 +8,7 @@ import site.liangbai.realhomehunt.locale.impl.Locale;
 import site.liangbai.realhomehunt.locale.manager.LocaleManager;
 import site.liangbai.realhomehunt.manager.ResidenceManager;
 import site.liangbai.realhomehunt.residence.Residence;
-import site.liangbai.realhomehunt.util.LocationUtil;
+import site.liangbai.realhomehunt.util.Locations;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -29,7 +29,7 @@ public final class PlayerMoveToResidenceMessageTask extends BukkitRunnable {
 
                     String name = it.getName();
 
-                    Location location = LocationUtil.toBlockLocation(it.getLocation());
+                    Location location = Locations.toBlockLocation(it.getLocation());
 
                     Residence residence = ResidenceManager.getResidenceByLocation(location);
 

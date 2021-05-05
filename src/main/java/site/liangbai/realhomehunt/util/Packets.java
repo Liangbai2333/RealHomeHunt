@@ -8,7 +8,7 @@ import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
-public final class PacketUtil {
+public final class Packets {
     public static void sendPacket(Player player, Packet<?> packet) {
         if (!(player instanceof CraftPlayer)) return;
 

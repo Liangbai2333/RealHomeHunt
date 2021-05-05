@@ -12,7 +12,7 @@ import org.bukkit.craftbukkit.v1_16_R3.CraftWorld;
 import site.liangbai.realhomehunt.config.Config;
 import site.liangbai.realhomehunt.residence.Residence;
 
-public final class BlockUtil {
+public final class Blocks {
     private static int id;
 
     public static int nextId() {
@@ -42,7 +42,7 @@ public final class BlockUtil {
 
         PacketPlayOutBlockBreakAnimation packet = new PacketPlayOutBlockBreakAnimation(id, blockPosition, breakSit);
 
-        PacketUtil.sendPacketToAll(packet, location.getWorld());
+        Packets.sendPacketToAll(packet, location.getWorld());
     }
 
     public static void sendClearBreakAnimationPacket(int id, Block block) {
@@ -54,7 +54,7 @@ public final class BlockUtil {
     }
 
     public static int containsBlockAndReturnCount(Config.BlockSetting.BlockIgnoreSetting.IgnoreBlockInfo info, Residence residence) {
-        LocationUtil.LocationSortInfo sortInfo = LocationUtil.sort(residence.getLeft(), residence.getRight());
+        Locations.LocationSortInfo sortInfo = Locations.sort(residence.getLeft(), residence.getRight());
 
         Location min = sortInfo.getMin();
 

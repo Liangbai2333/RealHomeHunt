@@ -5,8 +5,8 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import site.liangbai.realhomehunt.RealHomeHunt;
-import site.liangbai.realhomehunt.util.PlayerMoveUtil;
-import site.liangbai.realhomehunt.util.TitleUtil;
+import site.liangbai.realhomehunt.util.Players;
+import site.liangbai.realhomehunt.util.Titles;
 
 import java.util.function.Consumer;
 
@@ -48,7 +48,7 @@ public final class PlayerBackTask extends BukkitRunnable {
 
         this.finishBlock = finishBlock;
 
-        PlayerMoveUtil.addListenerOnce(it -> {
+        Players.addListenerOnce(it -> {
             if (it.equals(player)) {
                 if (cancel) return true;
 
@@ -57,7 +57,7 @@ public final class PlayerBackTask extends BukkitRunnable {
                 finishBlock.accept(player);
 
                 if (denyMessage != null) {
-                    TitleUtil.sendTitle(player, denyMessage, "");
+                    Titles.sendTitle(player, denyMessage, "");
                 }
 
                 return true;
@@ -70,7 +70,7 @@ public final class PlayerBackTask extends BukkitRunnable {
     @Override
     public void run() {
         if (count < seconds) {
-            TitleUtil.sendFastTitle(player, titleMessage, String.format(teleportFormatSubTitleMessage, (seconds - count)));
+            Titles.sendFastTitle(player, titleMessage, String.format(teleportFormatSubTitleMessage, (seconds - count)));
 
             count++;
 
@@ -90,7 +90,7 @@ public final class PlayerBackTask extends BukkitRunnable {
         finishBlock.accept(player);
 
         if (doneMessage != null) {
-            TitleUtil.sendTitle(player, doneMessage, "");
+            Titles.sendTitle(player, doneMessage, "");
         }
 
         cancel();

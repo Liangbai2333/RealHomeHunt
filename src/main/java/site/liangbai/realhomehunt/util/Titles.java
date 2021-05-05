@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public final class TitleUtil {
+public final class Titles {
     public static void sendTitle(@NotNull Player player, @Nullable String title, @Nullable String subTitle) {
         player.sendTitle(title, subTitle, 10, 70, 20);
     }

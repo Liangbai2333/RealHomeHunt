@@ -6,7 +6,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public final class JdbcUtil {
+public final class Jdbc {
     public static void init() {
         try {
             Class.forName("org.sqlite.JDBC");

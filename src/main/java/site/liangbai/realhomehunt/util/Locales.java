@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import site.liangbai.realhomehunt.locale.impl.Locale;
 import site.liangbai.realhomehunt.locale.manager.LocaleManager;
 
-public final class LocaleUtil {
+public final class Locales {
     public static Locale require(CommandSender sender) {
         return sender instanceof Player ? LocaleManager.require(((Player) sender)) : LocaleManager.requireDefault();
     }

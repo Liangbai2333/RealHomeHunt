@@ -8,7 +8,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import site.liangbai.realhomehunt.storage.StorageType;
-import site.liangbai.realhomehunt.util.ConsoleUtil;
+import site.liangbai.realhomehunt.util.Console;
 
 import java.io.File;
 import java.util.LinkedList;
@@ -59,7 +59,7 @@ public final class Config {
     }
 
     public static void reload() {
-        ConsoleUtil.sendMessage(ChatColor.GREEN + "Reload config...");
+        Console.sendMessage(ChatColor.GREEN + "Reload config...");
 
         YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(configFile);
 
@@ -85,25 +85,25 @@ public final class Config {
 
         actionBarShowMills = asMills(yamlConfiguration.getLong("actionBarShowMills", 600));
 
-        ConsoleUtil.sendRawMessage(ChatColor.GREEN + "Linking storage settings...");
+        Console.sendRawMessage(ChatColor.GREEN + "Linking storage settings...");
 
         linkStorageConfig(yamlConfiguration);
 
-        ConsoleUtil.sendRawMessage(ChatColor.GREEN + "Linking storage settings successful.");
+        Console.sendRawMessage(ChatColor.GREEN + "Linking storage settings successful.");
 
-        ConsoleUtil.sendRawMessage(ChatColor.GREEN + "Linking residence settings...");
+        Console.sendRawMessage(ChatColor.GREEN + "Linking residence settings...");
 
         linkResidenceConfig(yamlConfiguration);
 
-        ConsoleUtil.sendRawMessage(ChatColor.GREEN + "Linking residence settings successful.");
+        Console.sendRawMessage(ChatColor.GREEN + "Linking residence settings successful.");
 
-        ConsoleUtil.sendRawMessage(ChatColor.GREEN + "Linking block settings...");
+        Console.sendRawMessage(ChatColor.GREEN + "Linking block settings...");
 
         linkBlockConfig(yamlConfiguration);
 
-        ConsoleUtil.sendRawMessage(ChatColor.GREEN + "Linking block settings successful.");
+        Console.sendRawMessage(ChatColor.GREEN + "Linking block settings successful.");
 
-        ConsoleUtil.sendRawMessage(ChatColor.GREEN + "Reload config successful.");
+        Console.sendRawMessage(ChatColor.GREEN + "Reload config successful.");
     }
 
     private static void linkResidenceConfig(ConfigurationSection section) {

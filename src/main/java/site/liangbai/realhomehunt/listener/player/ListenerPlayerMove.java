@@ -5,7 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import site.liangbai.lrainylib.annotation.Plugin;
-import site.liangbai.realhomehunt.util.PlayerMoveUtil;
+import site.liangbai.realhomehunt.util.Players;
 
 @Plugin.EventSubscriber
 public final class ListenerPlayerMove implements Listener {
@@ -15,10 +15,8 @@ public final class ListenerPlayerMove implements Listener {
 
         Location loc2 = event.getTo();
 
-        if (loc2 == null) return;
-
         if (loc1.getX() != loc2.getX() || loc1.getZ() != loc2.getZ()) {
-            PlayerMoveUtil.push(event.getPlayer());
+            Players.push(event.getPlayer());
         }
     }
 }

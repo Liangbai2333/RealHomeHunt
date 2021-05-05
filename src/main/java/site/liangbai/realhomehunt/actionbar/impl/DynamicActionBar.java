@@ -6,7 +6,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.scheduler.BukkitRunnable;
 import site.liangbai.realhomehunt.RealHomeHunt;
 import site.liangbai.realhomehunt.actionbar.IActionBar;
-import site.liangbai.realhomehunt.util.ActionBarUtil;
+import site.liangbai.realhomehunt.util.ActionBar;
 
 public final class DynamicActionBar implements IActionBar, Cancellable {
     private final String message;
@@ -62,7 +62,7 @@ public final class DynamicActionBar implements IActionBar, Cancellable {
 
                     String showString = message.substring(0, count);
 
-                    ActionBarUtil.sendActionBar(player, showString);
+                    ActionBar.sendActionBar(player, showString);
 
                     frameCount = 0;
                 }
@@ -82,7 +82,7 @@ public final class DynamicActionBar implements IActionBar, Cancellable {
     public void clear(Player player) {
         setCancelled(true);
 
-        ActionBarUtil.sendActionBar(player, "");
+        ActionBar.sendActionBar(player, "");
     }
 
     @Override

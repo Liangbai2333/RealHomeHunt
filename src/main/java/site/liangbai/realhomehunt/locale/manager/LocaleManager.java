@@ -7,7 +7,7 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import site.liangbai.realhomehunt.config.Config;
 import site.liangbai.realhomehunt.locale.impl.Locale;
-import site.liangbai.realhomehunt.util.ConsoleUtil;
+import site.liangbai.realhomehunt.util.Console;
 
 import java.io.File;
 import java.util.HashMap;
@@ -19,7 +19,7 @@ public final class LocaleManager {
     public static void init(Plugin plugin) {
         locales.clear();
 
-        ConsoleUtil.sendRawMessage(ChatColor.GREEN + "Loading language setting...");
+        Console.sendRawMessage(ChatColor.GREEN + "Loading language setting...");
 
         File langFolder = new File(plugin.getDataFolder(), "lang");
 
@@ -37,9 +37,9 @@ public final class LocaleManager {
             }
         }
 
-        ConsoleUtil.sendRawMessage(ChatColor.GREEN + "Loading language successful.");
+        Console.sendRawMessage(ChatColor.GREEN + "Loading language successful.");
 
-        ConsoleUtil.sendRawMessage(ChatColor.GREEN + "Locales: " + locales.keySet());
+        Console.sendRawMessage(ChatColor.GREEN + "Locales: " + locales.keySet());
     }
 
     public static void register(@NotNull File file) {

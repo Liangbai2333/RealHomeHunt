@@ -3,7 +3,7 @@ package site.liangbai.realhomehunt.util;
 import org.bukkit.Bukkit;
 import site.liangbai.realhomehunt.config.Config;
 
-public final class ConsoleUtil {
+public final class Console {
     public static void sendMessage(String message) {
         Bukkit.getConsoleSender().sendMessage(message);
     }

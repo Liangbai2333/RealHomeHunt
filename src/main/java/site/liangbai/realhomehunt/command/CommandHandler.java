@@ -8,7 +8,7 @@ import site.liangbai.realhomehunt.command.subcommand.ISubCommand;
 import site.liangbai.realhomehunt.command.subcommand.impl.*;
 import site.liangbai.realhomehunt.command.subcommand.impl.admin.AdminCommand;
 import site.liangbai.realhomehunt.locale.impl.Locale;
-import site.liangbai.realhomehunt.util.LocaleUtil;
+import site.liangbai.realhomehunt.util.Locales;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,7 +53,7 @@ public final class CommandHandler implements CommandExecutor {
 
         String commandName = strings[0].toLowerCase();
 
-        Locale locale = LocaleUtil.require(commandSender);
+        Locale locale = Locales.require(commandSender);
 
         if (!map.containsKey(commandName)) {
             commandSender.sendMessage(locale.asString("command.common.unknownSubCommand", s));

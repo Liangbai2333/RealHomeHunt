@@ -13,8 +13,8 @@ import site.liangbai.realhomehunt.locale.manager.LocaleManager;
 import site.liangbai.realhomehunt.manager.ResidenceManager;
 import site.liangbai.realhomehunt.residence.attribute.IAttributable;
 import site.liangbai.realhomehunt.task.UnloadPlayerAttackTask;
-import site.liangbai.realhomehunt.util.MessageUtil;
-import site.liangbai.realhomehunt.util.TitleUtil;
+import site.liangbai.realhomehunt.util.Messages;
+import site.liangbai.realhomehunt.util.Titles;
 
 import java.util.*;
 
@@ -118,7 +118,7 @@ public final class Residence implements ConfigurationSerializable {
         if (owner != null && owner.isOnline()) {
             Locale locale = LocaleManager.require(owner);
 
-            TitleUtil.sendTitle(owner, locale.asString("action.hitBlock.self.title", attack), locale.asString("action.hitBlock.self.subTitle", attack));
+            Titles.sendTitle(owner, locale.asString("action.hitBlock.self.title", attack), locale.asString("action.hitBlock.self.subTitle", attack));
 
             if (Config.showActionBar) {
                 DynamicActionBar actionBar = new DynamicActionBar(locale.asString("action.hitBlock.self.actionBar.show", attack), 5, 20);
@@ -127,7 +127,7 @@ public final class Residence implements ConfigurationSerializable {
             }
         }
 
-        MessageUtil.sendToAll("action.hitBlock.all.message", getOwner(), attack);
+        Messages.sendToAll("action.hitBlock.all.message", getOwner(), attack);
 
         addAttack(attack);
     }

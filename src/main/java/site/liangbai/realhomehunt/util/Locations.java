@@ -6,7 +6,7 @@ import site.liangbai.realhomehunt.residence.Residence;
 
 import java.util.Arrays;
 
-public final class LocationUtil {
+public final class Locations {
     public static boolean isInResidence(Location location, Residence residence) {
         return isInZone(location, residence.getLeft(), residence.getRight());
     }

@@ -8,7 +8,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import site.liangbai.lrainylib.annotation.Plugin;
 import site.liangbai.realhomehunt.residence.Residence;
 import site.liangbai.realhomehunt.manager.ResidenceManager;
-import site.liangbai.realhomehunt.util.BlockUtil;
+import site.liangbai.realhomehunt.util.Blocks;
 
 @Plugin.EventSubscriber
 public final class ListenerPlayerClickDoor implements Listener {
@@ -24,7 +24,7 @@ public final class ListenerPlayerClickDoor implements Listener {
 
         if (block == null) return;
 
-        if (!BlockUtil.isDoor(block)) return;
+        if (!Blocks.isDoor(block)) return;
 
         Residence residence = ResidenceManager.getResidenceByLocation(block.getLocation());
 
