@@ -6,13 +6,13 @@ openWorlds:
   - sc
 
 # 传送回家的秒数
-teleportMills: 200
+teleportMills: 10
 
 # 恢复方块裂纹的秒数
-maxWaitMills: 100
+maxWaitMills: 5
 
 # 卸载玩家打击领地缓存的秒数
-unloadPlayerAttackMills: 12000
+unloadPlayerAttackMills: 600
 
 # 打击的算法, (枪械伤害 + (perPowerLevelDamage * 枪械力量附魔等级)) / gunDamageMultiple
 gunDamageMultiple: 4
@@ -28,7 +28,7 @@ consoleLanguage: zh_cn
 # 显示物品栏上方的提示文字
 showActionBar: true
 # 物品栏上方的文字的显示秒数
-actionBarShowMills: 600
+actionBarShowMills: 30
 
 # 存储
 storage:
