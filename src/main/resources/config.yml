@@ -8,7 +8,6 @@ openWorlds:
 # 传送回家的秒数
 teleportMills: 10
 
-<<<<<<< HEAD
 # 打击方块时是否显示方块剩余血量
 showBlockHealth: true
 
@@ -18,11 +17,6 @@ maxWaitMills: 5
 # 玩家下蹲+上仰发起警告敌人入侵的间隔秒数
 unloadWarnMills: 10
 
-=======
-# 恢复方块裂纹的秒数
-maxWaitMills: 5
-
->>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
 # 卸载玩家打击领地缓存的秒数
 unloadPlayerAttackMills: 600
 
@@ -42,12 +36,9 @@ showActionBar: true
 # 物品栏上方的文字的显示秒数
 actionBarShowMills: 30
 
-<<<<<<< HEAD
 # 执行确认操作时的等待秒数
 confirmWaitMills: 15
 
-=======
->>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
 # 存储
 storage:
   # 可以填写SQLITE、MYSQL与YAML
@@ -90,12 +81,9 @@ residence:
     # 右键圈地工具, 默认木棍
     rightSelect: STICK
 
-<<<<<<< HEAD
   # 允许玩家使用头上仰90度+Shift潜行来向成员发出发出防御警告
   openWarn: true
 
-=======
->>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
 # 方块设置
 block:
   # 屏蔽打击的方块

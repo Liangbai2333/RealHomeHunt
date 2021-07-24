@@ -30,7 +30,6 @@ public final class BackTabCompiler implements ISubTabCompiler {
     @Override
     public List<String> handle(CommandSender sender, int length, String[] args) {
         if (length == 2) {
-<<<<<<< HEAD
             if (sender.hasPermission("rh.unlimited.back")) {
                 return ResidenceManager.getResidences()
                         .stream()
@@ -38,8 +37,6 @@ public final class BackTabCompiler implements ISubTabCompiler {
                         .collect(Collectors.toList());
             }
 
-=======
->>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
             return ResidenceManager.getResidences().stream()
                     .filter(it -> it.isAdministrator(sender.getName()) && !it.isOwner(sender.getName()) && !sender.hasPermission("rh.unlimited.back"))
                     .map(Residence::getOwner)

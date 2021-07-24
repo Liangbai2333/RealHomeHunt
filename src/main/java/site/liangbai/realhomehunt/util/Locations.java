@@ -18,15 +18,10 @@
 
 package site.liangbai.realhomehunt.util;
 
-<<<<<<< HEAD
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-=======
-import org.bukkit.Location;
-import org.bukkit.World;
->>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
 import site.liangbai.realhomehunt.residence.Residence;
 
 import java.util.Arrays;
@@ -145,7 +140,6 @@ public final class Locations {
         return new LocationSortInfo(min, max);
     }
 
-<<<<<<< HEAD
     public static void teleportAfterChunkLoaded(Player player, Location location) {
         if (player.isDead()) return;
 
@@ -156,8 +150,6 @@ public final class Locations {
         player.teleport(location);
     }
 
-=======
->>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
     public static final class LocationSortInfo {
         private final Location min;
 

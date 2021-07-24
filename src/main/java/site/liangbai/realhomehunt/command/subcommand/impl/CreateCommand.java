@@ -100,7 +100,6 @@ public final class CreateCommand implements ISubCommand {
 
         Residence residence = new Residence.Builder().owner(player).left(loc1).right(loc2).build();
 
-<<<<<<< HEAD
         if (!sender.hasPermission("rh.unlimited.create")) {
             for (Config.BlockSetting.BlockIgnoreSetting.IgnoreBlockInfo info : Config.block.ignore.ignoreBlockInfoList) {
                 int count = Blocks.containsBlockAndReturnCount(info, residence);
@@ -110,15 +109,6 @@ public final class CreateCommand implements ISubCommand {
 
                     return;
                 }
-=======
-        for (Config.BlockSetting.BlockIgnoreSetting.IgnoreBlockInfo info : Config.block.ignore.ignoreBlockInfoList) {
-            int count = Blocks.containsBlockAndReturnCount(info, residence);
-
-            if (count > info.amount) {
-                sender.sendMessage(locale.asString("command.create.containsIgnoreBlock", info.full != null ? info.full : (info.suffix.isEmpty() ? info.prefix : info.suffix)));
-
-                return;
->>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
             }
         }
 

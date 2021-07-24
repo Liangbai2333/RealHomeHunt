@@ -55,11 +55,8 @@ public final class CommandHandler implements CommandExecutor {
         registerSubCommand("set", new SetCommand());
 
         registerSubCommand("admin", new AdminCommand());
-<<<<<<< HEAD
 
         registerSubCommand("confirm", new ConfirmCommand());
-=======
->>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
     }
 
     private void registerSubCommand(String command, ISubCommand ISubCommand) {

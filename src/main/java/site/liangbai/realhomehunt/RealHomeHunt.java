@@ -41,7 +41,6 @@ import site.liangbai.realhomehunt.task.PlayerMoveToResidenceMessageTask;
 import site.liangbai.realhomehunt.util.Console;
 
 @Plugin(
-<<<<<<< HEAD
         info = @Info(name = "RealHomeHunt", version = "1.1.6", authors = "Liangbai"),
         apiVersion = "1.13",
         softDepend = "Multiverse-Core",
@@ -65,30 +64,6 @@ import site.liangbai.realhomehunt.util.Console;
                 @Permission(name = "rh.command.admin.help", description = "Allow player to use the /rh admin help command."),
                 @Permission(name = "rh.command.admin.import", description = "Allow player to use the /rh admin import command."),
                 @Permission(name = "rh.reload", description = "Allow player to reload the configuration.")
-=======
-        info = @Info(name = "RealHomeHunt", version = "1.1.2", authors = "Liangbai"),
-        apiVersion = "1.13",
-        softDepend = "Multiverse-Core",
-        permissions = {
-                @Permission(name = "rh.select", description = "Allows player to select the residence zone.", defaultValue = "true"),
-                @Permission(name = "rh.unlimited.create", description = "Allows player ignore the zone size limit."),
-                @Permission(name = "rh.unlimited.back", description = "Allows player to teleport to other residences."),
-                @Permission(name = "rh.interact", description = "Allows player to click the residence's door."),
-                @Permission(name = "rh.break", description = "Allows player to break blocks in residences."),
-                @Permission(name = "rh.place", description = "Allows player to place blocks in residences."),
-                @Permission(name = "rh.command.help", description = "Allows player to use the /rh help command.", defaultValue = "true"),
-                @Permission(name = "rh.command.create", description = "Allows player to use the /rh create command.", defaultValue = "true"),
-                @Permission(name = "rh.command.back", description = "Allows player to use the /rh back command.", defaultValue = "true"),
-                @Permission(name = "rh.command.setspawn", description = "Allows player to use the /rh setspawn command.", defaultValue = "true"),
-                @Permission(name = "rh.command.set", description = "Allows player to use the /rh set command.", defaultValue = "true"),
-                @Permission(name = "rh.command.remove", description = "Allows player to use the /rh remove command.", defaultValue = "true"),
-                @Permission(name = "rh.command.administrator", description = "Allows player to use the /rh administrator command.", defaultValue = "true"),
-                @Permission(name = "rh.command.reload", description = "Allows player to use the /rh reload command."),
-                @Permission(name = "rh.command.admin", description = "Allows player to use the /rh admin command."),
-                @Permission(name = "rh.command.admin.help", description = "Allows player to use the /rh admin help command."),
-                @Permission(name = "rh.command.admin.import", description = "Allows player to use the /rh admin import command."),
-                @Permission(name = "rh.reload", description = "Allows player to reload the configuration.")
->>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
         }
 )
 public final class RealHomeHunt extends JavaPlugin {

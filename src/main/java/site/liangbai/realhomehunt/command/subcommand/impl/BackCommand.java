@@ -27,10 +27,7 @@ import site.liangbai.realhomehunt.locale.manager.LocaleManager;
 import site.liangbai.realhomehunt.manager.ResidenceManager;
 import site.liangbai.realhomehunt.residence.Residence;
 import site.liangbai.realhomehunt.task.PlayerBackTask;
-<<<<<<< HEAD
 import site.liangbai.realhomehunt.util.Locations;
-=======
->>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
 
 import java.util.HashSet;
 import java.util.Set;
@@ -85,15 +82,12 @@ public final class BackCommand implements ISubCommand {
             return;
         }
 
-<<<<<<< HEAD
         if (player.hasPermission("rh.unlimited.back")) {
             Locations.teleportAfterChunkLoaded(player, residence.getSpawn());
 
             return;
         }
 
-=======
->>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
         String doneMessage = locale.asString("command.back.teleport.doneTitle", residence.getOwner());
 
         String denyMessage = locale.asString("command.back.teleport.denyTitle", residence.getOwner());

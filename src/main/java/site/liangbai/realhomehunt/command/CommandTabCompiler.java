@@ -21,10 +21,7 @@ package site.liangbai.realhomehunt.command;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-<<<<<<< HEAD
 import org.bukkit.entity.Player;
-=======
->>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import site.liangbai.realhomehunt.command.subtabcompiler.ISubTabCompiler;
@@ -32,18 +29,12 @@ import site.liangbai.realhomehunt.command.subtabcompiler.impl.AdministratorTabCo
 import site.liangbai.realhomehunt.command.subtabcompiler.impl.BackTabCompiler;
 import site.liangbai.realhomehunt.command.subtabcompiler.impl.SetTabCompiler;
 import site.liangbai.realhomehunt.command.subtabcompiler.impl.admin.AdminTabCompiler;
-<<<<<<< HEAD
 import site.liangbai.realhomehunt.confirm.ConfirmModule;
-=======
->>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-<<<<<<< HEAD
 import java.util.stream.Collectors;
-=======
->>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
 
 public final class CommandTabCompiler implements TabCompleter {
     private static final Map<String, ISubTabCompiler> map = new HashMap<>();
@@ -66,7 +57,6 @@ public final class CommandTabCompiler implements TabCompleter {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         if (strings.length == 1) {
-<<<<<<< HEAD
             return CommandHandler.getSubCommands().stream()
                     .filter(it -> {
                         if (it.equals("confirm")) {
@@ -75,9 +65,6 @@ public final class CommandTabCompiler implements TabCompleter {
 
                         return true;
                     }).collect(Collectors.toList());
-=======
-            return CommandHandler.getSubCommands();
->>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
         }
 
         if (strings.length > 1) {

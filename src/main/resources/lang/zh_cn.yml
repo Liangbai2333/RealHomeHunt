@@ -65,7 +65,6 @@ command:
     isNotOwner: "&c你不是领地主人, 无法设置."
     notInResidence: "&c出生地必须在领地内."
     success: "&a成功设置."
-<<<<<<< HEAD
   confirm:
     prepare:
       - "&a&l------------------------"
@@ -77,8 +76,6 @@ command:
       - "&c请在 &e{1} &c秒内输入哦~"
       - "&6超时将不受处理~~"
     nothing: "&c您是不是输错了什么呢~这边没有查询到您需要确认什么操作呢~"
-=======
->>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
   admin:
     help:
       - "&e=================================="
@@ -106,7 +103,6 @@ action:
       actionBar:
         show: "&c你的领地正在被 &e{0} &c攻击"
     all:
-<<<<<<< HEAD
       message: "{prefix}&c玩家: {0} 的领地正在被: {1} 攻击!"
     performer:
       bossBar: "玩家领地 {0} 中此方块剩余血量 {1}/{2}"
@@ -116,6 +112,3 @@ action:
     waitMessage: "&c不可以频繁警告的哦, 请再等一会儿吧~"
     title: "&d请赶快前往支援吧~"
     subTitle: "&e{0}说: &c&l我们的领地正在被攻击!"
-=======
-      message: "{prefix}&c玩家: {0} 的领地正在被: {1} 攻击!"
->>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
