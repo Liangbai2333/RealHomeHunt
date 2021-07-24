@@ -23,7 +23,10 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import site.liangbai.realhomehunt.RealHomeHunt;
+<<<<<<< HEAD
 import site.liangbai.realhomehunt.util.Locations;
+=======
+>>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
 import site.liangbai.realhomehunt.util.Players;
 import site.liangbai.realhomehunt.util.Titles;
 
@@ -98,7 +101,17 @@ public final class PlayerBackTask extends BukkitRunnable {
 
         this.cancel = true;
 
+<<<<<<< HEAD
         Locations.teleportAfterChunkLoaded(player, location);
+=======
+        if (player.isDead()) return;
+
+        Chunk chunk = location.getChunk();
+
+        if (!chunk.isLoaded()) chunk.load();
+
+        player.teleport(location);
+>>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
 
         finishBlock.accept(player);
 

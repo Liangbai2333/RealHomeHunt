@@ -23,6 +23,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import site.liangbai.realhomehunt.RealHomeHunt;
+<<<<<<< HEAD
 import site.liangbai.realhomehunt.bossbar.IBossBar;
 import site.liangbai.realhomehunt.bossbar.factory.BossBarFactory;
 import site.liangbai.realhomehunt.cache.DamageCachePool;
@@ -30,6 +31,11 @@ import site.liangbai.realhomehunt.config.Config;
 import site.liangbai.realhomehunt.listener.player.block.ListenerBlockBreak;
 import site.liangbai.realhomehunt.locale.impl.Locale;
 import site.liangbai.realhomehunt.locale.manager.LocaleManager;
+=======
+import site.liangbai.realhomehunt.cache.DamageCachePool;
+import site.liangbai.realhomehunt.config.Config;
+import site.liangbai.realhomehunt.listener.player.block.ListenerBlockBreak;
+>>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
 import site.liangbai.realhomehunt.manager.ResidenceManager;
 import site.liangbai.realhomehunt.processor.IGunHitBlockProcessor;
 import site.liangbai.realhomehunt.residence.Residence;
@@ -60,6 +66,7 @@ public class GunHitBlockProcessorImpl implements IGunHitBlockProcessor {
 
         DamageCachePool damageCachePool = damageCachePoolMap.get(player.getUniqueId());
 
+<<<<<<< HEAD
         Locale locale = LocaleManager.require(player);
 
         DamageCachePool.DamageCache damageCache = damageCachePool.getDamageCacheByBlock(block, () -> {
@@ -67,6 +74,9 @@ public class GunHitBlockProcessorImpl implements IGunHitBlockProcessor {
 
             return BossBarFactory.newHealthBossBar(title, 70, 30);
         });
+=======
+        DamageCachePool.DamageCache damageCache = damageCachePool.getDamageCacheByBlock(block);
+>>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
 
         damageCachePool.addDamageCache(damageCache);
 
@@ -76,6 +86,7 @@ public class GunHitBlockProcessorImpl implements IGunHitBlockProcessor {
 
         if (hardness <= 0) return;
 
+<<<<<<< HEAD
         IBossBar healthBossBar = damageCache.getHealthBossBar();
 
         if (Config.showBlockHealth) {
@@ -89,6 +100,11 @@ public class GunHitBlockProcessorImpl implements IGunHitBlockProcessor {
 
             healthBossBar.getHandle().setTitle(locale.asString("action.hitBlock.performer.bossBar", residence.getOwner(), 0, (int) hardness));
 
+=======
+        if (damageCache.getDamage() >= hardness) {
+            Blocks.sendClearBreakAnimationPacket(damageCache.getId(), damageCache.getBlock());
+
+>>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
             Block upBlock = block.getRelative(BlockFace.UP);
 
             ListenerBlockBreak.saveUpBlock(upBlock, residence);
@@ -99,6 +115,7 @@ public class GunHitBlockProcessorImpl implements IGunHitBlockProcessor {
         } else {
             int blockSit = Guns.countBlockSit(damageCache.getDamage(), hardness);
 
+<<<<<<< HEAD
             healthBossBar.update(100 - Guns.getHardnessMixPercent(damageCache.getDamage(), hardness));
 
             double health = hardness - damageCache.getDamage();
@@ -107,13 +124,22 @@ public class GunHitBlockProcessorImpl implements IGunHitBlockProcessor {
 
             healthBossBar.getHandle().setTitle(locale.asString("action.hitBlock.performer.bossBar", residence.getOwner(), healthString, (int) hardness));
 
+=======
+>>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
             Blocks.sendBreakAnimationPacket(damageCache.getId(), damageCache.getBlock(), blockSit);
 
             new UnloadDamageCacheTask(damageCachePool, damageCache).runTaskLater(RealHomeHunt.plugin, Config.maxWaitMills);
         }
 
+<<<<<<< HEAD
         if (!residence.hasAttack(player.getName())) {
             residence.attackBy(player);
+=======
+        String attack = player.getName();
+
+        if (!residence.hasAttack(attack)) {
+            residence.attackBy(attack);
+>>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
         }
     }
 }

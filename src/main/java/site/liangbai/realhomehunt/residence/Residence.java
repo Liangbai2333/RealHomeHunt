@@ -20,7 +20,10 @@ package site.liangbai.realhomehunt.residence;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+<<<<<<< HEAD
 import org.bukkit.Sound;
+=======
+>>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -32,9 +35,13 @@ import site.liangbai.realhomehunt.locale.manager.LocaleManager;
 import site.liangbai.realhomehunt.manager.ResidenceManager;
 import site.liangbai.realhomehunt.residence.attribute.IAttributable;
 import site.liangbai.realhomehunt.task.UnloadPlayerAttackTask;
+<<<<<<< HEAD
 import site.liangbai.realhomehunt.task.UnloadWarnTask;
 import site.liangbai.realhomehunt.util.Messages;
 import site.liangbai.realhomehunt.util.Sounds;
+=======
+import site.liangbai.realhomehunt.util.Messages;
+>>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
 import site.liangbai.realhomehunt.util.Titles;
 
 import java.util.*;
@@ -56,9 +63,12 @@ public final class Residence implements ConfigurationSerializable {
 
     private final List<String> attacks = new ArrayList<>();
 
+<<<<<<< HEAD
 
     private boolean canWarn = true;
 
+=======
+>>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
     private Residence(Location left, Location right, Player owner) {
         this.left = left;
         this.right = right;
@@ -136,6 +146,7 @@ public final class Residence implements ConfigurationSerializable {
         return iAttributable;
     }
 
+<<<<<<< HEAD
     public void attackBy(Player attacker) {
         Player owner = Bukkit.getPlayerExact(getOwner());
 
@@ -150,14 +161,32 @@ public final class Residence implements ConfigurationSerializable {
 
             if (Config.showActionBar) {
                 DynamicActionBar actionBar = new DynamicActionBar(locale.asString("action.hitBlock.self.actionBar.show", attacker.getName()), 5, 20);
+=======
+    public void attackBy(String attack) {
+        Player owner = Bukkit.getPlayerExact(getOwner());
+
+        if (owner != null && owner.isOnline()) {
+            Locale locale = LocaleManager.require(owner);
+
+            Titles.sendTitle(owner, locale.asString("action.hitBlock.self.title", attack), locale.asString("action.hitBlock.self.subTitle", attack));
+
+            if (Config.showActionBar) {
+                DynamicActionBar actionBar = new DynamicActionBar(locale.asString("action.hitBlock.self.actionBar.show", attack), 5, 20);
+>>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
 
                 actionBar.show(owner, Config.actionBarShowMills);
             }
         }
 
+<<<<<<< HEAD
         Messages.sendToAll("action.hitBlock.all.message", getOwner(), attacker.getName());
 
         addAttack(attacker.getName());
+=======
+        Messages.sendToAll("action.hitBlock.all.message", getOwner(), attack);
+
+        addAttack(attack);
+>>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
     }
 
     public void addAttack(String attack) {
@@ -170,6 +199,7 @@ public final class Residence implements ConfigurationSerializable {
         return attacks.contains(attack);
     }
 
+<<<<<<< HEAD
     public void warn(Player sender) {
         setCanWarn(false);
 
@@ -208,6 +238,8 @@ public final class Residence implements ConfigurationSerializable {
         return players;
     }
 
+=======
+>>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
     public void removeAttack(String attack) {
         attacks.remove(attack);
     }

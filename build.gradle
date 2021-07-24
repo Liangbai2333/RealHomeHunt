@@ -17,7 +17,11 @@ plugins {
 apply plugin: 'net.minecraftforge.gradle'
 
 group = 'site.liangbai'
+<<<<<<< HEAD
 version = '1.1.6'
+=======
+version = '1.1.2'
+>>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 

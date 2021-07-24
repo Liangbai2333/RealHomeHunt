@@ -18,7 +18,11 @@
 
 package site.liangbai.realhomehunt.listener.forge.player;
 
+<<<<<<< HEAD
 import com.craftingdead.core.event.GunEvent;
+=======
+import org.bukkit.Location;
+>>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -26,7 +30,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import site.liangbai.forgeeventbridge.event.EventHolder;
 import site.liangbai.forgeeventbridge.wrapper.EventWrapper;
+<<<<<<< HEAD
 import site.liangbai.forgeeventbridge.wrapper.LocationWrapper;
+=======
+>>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
 import site.liangbai.forgeeventbridge.wrapper.ObjectWrapper;
 import site.liangbai.forgeeventbridge.wrapper.creator.WrapperCreators;
 import site.liangbai.realhomehunt.processor.Processors;
@@ -34,10 +41,13 @@ import site.liangbai.realhomehunt.processor.Processors;
 public class EventHolderGunHitBlock implements EventHolder<EventHolderGunHitBlock.GunHitBlockEventObject> {
     @Override
     public void handle(EventWrapper<GunHitBlockEventObject> eventWrapper) {
+<<<<<<< HEAD
         GunEvent.HitBlock event = (GunEvent.HitBlock) eventWrapper.getObject();
         
         LocationWrapper locationWrapper = WrapperCreators.LOCATION.create(event.getRayTraceResult().getBlockPos());
 
+=======
+>>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
         GunHitBlockEventObject eventObject = eventWrapper.as(GunHitBlockEventObject.class);
 
         ObjectWrapper livingWrapper = WrapperCreators.OBJECT.create(eventObject.getLiving());
@@ -50,9 +60,15 @@ public class EventHolderGunHitBlock implements EventHolder<EventHolderGunHitBloc
 
         ItemStack gun = eventObject.getItemStack();
 
+<<<<<<< HEAD
         World world = eventObject.getLevel();
 
         Block block = world.getBlockAt(locationWrapper.asLocation());
+=======
+        World world = eventObject.getWorld();
+
+        Block block = world.getBlockAt(eventObject.getBlockPos());
+>>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
 
         Processors.GUN_HIT_BLOCK_PROCESSOR.processGunHitBlock(player, gun, block);
     }
@@ -60,8 +76,16 @@ public class EventHolderGunHitBlock implements EventHolder<EventHolderGunHitBloc
     public static abstract class GunHitBlockEventObject extends EventWrapper.EventObject {
         public abstract Object getLiving();
 
+<<<<<<< HEAD
         public abstract ItemStack getItemStack();
 
         public abstract World getLevel();
+=======
+        public abstract Location getBlockPos();
+
+        public abstract ItemStack getItemStack();
+
+        public abstract World getWorld();
+>>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
     }
 }

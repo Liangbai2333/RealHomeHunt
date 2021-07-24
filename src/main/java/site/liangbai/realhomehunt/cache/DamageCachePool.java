@@ -19,14 +19,20 @@
 package site.liangbai.realhomehunt.cache;
 
 import org.bukkit.block.Block;
+<<<<<<< HEAD
 import site.liangbai.realhomehunt.bossbar.IBossBar;
+=======
+>>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
 import site.liangbai.realhomehunt.util.Blocks;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
+<<<<<<< HEAD
 import java.util.function.Supplier;
+=======
+>>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
 
 public final class DamageCachePool {
     private final List<DamageCache> damageCaches = new ArrayList<>();
@@ -39,25 +45,37 @@ public final class DamageCachePool {
         damageCaches.remove(damageCache);
     }
 
+<<<<<<< HEAD
     public DamageCache getDamageCacheByBlock(Block block, Supplier<IBossBar> nonBossBar) {
+=======
+    public DamageCache getDamageCacheByBlock(Block block) {
+>>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
         for (DamageCache damageCache : damageCaches) {
             if (damageCache.getBlock().equals(block)) return damageCache;
         }
 
+<<<<<<< HEAD
         return new DamageCache(block, Blocks.nextId(), nonBossBar.get());
+=======
+        return new DamageCache(block, Blocks.nextId());
+>>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
     }
 
     public static final class DamageCache {
         private final Block block;
 
+<<<<<<< HEAD
         private final IBossBar healthBossBar;
 
+=======
+>>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
         private double damage;
 
         private final int id;
 
         private final List<Consumer<DamageCache>> consumers = new LinkedList<>();
 
+<<<<<<< HEAD
         public DamageCache(Block block, int id, IBossBar healthBossBar) {
             this.block = block;
 
@@ -68,6 +86,12 @@ public final class DamageCachePool {
 
         public IBossBar getHealthBossBar() {
             return healthBossBar;
+=======
+        public DamageCache(Block block, int id) {
+            this.block = block;
+
+            this.id = id;
+>>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
         }
 
         public Block getBlock() {

@@ -52,8 +52,11 @@ public final class Config {
 
     public static long unloadPlayerAttackMills;
 
+<<<<<<< HEAD
     public static long unloadWarnMills;
 
+=======
+>>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
     public static double gunDamageMultiple;
 
     public static double defaultBlockHardnessMultiple;
@@ -64,12 +67,17 @@ public final class Config {
 
     public static boolean showActionBar;
 
+<<<<<<< HEAD
     public static boolean showBlockHealth;
 
     public static long actionBarShowMills;
 
     public static long confirmWaitMills;
 
+=======
+    public static long actionBarShowMills;
+
+>>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
     public static void init(Plugin plugin) {
         File file = new File(plugin.getDataFolder(), "config.yml");
 
@@ -97,8 +105,11 @@ public final class Config {
 
         unloadPlayerAttackMills = asMills(yamlConfiguration.getLong("unloadPlayerAttackMills"));
 
+<<<<<<< HEAD
         unloadWarnMills = asMills(yamlConfiguration.getLong("unloadWarnMills"));
 
+=======
+>>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
         gunDamageMultiple = yamlConfiguration.getDouble("gunDamageMultiple");
 
         defaultBlockHardnessMultiple = yamlConfiguration.getDouble("defaultBlockHardnessMultiple");
@@ -109,12 +120,17 @@ public final class Config {
 
         showActionBar = yamlConfiguration.getBoolean("showActionBar", true);
 
+<<<<<<< HEAD
         showBlockHealth = yamlConfiguration.getBoolean("showBlockHealth", true);
 
         actionBarShowMills = asMills(yamlConfiguration.getLong("actionBarShowMills", 600));
 
         confirmWaitMills = asMills(yamlConfiguration.getLong("confirmWaitMills", 15));
 
+=======
+        actionBarShowMills = asMills(yamlConfiguration.getLong("actionBarShowMills", 600));
+
+>>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
         Console.sendRawMessage(ChatColor.GREEN + "Linking storage settings...");
 
         linkStorageConfig(yamlConfiguration);
@@ -178,8 +194,11 @@ public final class Config {
         toolSetting.rightSelect = rightSelect != null ? rightSelect : Material.STICK;
 
         residence.tool = toolSetting;
+<<<<<<< HEAD
 
         residence.openWarn = residenceSection.getBoolean("openWarn", true);
+=======
+>>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
     }
 
     private static void linkBlockConfig(ConfigurationSection section) {
@@ -376,8 +395,11 @@ public final class Config {
 
         public ResidenceToolSetting tool;
 
+<<<<<<< HEAD
         public boolean openWarn;
 
+=======
+>>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
         public static final class ResidenceSizeSetting {
             public int x;
 

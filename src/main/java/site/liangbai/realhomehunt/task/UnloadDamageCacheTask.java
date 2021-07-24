@@ -38,8 +38,11 @@ public final class UnloadDamageCacheTask extends BukkitRunnable {
     public void run() {
         Blocks.sendClearBreakAnimationPacket(damageCache.getId(), damageCache.getBlock());
 
+<<<<<<< HEAD
         damageCache.getHealthBossBar().hide();
 
+=======
+>>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
         damageCachePool.removeDamageCache(damageCache);
     }
 }

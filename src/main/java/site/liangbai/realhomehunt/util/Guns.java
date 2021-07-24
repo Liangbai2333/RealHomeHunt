@@ -18,7 +18,11 @@
 
 package site.liangbai.realhomehunt.util;
 
+<<<<<<< HEAD
 import com.craftingdead.core.world.item.GunItem;
+=======
+import com.craftingdead.core.item.GunItem;
+>>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -26,11 +30,16 @@ import site.liangbai.realhomehunt.config.Config;
 
 public final class Guns {
     public static int countBlockSit(double count, double hardness) {
+<<<<<<< HEAD
         int realHardness = (int) (getHardnessMix(count, hardness) * 9);
+=======
+        int realHardness = (int) ((count / hardness) * 9);
+>>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
 
         return realHardness > 9 || realHardness < 0 ? -1 : realHardness;
     }
 
+<<<<<<< HEAD
     public static double getHardnessMix(double count, double hardness) {
         return count / hardness;
     }
@@ -47,6 +56,8 @@ public final class Guns {
         return percent;
     }
 
+=======
+>>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
     public static double countDamage(@NotNull ItemStack gun) {
         net.minecraft.item.ItemStack itemStack = ItemStacks.getMinecraftItemStack(gun);
 

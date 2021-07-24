@@ -21,9 +21,12 @@ package site.liangbai.realhomehunt.command.subcommand.impl;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import site.liangbai.realhomehunt.command.subcommand.ISubCommand;
+<<<<<<< HEAD
 import site.liangbai.realhomehunt.config.Config;
 import site.liangbai.realhomehunt.confirm.ConfirmModule;
 import site.liangbai.realhomehunt.confirm.ConfirmProcessors;
+=======
+>>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
 import site.liangbai.realhomehunt.locale.impl.Locale;
 import site.liangbai.realhomehunt.locale.manager.LocaleManager;
 import site.liangbai.realhomehunt.manager.ResidenceManager;
@@ -48,8 +51,14 @@ public final class RemoveCommand implements ISubCommand {
             return;
         }
 
+<<<<<<< HEAD
         ConfirmModule.pushConfirmCache(player, residence, Config.confirmWaitMills, ConfirmProcessors.REMOVE_CONFIRM_PROCESSOR);
 
         ConfirmModule.sendPrepare(player, label, Config.confirmWaitMills);
+=======
+        residence.remove();
+
+        sender.sendMessage(locale.asString("command.remove.success"));
+>>>>>>> b0e20feb0f34a730ef4c8abed901bfc4e4e16869
     }
 }
