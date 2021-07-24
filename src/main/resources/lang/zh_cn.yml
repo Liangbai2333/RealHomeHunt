@@ -1,0 +1,114 @@
+command:
+  common:
+    unknownSubCommand: "&c子命令错误, 请查看帮助/{0} help."
+    haveNotPermission: "&c缺少权限: {0}"
+
+  create:
+    notOpened: "&c此世界没有开放领地."
+    hasOld: "&c你已经有领地了, 无法重复创建."
+    notSelectZone: "&c请先选择区域."
+    pointsNotInSameWorld: "&c两点必须在同一世界."
+    tooLargeZone: "&c超出范围限制: &e{0}*{1}*{2}."
+    containsOther: "&c附近有他人领地, 不可创建."
+    containsIgnoreBlock: "&c区域内有超出数量的限制放置的方块: {0}."
+    successTitle: "&a成功创建领地"
+    successSubTitle: "&c快去寻找物资保护你的领地吧!"
+    sendToAll: "{prefix}&a玩家 {0} 成功创建了领地."
+  back:
+    other:
+      notHaveResidence: "&c对方没有领地."
+      notHavePermission: "&c你没有对方领地管理员的权限."
+    self:
+      notHaveResidence:
+        - "&c你还没有领地, 无法回到出生点."
+        - "&c回到他人领地(拥有管理员权限): /{0} back <玩家ID>"
+      notHaveSpawnPoint: "领地还未设置出生点."
+    teleport:
+      doneTitle: "&a传送成功"
+      denyTitle: "&c待处理的传送已取消"
+      waitTitle: "&e即将传送至: {0} 的领地"
+      waitSubTitle: "&e传送将在: {0} 秒后启动, 请不要移动"
+  administrator:
+    usage: "&c使用方法: /{0} administrator <玩家ID> <true/false>"
+    unknownParam: "&c第三个参数必须为 <true/false>"
+    haveNotResidence: "&c你还没有领地, 无法设置领地权限."
+    alreadyIsAdministrator: "&c对方已经拥有领地权限."
+    successGivePermission: "&a成功给予玩家: {0} 领地权限."
+    notIsAdministrator: "&c对方还没有领地权限."
+    successDeletePermission: "&a成功删除玩家: {0} 的领地权限."
+  help:
+    common:
+      - "&e=================================="
+      - "{prefix}&2/{0} create &e - 创建一个领地"
+      - "{prefix}&2/{0} remove &e - 删除一个领地"
+      - "{prefix}&2/{0} administrator <玩家名> <true/false> &e - 给予/撤销玩家领地权限"
+      - "{prefix}&2/{0} setspawn &e - 设置当前位置为领地出生点(必须在领地内)"
+      - "{prefix}&2/{0} set <属性类型> <属性值> &e - 设置领地属性"
+      - "{prefix}&2/{0} back &e - 回到自己的领地"
+      - "{prefix}&2/{0} back <玩家名> &e - 回到他人(拥有管理员权限)的领地"
+    reload:
+      - "{prefix}&2/{0} reload &e - 重载配置文件"
+  reload:
+    haveNotPermission: "&c缺少权限: {0}"
+    success: "&a重载成功."
+  remove:
+    haveNotResidence: "&c你还没有领地, 无法删除."
+    success: "&a成功删除."
+  set:
+    usage: "&c使用方法: /{0} set <属性类型> <属性值>"
+    haveNotResidence: "&c你还没有领地, 无法设置领地属性."
+    unknownAttribute: "&c未知的属性名称: {0}."
+    success: "&a成功将属性 {0} 的值设定为: {1}."
+    notAllow: "&c不被允许的属性值, 该项属性允许的属性值为: {0}."
+  setspawn:
+    haveNotResidence: "&c你还没有领地, 无法设置."
+    isNotOwner: "&c你不是领地主人, 无法设置."
+    notInResidence: "&c出生地必须在领地内."
+    success: "&a成功设置."
+  confirm:
+    prepare:
+      - "&a&l------------------------"
+      - "&e确认继续执行当前操作吗?"
+      - "&e建议再深思熟虑一会儿呢~"
+      - " "
+      - "&c如需确认请输入/{0} confirm"
+      - " "
+      - "&c请在 &e{1} &c秒内输入哦~"
+      - "&6超时将不受处理~~"
+    nothing: "&c您是不是输错了什么呢~这边没有查询到您需要确认什么操作呢~"
+  admin:
+    help:
+      - "&e=================================="
+      - "{prefix}&2/{0} import <YAML文件夹/数据库文件名 (不得有空格)> <是否覆盖(true/false)> <清除原数据(true/false)> &e - 导入一个YAML文件夹/数据库文件的内容到当前存储系统中"
+    import:
+      usage: "&c使用方法: /{0} import <文件夹/数据库文件名> <清除原数据(true/false)>"
+      unknownParam4: "&c第四个参数必须为 <true/false>"
+      unknownFile: "&c文件: {0} 不存在."
+      saveToStorage: "&a成功载入到当前的 {0} 存储系统, 成功载入数量: {1} 个, 总数: {2} 个."
+action:
+  residence:
+    moveIn: "&e你已经进入 {0} 的领地."
+    moveOut: "&e你已经离开 {0} 的领地."
+  select:
+    haveNotPermission: "&c缺少权限: {0}"
+    alreadyHaveResidence: "&c你已经有领地了, 无法重复选择."
+    selectFirst: "&a成功选择第一个点."
+    selectSecond: "&a成功选择第二个点."
+  place:
+    limit: "{prefix}&c此类型({0})的方块已经达到放置上限."
+  hitBlock:
+    self:
+      title: "&c你的领地被攻击"
+      subTitle: "&6攻击者: {0}"
+      actionBar:
+        show: "&c你的领地正在被 &e{0} &c攻击"
+    all:
+      message: "{prefix}&c玩家: {0} 的领地正在被: {1} 攻击!"
+    performer:
+      bossBar: "玩家领地 {0} 中此方块剩余血量 {1}/{2}"
+  warn:
+    haveNotResidence: "&c咦? 这里没有领地呢, 请在一个领地范围内再试试看吧~"
+    isNotAdministrator: "&c你不是领地管理员, 无法警告哦~"
+    waitMessage: "&c不可以频繁警告的哦, 请再等一会儿吧~"
+    title: "&d请赶快前往支援吧~"
+    subTitle: "&e{0}说: &c&l我们的领地正在被攻击!"
