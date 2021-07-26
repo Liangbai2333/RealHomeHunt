@@ -41,7 +41,7 @@ import site.liangbai.realhomehunt.task.PlayerMoveToResidenceMessageTask;
 import site.liangbai.realhomehunt.util.Console;
 
 @Plugin(
-        info = @Info(name = "RealHomeHunt", version = "1.1.6", authors = "Liangbai"),
+        info = @Info(name = "RealHomeHunt", version = "1.1.7-SNAPSHOT", authors = "Liangbai"),
         apiVersion = "1.13",
         softDepend = "Multiverse-Core",
         permissions = {

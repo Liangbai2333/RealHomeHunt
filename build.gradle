@@ -17,13 +17,21 @@ plugins {
 apply plugin: 'net.minecraftforge.gradle'
 
 group = 'site.liangbai'
-version = '1.1.6'
+version = '1.1.7-SNAPSHOT'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 repositories {
     maven { url "https://repo.ptms.ink/repository/maven-releases/" }
     mavenCentral()
+
+    maven {
+        name 'cursemaven'
+        url 'https://www.cursemaven.com'
+        content {
+            includeGroup 'curse.maven'
+        }
+    }
 }
 
 minecraft {
@@ -34,6 +42,8 @@ dependencies {
     minecraft group: 'net.minecraftforge', name: 'forge', version: "${minecraft_version}-${forge_version}"
 
     implementation 'ink.ptms.core:v11604:11604:all'
+
+    implementation fg.deobf("curse.maven:crafting_dead-${crafting_dead_project_id}:${crafting_dead_file_id}")
 
     implementation fileTree(dir: 'libs', includes: ['*.jar'])
     annotationProcessor fileTree(dir: 'libs', includes: ['*.jar'])

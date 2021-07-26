@@ -38,6 +38,8 @@ public final class ListenerPlayerToggleSneakEvent implements Listener {
 
         Player player = event.getPlayer();
 
+        if (!ResidenceManager.isOpened(player.getWorld())) return;
+
         Location location = player.getLocation();
 
         if (location.getPitch() > -85 || !event.isSneaking()) {

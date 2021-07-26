@@ -56,7 +56,6 @@ public final class Residence implements ConfigurationSerializable {
 
     private final List<String> attacks = new ArrayList<>();
 
-
     private boolean canWarn = true;
 
     private Residence(Location left, Location right, Player owner) {

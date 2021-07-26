@@ -18,10 +18,6 @@
 
 public class Test {
     public static void main(String[] args) {
-        int t = 98;
 
-        double d = (double) t / 100;
-
-        System.out.println(d);
     }
 }
