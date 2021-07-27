@@ -87,23 +87,23 @@ public final class Config {
 
         YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(configFile);
 
-        prefix = asColored(yamlConfiguration.getString("prefix"));
+        prefix = asColored(yamlConfiguration.getString("prefix", ""));
 
         openWorlds = yamlConfiguration.getStringList("openWorlds");
 
-        maxWaitMills = asMills(yamlConfiguration.getLong("maxWaitMills"));
+        maxWaitMills = asMills(yamlConfiguration.getLong("maxWaitMills", 5));
 
-        teleportMills = asMills(yamlConfiguration.getLong("teleportMills"));
+        teleportMills = asMills(yamlConfiguration.getLong("teleportMills", 10));
 
-        unloadPlayerAttackMills = asMills(yamlConfiguration.getLong("unloadPlayerAttackMills"));
+        unloadPlayerAttackMills = asMills(yamlConfiguration.getLong("unloadPlayerAttackMills", 600));
 
-        unloadWarnMills = asMills(yamlConfiguration.getLong("unloadWarnMills"));
+        unloadWarnMills = asMills(yamlConfiguration.getLong("unloadWarnMills", 10));
 
-        gunDamageMultiple = yamlConfiguration.getDouble("gunDamageMultiple");
+        gunDamageMultiple = yamlConfiguration.getDouble("gunDamageMultiple", 4);
 
-        defaultBlockHardnessMultiple = yamlConfiguration.getDouble("defaultBlockHardnessMultiple");
+        defaultBlockHardnessMultiple = yamlConfiguration.getDouble("defaultBlockHardnessMultiple", 3.2);
 
-        perPowerLevelDamage = yamlConfiguration.getDouble("perPowerLevelDamage");
+        perPowerLevelDamage = yamlConfiguration.getDouble("perPowerLevelDamage", 1);
 
         consoleLanguage = yamlConfiguration.getString("consoleLanguage", "zh_cn");
 
@@ -149,9 +149,9 @@ public final class Config {
 
         ResidenceSetting.ResidenceSizeSetting sizeSetting = new ResidenceSetting.ResidenceSizeSetting();
 
-        sizeSetting.x = residenceSizeLimitSection.getInt("x");
-        sizeSetting.y = residenceSizeLimitSection.getInt("y");
-        sizeSetting.z = residenceSizeLimitSection.getInt("z");
+        sizeSetting.x = residenceSizeLimitSection.getInt("x", 16);
+        sizeSetting.y = residenceSizeLimitSection.getInt("y", 16);
+        sizeSetting.z = residenceSizeLimitSection.getInt("z", 16);
 
         residence.sizeLimit = sizeSetting;
 
@@ -161,17 +161,13 @@ public final class Config {
 
         ResidenceSetting.ResidenceToolSetting toolSetting = new ResidenceSetting.ResidenceToolSetting();
 
-        String left = residenceToolSection.getString("leftSelect");
+        String left = residenceToolSection.getString("leftSelect", "STICK");
 
-        if (left == null) throw new IllegalStateException("can not load config part: residence.tool.leftSelect");
+        String right = residenceToolSection.getString("rightSelect", "STICK");
 
-        String right = residenceToolSection.getString("rightSelect");
+        Material leftSelect = Material.matchMaterial(Objects.requireNonNull(left));
 
-        if (right == null) throw new IllegalStateException("can not load config part: residence.tool.rightSelect");
-
-        Material leftSelect = Material.matchMaterial(left);
-
-        Material rightSelect = Material.matchMaterial(right);
+        Material rightSelect = Material.matchMaterial(Objects.requireNonNull(right));
 
         toolSetting.leftSelect = leftSelect != null ? leftSelect : Material.STICK;
 
@@ -264,7 +260,7 @@ public final class Config {
 
         storage = new StorageSetting();
 
-        String type = storageSection.getString("type");
+        String type = storageSection.getString("type", "SQLITE");
 
         storage.type = StorageType.matchStorageType(type);
 

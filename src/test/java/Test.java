@@ -16,6 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import org.bukkit.Location;
+
 public class Test {
     public static void main(String[] args) {
 
