@@ -67,11 +67,14 @@ import site.liangbai.realhomehunt.util.Console;
         }
 )
 public final class RealHomeHunt extends JavaPlugin {
-    @Plugin.Instance
     public static RealHomeHunt plugin;
+
+    private static final String FORGE_EVENT_BRIDGE_MOD_ID = "forgeeventbridge";
 
     @Override
     public void onEnable() {
+        plugin = this;
+
         checkForgeEventBridgeInst();
 
         initConfigurationSerializer();
@@ -118,7 +121,7 @@ public final class RealHomeHunt extends JavaPlugin {
     }
 
     private void checkForgeEventBridgeInst() {
-        if (!ModList.get().isLoaded("forgeeventbridge")) {
+        if (!ModList.get().isLoaded(FORGE_EVENT_BRIDGE_MOD_ID)) {
             Bukkit.getPluginManager().disablePlugin(this);
 
             throw new IllegalStateException("can not found Forge-Event-Bridge mod, please install it.");

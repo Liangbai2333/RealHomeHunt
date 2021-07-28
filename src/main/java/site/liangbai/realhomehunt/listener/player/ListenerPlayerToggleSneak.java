@@ -31,7 +31,7 @@ import site.liangbai.realhomehunt.manager.ResidenceManager;
 import site.liangbai.realhomehunt.residence.Residence;
 
 @Plugin.EventSubscriber
-public final class ListenerPlayerToggleSneakEvent implements Listener {
+public final class ListenerPlayerToggleSneak implements Listener {
     @EventHandler
     public void onPlayerToggleSneak(PlayerToggleSneakEvent event) {
         if (!Config.residence.openWarn) return;
@@ -42,7 +42,7 @@ public final class ListenerPlayerToggleSneakEvent implements Listener {
 
         Location location = player.getLocation();
 
-        if (location.getPitch() > -85 || !event.isSneaking()) {
+        if (location.getPitch() > -80 || !event.isSneaking()) {
             return;
         }
 
