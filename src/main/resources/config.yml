@@ -52,14 +52,17 @@ robChestMode:
   enabled: false
   # 掉落物品概率设定
   dropItem:
-    gun:
-      # 全局类型, 目前只有两种: GUN 枪械, MAGAZINE 弹匣
-      globalType: GUN
+    global:
+      # 全局类型, 目前只有两种: GUN 枪械, MAGAZINE 弹匣, GLOBAL 全局
+      globalType: GLOBAL
       # 概率, 为0-1之间的小数
+      chance: 0.5
+    gun:
+      globalType: GUN
       chance: 0.1
     magazine:
       globalType: MAGAZINE
-      chance: 0.5
+      chance: 0.3
     common_example:
       # 单独的物品类型, 如STONE代表石头
       type: STONE

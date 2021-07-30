@@ -25,6 +25,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.Container;
 import org.bukkit.block.data.type.Door;
 import org.bukkit.craftbukkit.v1_16_R3.CraftWorld;
 import site.liangbai.realhomehunt.config.Config;
@@ -69,6 +70,10 @@ public final class Blocks {
 
     public static boolean isDoor(Block block) {
         return block.getBlockData() instanceof Door;
+    }
+
+    public static boolean isContainer(Block block) {
+        return block instanceof Container;
     }
 
     public static int containsBlockAndReturnCount(Config.BlockSetting.BlockIgnoreSetting.IgnoreBlockInfo info, Residence residence) {

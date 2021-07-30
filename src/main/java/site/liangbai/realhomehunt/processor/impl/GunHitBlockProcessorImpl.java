@@ -28,6 +28,7 @@ import site.liangbai.realhomehunt.bossbar.IBossBar;
 import site.liangbai.realhomehunt.bossbar.factory.BossBarFactory;
 import site.liangbai.realhomehunt.cache.DamageCachePool;
 import site.liangbai.realhomehunt.config.Config;
+import site.liangbai.realhomehunt.gamemode.manager.GameModeManager;
 import site.liangbai.realhomehunt.listener.player.block.ListenerBlockBreak;
 import site.liangbai.realhomehunt.locale.impl.Locale;
 import site.liangbai.realhomehunt.locale.manager.LocaleManager;
@@ -38,6 +39,7 @@ import site.liangbai.realhomehunt.task.AutoFixBlockTask;
 import site.liangbai.realhomehunt.task.UnloadDamageCacheTask;
 import site.liangbai.realhomehunt.util.Blocks;
 import site.liangbai.realhomehunt.util.Guns;
+import site.liangbai.realhomehunt.util.callback.ICallBack;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -99,13 +101,11 @@ public class GunHitBlockProcessorImpl implements IGunHitBlockProcessor {
 
             BlockData blockData = damageCache.getBlock().getBlockData().clone();
 
-            Blocks.sendBreakBlockPacket(damageCache.getBlock(), Config.dropItem);
+            ICallBack<Boolean> callBack = GameModeManager.submit(residence, player, gun, block, blockData, damageCache);
+
+            Blocks.sendBreakBlockPacket(damageCache.getBlock(), Config.dropItem && callBack.get());
 
             damageCachePool.removeDamageCache(damageCache);
-
-            if (Config.autoFixResidence.enabled) {
-                AutoFixBlockTask.submit(residence, blockData, damageCache.getBlock().getLocation().clone());
-            }
         } else {
             int blockSit = Guns.countBlockSit(damageCache.getDamage(), hardness);
 
