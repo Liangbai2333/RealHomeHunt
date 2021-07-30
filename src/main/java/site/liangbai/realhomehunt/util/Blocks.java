@@ -72,10 +72,6 @@ public final class Blocks {
         return block.getBlockData() instanceof Door;
     }
 
-    public static boolean isContainer(Block block) {
-        return block instanceof Container;
-    }
-
     public static int containsBlockAndReturnCount(Config.BlockSetting.BlockIgnoreSetting.IgnoreBlockInfo info, Residence residence) {
         Locations.LocationSortInfo sortInfo = Locations.sort(residence.getLeft(), residence.getRight());
 

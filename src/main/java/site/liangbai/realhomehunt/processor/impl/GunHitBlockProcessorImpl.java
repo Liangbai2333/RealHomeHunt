@@ -35,7 +35,6 @@ import site.liangbai.realhomehunt.locale.manager.LocaleManager;
 import site.liangbai.realhomehunt.manager.ResidenceManager;
 import site.liangbai.realhomehunt.processor.IGunHitBlockProcessor;
 import site.liangbai.realhomehunt.residence.Residence;
-import site.liangbai.realhomehunt.task.AutoFixBlockTask;
 import site.liangbai.realhomehunt.task.UnloadDamageCacheTask;
 import site.liangbai.realhomehunt.util.Blocks;
 import site.liangbai.realhomehunt.util.Guns;
