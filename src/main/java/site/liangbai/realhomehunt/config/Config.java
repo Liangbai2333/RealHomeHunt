@@ -23,15 +23,15 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+import site.liangbai.realhomehunt.item.ItemType;
 import site.liangbai.realhomehunt.storage.StorageType;
 import site.liangbai.realhomehunt.util.Console;
 
 import java.io.File;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public final class Config {
     private static File configFile;
@@ -146,6 +146,12 @@ public final class Config {
         linkAutoFixResidenceConfig(yamlConfiguration);
 
         Console.sendRawMessage(ChatColor.GREEN + "Linking auto fix residence settings successful.");
+
+        Console.sendRawMessage(ChatColor.GREEN + "Linking rob chest mode settings...");
+
+        linkRobChestModeConfig(yamlConfiguration);
+
+        Console.sendRawMessage(ChatColor.GREEN + "Linking rob chest mode settings successful.");
 
         Console.sendRawMessage(ChatColor.GREEN + "Reload config successful.");
     }
@@ -349,6 +355,40 @@ public final class Config {
         robChestMode = new RobChestModeSetting();
 
         robChestMode.enabled = modeSection.getBoolean("enabled", false);
+
+        ConfigurationSection dropItemSection = modeSection.getConfigurationSection("dropItem");
+
+        if (dropItemSection == null) throw new IllegalStateException("can not load config part: robChestMode.dropItem");
+
+        robChestMode.dropItem = new RobChestModeSetting.DropItemSetting();
+
+        dropItemSection.getKeys(false).stream()
+                .map(dropItemSection::getConfigurationSection)
+                .filter(Objects::nonNull)
+                .filter(it -> (it.contains("globalType") || it.contains("type")) && it.contains("chance"))
+                .forEach(it -> {
+                    String globalType = it.getString("globalType");
+
+                    double chance = it.getDouble("chance");
+
+                    if (globalType != null) {
+                        ItemType itemType = ItemType.matchType(globalType);
+
+                        if (itemType == null) throw new IllegalStateException("can not find the Item Type: " + globalType + " in the part: " + it.getName());
+
+                        robChestMode.dropItem.itemTypeToDoubleChanceEnumMap.put(itemType, chance);
+
+                        return;
+                    }
+
+                    String type = it.getString("type");
+
+                    Material material = Material.matchMaterial(Objects.requireNonNull(type));
+
+                    if (material == null) throw new IllegalStateException("can not find the Item Type: " + type + " in the part: " + it.getName());
+
+                    robChestMode.dropItem.materialToDoubleChanceEnumMap.put(material, chance);
+                });
     }
 
     private static void linkAutoFixResidenceConfig(ConfigurationSection section) {
@@ -509,7 +549,22 @@ public final class Config {
     public static final class RobChestModeSetting {
         public boolean enabled;
 
+        public DropItemSetting dropItem;
 
+        public static final class DropItemSetting {
+            public final Map<ItemType, Double> itemTypeToDoubleChanceEnumMap = new HashMap<>();
+
+            public final Map<Material, Double> materialToDoubleChanceEnumMap = new HashMap<>();
+
+            public double getChance(ItemStack itemStack) {
+                Material type = itemStack.getType();
+
+                if (materialToDoubleChanceEnumMap.containsKey(type)) {
+                    return materialToDoubleChanceEnumMap.get(type);
+                } else
+                    return ItemType.matches(itemStack).getChance();
+            }
+        }
     }
 
     public static final class AutoFixResidenceSetting {

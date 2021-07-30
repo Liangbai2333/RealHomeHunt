@@ -18,15 +18,23 @@
 
 package site.liangbai.realhomehunt.gamemode.impl;
 
+import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.block.Container;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import site.liangbai.realhomehunt.cache.DamageCachePool;
 import site.liangbai.realhomehunt.config.Config;
 import site.liangbai.realhomehunt.gamemode.IGameMode;
 import site.liangbai.realhomehunt.residence.Residence;
+import site.liangbai.realhomehunt.task.NaturallyDropItemTask;
+import site.liangbai.realhomehunt.util.Chances;
 import site.liangbai.realhomehunt.util.callback.ICallBack;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RobChestGameMode implements IGameMode {
     @Override
@@ -36,6 +44,28 @@ public class RobChestGameMode implements IGameMode {
 
     @Override
     public void process(ICallBack<Boolean> dropBlockItem, Residence residence, Player player, ItemStack gun, Block block, BlockData blockData, DamageCachePool.DamageCache damageCache) {
+        if (!(block instanceof Container)) return;
 
+        Container container = ((Container) block);
+
+        Inventory inventory = container.getSnapshotInventory();
+
+        container.getInventory().clear();
+
+        List<ItemStack> dropItems = new ArrayList<>();
+
+        inventory.forEach(itemStack -> {
+            double chance = Config.robChestMode.dropItem.getChance(itemStack);
+
+            if (Chances.hasChance(chance)) {
+                dropItems.add(itemStack);
+            }
+        });
+
+        Location dropLocation = damageCache.getBlock().getLocation();
+
+        NaturallyDropItemTask.setup(dropItems, dropLocation);
+
+        dropBlockItem.set(false);
     }
 }

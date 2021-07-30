@@ -53,7 +53,8 @@ robChestMode:
   # 掉落物品概率设定
   dropItem:
     global:
-      # 全局类型, 目前只有两种: GUN 枪械, MAGAZINE 弹匣, GLOBAL 全局
+      # 全局类型
+      # GUN 枪械, MAGAZINE 弹匣, STORAGE 背心, CLOTHING 衣物, GLOBAL 全局
       globalType: GLOBAL
       # 概率, 为0-1之间的小数
       chance: 0.5

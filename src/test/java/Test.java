@@ -16,12 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import org.bukkit.Location;
-
 public class Test {
     public static void main(String[] args) {
-        int e = (0x0000001 | 0x00000002);
-
-        System.out.println((e & 0x00000004) != 0);
+        // TODO
     }
 }

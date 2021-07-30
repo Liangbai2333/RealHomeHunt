@@ -23,6 +23,7 @@ import com.craftingdead.core.world.item.GunItem;
 import com.craftingdead.core.world.item.MagazineItem;
 import com.craftingdead.core.world.item.StorageItem;
 import net.minecraft.item.ItemStack;
+import site.liangbai.realhomehunt.config.Config;
 import site.liangbai.realhomehunt.util.ItemStacks;
 
 import java.util.Arrays;
@@ -48,8 +49,13 @@ public enum ItemType {
         return matcher.test(itemStack);
     }
 
-    // TODO
     public double getChance() {
+        Config.RobChestModeSetting.DropItemSetting setting = Config.robChestMode.dropItem;
+
+        if (setting.itemTypeToDoubleChanceEnumMap.containsKey(this)) {
+            return setting.itemTypeToDoubleChanceEnumMap.get(this);
+        }
+
         return defaultChance;
     }
 
@@ -61,5 +67,12 @@ public enum ItemType {
                 .findFirst()
                 .orElse(GLOBAL);
 
+    }
+
+    public static ItemType matchType(String type) {
+        return Arrays.stream(values())
+                .filter(it -> it.name().equalsIgnoreCase(type))
+                .findFirst()
+                .orElse(null);
     }
 }
