@@ -38,6 +38,7 @@ import site.liangbai.realhomehunt.util.Sounds;
 import site.liangbai.realhomehunt.util.Titles;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public final class Residence implements ConfigurationSerializable {
     private final Location left;
@@ -93,6 +94,8 @@ public final class Residence implements ConfigurationSerializable {
                     String name = info.type.toUpperCase();
 
                     if (ignoreBlockInfo.full != null && ignoreBlockInfo.full.equalsIgnoreCase(name)) return true;
+
+                    if (ignoreBlockInfo.prefix == null || ignoreBlockInfo.suffix == null) return false;
 
                     return name.startsWith(ignoreBlockInfo.prefix) && name.endsWith(ignoreBlockInfo.suffix);
                 })
@@ -263,6 +266,18 @@ public final class Residence implements ConfigurationSerializable {
 
     public void remove() {
         ResidenceManager.remove(this);
+    }
+
+    public List<Player> findPlayersIn() {
+        return Bukkit.getOnlinePlayers().stream()
+                .filter(it -> ResidenceManager.isOpened(it.getWorld()))
+                .filter(it -> ResidenceManager.isInResidence(it.getLocation(), this))
+                .collect(Collectors.toList());
+    }
+
+    public boolean hasEnemyIn() {
+        return findPlayersIn().stream()
+                .anyMatch(it -> !isAdministrator(it));
     }
 
     @NotNull

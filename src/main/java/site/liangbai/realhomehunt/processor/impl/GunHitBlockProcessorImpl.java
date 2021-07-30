@@ -18,8 +18,10 @@
 
 package site.liangbai.realhomehunt.processor.impl;
 
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import site.liangbai.realhomehunt.RealHomeHunt;
@@ -33,6 +35,7 @@ import site.liangbai.realhomehunt.locale.manager.LocaleManager;
 import site.liangbai.realhomehunt.manager.ResidenceManager;
 import site.liangbai.realhomehunt.processor.IGunHitBlockProcessor;
 import site.liangbai.realhomehunt.residence.Residence;
+import site.liangbai.realhomehunt.task.AutoFixBlockTask;
 import site.liangbai.realhomehunt.task.UnloadDamageCacheTask;
 import site.liangbai.realhomehunt.util.Blocks;
 import site.liangbai.realhomehunt.util.Guns;
@@ -91,11 +94,31 @@ public class GunHitBlockProcessorImpl implements IGunHitBlockProcessor {
 
             Block upBlock = block.getRelative(BlockFace.UP);
 
-            ListenerBlockBreak.saveUpBlock(upBlock, residence);
+            if (upBlock.getType() != Material.AIR) {
+                ListenerBlockBreak.saveUpBlock(upBlock, residence);
+            }
 
-            Blocks.sendBreakBlockPacket(damageCache.getBlock());
+            BlockData blockData = damageCache.getBlock().getBlockData().clone();
+
+            Blocks.sendBreakBlockPacket(damageCache.getBlock(), Config.dropItem);
+
+            Config.BlockSetting.BlockIgnoreSetting.IgnoreBlockInfo ignoreBlockInfo = Config.block.ignore.getByMaterial(blockData.getMaterial());
+
+            if (ignoreBlockInfo != null) {
+                Residence.IgnoreBlockInfo info = residence.getIgnoreBlockInfo(ignoreBlockInfo);
+
+                if (info.getCount() > 0) {
+                    info.deleteCount();
+
+                    residence.save();
+                }
+            }
 
             damageCachePool.removeDamageCache(damageCache);
+
+            if (Config.autoFixResidence.enabled) {
+                AutoFixBlockTask.submit(residence, blockData, damageCache.getBlock().getLocation().clone());
+            }
         } else {
             int blockSit = Guns.countBlockSit(damageCache.getDamage(), hardness);
 

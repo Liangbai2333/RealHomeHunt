@@ -33,11 +33,47 @@ consoleLanguage: zh_cn
 
 # 显示物品栏上方的提示文字
 showActionBar: true
+
 # 物品栏上方的文字的显示秒数
 actionBarShowMills: 30
 
 # 执行确认操作时的等待秒数
 confirmWaitMills: 15
+
+# 是否掉落方块
+dropItem: false
+
+# TODO
+# 掠夺者模式
+# 在此模式下, 领地内的箱子无法正常打开, 并且无法直接破坏, 只能通过枪械攻击, 并且箱子内的物品都有概率随机掉落
+# 随机掉落视配置而定
+robChestMode:
+  # 开关
+  enabled: false
+  # 掉落物品概率设定
+  dropItem:
+    gun:
+      # 全局类型, 目前只有两种: GUN 枪械, MAGAZINE 弹匣
+      globalType: GUN
+      # 概率, 为0-1之间的小数
+      chance: 0.1
+    magazine:
+      globalType: MAGAZINE
+      chance: 0.5
+    common_example:
+      # 单独的物品类型, 如STONE代表石头
+      type: STONE
+      chance: 0.1
+
+# TODO
+# 是否开启领地自动修复
+autoFixResidence:
+  # 开关
+  enabled: true
+  # 每个方块修复使用的时间
+  perBlockFixedMills: 15
+  # 是否无视领地内敌人直接恢复, 如关闭即有敌人存在于领地时不进行修复
+  ignoreEnemy: false
 
 # 存储
 storage:

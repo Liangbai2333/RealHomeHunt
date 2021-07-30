@@ -44,6 +44,10 @@ public final class Config {
 
     public static BlockSetting block;
 
+    public static RobChestModeSetting robChestMode;
+
+    public static AutoFixResidenceSetting autoFixResidence;
+
     public static List<String> openWorlds;
 
     public static long maxWaitMills;
@@ -69,6 +73,8 @@ public final class Config {
     public static long actionBarShowMills;
 
     public static long confirmWaitMills;
+
+    public static boolean dropItem;
 
     public static void init(Plugin plugin) {
         File file = new File(plugin.getDataFolder(), "config.yml");
@@ -115,6 +121,8 @@ public final class Config {
 
         confirmWaitMills = asMills(yamlConfiguration.getLong("confirmWaitMills", 15));
 
+        dropItem = yamlConfiguration.getBoolean("dropItem", false);
+
         Console.sendRawMessage(ChatColor.GREEN + "Linking storage settings...");
 
         linkStorageConfig(yamlConfiguration);
@@ -132,6 +140,12 @@ public final class Config {
         linkBlockConfig(yamlConfiguration);
 
         Console.sendRawMessage(ChatColor.GREEN + "Linking block settings successful.");
+
+        Console.sendRawMessage(ChatColor.GREEN + "Linking auto fix residence settings...");
+
+        linkAutoFixResidenceConfig(yamlConfiguration);
+
+        Console.sendRawMessage(ChatColor.GREEN + "Linking auto fix residence settings successful.");
 
         Console.sendRawMessage(ChatColor.GREEN + "Reload config successful.");
     }
@@ -327,6 +341,30 @@ public final class Config {
         storage.mySqlSetting = mySqlSetting;
     }
 
+    private static void linkRobChestModeConfig(ConfigurationSection section) {
+        ConfigurationSection modeSection = section.getConfigurationSection("robChestMode");
+
+        if (modeSection == null) throw new IllegalStateException("can not load config part: robChestMode");
+
+        robChestMode = new RobChestModeSetting();
+
+        robChestMode.enabled = modeSection.getBoolean("enabled", false);
+    }
+
+    private static void linkAutoFixResidenceConfig(ConfigurationSection section) {
+        ConfigurationSection autoFixResidenceSection = section.getConfigurationSection("autoFixResidence");
+
+        if (autoFixResidenceSection == null) throw new IllegalStateException("can not load config part: autoFixResidence");
+
+        autoFixResidence = new AutoFixResidenceSetting();
+
+        autoFixResidence.enabled = autoFixResidenceSection.getBoolean("enabled", true);
+
+        autoFixResidence.perBlockFixedMills = asMills(autoFixResidenceSection.getLong("perBlockFixedMills", 15));
+
+        autoFixResidence.ignoreEnemy = autoFixResidenceSection.getBoolean("ignoreEnemy", false);
+    }
+
     public static String asColored(String message) {
         return ChatColor.translateAlternateColorCodes('&', message);
     }
@@ -466,5 +504,19 @@ public final class Config {
                         .orElse(block.getType().getHardness() * Config.defaultBlockHardnessMultiple);
             }
         }
+    }
+
+    public static final class RobChestModeSetting {
+        public boolean enabled;
+
+
+    }
+
+    public static final class AutoFixResidenceSetting {
+        public boolean enabled;
+
+        public long perBlockFixedMills;
+
+        public boolean ignoreEnemy;
     }
 }

@@ -56,7 +56,9 @@ public final class ListenerBlockBreak implements Listener {
 
             Block upBlock = event.getBlock().getRelative(BlockFace.UP);
 
-            saveUpBlock(upBlock, residence);
+            if (upBlock.getType() != Material.AIR) {
+                saveUpBlock(upBlock, residence);
+            }
         }
     }
 

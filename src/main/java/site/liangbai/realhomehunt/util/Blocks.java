@@ -39,7 +39,7 @@ public final class Blocks {
         return ++id;
     }
 
-    public static void sendBreakBlockPacket(Block block) {
+    public static void sendBreakBlockPacket(Block block, boolean dropItem) {
         World world = block.getWorld();
 
         Location location = block.getLocation();
@@ -50,7 +50,7 @@ public final class Blocks {
 
         BlockPosition blockPosition = new BlockPosition(location.getBlockX(), location.getBlockY(), location.getBlockZ());
 
-        worldServer.b(blockPosition, true);
+        worldServer.b(blockPosition, dropItem);
     }
 
     public static void sendBreakAnimationPacket(int id, Block block, int breakSit) {
