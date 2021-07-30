@@ -44,6 +44,8 @@ public final class ListenerBlockBreak implements Listener {
 
         Config.BlockSetting.BlockIgnoreSetting.IgnoreBlockInfo ignoreBlockInfo = Config.block.ignore.getByMaterial(event.getBlock().getType());
 
+        Block upBlock = event.getBlock().getRelative(BlockFace.UP);
+
         if (ignoreBlockInfo != null) {
             Residence.IgnoreBlockInfo info = residence.getIgnoreBlockInfo(ignoreBlockInfo);
 
@@ -52,13 +54,10 @@ public final class ListenerBlockBreak implements Listener {
 
                 residence.save();
             }
-        } else {
+        }
 
-            Block upBlock = event.getBlock().getRelative(BlockFace.UP);
-
-            if (!upBlock.getType().isAir()) {
-                saveUpBlock(upBlock, residence);
-            }
+        if (!upBlock.getType().isAir()) {
+            saveUpBlock(upBlock, residence);
         }
     }
 

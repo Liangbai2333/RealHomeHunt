@@ -20,6 +20,7 @@ package site.liangbai.realhomehunt.gamemode.impl;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Container;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
@@ -44,9 +45,11 @@ public class RobChestGameMode implements IGameMode {
 
     @Override
     public void process(ICallBack<Boolean> dropBlockItem, Residence residence, Player player, ItemStack gun, Block block, BlockData blockData, DamageCachePool.DamageCache damageCache) {
-        if (!(block instanceof Container)) return;
+        BlockState blockState = block.getState();
 
-        Container container = ((Container) block);
+        if (!(blockState instanceof Container)) return;
+
+        Container container = ((Container) blockState);
 
         Inventory inventory = container.getSnapshotInventory();
 
@@ -55,6 +58,8 @@ public class RobChestGameMode implements IGameMode {
         List<ItemStack> dropItems = new ArrayList<>();
 
         inventory.forEach(itemStack -> {
+            if (itemStack == null || itemStack.getType().isAir()) return;
+
             double chance = Config.robChestMode.dropItem.getChance(itemStack);
 
             if (Chances.hasChance(chance)) {
