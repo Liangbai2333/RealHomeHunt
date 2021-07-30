@@ -464,7 +464,7 @@ public final class Config {
             }
 
             public boolean contains(@NotNull Material material) {
-                return getByMaterial(material) != null;
+                return !material.isSolid() || getByMaterial(material) != null;
             }
 
             public IgnoreBlockInfo getByMaterial(@NotNull Material material) {
@@ -479,7 +479,7 @@ public final class Config {
                         .findFirst()
                         .orElseGet(() -> {
                             if (!material.isSolid()) {
-                                return new IgnoreBlockInfo(null, null, null, 0, false);
+                                return new IgnoreBlockInfo(null, null, material.name(), 0, false);
                             }
 
                             return null;

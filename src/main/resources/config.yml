@@ -65,7 +65,6 @@ robChestMode:
       type: STONE
       chance: 0.1
 
-# TODO
 # 是否开启领地自动修复
 autoFixResidence:
   # 开关

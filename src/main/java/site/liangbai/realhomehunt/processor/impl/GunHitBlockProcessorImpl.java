@@ -18,7 +18,6 @@
 
 package site.liangbai.realhomehunt.processor.impl;
 
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
@@ -94,25 +93,13 @@ public class GunHitBlockProcessorImpl implements IGunHitBlockProcessor {
 
             Block upBlock = block.getRelative(BlockFace.UP);
 
-            if (upBlock.getType() != Material.AIR) {
+            if (!upBlock.getType().isAir()) {
                 ListenerBlockBreak.saveUpBlock(upBlock, residence);
             }
 
             BlockData blockData = damageCache.getBlock().getBlockData().clone();
 
             Blocks.sendBreakBlockPacket(damageCache.getBlock(), Config.dropItem);
-
-            Config.BlockSetting.BlockIgnoreSetting.IgnoreBlockInfo ignoreBlockInfo = Config.block.ignore.getByMaterial(blockData.getMaterial());
-
-            if (ignoreBlockInfo != null) {
-                Residence.IgnoreBlockInfo info = residence.getIgnoreBlockInfo(ignoreBlockInfo);
-
-                if (info.getCount() > 0) {
-                    info.deleteCount();
-
-                    residence.save();
-                }
-            }
 
             damageCachePool.removeDamageCache(damageCache);
 

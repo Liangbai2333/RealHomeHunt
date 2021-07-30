@@ -106,9 +106,15 @@ public final class Residence implements ConfigurationSerializable {
                     if (ignoreBlockInfo.full != null) {
                         info = new IgnoreBlockInfo(ignoreBlockInfo.full);
                     } else {
-                        String typeName = ignoreBlockInfo.prefix + ignoreBlockInfo.suffix;
+                        String typeName;
 
-                        if (typeName.isEmpty()) typeName = "null";
+                        if (ignoreBlockInfo.prefix == null || ignoreBlockInfo.suffix == null) {
+                            typeName = "null";
+                        } else {
+                            typeName = ignoreBlockInfo.prefix + ignoreBlockInfo.suffix;
+
+                            if (typeName.isEmpty()) typeName = "null";
+                        }
 
                         info = new IgnoreBlockInfo(typeName);
                     }
