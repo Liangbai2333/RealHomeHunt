@@ -29,10 +29,7 @@ import site.liangbai.realhomehunt.api.locale.impl.Locale;
 import site.liangbai.realhomehunt.api.locale.manager.LocaleManager;
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
 import site.liangbai.realhomehunt.api.residence.Residence;
-import site.liangbai.realhomehunt.util.Blocks;
-import site.liangbai.realhomehunt.util.Locations;
-import site.liangbai.realhomehunt.util.Messages;
-import site.liangbai.realhomehunt.util.Titles;
+import site.liangbai.realhomehunt.util.*;
 
 import java.util.Objects;
 
@@ -128,6 +125,8 @@ public final class CreateCommand implements ISubCommand {
         residence.save();
 
         SelectCache.pop(name);
+
+        Sounds.playLevelUpSound(player, 1, 0);
 
         Titles.sendTitle(player, locale.asString("command.create.successTitle"), locale.asString("command.create.successSubTitle"));
 

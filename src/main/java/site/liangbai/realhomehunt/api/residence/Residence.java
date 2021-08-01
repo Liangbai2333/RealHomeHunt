@@ -20,17 +20,16 @@ package site.liangbai.realhomehunt.api.residence;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Sound;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import site.liangbai.realhomehunt.RealHomeHunt;
 import site.liangbai.realhomehunt.actionbar.impl.DynamicActionBar;
-import site.liangbai.realhomehunt.config.Config;
 import site.liangbai.realhomehunt.api.locale.impl.Locale;
 import site.liangbai.realhomehunt.api.locale.manager.LocaleManager;
-import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
 import site.liangbai.realhomehunt.api.residence.attribute.IAttributable;
+import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
+import site.liangbai.realhomehunt.config.Config;
 import site.liangbai.realhomehunt.task.UnloadPlayerAttackTask;
 import site.liangbai.realhomehunt.task.UnloadWarnTask;
 import site.liangbai.realhomehunt.util.Messages;
@@ -147,12 +146,12 @@ public final class Residence implements ConfigurationSerializable {
     public void attackBy(Player attacker) {
         Player owner = Bukkit.getPlayerExact(getOwner());
 
-        Sounds.playSound(attacker, Sound.ENTITY_ENDER_DRAGON_AMBIENT, 1, 0);
+        Sounds.playDragonAmbientSound(attacker, 1, 0);
 
         if (owner != null && owner.isOnline()) {
             Locale locale = LocaleManager.require(owner);
 
-            Sounds.playSound(owner, Sound.ENTITY_ENDER_DRAGON_AMBIENT, 1, 0);
+            Sounds.playDragonAmbientSound(owner, 1, 0);
 
             Titles.sendTitle(owner, locale.asString("action.hitBlock.self.title", attacker.getName()), locale.asString("action.hitBlock.self.subTitle", attacker.getName()));
 
@@ -186,7 +185,7 @@ public final class Residence implements ConfigurationSerializable {
 
             Titles.sendTitle(member, locale.asString("action.warn.title", sender.getName()), locale.asString("action.warn.subTitle", sender.getName()));
 
-            Sounds.playSound(member, Sound.ENTITY_PLAYER_LEVELUP, 3, 0.5);
+            Sounds.playLevelUpSound(member, 3, 0.5);
         });
 
         new UnloadWarnTask(this).runTaskLater(RealHomeHunt.plugin, Config.unloadWarnMills);

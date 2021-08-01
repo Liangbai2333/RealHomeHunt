@@ -42,4 +42,12 @@ public final class Sounds {
             }
         }.runTaskTimer(RealHomeHunt.plugin, 0, (long) (delaySeconds * 20));
     }
+
+    public static void playDragonAmbientSound(Player player, int count, double delaySeconds) {
+        playSound(player, Sound.ENTITY_ENDER_DRAGON_AMBIENT, count, delaySeconds);
+    }
+
+    public static void playLevelUpSound(Player player, int count, double delaySeconds) {
+        playSound(player, Sound.ENTITY_PLAYER_LEVELUP, count, delaySeconds);
+    }
 }

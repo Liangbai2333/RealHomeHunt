@@ -19,6 +19,7 @@
 package site.liangbai.realhomehunt.api.event;
 
 import org.bukkit.Bukkit;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
@@ -28,6 +29,14 @@ import java.util.function.Consumer;
 @SuppressWarnings("unchecked")
 public abstract class EventCallable<T extends EventCallable<T>> extends Event {
     private static final HandlerList handlerList = new HandlerList();
+
+    public boolean callEvent() {
+        if (call() instanceof Cancellable) {
+            return !((Cancellable) this).isCancelled();
+        } else {
+            return true;
+        }
+    }
 
     public T call() {
         Bukkit.getPluginManager().callEvent(this);
