@@ -16,10 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.residence.attribute.impl;
+package site.liangbai.realhomehunt.api.residence.attribute.impl;
 
 import org.jetbrains.annotations.NotNull;
-import site.liangbai.realhomehunt.residence.attribute.IAttributable;
+import site.liangbai.realhomehunt.api.residence.attribute.IAttributable;
 
 import java.util.Arrays;
 import java.util.HashMap;

@@ -16,11 +16,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.residence.attribute.map;
+package site.liangbai.realhomehunt.api.residence.attribute.map;
 
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
-import site.liangbai.realhomehunt.residence.attribute.IAttributable;
-import site.liangbai.realhomehunt.residence.attribute.impl.*;
+import site.liangbai.realhomehunt.api.residence.attribute.impl.*;
+import site.liangbai.realhomehunt.api.residence.attribute.IAttributable;
 
 import java.util.ArrayList;
 import java.util.HashMap;

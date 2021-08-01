@@ -21,13 +21,14 @@ package site.liangbai.realhomehunt.command.subcommand.impl;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import site.liangbai.realhomehunt.cache.SelectCache;
+import site.liangbai.realhomehunt.api.cache.SelectCache;
+import site.liangbai.realhomehunt.api.event.residence.ResidenceCreateEvent;
 import site.liangbai.realhomehunt.command.subcommand.ISubCommand;
 import site.liangbai.realhomehunt.config.Config;
-import site.liangbai.realhomehunt.locale.impl.Locale;
-import site.liangbai.realhomehunt.locale.manager.LocaleManager;
-import site.liangbai.realhomehunt.manager.ResidenceManager;
-import site.liangbai.realhomehunt.residence.Residence;
+import site.liangbai.realhomehunt.api.locale.impl.Locale;
+import site.liangbai.realhomehunt.api.locale.manager.LocaleManager;
+import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
+import site.liangbai.realhomehunt.api.residence.Residence;
 import site.liangbai.realhomehunt.util.Blocks;
 import site.liangbai.realhomehunt.util.Locations;
 import site.liangbai.realhomehunt.util.Messages;
@@ -100,7 +101,11 @@ public final class CreateCommand implements ISubCommand {
 
         Residence residence = new Residence.Builder().owner(player).left(loc1).right(loc2).build();
 
-        if (!sender.hasPermission("rh.unlimited.create")) {
+        ResidenceCreateEvent.Pre preEvent = new ResidenceCreateEvent.Pre(player, residence);
+
+        if (!preEvent.callEvent()) return;
+
+        if (!sender.hasPermission("rh.unlimited.create") && !preEvent.isCheckBlock()) {
             for (Config.BlockSetting.BlockIgnoreSetting.IgnoreBlockInfo info : Config.block.ignore.ignoreBlockInfoList) {
                 int count = Blocks.containsBlockAndReturnCount(info, residence);
 
@@ -115,6 +120,8 @@ public final class CreateCommand implements ISubCommand {
         Location defaultSpawn = Locations.getAverageLocation(loc1.getWorld(), loc1, loc2);
 
         residence.setSpawn(defaultSpawn);
+
+        if (!new ResidenceCreateEvent.Post(player, residence).callEvent()) return;
 
         ResidenceManager.register(residence);
 

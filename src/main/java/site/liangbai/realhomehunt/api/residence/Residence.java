@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.residence;
+package site.liangbai.realhomehunt.api.residence;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -27,10 +27,10 @@ import org.jetbrains.annotations.NotNull;
 import site.liangbai.realhomehunt.RealHomeHunt;
 import site.liangbai.realhomehunt.actionbar.impl.DynamicActionBar;
 import site.liangbai.realhomehunt.config.Config;
-import site.liangbai.realhomehunt.locale.impl.Locale;
-import site.liangbai.realhomehunt.locale.manager.LocaleManager;
-import site.liangbai.realhomehunt.manager.ResidenceManager;
-import site.liangbai.realhomehunt.residence.attribute.IAttributable;
+import site.liangbai.realhomehunt.api.locale.impl.Locale;
+import site.liangbai.realhomehunt.api.locale.manager.LocaleManager;
+import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
+import site.liangbai.realhomehunt.api.residence.attribute.IAttributable;
 import site.liangbai.realhomehunt.task.UnloadPlayerAttackTask;
 import site.liangbai.realhomehunt.task.UnloadWarnTask;
 import site.liangbai.realhomehunt.util.Messages;
@@ -207,11 +207,10 @@ public final class Residence implements ConfigurationSerializable {
 
         if (owner != null) players.add(owner);
 
-        getAdministrators().forEach(administrator -> {
-            Player player = Bukkit.getPlayerExact(administrator);
-
-            if (player != null) players.add(player);
-        });
+        getAdministrators().stream()
+                .map(Bukkit::getPlayerExact)
+                .filter(Objects::nonNull)
+                .forEach(players::add);
 
         return players;
     }

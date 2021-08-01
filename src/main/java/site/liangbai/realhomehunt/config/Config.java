@@ -511,19 +511,9 @@ public final class Config {
                 String name = material.name().toUpperCase();
 
                 return ignoreBlockInfoList.stream()
-                        .filter(info -> {
-                            if (info.full != null && info.full.equalsIgnoreCase(name)) return true;
-
-                            return name.startsWith(info.prefix) && name.endsWith(info.suffix);
-                        })
+                        .filter(info -> info.full != null && info.full.equalsIgnoreCase(name) || name.startsWith(info.prefix) && name.endsWith(info.suffix))
                         .findFirst()
-                        .orElseGet(() -> {
-                            if (!material.isSolid()) {
-                                return new IgnoreBlockInfo(null, null, material.name(), 0, false);
-                            }
-
-                            return null;
-                        });
+                        .orElseGet(() -> material.isSolid() ? null : new IgnoreBlockInfo(null, null, material.name(), 0, false));
             }
         }
 

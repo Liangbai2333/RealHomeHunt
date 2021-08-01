@@ -12,7 +12,7 @@ teleportMills: 10
 showBlockHealth: true
 
 # 恢复方块裂纹的秒数
-maxWaitMills: 5
+maxWaitMills: 10
 
 # 玩家下蹲+上仰发起警告敌人入侵的间隔秒数
 unloadWarnMills: 10

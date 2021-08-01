@@ -21,10 +21,10 @@ package site.liangbai.realhomehunt.confirm;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import site.liangbai.realhomehunt.RealHomeHunt;
-import site.liangbai.realhomehunt.locale.impl.Locale;
-import site.liangbai.realhomehunt.locale.manager.LocaleManager;
-import site.liangbai.realhomehunt.manager.ResidenceManager;
-import site.liangbai.realhomehunt.residence.Residence;
+import site.liangbai.realhomehunt.api.locale.impl.Locale;
+import site.liangbai.realhomehunt.api.locale.manager.LocaleManager;
+import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
+import site.liangbai.realhomehunt.api.residence.Residence;
 import site.liangbai.realhomehunt.util.Pair;
 
 import java.util.Map;

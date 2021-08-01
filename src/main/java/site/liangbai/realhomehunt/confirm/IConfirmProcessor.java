@@ -19,7 +19,7 @@
 package site.liangbai.realhomehunt.confirm;
 
 import org.bukkit.entity.Player;
-import site.liangbai.realhomehunt.residence.Residence;
+import site.liangbai.realhomehunt.api.residence.Residence;
 
 public interface IConfirmProcessor {
     void process(Player player, Residence residence);

@@ -16,21 +16,38 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.residence.attribute.impl;
+package site.liangbai.realhomehunt.api.event;
 
-import java.util.Map;
+import org.bukkit.Bukkit;
+import org.bukkit.event.Event;
+import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.NotNull;
 
-public final class SpreadFireAttribute extends BooleanAttribute {
-    public SpreadFireAttribute() {
-        super();
+import java.util.function.Consumer;
+
+@SuppressWarnings("unchecked")
+public abstract class EventCallable<T extends EventCallable<T>> extends Event {
+    private static final HandlerList handlerList = new HandlerList();
+
+    public T call() {
+        Bukkit.getPluginManager().callEvent(this);
+
+        return (T) this;
     }
 
-    public SpreadFireAttribute(Map<String, Object> map) {
-        super(map);
+    public T then(Consumer<T> block) {
+        block.accept((T) this);
+
+        return (T) this;
     }
 
+    @NotNull
     @Override
-    public String getName() {
-        return "spreadFire";
+    public HandlerList getHandlers() {
+        return handlerList;
+    }
+
+    public static HandlerList getHandlerList() {
+        return handlerList;
     }
 }

@@ -23,9 +23,9 @@ import org.bukkit.entity.Player;
 import site.liangbai.realhomehunt.command.subcommand.ISubCommand;
 import site.liangbai.realhomehunt.confirm.ConfirmModule;
 import site.liangbai.realhomehunt.confirm.IConfirmProcessor;
-import site.liangbai.realhomehunt.locale.impl.Locale;
-import site.liangbai.realhomehunt.locale.manager.LocaleManager;
-import site.liangbai.realhomehunt.residence.Residence;
+import site.liangbai.realhomehunt.api.locale.impl.Locale;
+import site.liangbai.realhomehunt.api.locale.manager.LocaleManager;
+import site.liangbai.realhomehunt.api.residence.Residence;
 import site.liangbai.realhomehunt.util.Pair;
 
 public final class ConfirmCommand implements ISubCommand {

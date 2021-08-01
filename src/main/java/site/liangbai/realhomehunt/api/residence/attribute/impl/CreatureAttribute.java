@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.residence.attribute.impl;
+package site.liangbai.realhomehunt.api.residence.attribute.impl;
 
 import java.util.Map;
 

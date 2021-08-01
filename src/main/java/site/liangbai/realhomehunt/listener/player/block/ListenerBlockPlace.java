@@ -26,10 +26,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import site.liangbai.lrainylib.annotation.Plugin;
 import site.liangbai.realhomehunt.config.Config;
-import site.liangbai.realhomehunt.locale.impl.Locale;
-import site.liangbai.realhomehunt.locale.manager.LocaleManager;
-import site.liangbai.realhomehunt.manager.ResidenceManager;
-import site.liangbai.realhomehunt.residence.Residence;
+import site.liangbai.realhomehunt.api.locale.impl.Locale;
+import site.liangbai.realhomehunt.api.locale.manager.LocaleManager;
+import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
+import site.liangbai.realhomehunt.api.residence.Residence;
 
 @Plugin.EventSubscriber
 public final class ListenerBlockPlace implements Listener {
@@ -41,7 +41,11 @@ public final class ListenerBlockPlace implements Listener {
 
         if (residence == null) return;
 
-        if (!residence.isAdministrator(event.getPlayer()) && !event.getPlayer().hasPermission("rh.place")) event.setCancelled(true);
+        if (!residence.isAdministrator(event.getPlayer()) && !event.getPlayer().hasPermission("rh.place")) {
+            event.setCancelled(true);
+
+            return;
+        }
 
         Block block = event.getBlock();
 

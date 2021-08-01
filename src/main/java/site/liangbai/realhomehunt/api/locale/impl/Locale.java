@@ -16,13 +16,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.locale.impl;
+package site.liangbai.realhomehunt.api.locale.impl;
 
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 import site.liangbai.realhomehunt.config.Config;
-import site.liangbai.realhomehunt.locale.ILocale;
+import site.liangbai.realhomehunt.api.locale.ILocale;
 
 import java.util.HashMap;
 import java.util.List;

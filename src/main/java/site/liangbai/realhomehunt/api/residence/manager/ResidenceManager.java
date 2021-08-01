@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.manager;
+package site.liangbai.realhomehunt.api.residence.manager;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -24,7 +24,7 @@ import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import site.liangbai.realhomehunt.config.Config;
-import site.liangbai.realhomehunt.residence.Residence;
+import site.liangbai.realhomehunt.api.residence.Residence;
 import site.liangbai.realhomehunt.storage.IStorage;
 import site.liangbai.realhomehunt.storage.StorageType;
 import site.liangbai.realhomehunt.storage.impl.MySqlStorage;

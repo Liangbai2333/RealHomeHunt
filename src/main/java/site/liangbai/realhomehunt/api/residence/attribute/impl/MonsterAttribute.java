@@ -16,22 +16,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.residence.attribute;
+package site.liangbai.realhomehunt.api.residence.attribute.impl;
 
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import java.util.Map;
 
-import java.util.List;
+public final class MonsterAttribute extends CreatureAttribute {
+    public MonsterAttribute() {
+        super();
+    }
 
-public interface IAttributable<T> extends ConfigurationSerializable {
-    T get();
+    public MonsterAttribute(Map<String, Object> map) {
+        super(map);
+    }
 
-    void set(T value);
-
-    boolean allow(Object object);
-
-    void force(Object value);
-
-    String getName();
-
-    List<String> allowValues();
+    @Override
+    public String getName() {
+        return "monster";
+    }
 }

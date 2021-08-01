@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.cache;
+package site.liangbai.realhomehunt.api.cache;
 
 import org.bukkit.block.Block;
 import site.liangbai.realhomehunt.bossbar.IBossBar;
@@ -39,12 +39,17 @@ public final class DamageCachePool {
         damageCaches.remove(damageCache);
     }
 
-    public DamageCache getDamageCacheByBlock(Block block, Supplier<IBossBar> nonBossBar) {
-        for (DamageCache damageCache : damageCaches) {
-            if (damageCache.getBlock().equals(block)) return damageCache;
-        }
+    public DamageCache getDamageCacheByBlock(Block block, Supplier<Double> hardness, Supplier<IBossBar> nonBossBar) {
+        return damageCaches.stream()
+                .filter(it -> it.getBlock().equals(block))
+                .findFirst()
+                .orElseGet(() -> {
+                    DamageCache damageCache = new DamageCache(block, hardness.get(), Blocks.nextId(), nonBossBar.get());
 
-        return new DamageCache(block, Blocks.nextId(), nonBossBar.get());
+                    damageCaches.add(damageCache);
+
+                    return damageCache;
+                });
     }
 
     public static final class DamageCache {
@@ -54,12 +59,16 @@ public final class DamageCachePool {
 
         private double damage;
 
+        private double hardness;
+
         private final int id;
 
         private final List<Consumer<DamageCache>> consumers = new LinkedList<>();
 
-        public DamageCache(Block block, int id, IBossBar healthBossBar) {
+        public DamageCache(Block block, double hardness, int id, IBossBar healthBossBar) {
             this.block = block;
+
+            this.hardness = hardness;
 
             this.id = id;
 
@@ -72,6 +81,14 @@ public final class DamageCachePool {
 
         public Block getBlock() {
             return block;
+        }
+
+        public double getHardness() {
+            return hardness;
+        }
+
+        public void setHardness(double hardness) {
+            this.hardness = hardness;
         }
 
         public void increaseDamage(double damage) {
@@ -94,6 +111,10 @@ public final class DamageCachePool {
 
         public double getDamage() {
             return damage;
+        }
+
+        public void setDamage(double damage) {
+            this.damage = damage;
         }
     }
 }

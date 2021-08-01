@@ -24,8 +24,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import site.liangbai.lrainylib.annotation.Plugin;
-import site.liangbai.realhomehunt.residence.Residence;
-import site.liangbai.realhomehunt.manager.ResidenceManager;
+import site.liangbai.realhomehunt.api.residence.Residence;
+import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
 import site.liangbai.realhomehunt.util.Blocks;
 
 @Plugin.EventSubscriber

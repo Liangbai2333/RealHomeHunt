@@ -19,7 +19,7 @@
 package site.liangbai.realhomehunt.task;
 
 import org.bukkit.scheduler.BukkitRunnable;
-import site.liangbai.realhomehunt.residence.Residence;
+import site.liangbai.realhomehunt.api.residence.Residence;
 
 public class UnloadWarnTask extends BukkitRunnable {
     private final Residence residence;

@@ -18,7 +18,7 @@
 
 package site.liangbai.realhomehunt.storage;
 
-import site.liangbai.realhomehunt.residence.Residence;
+import site.liangbai.realhomehunt.api.residence.Residence;
 
 import java.util.List;
 

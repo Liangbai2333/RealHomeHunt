@@ -16,22 +16,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.command.subcommand.impl;
+package site.liangbai.realhomehunt.api.residence.attribute.impl;
 
-import org.bukkit.command.CommandSender;
-import site.liangbai.realhomehunt.command.subcommand.ISubCommand;
-import site.liangbai.realhomehunt.api.locale.impl.Locale;
-import site.liangbai.realhomehunt.util.Locales;
+import java.util.Map;
 
-public final class HelpCommand implements ISubCommand {
+public final class ExplodeAttribute extends BooleanAttribute {
+    public ExplodeAttribute() {
+        super();
+    }
+
+    public ExplodeAttribute(Map<String, Object> map) {
+        super(map);
+    }
+
     @Override
-    public void execute(CommandSender sender, String label, String[] args) {
-        Locale locale = Locales.require(sender);
-
-        sender.sendMessage(locale.asString("command.help.common", label));
-
-        if (sender.hasPermission("rh.reload")) {
-            sender.sendMessage(locale.asString("command.help.reload", label));
-        }
+    public String getName() {
+        return "explode";
     }
 }

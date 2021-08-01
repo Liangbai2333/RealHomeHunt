@@ -24,17 +24,18 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import site.liangbai.realhomehunt.RealHomeHunt;
+import site.liangbai.realhomehunt.api.event.residence.ResidenceHurtEvent;
 import site.liangbai.realhomehunt.bossbar.IBossBar;
 import site.liangbai.realhomehunt.bossbar.factory.BossBarFactory;
-import site.liangbai.realhomehunt.cache.DamageCachePool;
+import site.liangbai.realhomehunt.api.cache.DamageCachePool;
 import site.liangbai.realhomehunt.config.Config;
 import site.liangbai.realhomehunt.gamemode.manager.GameModeManager;
 import site.liangbai.realhomehunt.listener.player.block.ListenerBlockBreak;
-import site.liangbai.realhomehunt.locale.impl.Locale;
-import site.liangbai.realhomehunt.locale.manager.LocaleManager;
-import site.liangbai.realhomehunt.manager.ResidenceManager;
+import site.liangbai.realhomehunt.api.locale.impl.Locale;
+import site.liangbai.realhomehunt.api.locale.manager.LocaleManager;
+import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
 import site.liangbai.realhomehunt.processor.IGunHitBlockProcessor;
-import site.liangbai.realhomehunt.residence.Residence;
+import site.liangbai.realhomehunt.api.residence.Residence;
 import site.liangbai.realhomehunt.task.UnloadDamageCacheTask;
 import site.liangbai.realhomehunt.util.Blocks;
 import site.liangbai.realhomehunt.util.Guns;
@@ -65,19 +66,19 @@ public class GunHitBlockProcessorImpl implements IGunHitBlockProcessor {
 
         Locale locale = LocaleManager.require(player);
 
-        DamageCachePool.DamageCache damageCache = damageCachePool.getDamageCacheByBlock(block, () -> {
+        DamageCachePool.DamageCache damageCache = damageCachePool.getDamageCacheByBlock(block,
+                () -> Config.block.custom.getHardness(block),
+                () -> {
             String title = locale.asString("action.hitBlock.performer.bossBar", residence.getOwner(), 0, 0);
 
             return BossBarFactory.newHealthBossBar(title, 70, 30);
         });
 
-        damageCachePool.addDamageCache(damageCache);
+        if (!new ResidenceHurtEvent(player, residence, block, gun, damageCache, damageCache.getHardness()).callEvent()) return;
+
+        if (damageCache.getHardness() <= 0) return;
 
         damageCache.increaseDamage(Guns.countDamage(gun));
-
-        double hardness = Config.block.custom.getHardness(block);
-
-        if (hardness <= 0) return;
 
         IBossBar healthBossBar = damageCache.getHealthBossBar();
 
@@ -85,12 +86,12 @@ public class GunHitBlockProcessorImpl implements IGunHitBlockProcessor {
             healthBossBar.show(player);
         }
 
-        if (damageCache.getDamage() >= hardness) {
+        if (damageCache.getDamage() >= damageCache.getHardness()) {
             Blocks.sendClearBreakAnimationPacket(damageCache.getId(), damageCache.getBlock());
 
             healthBossBar.update(0);
 
-            healthBossBar.getHandle().setTitle(locale.asString("action.hitBlock.performer.bossBar", residence.getOwner(), 0, (int) hardness));
+            healthBossBar.getHandle().setTitle(locale.asString("action.hitBlock.performer.bossBar", residence.getOwner(), 0, (int) damageCache.getHardness()));
 
             Block upBlock = block.getRelative(BlockFace.UP);
 
@@ -106,15 +107,15 @@ public class GunHitBlockProcessorImpl implements IGunHitBlockProcessor {
 
             damageCachePool.removeDamageCache(damageCache);
         } else {
-            int blockSit = Guns.countBlockSit(damageCache.getDamage(), hardness);
+            int blockSit = Guns.countBlockSit(damageCache.getDamage(), damageCache.getHardness());
 
-            healthBossBar.update(100 - Guns.getHardnessMixPercent(damageCache.getDamage(), hardness));
+            healthBossBar.update(100 - Guns.getHardnessMixPercent(damageCache.getDamage(), damageCache.getHardness()));
 
-            double health = hardness - damageCache.getDamage();
+            double health = damageCache.getHardness() - damageCache.getDamage();
 
             String healthString = String.format("%.1f", health);
 
-            healthBossBar.getHandle().setTitle(locale.asString("action.hitBlock.performer.bossBar", residence.getOwner(), healthString, (int) hardness));
+            healthBossBar.getHandle().setTitle(locale.asString("action.hitBlock.performer.bossBar", residence.getOwner(), healthString, (int) damageCache.getHardness()));
 
             Blocks.sendBreakAnimationPacket(damageCache.getId(), damageCache.getBlock(), blockSit);
 

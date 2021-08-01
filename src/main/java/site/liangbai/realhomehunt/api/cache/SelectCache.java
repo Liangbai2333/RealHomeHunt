@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.cache;
+package site.liangbai.realhomehunt.api.cache;
 
 import org.bukkit.Location;
 

@@ -20,8 +20,8 @@ package site.liangbai.realhomehunt.util;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import site.liangbai.realhomehunt.locale.impl.Locale;
-import site.liangbai.realhomehunt.locale.manager.LocaleManager;
+import site.liangbai.realhomehunt.api.locale.impl.Locale;
+import site.liangbai.realhomehunt.api.locale.manager.LocaleManager;
 
 public final class Locales {
     public static Locale require(CommandSender sender) {

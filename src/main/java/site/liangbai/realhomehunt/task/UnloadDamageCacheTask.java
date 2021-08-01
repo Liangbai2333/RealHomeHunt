@@ -19,7 +19,7 @@
 package site.liangbai.realhomehunt.task;
 
 import org.bukkit.scheduler.BukkitRunnable;
-import site.liangbai.realhomehunt.cache.DamageCachePool;
+import site.liangbai.realhomehunt.api.cache.DamageCachePool;
 import site.liangbai.realhomehunt.util.Blocks;
 
 public final class UnloadDamageCacheTask extends BukkitRunnable {

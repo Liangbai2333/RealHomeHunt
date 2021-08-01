@@ -22,10 +22,10 @@ import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import site.liangbai.realhomehunt.cache.DamageCachePool;
+import site.liangbai.realhomehunt.api.cache.DamageCachePool;
 import site.liangbai.realhomehunt.config.Config;
 import site.liangbai.realhomehunt.gamemode.IGameMode;
-import site.liangbai.realhomehunt.residence.Residence;
+import site.liangbai.realhomehunt.api.residence.Residence;
 import site.liangbai.realhomehunt.task.AutoFixBlockTask;
 import site.liangbai.realhomehunt.util.callback.ICallBack;
 

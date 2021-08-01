@@ -27,11 +27,11 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import site.liangbai.lrainylib.annotation.Plugin;
-import site.liangbai.realhomehunt.cache.SelectCache;
+import site.liangbai.realhomehunt.api.cache.SelectCache;
 import site.liangbai.realhomehunt.config.Config;
-import site.liangbai.realhomehunt.locale.impl.Locale;
-import site.liangbai.realhomehunt.locale.manager.LocaleManager;
-import site.liangbai.realhomehunt.manager.ResidenceManager;
+import site.liangbai.realhomehunt.api.locale.impl.Locale;
+import site.liangbai.realhomehunt.api.locale.manager.LocaleManager;
+import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
 
 @Plugin.EventSubscriber
 public final class ListenerPlayerInteract implements Listener {

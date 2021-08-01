@@ -20,11 +20,12 @@ package site.liangbai.realhomehunt.command.subcommand.impl;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import site.liangbai.realhomehunt.api.event.residence.ResidenceAdministratorEvent;
 import site.liangbai.realhomehunt.command.subcommand.ISubCommand;
-import site.liangbai.realhomehunt.locale.impl.Locale;
-import site.liangbai.realhomehunt.locale.manager.LocaleManager;
-import site.liangbai.realhomehunt.manager.ResidenceManager;
-import site.liangbai.realhomehunt.residence.Residence;
+import site.liangbai.realhomehunt.api.locale.impl.Locale;
+import site.liangbai.realhomehunt.api.locale.manager.LocaleManager;
+import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
+import site.liangbai.realhomehunt.api.residence.Residence;
 
 import java.util.regex.Pattern;
 
@@ -72,6 +73,8 @@ public final class AdministratorCommand implements ISubCommand {
                 return;
             }
 
+            if (!new ResidenceAdministratorEvent.Give(residence, player, admin).callEvent()) return;
+
             residence.addAdministrator(admin);
 
             sender.sendMessage(locale.asString("command.administrator.successGivePermission", admin));
@@ -81,6 +84,8 @@ public final class AdministratorCommand implements ISubCommand {
 
                 return;
             }
+
+            if (!new ResidenceAdministratorEvent.Remove(residence, player, admin).callEvent()) return;
 
             residence.removeAdministrator(admin);
 

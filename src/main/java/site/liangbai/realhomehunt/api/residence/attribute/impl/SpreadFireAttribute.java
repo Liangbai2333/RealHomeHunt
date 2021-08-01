@@ -16,21 +16,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.residence.attribute.impl;
+package site.liangbai.realhomehunt.api.residence.attribute.impl;
 
 import java.util.Map;
 
-public final class AnimalsAttribute extends CreatureAttribute {
-    public AnimalsAttribute() {
+public final class SpreadFireAttribute extends BooleanAttribute {
+    public SpreadFireAttribute() {
         super();
     }
 
-    public AnimalsAttribute(Map<String, Object> map) {
+    public SpreadFireAttribute(Map<String, Object> map) {
         super(map);
     }
 
     @Override
     public String getName() {
-        return "animals";
+        return "spreadFire";
     }
 }

@@ -22,7 +22,7 @@ import org.bukkit.command.CommandSender;
 import site.liangbai.realhomehunt.command.subcommand.ISubCommand;
 import site.liangbai.realhomehunt.command.subcommand.impl.admin.subcommand.HelpCommand;
 import site.liangbai.realhomehunt.command.subcommand.impl.admin.subcommand.ImportCommand;
-import site.liangbai.realhomehunt.locale.impl.Locale;
+import site.liangbai.realhomehunt.api.locale.impl.Locale;
 import site.liangbai.realhomehunt.util.Locales;
 
 import java.util.ArrayList;

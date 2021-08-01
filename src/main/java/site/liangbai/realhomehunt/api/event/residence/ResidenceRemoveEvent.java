@@ -16,24 +16,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.confirm.impl;
+package site.liangbai.realhomehunt.api.event.residence;
 
 import org.bukkit.entity.Player;
-import site.liangbai.realhomehunt.api.event.residence.ResidenceRemoveEvent;
-import site.liangbai.realhomehunt.confirm.IConfirmProcessor;
-import site.liangbai.realhomehunt.api.locale.impl.Locale;
-import site.liangbai.realhomehunt.api.locale.manager.LocaleManager;
+import site.liangbai.realhomehunt.api.event.EventCancellable;
 import site.liangbai.realhomehunt.api.residence.Residence;
 
-public final class RemoveConfirmProcessor implements IConfirmProcessor {
-    @Override
-    public void process(Player player, Residence residence) {
-        if (!new ResidenceRemoveEvent(residence, player).callEvent()) return;
+public class ResidenceRemoveEvent extends EventCancellable<ResidenceRemoveEvent> {
+    private final Residence residence;
+    private final Player operator;
 
-        residence.remove();
+    public Residence getResidence() {
+        return residence;
+    }
 
-        Locale locale = LocaleManager.require(player);
+    public Player getOperator() {
+        return operator;
+    }
 
-        player.sendMessage(locale.asString("command.remove.success"));
+    public ResidenceRemoveEvent(Residence residence, Player operator) {
+        this.residence = residence;
+        this.operator = operator;
     }
 }

@@ -20,8 +20,8 @@ package site.liangbai.realhomehunt.command.subtabcompiler.impl;
 
 import org.bukkit.command.CommandSender;
 import site.liangbai.realhomehunt.command.subtabcompiler.ISubTabCompiler;
-import site.liangbai.realhomehunt.manager.ResidenceManager;
-import site.liangbai.realhomehunt.residence.Residence;
+import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
+import site.liangbai.realhomehunt.api.residence.Residence;
 
 import java.util.List;
 import java.util.stream.Collectors;

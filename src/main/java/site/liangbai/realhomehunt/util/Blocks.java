@@ -25,11 +25,10 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.block.Container;
 import org.bukkit.block.data.type.Door;
 import org.bukkit.craftbukkit.v1_16_R3.CraftWorld;
 import site.liangbai.realhomehunt.config.Config;
-import site.liangbai.realhomehunt.residence.Residence;
+import site.liangbai.realhomehunt.api.residence.Residence;
 
 public final class Blocks {
     private static int id;

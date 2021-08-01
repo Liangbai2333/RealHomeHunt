@@ -23,9 +23,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import site.liangbai.lrainylib.annotation.Plugin;
-import site.liangbai.realhomehunt.manager.ResidenceManager;
-import site.liangbai.realhomehunt.residence.Residence;
-import site.liangbai.realhomehunt.residence.attribute.impl.ExplodeAttribute;
+import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
+import site.liangbai.realhomehunt.api.residence.Residence;
+import site.liangbai.realhomehunt.api.residence.attribute.impl.ExplodeAttribute;
 
 import java.util.List;
 import java.util.stream.Collectors;

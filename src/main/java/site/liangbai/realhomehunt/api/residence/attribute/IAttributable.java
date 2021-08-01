@@ -16,10 +16,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.locale;
+package site.liangbai.realhomehunt.api.residence.attribute;
 
-import org.jetbrains.annotations.NotNull;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
-public interface ILocale {
-    @NotNull String asString(String node, Object... args);
+import java.util.List;
+
+public interface IAttributable<T> extends ConfigurationSerializable {
+    T get();
+
+    void set(T value);
+
+    boolean allow(Object object);
+
+    void force(Object value);
+
+    String getName();
+
+    List<String> allowValues();
 }

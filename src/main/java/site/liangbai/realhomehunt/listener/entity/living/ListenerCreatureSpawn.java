@@ -26,12 +26,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import site.liangbai.lrainylib.annotation.Plugin;
-import site.liangbai.realhomehunt.manager.ResidenceManager;
-import site.liangbai.realhomehunt.residence.Residence;
-import site.liangbai.realhomehunt.residence.attribute.IAttributable;
-import site.liangbai.realhomehunt.residence.attribute.impl.AnimalsAttribute;
-import site.liangbai.realhomehunt.residence.attribute.impl.CreatureAttribute;
-import site.liangbai.realhomehunt.residence.attribute.impl.MonsterAttribute;
+import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
+import site.liangbai.realhomehunt.api.residence.Residence;
+import site.liangbai.realhomehunt.api.residence.attribute.IAttributable;
+import site.liangbai.realhomehunt.api.residence.attribute.impl.AnimalsAttribute;
+import site.liangbai.realhomehunt.api.residence.attribute.impl.CreatureAttribute;
+import site.liangbai.realhomehunt.api.residence.attribute.impl.MonsterAttribute;
 
 @Plugin.EventSubscriber
 public final class ListenerCreatureSpawn implements Listener {

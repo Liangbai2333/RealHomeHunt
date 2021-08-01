@@ -16,21 +16,39 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.residence.attribute.impl;
+package site.liangbai.realhomehunt.api.event;
 
-import java.util.Map;
+import org.bukkit.event.Cancellable;
 
-public final class ExplodeAttribute extends BooleanAttribute {
-    public ExplodeAttribute() {
-        super();
+import java.util.function.Consumer;
+
+@SuppressWarnings("unchecked")
+public abstract class EventCancellable<T extends EventCallable<T>> extends EventCallable<T> implements Cancellable {
+    private boolean cancelled;
+
+    public T ifCancelled(Consumer<T> block) {
+        if (isCancelled()) {
+            return then(block);
+        }
+
+        return (T) this;
     }
 
-    public ExplodeAttribute(Map<String, Object> map) {
-        super(map);
+    public T nonCancelled(Consumer<T> block) {
+        if (!isCancelled()) {
+            return then(block);
+        }
+
+        return (T) this;
     }
 
     @Override
-    public String getName() {
-        return "explode";
+    public boolean isCancelled() {
+        return cancelled;
+    }
+
+    @Override
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
     }
 }

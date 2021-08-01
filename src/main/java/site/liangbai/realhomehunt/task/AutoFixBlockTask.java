@@ -25,7 +25,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.scheduler.BukkitRunnable;
 import site.liangbai.realhomehunt.RealHomeHunt;
 import site.liangbai.realhomehunt.config.Config;
-import site.liangbai.realhomehunt.residence.Residence;
+import site.liangbai.realhomehunt.api.residence.Residence;
 
 public final class AutoFixBlockTask extends BukkitRunnable {
     private final Residence residence;

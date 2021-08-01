@@ -18,9 +18,8 @@
 
 package site.liangbai.realhomehunt.storage.impl;
 
-import org.bukkit.util.Consumer;
 import site.liangbai.realhomehunt.config.Config;
-import site.liangbai.realhomehunt.residence.Residence;
+import site.liangbai.realhomehunt.api.residence.Residence;
 import site.liangbai.realhomehunt.storage.IStorage;
 import site.liangbai.realhomehunt.util.Serialization;
 
@@ -31,6 +30,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public abstract class SqlStorage implements IStorage {
     private static final String INIT_TABLE_SQL = "create table if not exists %s (residence blob not null, owner text not null)";

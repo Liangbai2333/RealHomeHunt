@@ -33,15 +33,15 @@ import site.liangbai.lrainylib.annotation.plugin.Permission;
 import site.liangbai.realhomehunt.command.CommandTabCompiler;
 import site.liangbai.realhomehunt.config.Config;
 import site.liangbai.realhomehunt.listener.forge.player.EventHolderGunHitBlock;
-import site.liangbai.realhomehunt.locale.manager.LocaleManager;
-import site.liangbai.realhomehunt.manager.ResidenceManager;
-import site.liangbai.realhomehunt.residence.Residence;
-import site.liangbai.realhomehunt.residence.attribute.map.AttributeMap;
+import site.liangbai.realhomehunt.api.locale.manager.LocaleManager;
+import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
+import site.liangbai.realhomehunt.api.residence.Residence;
+import site.liangbai.realhomehunt.api.residence.attribute.map.AttributeMap;
 import site.liangbai.realhomehunt.task.PlayerMoveToResidenceMessageTask;
 import site.liangbai.realhomehunt.util.Console;
 
 @Plugin(
-        info = @Info(name = "RealHomeHunt", version = "1.2.0-SNAPSHOT", authors = "Liangbai"),
+        info = @Info(name = "RealHomeHunt", version = "1.2.1-SNAPSHOT", authors = "Liangbai"),
         apiVersion = "1.13",
         softDepend = "Multiverse-Core",
         permissions = {

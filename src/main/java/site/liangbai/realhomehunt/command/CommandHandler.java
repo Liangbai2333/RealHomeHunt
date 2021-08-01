@@ -25,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import site.liangbai.realhomehunt.command.subcommand.ISubCommand;
 import site.liangbai.realhomehunt.command.subcommand.impl.*;
 import site.liangbai.realhomehunt.command.subcommand.impl.admin.AdminCommand;
-import site.liangbai.realhomehunt.locale.impl.Locale;
+import site.liangbai.realhomehunt.api.locale.impl.Locale;
 import site.liangbai.realhomehunt.util.Locales;
 
 import java.util.ArrayList;

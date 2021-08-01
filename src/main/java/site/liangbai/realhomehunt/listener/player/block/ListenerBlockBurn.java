@@ -23,10 +23,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBurnEvent;
 import site.liangbai.lrainylib.annotation.Plugin;
-import site.liangbai.realhomehunt.manager.ResidenceManager;
-import site.liangbai.realhomehunt.residence.Residence;
-import site.liangbai.realhomehunt.residence.attribute.IAttributable;
-import site.liangbai.realhomehunt.residence.attribute.impl.BurnAttribute;
+import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
+import site.liangbai.realhomehunt.api.residence.Residence;
+import site.liangbai.realhomehunt.api.residence.attribute.IAttributable;
+import site.liangbai.realhomehunt.api.residence.attribute.impl.BurnAttribute;
 
 @Plugin.EventSubscriber
 public final class ListenerBlockBurn implements Listener {
