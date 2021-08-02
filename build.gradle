@@ -1,17 +1,16 @@
 buildscript {
     repositories {
-        maven { url = 'https://files.minecraftforge.net/maven' }
-        jcenter()
+        maven { url = 'https://maven.minecraftforge.net' }
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
     }
 }
 
 plugins {
     id 'java'
-    id 'org.cadixdev.licenser' version '0.5.0'
+    id 'org.cadixdev.licenser' version '0.6.1'
 }
 
 apply plugin: 'net.minecraftforge.gradle'
@@ -19,7 +18,12 @@ apply plugin: 'net.minecraftforge.gradle'
 group = 'site.liangbai'
 version = '1.2.1'
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+
+println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
+minecraft {
+    mappings channel: 'official', version: "${minecraft_version}"
+}
 
 repositories {
     maven { url "https://repo2s.ptms.ink/repository/maven-releases/" }
@@ -34,8 +38,8 @@ repositories {
     }
 }
 
-minecraft {
-    mappings channel: 'official', version: "${minecraft_version}"
+configurations {
+    implementation.extendsFrom shaded
 }
 
 dependencies {
@@ -45,6 +49,9 @@ dependencies {
 
     implementation fg.deobf("curse.maven:crafting_dead-${crafting_dead_project_id}:${crafting_dead_file_id}")
 
+    // https://mvnrepository.com/artifact/com.dieselpoint/norm
+    shaded group: 'com.dieselpoint', name: 'norm', version: '1.0.4'
+
     implementation fileTree(dir: 'libs', includes: ['*.jar'])
     annotationProcessor fileTree(dir: 'libs', includes: ['*.jar'])
 }
@@ -52,13 +59,19 @@ dependencies {
 jar {
     manifest {
         attributes([
-                "Implementation-Project"    : project.name,
-                "Implementation-Version"  : project.version,
-                "Implementation-Author"   : "Liangbai",
+                "Implementation-Project": project.name,
+                "Implementation-Version": project.version,
+                "Implementation-Author": "Liangbai",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
                 "Implementation-Builder": System.properties.getProperty('user.name'),
                 "Implementation-Os": System.properties.getProperty('os.name') + System.properties.getProperty('os.arch') + System.properties.getProperty('os.version')
         ])
+    }
+
+    from {
+        configurations.shaded.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
     }
 }
 
