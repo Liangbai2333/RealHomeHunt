@@ -79,7 +79,7 @@ command:
   admin:
     help:
       - "&e=================================="
-      - "{prefix}&2/{0} import <YAML文件夹/数据库文件名 (不得有空格)> <是否覆盖(true/false)> <清除原数据(true/false)> &e - 导入一个YAML文件夹/数据库文件的内容到当前存储系统中"
+      - "{prefix}&2/{0} import <YAML文件夹/数据库文件名 (不得有空格)> <清除原数据(true/false)> &e - 导入一个YAML文件夹/数据库文件的内容到当前存储系统中"
     import:
       usage: "&c使用方法: /{0} import <文件夹/数据库文件名> <清除原数据(true/false)>"
       unknownParam4: "&c第四个参数必须为 <true/false>"

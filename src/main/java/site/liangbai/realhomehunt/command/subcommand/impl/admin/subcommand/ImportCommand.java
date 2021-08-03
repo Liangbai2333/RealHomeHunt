@@ -35,7 +35,7 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 public final class ImportCommand implements ISubCommand {
-    private static final Pattern booleanPattern = Pattern.compile("true|false");
+    private static final Pattern BOOLEAN_PATTERN = Pattern.compile("true|false");
 
     @Override
     public void execute(CommandSender sender, String label, String[] args) {
@@ -47,7 +47,7 @@ public final class ImportCommand implements ISubCommand {
             return;
         }
 
-        if (!booleanPattern.matcher(args[3]).matches()) {
+        if (!BOOLEAN_PATTERN.matcher(args[3]).matches()) {
             sender.sendMessage(locale.asString("command.admin.import.unknownParam4"));
 
             return;
@@ -66,7 +66,12 @@ public final class ImportCommand implements ISubCommand {
         String storageType = ResidenceManager.getStorageType().name();
 
         if (file.isFile()) {
-            SqliteStorage storage = new SqliteStorage(RealHomeHunt.plugin, Config.storage.sqliteSetting);
+            Config.StorageSetting.SqliteSetting setting = new Config.StorageSetting.SqliteSetting();
+
+            setting.onlyInPluginFolder = true;
+            setting.databaseFile = args[2];
+
+            SqliteStorage storage = new SqliteStorage(RealHomeHunt.plugin, setting);
 
             if (cleanOld) {
                 ResidenceManager.getResidences().forEach(Residence::remove);
@@ -81,10 +86,12 @@ public final class ImportCommand implements ISubCommand {
             ResidenceManager.getResidences().forEach(Residence::save);
 
             sender.sendMessage(locale.asString("command.admin.import.saveToStorage", storageType, residenceList.size(), storage.count()));
+
+            return;
         }
 
         if (file.isDirectory()) {
-            YamlStorage storage = new YamlStorage(RealHomeHunt.plugin, file.getName());
+            YamlStorage storage = new YamlStorage(RealHomeHunt.plugin, args[2]);
 
             if (cleanOld) {
                 ResidenceManager.getResidences().forEach(Residence::remove);
