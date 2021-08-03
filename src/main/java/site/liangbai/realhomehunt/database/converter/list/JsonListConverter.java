@@ -19,6 +19,7 @@
 package site.liangbai.realhomehunt.database.converter.list;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
 import javax.persistence.AttributeConverter;
@@ -33,7 +34,24 @@ public abstract class JsonListConverter<X extends IJsonEntity<X>> implements Att
     public String convertToDatabaseColumn(List<X> attribute) {
         JsonArray jsonArray = new JsonArray();
 
-        attribute.forEach(it -> jsonArray.add(it.convertToDatabaseColumn(it)));
+        JsonParser parser = new JsonParser();
+        attribute.forEach(it -> {
+            JsonElement jsonElement = parser.parse(it.convertToDatabaseColumn(it));
+
+            if (jsonElement == null) {
+                throw new IllegalArgumentException("convert value must be a json element text.");
+            }
+
+            if (jsonElement.isJsonObject()) {
+                jsonArray.add(jsonElement.getAsJsonObject());
+            } else if (jsonElement.isJsonPrimitive()) {
+                jsonArray.add(jsonElement.getAsJsonPrimitive());
+            } else if (jsonElement.isJsonArray()) {
+                jsonArray.add(jsonElement.getAsJsonArray());
+            } else if (jsonElement.isJsonNull()) {
+                throw new IllegalArgumentException("Json element could not be null.");
+            }
+        });
 
         return jsonArray.toString();
     }
@@ -45,7 +63,7 @@ public abstract class JsonListConverter<X extends IJsonEntity<X>> implements Att
         List<X> list = new ArrayList<>();
 
         jsonArray.forEach(it -> {
-            String jsonText = it.getAsString();
+            String jsonText = it.toString();
 
             list.add(covertJsonToEntityAttribute(jsonText));
         });
