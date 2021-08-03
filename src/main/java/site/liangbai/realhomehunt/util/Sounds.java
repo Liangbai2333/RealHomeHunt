@@ -40,7 +40,7 @@ public final class Sounds {
 
                 alreadyCount++;
             }
-        }.runTaskTimer(RealHomeHunt.plugin, 0, (long) (delaySeconds * 20));
+        }.runTaskTimer(RealHomeHunt.getInst(), 0, (long) (delaySeconds * 20));
     }
 
     public static void playDragonAmbientSound(Player player, int count, double delaySeconds) {

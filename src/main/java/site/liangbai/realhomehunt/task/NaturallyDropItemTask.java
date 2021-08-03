@@ -43,6 +43,6 @@ public class NaturallyDropItemTask extends BukkitRunnable {
     }
 
     public static void setup(List<ItemStack> dropItems, Location dropLocation) {
-        new NaturallyDropItemTask(dropItems, dropLocation).runTaskLater(RealHomeHunt.plugin, 1);
+        new NaturallyDropItemTask(dropItems, dropLocation).runTaskLater(RealHomeHunt.getInst(), 1);
     }
 }

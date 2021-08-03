@@ -32,7 +32,7 @@ public final class ImportTabCompiler implements ISubTabCompiler {
     @Override
     public List<String> handle(CommandSender sender, int length, String[] args) {
         if (length == 3) {
-            Plugin plugin = RealHomeHunt.plugin;
+            Plugin plugin = RealHomeHunt.getInst();
 
             File folder = plugin.getDataFolder();
 

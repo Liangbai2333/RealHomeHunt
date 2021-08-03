@@ -86,14 +86,14 @@ public final class DynamicActionBar implements IActionBar, Cancellable {
                 }
 
             }
-        }.runTaskTimer(RealHomeHunt.plugin, 0, 1);
+        }.runTaskTimer(RealHomeHunt.getInst(), 0, 1);
     }
 
     @Override
     public void show(Player player, long mills) {
         show(player);
 
-        Bukkit.getScheduler().runTaskLater(RealHomeHunt.plugin, () -> clear(player), mills);
+        Bukkit.getScheduler().runTaskLater(RealHomeHunt.getInst(), () -> clear(player), mills);
     }
 
     @Override

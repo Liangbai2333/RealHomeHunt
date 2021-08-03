@@ -38,11 +38,11 @@ public final class ReloadCommand implements ISubCommand {
             return;
         }
 
-        Config.init(RealHomeHunt.plugin);
+        Config.init(RealHomeHunt.getInst());
 
-        LocaleManager.init(RealHomeHunt.plugin);
+        LocaleManager.init(RealHomeHunt.getInst());
 
-        ResidenceManager.init(RealHomeHunt.plugin, Config.storage.type);
+        ResidenceManager.init(RealHomeHunt.getInst(), Config.storage.type);
 
         sender.sendMessage(locale.asString("command.reload.success"));
     }

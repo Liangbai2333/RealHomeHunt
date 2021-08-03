@@ -67,13 +67,13 @@ import site.liangbai.realhomehunt.util.Console;
         }
 )
 public final class RealHomeHunt extends JavaPlugin {
-    public static RealHomeHunt plugin;
+    private static RealHomeHunt inst;
 
     private static final String FORGE_EVENT_BRIDGE_MOD_ID = "forgeeventbridge";
 
     @Override
     public void onEnable() {
-        plugin = this;
+        inst = this;
 
         checkForgeEventBridgeInst();
 
@@ -99,6 +99,10 @@ public final class RealHomeHunt extends JavaPlugin {
         saveResidences();
 
         cancelTasks();
+    }
+
+    public static RealHomeHunt getInst() {
+        return inst;
     }
 
     public void saveResidences() {
@@ -144,6 +148,6 @@ public final class RealHomeHunt extends JavaPlugin {
     }
 
     private void processSuccess() {
-        Console.sendRawMessage(ChatColor.GREEN + "Succeed in enabling " + getName() + " v" + getDescription().getVersion() + " plugin, author: " + getDescription().getAuthors() + ".");
+        Console.sendRawMessage(ChatColor.GREEN + "Succeed in enabling " + getName() + " v" + getDescription().getVersion() + " plugin, unique author: Liangbai.");
     }
 }

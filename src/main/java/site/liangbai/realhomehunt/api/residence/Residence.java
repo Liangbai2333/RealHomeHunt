@@ -274,7 +274,7 @@ public final class Residence implements ConfigurationSerializable {
     public void addAttack(String attack) {
         attacks.add(attack);
 
-        new UnloadPlayerAttackTask(this, attack).runTaskLater(RealHomeHunt.plugin, Config.unloadPlayerAttackMills);
+        new UnloadPlayerAttackTask(this, attack).runTaskLater(RealHomeHunt.getInst(), Config.unloadPlayerAttackMills);
     }
 
     public boolean hasAttack(String attack) {
@@ -292,7 +292,7 @@ public final class Residence implements ConfigurationSerializable {
             Sounds.playLevelUpSound(member, 3, 0.5);
         });
 
-        new UnloadWarnTask(this).runTaskLater(RealHomeHunt.plugin, Config.unloadWarnMills);
+        new UnloadWarnTask(this).runTaskLater(RealHomeHunt.getInst(), Config.unloadWarnMills);
     }
 
     @Transient

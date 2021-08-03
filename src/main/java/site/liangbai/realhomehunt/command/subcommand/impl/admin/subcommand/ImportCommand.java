@@ -55,7 +55,7 @@ public final class ImportCommand implements ISubCommand {
 
         boolean cleanOld = Boolean.parseBoolean(args[3]);
 
-        File file = new File(RealHomeHunt.plugin.getDataFolder(), args[2]);
+        File file = new File(RealHomeHunt.getInst().getDataFolder(), args[2]);
 
         if (!file.exists()) {
             sender.sendMessage(locale.asString("command.admin.import.unknownFile", file.getName()));
@@ -71,7 +71,7 @@ public final class ImportCommand implements ISubCommand {
             setting.onlyInPluginFolder = true;
             setting.databaseFile = args[2];
 
-            SqliteStorage storage = new SqliteStorage(RealHomeHunt.plugin, setting);
+            SqliteStorage storage = new SqliteStorage(RealHomeHunt.getInst(), setting);
 
             if (cleanOld) {
                 ResidenceManager.getResidences().forEach(Residence::remove);
@@ -91,7 +91,7 @@ public final class ImportCommand implements ISubCommand {
         }
 
         if (file.isDirectory()) {
-            YamlStorage storage = new YamlStorage(RealHomeHunt.plugin, args[2]);
+            YamlStorage storage = new YamlStorage(RealHomeHunt.getInst(), args[2]);
 
             if (cleanOld) {
                 ResidenceManager.getResidences().forEach(Residence::remove);

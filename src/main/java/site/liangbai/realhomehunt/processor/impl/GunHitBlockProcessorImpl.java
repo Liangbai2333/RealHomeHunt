@@ -119,7 +119,7 @@ public class GunHitBlockProcessorImpl implements IGunHitBlockProcessor {
 
             Blocks.sendBreakAnimationPacket(damageCache.getId(), damageCache.getBlock(), blockSit);
 
-            new UnloadDamageCacheTask(damageCachePool, damageCache).runTaskLater(RealHomeHunt.plugin, Config.maxWaitMills);
+            new UnloadDamageCacheTask(damageCachePool, damageCache).runTaskLater(RealHomeHunt.getInst(), Config.maxWaitMills);
         }
 
         if (!residence.hasAttack(player.getName())) {
