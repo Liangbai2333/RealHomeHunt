@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /*
-Base type should be not use it.
+Base type should be not used.
  */
 public abstract class JsonListConverter<X extends IJsonEntity<X>> implements AttributeConverter<List<X>, String> {
     @Override

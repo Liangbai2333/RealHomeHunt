@@ -54,6 +54,11 @@ public final class AttributeMap {
         map.values().forEach(ConfigurationSerialization::registerClass);
     }
 
+    @SuppressWarnings("unchecked")
+    public static <T> Class<IAttributable<T>> getMapWithType(String type) {
+        return (Class<IAttributable<T>>) getMap(type);
+    }
+
     public static Class<? extends IAttributable<?>> getMap(String type) {
         return map.get(type);
     }

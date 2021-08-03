@@ -98,7 +98,7 @@ public abstract class BooleanAttribute implements IAttributable<Boolean> {
     public String convertToDatabaseColumn(IAttributable<Boolean> attribute) {
         JsonObject jsonObject = new JsonObject();
 
-        jsonObject.addProperty("target", attribute.getClass().getName());
+        jsonObject.addProperty("target", attribute.getName());
 
         jsonObject.addProperty("value", value);
 
