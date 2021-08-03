@@ -109,7 +109,7 @@ public final class YamlStorage implements IStorage {
     }
 
     @Override
-    public int count() {
+    public long count() {
         return playerData.length;
     }
 }

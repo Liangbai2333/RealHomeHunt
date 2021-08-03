@@ -18,34 +18,26 @@
 
 package site.liangbai.realhomehunt.storage.impl;
 
+import com.dieselpoint.norm.Database;
 import org.bukkit.plugin.Plugin;
 import site.liangbai.realhomehunt.config.Config;
-import site.liangbai.realhomehunt.util.Jdbc;
-
-import java.sql.Connection;
-import java.sql.SQLException;
 
 public final class SqliteStorage extends SqlStorage {
 
-    private final Config.StorageSetting.SqliteSetting setting;
-
-    private final Plugin plugin;
+    private final Database database;
 
     public SqliteStorage(Plugin plugin, Config.StorageSetting.SqliteSetting setting) {
-        Jdbc.init();
+        database = new Database();
 
-        this.plugin = plugin;
-        this.setting = setting;
+        String url = setting.onlyInPluginFolder ? "jdbc:sqlite:" + plugin.getDataFolder().getAbsolutePath() + "/" + setting.databaseFile : "jdbc:sqlite:" + setting.databaseFile;
+        database.setDriverClassName("org.sqlite.JDBC");
+        database.setJdbcUrl(url);
 
         initTable();
     }
 
     @Override
-    public Connection getConnection() throws SQLException {
-        if (setting.onlyInPluginFolder) {
-            return Jdbc.getConnection(plugin, setting.databaseFile);
-        } else {
-            return Jdbc.getConnection(setting.databaseFile);
-        }
+    public Database getDatabase() {
+        return database;
     }
 }

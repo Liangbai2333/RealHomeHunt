@@ -62,7 +62,7 @@ public final class ListenerPlayerToggleSneak implements Listener {
             return;
         }
 
-        if (!residence.canWarn()) {
+        if (!residence.isCanWarn()) {
             player.sendMessage(locale.asString("action.warn.waitMessage"));
 
             return;

@@ -74,7 +74,7 @@ public final class ResidenceManager {
 
         Console.sendRawMessage(ChatColor.GREEN + "Player residence data load info: ");
 
-        int count = storage.count();
+        long count = storage.count();
 
         Console.sendRawMessage(ChatColor.GREEN + "  count: " + count);
 

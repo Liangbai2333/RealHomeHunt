@@ -284,20 +284,6 @@ public final class Config {
 
         storage.type = StorageType.matchStorageType(type);
 
-        ConfigurationSection tableSection = storageSection.getConfigurationSection("table");
-
-        if (tableSection == null) throw new IllegalStateException("can not load config part: storage.table");
-
-        StorageSetting.TableSetting tableSetting = new StorageSetting.TableSetting();
-
-        String residenceTable = tableSection.getString("residenceTable", "residences");
-
-        if (residenceTable == null) throw new IllegalStateException("can not load config part: storage.table.residenceTable");
-
-        tableSetting.residenceTable = residenceTable;
-
-        storage.tableSetting = tableSetting;
-
         ConfigurationSection sqliteSection = storageSection.getConfigurationSection("sqlite");
 
         if (sqliteSection == null) throw new IllegalStateException("can not load config part: storage.sqlite");
@@ -416,15 +402,9 @@ public final class Config {
     public static final class StorageSetting {
         public StorageType type;
 
-        public TableSetting tableSetting;
-
         public SqliteSetting sqliteSetting;
 
         public MySqlSetting mySqlSetting;
-
-        public static final class TableSetting {
-            public String residenceTable;
-        }
 
         public static final class SqliteSetting {
             public boolean onlyInPluginFolder;

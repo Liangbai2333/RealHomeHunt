@@ -29,5 +29,5 @@ public interface IStorage {
 
     List<Residence> loadAll();
 
-    int count();
+    long count();
 }

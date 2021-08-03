@@ -18,26 +18,27 @@
 
 package site.liangbai.realhomehunt.storage.impl;
 
+import com.dieselpoint.norm.Database;
 import site.liangbai.realhomehunt.config.Config;
-import site.liangbai.realhomehunt.util.Jdbc;
-
-import java.sql.Connection;
-import java.sql.SQLException;
 
 public final class MySqlStorage extends SqlStorage {
-    private final Config.StorageSetting.MySqlSetting setting;
+    private final Database database;
 
     public MySqlStorage(Config.StorageSetting.MySqlSetting setting) {
-        Jdbc.init();
+        database = new Database();
 
-        this.setting = setting;
+        database.setDriverClassName("com.mysql.jdbc.Driver");
 
+        database.setJdbcUrl("jdbc:mysql://" + setting.address + ":" + setting.port + "/" + setting.options);
+
+        database.setUser(setting.user);
+        database.setPassword(setting.password);
 
         initTable();
     }
 
     @Override
-    public Connection getConnection() throws SQLException {
-        return Jdbc.getConnection(setting.address, setting.port, setting.user, setting.password, setting.options);
+    public Database getDatabase() {
+        return database;
     }
 }

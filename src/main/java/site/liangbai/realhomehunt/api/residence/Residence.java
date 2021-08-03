@@ -33,6 +33,7 @@ import site.liangbai.realhomehunt.api.residence.attribute.IAttributable;
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
 import site.liangbai.realhomehunt.config.Config;
 import site.liangbai.realhomehunt.database.converter.LocationConverter;
+import site.liangbai.realhomehunt.database.converter.list.AttributableListConverter;
 import site.liangbai.realhomehunt.database.converter.list.IJsonEntity;
 import site.liangbai.realhomehunt.database.converter.list.IgnoreBlockInfoListConverter;
 import site.liangbai.realhomehunt.database.converter.list.StringListConverter;
@@ -49,6 +50,7 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "residences")
 public final class Residence implements ConfigurationSerializable {
+
     @Id
     private String owner;
 
@@ -67,13 +69,12 @@ public final class Residence implements ConfigurationSerializable {
     @Convert(converter = IgnoreBlockInfoListConverter.class)
     private List<IgnoreBlockInfo> ignoreBlockInfoList;
 
-    @Convert(converter = AttributeConverter.class)
+    @Convert(converter = AttributableListConverter.class)
     private List<IAttributable<?>> attributes;
 
     @Transient
     private final List<String> attacks = new ArrayList<>();
 
-    @Transient
     private boolean canWarn = true;
 
     private Residence(Location left, Location right, Player owner) {
@@ -105,8 +106,83 @@ public final class Residence implements ConfigurationSerializable {
     }
 
     public Residence() {
-
     }
+
+    // Data
+
+    @Id
+    public String getOwner() {
+        return owner;
+    }
+
+    @Convert(converter = LocationConverter.class)
+    public Location getLeft() {
+        return left;
+    }
+
+    @Convert(converter = LocationConverter.class)
+    public Location getRight() {
+        return right;
+    }
+
+    @Convert(converter = LocationConverter.class)
+    public Location getSpawn() {
+        return spawn;
+    }
+
+    @Convert(converter = StringListConverter.class)
+    public List<String> getAdministrators() {
+        return administrators;
+    }
+
+    @Convert(converter = IgnoreBlockInfoListConverter.class)
+    public List<IgnoreBlockInfo> getIgnoreBlockInfoList() {
+        return ignoreBlockInfoList;
+    }
+
+    @Convert(converter = AttributableListConverter.class)
+    public List<IAttributable<?>> getAttributes() {
+        return attributes;
+    }
+
+    @Transient
+    public boolean isCanWarn() {
+        return canWarn;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    public void setLeft(Location left) {
+        this.left = left;
+    }
+
+    public void setRight(Location right) {
+        this.right = right;
+    }
+
+    public void setSpawn(Location spawn) {
+        this.spawn = spawn;
+    }
+
+    public void setAdministrators(List<String> administrators) {
+        this.administrators = administrators;
+    }
+
+    public void setIgnoreBlockInfoList(List<IgnoreBlockInfo> ignoreBlockInfoList) {
+        this.ignoreBlockInfoList = ignoreBlockInfoList;
+    }
+
+    public void setAttributes(List<IAttributable<?>> attributes) {
+        this.attributes = attributes;
+    }
+
+    public void setCanWarn(boolean canWarn) {
+        this.canWarn = canWarn;
+    }
+
+    // Method
 
     @NotNull
     public IgnoreBlockInfo getIgnoreBlockInfo(Config.BlockSetting.BlockIgnoreSetting.IgnoreBlockInfo ignoreBlockInfo) {
@@ -219,14 +295,7 @@ public final class Residence implements ConfigurationSerializable {
         new UnloadWarnTask(this).runTaskLater(RealHomeHunt.plugin, Config.unloadWarnMills);
     }
 
-    public boolean canWarn() {
-        return canWarn;
-    }
-
-    public void setCanWarn(boolean canWarn) {
-        this.canWarn = canWarn;
-    }
-
+    @Transient
     public List<Player> getOnlineMembers() {
         List<Player> players = new ArrayList<>();
 
@@ -246,28 +315,8 @@ public final class Residence implements ConfigurationSerializable {
         attacks.remove(attack);
     }
 
-    public String getOwner() {
-        return owner;
-    }
-
-    public Location getRight() {
-        return right;
-    }
-
-    public Location getLeft() {
-        return left;
-    }
-
-    public Location getSpawn() {
-        return spawn;
-    }
-
-    public boolean isOwner(String player) {
-        return getOwner().equals(player);
-    }
-
-    public void setSpawn(@NotNull Location spawn) {
-        this.spawn = spawn.clone();
+    public boolean isOwner(String owner) {
+        return getOwner().equals(owner);
     }
 
     public boolean isAdministrator(Player player) {
@@ -282,10 +331,6 @@ public final class Residence implements ConfigurationSerializable {
         if (isAdministrator(player)) return;
 
         administrators.add(player);
-    }
-
-    public List<String> getAdministrators() {
-        return administrators;
     }
 
     public void removeAdministrator(String player) {

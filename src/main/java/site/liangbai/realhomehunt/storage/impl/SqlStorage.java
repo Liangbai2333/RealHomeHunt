@@ -18,159 +18,69 @@
 
 package site.liangbai.realhomehunt.storage.impl;
 
-import site.liangbai.realhomehunt.config.Config;
+import com.dieselpoint.norm.Database;
+import com.dieselpoint.norm.Query;
+import com.dieselpoint.norm.sqlmakers.StandardSqlMaker;
 import site.liangbai.realhomehunt.api.residence.Residence;
 import site.liangbai.realhomehunt.storage.IStorage;
-import site.liangbai.realhomehunt.util.Serialization;
+import site.liangbai.realhomehunt.util.SqlMaker;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.function.Consumer;
 
 public abstract class SqlStorage implements IStorage {
-    private static final String INIT_TABLE_SQL = "create table if not exists %s (residence blob not null, owner text not null)";
 
-    private static final String QUERY_RESIDENCES_SQL = "select * from %s";
+    private static final List<String> owners = new ArrayList<>();
 
-    private static final String INSERT_RESIDENCE_SQL = "insert into %s (residence, owner) values (?, ?)";
+    private long count;
 
-    private static final String UPDATE_RESIDENCE_SQL = "update %s set residence = ? where owner = ?";
-
-    private static final String DELETE_RESIDENCE_SQL = "delete from %s where owner = ?";
-
-    private final List<String> owners = new ArrayList<>();
-
-    private int count;
-
-    public abstract Connection getConnection() throws SQLException;
-
-    private void handleConnection(Consumer<Connection> connectionConsumer) {
-        Connection connection = null;
-
-        try {
-            connection = getConnection();
-
-            connectionConsumer.accept(connection);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private void handlePrepared(String sql, Consumer<PreparedStatement> connectionConsumer) {
-        handleConnection(it -> {
-            PreparedStatement statement = null;
-
-            try {
-                statement = it.prepareStatement(sql);
-
-                connectionConsumer.accept(statement);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    if (statement != null) {
-                        statement.close();
-                    }
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
+    public abstract Database getDatabase();
 
     public void initTable() {
-        handlePrepared(String.format(INIT_TABLE_SQL, Config.storage.tableSetting.residenceTable),it -> {
-            try {
-                it.executeUpdate();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        });
+
+        StandardSqlMaker sqlMaker = ((StandardSqlMaker) getDatabase().getSqlMaker());
+
+        SqlMaker proxy = new SqlMaker(sqlMaker);
+
+        new Query(getDatabase()).sql(proxy.getCreateTableIfNotExistsSql(Residence.class)).execute();
     }
 
     @Override
     public void save(Residence residence) {
         if (!owners.contains(residence.getOwner())) {
-            handlePrepared(String.format(INSERT_RESIDENCE_SQL, Config.storage.tableSetting.residenceTable), it -> doUpdateResidence(it, residence, false));
+            getDatabase().insert(residence);
+
+            owners.add(residence.getOwner());
 
             return;
         }
 
-        handlePrepared(String.format(UPDATE_RESIDENCE_SQL, Config.storage.tableSetting.residenceTable), it -> doUpdateResidence(it, residence, true));
-    }
-
-    private void doUpdateResidence(PreparedStatement statement, Residence residence, boolean update) {
-        try {
-            statement.setBytes(1, Serialization.toByteArray(residence));
-
-            statement.setString(2, residence.getOwner());
-
-            statement.executeUpdate();
-
-            if (!update) owners.add(residence.getOwner());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        getDatabase().update(residence);
     }
 
     @Override
     public void remove(Residence residence) {
-        handlePrepared(String.format(DELETE_RESIDENCE_SQL, Config.storage.tableSetting.residenceTable), it -> {
-            try {
-                it.setString(1, residence.getOwner());
+        if (owners.contains(residence.getOwner())) {
+            getDatabase().delete(residence);
 
-                it.executeUpdate();
-
-                owners.remove(residence.getOwner());
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        });
+            owners.remove(residence.getOwner());
+        }
     }
 
     @Override
     public List<Residence> loadAll() {
-        List<Residence> list = new LinkedList<>();
+        List<Residence> list = getDatabase().results(Residence.class);
 
-        handlePrepared(String.format(QUERY_RESIDENCES_SQL, Config.storage.tableSetting.residenceTable), it -> {
-            try {
-                ResultSet resultSet = it.executeQuery();
-                while (resultSet.next()) {
-                    byte[] residenceBytes = resultSet.getBytes("residence");
-
-                    String owner = resultSet.getString("owner");
-
-                    owners.add(owner);
-
-                    Residence residence = Serialization.fromByteArray(residenceBytes);
-
-                    count++;
-
-                    list.add(residence);
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        });
+        count = list.stream()
+                .map(Residence::getOwner)
+                .peek(owners::add)
+                .count();
 
         return list;
     }
 
     @Override
-    public int count() {
+    public long count() {
         return count;
     }
 }
