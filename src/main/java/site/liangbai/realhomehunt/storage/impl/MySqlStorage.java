@@ -32,6 +32,7 @@ public final class MySqlStorage extends SqlStorage {
 
         this.setting = setting;
 
+
         initTable();
     }
 

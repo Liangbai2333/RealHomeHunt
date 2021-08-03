@@ -19,10 +19,11 @@
 package site.liangbai.realhomehunt.api.residence.attribute;
 
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import site.liangbai.realhomehunt.database.converter.list.IJsonEntity;
 
 import java.util.List;
 
-public interface IAttributable<T> extends ConfigurationSerializable {
+public interface IAttributable<T> extends ConfigurationSerializable, IJsonEntity<IAttributable<T>> {
     T get();
 
     void set(T value);

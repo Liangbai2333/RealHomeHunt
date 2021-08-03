@@ -21,10 +21,14 @@ package site.liangbai.realhomehunt.util;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import site.liangbai.realhomehunt.api.residence.Residence;
 
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 
 public final class Locations {
     public static boolean isInResidence(Location location, Residence residence) {
@@ -103,41 +107,31 @@ public final class Locations {
         return builder.build();
     }
 
-    public static LocationSortInfo sort(Location left, Location right) {
-        double[] dim = new double[2];
+    public static List<Block> getRegionBlocks(Location left, Location right) {
+        if (!Objects.equals(left.getWorld(), right.getWorld())) {
+            throw new IllegalStateException("left point's world must be same as the right's.");
+        }
 
-        dim[0] = left.getX();
-        dim[1] = right.getX();
+        List<Block> blockList = new LinkedList<>();
 
-        Arrays.sort(dim);
+        int x1 = left.getBlockX();
+        int x2 = right.getBlockX();
 
-        double minX = dim[0];
+        int y1 = left.getBlockY();
+        int y2 = right.getBlockY();
 
-        double maxX = dim[1];
+        int z1 = left.getBlockZ();
+        int z2 = right.getBlockZ();
 
-        dim[0] = left.getY();
-        dim[1] = right.getY();
+        for (int x = Math.min(x1, x2); x <= Math.max(x1, x2); x++) {
+            for (int y = Math.min(y1, y2); y <= Math.max(y1, y2); y++) {
+                for (int z = Math.min(z1, z2); z <= Math.max(z1, z2); z++) {
+                    blockList.add(left.getWorld().getBlockAt(x, y, z));
+                }
+            }
+        }
 
-        Arrays.sort(dim);
-
-        double minY = dim[0];
-
-        double maxY = dim[1];
-
-        dim[0] = left.getZ();
-        dim[1] = right.getZ();
-
-        Arrays.sort(dim);
-
-        double minZ = dim[0];
-
-        double maxZ = dim[1];
-
-        Location min = new Location(left.getWorld(), minX, minY, minZ);
-
-        Location max = new Location(right.getWorld(), maxX, maxY, maxZ);
-
-        return new LocationSortInfo(min, max);
+        return blockList;
     }
 
     public static void teleportAfterChunkLoaded(Player player, Location location) {
@@ -148,25 +142,6 @@ public final class Locations {
         if (!chunk.isLoaded()) chunk.load();
 
         player.teleport(location);
-    }
-
-    public static final class LocationSortInfo {
-        private final Location min;
-
-        private final Location max;
-
-        public LocationSortInfo(Location min, Location max) {
-            this.min = min;
-            this.max = max;
-        }
-
-        public Location getMax() {
-            return max;
-        }
-
-        public Location getMin() {
-            return min;
-        }
     }
 
     public static final class DistanceInfo {

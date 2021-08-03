@@ -22,13 +22,12 @@ import net.minecraft.server.v1_16_R3.BlockPosition;
 import net.minecraft.server.v1_16_R3.PacketPlayOutBlockBreakAnimation;
 import net.minecraft.server.v1_16_R3.WorldServer;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.type.Door;
 import org.bukkit.craftbukkit.v1_16_R3.CraftWorld;
-import site.liangbai.realhomehunt.config.Config;
 import site.liangbai.realhomehunt.api.residence.Residence;
+import site.liangbai.realhomehunt.config.Config;
 
 public final class Blocks {
     private static int id;
@@ -71,35 +70,15 @@ public final class Blocks {
         return block.getBlockData() instanceof Door;
     }
 
-    public static int containsBlockAndReturnCount(Config.BlockSetting.BlockIgnoreSetting.IgnoreBlockInfo info, Residence residence) {
-        Locations.LocationSortInfo sortInfo = Locations.sort(residence.getLeft(), residence.getRight());
-
-        Location min = sortInfo.getMin();
-
-        Location max = sortInfo.getMax();
-
-        int count = 0;
-
-        for (int x = min.getBlockX(); x < max.getBlockX(); x++) {
-            for (int y = min.getBlockY(); y < max.getBlockY(); y++) {
-                for (int z = min.getBlockZ(); z < max.getBlockZ(); z++) {
-                    Location blockLocation = new Location(min.getWorld(), x, y, z);
-
-                    Block block = blockLocation.getBlock();
-
-                    if (block.getType() == Material.AIR) continue;
-
-                    String name = block.getType().name().toUpperCase();
-
-                    if (info.full != null && !name.equalsIgnoreCase(info.full)) continue;
-
-                    if (!name.startsWith(info.prefix) || !name.endsWith(info.suffix)) continue;
-
-                    count++;
-                }
-            }
-        }
-
-        return count;
+    public static long containsBlockAndReturnCount(Config.BlockSetting.BlockIgnoreSetting.IgnoreBlockInfo info, Residence residence) {
+        return Locations.getRegionBlocks(residence.getLeft(), residence.getRight()).stream()
+                .parallel()
+                .map(Block::getType)
+                .filter(it -> !it.isAir())
+                .filter(it -> it.name().equalsIgnoreCase(info.full) ||
+                        (info.prefix != null && it.name().startsWith(info.prefix)) ||
+                        (info.suffix != null && it.name().endsWith(info.suffix))
+                )
+                .count();
     }
 }

@@ -18,6 +18,8 @@
 
 package site.liangbai.realhomehunt.api.residence;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
@@ -30,32 +32,48 @@ import site.liangbai.realhomehunt.api.locale.manager.LocaleManager;
 import site.liangbai.realhomehunt.api.residence.attribute.IAttributable;
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
 import site.liangbai.realhomehunt.config.Config;
+import site.liangbai.realhomehunt.database.converter.LocationConverter;
+import site.liangbai.realhomehunt.database.converter.list.IJsonEntity;
+import site.liangbai.realhomehunt.database.converter.list.IgnoreBlockInfoListConverter;
+import site.liangbai.realhomehunt.database.converter.list.StringListConverter;
 import site.liangbai.realhomehunt.task.UnloadPlayerAttackTask;
 import site.liangbai.realhomehunt.task.UnloadWarnTask;
 import site.liangbai.realhomehunt.util.Messages;
 import site.liangbai.realhomehunt.util.Sounds;
 import site.liangbai.realhomehunt.util.Titles;
 
+import javax.persistence.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Entity
+@Table(name = "residences")
 public final class Residence implements ConfigurationSerializable {
-    private final Location left;
+    @Id
+    private String owner;
 
-    private final Location right;
+    @Convert(converter = LocationConverter.class)
+    private Location left;
 
-    private final String owner;
+    @Convert(converter = LocationConverter.class)
+    private Location right;
 
+    @Convert(converter = LocationConverter.class)
     private Location spawn;
 
-    private final List<String> administrators;
+    @Convert(converter = StringListConverter.class)
+    private List<String> administrators;
 
-    private final List<IgnoreBlockInfo> ignoreBlockInfoList;
+    @Convert(converter = IgnoreBlockInfoListConverter.class)
+    private List<IgnoreBlockInfo> ignoreBlockInfoList;
 
-    private final List<IAttributable<?>> attributes;
+    @Convert(converter = AttributeConverter.class)
+    private List<IAttributable<?>> attributes;
 
+    @Transient
     private final List<String> attacks = new ArrayList<>();
 
+    @Transient
     private boolean canWarn = true;
 
     private Residence(Location left, Location right, Player owner) {
@@ -84,6 +102,10 @@ public final class Residence implements ConfigurationSerializable {
         if (map.containsKey("spawn")) {
             setSpawn((Location) map.get("spawn"));
         }
+    }
+
+    public Residence() {
+
     }
 
     @NotNull
@@ -126,21 +148,27 @@ public final class Residence implements ConfigurationSerializable {
 
     @SuppressWarnings("unchecked")
     @NotNull
-    public <T> IAttributable<T> getAttribute(Class<? extends IAttributable<T>> attribute) throws Throwable {
+    public <T> IAttributable<T> getAttribute(Class<? extends IAttributable<T>> attribute) {
         return (IAttributable<T>) getAttributeWithoutType(attribute);
     }
 
     @NotNull
-    public IAttributable<?> getAttributeWithoutType(Class<? extends IAttributable<?>> attribute) throws Throwable {
-        for (IAttributable<?> iAttributable : attributes) {
-            if (iAttributable.getClass().equals(attribute)) return iAttributable;
-        }
+    public IAttributable<?> getAttributeWithoutType(Class<? extends IAttributable<?>> attribute) {
+        return Objects.requireNonNull(attributes.stream()
+                .filter(it -> it.getClass().equals(attribute))
+                .findFirst()
+                .orElseGet(() -> {
+                    IAttributable<?> iAttributable = null;
+                    try {
+                        iAttributable = attribute.getConstructor().newInstance();
+                    } catch (Throwable e) {
+                        e.printStackTrace();
+                    }
 
-        IAttributable<?> iAttributable = attribute.getConstructor().newInstance();
+                    attributes.add(iAttributable);
 
-        attributes.add(iAttributable);
-
-        return iAttributable;
+                    return iAttributable;
+                }));
     }
 
     public void attackBy(Player attacker) {
@@ -308,8 +336,8 @@ public final class Residence implements ConfigurationSerializable {
         return map;
     }
 
-    public static final class IgnoreBlockInfo implements ConfigurationSerializable {
-        private final String type;
+    public static final class IgnoreBlockInfo implements ConfigurationSerializable, IJsonEntity<IgnoreBlockInfo> {
+        private String type;
 
         private int count;
 
@@ -317,6 +345,10 @@ public final class Residence implements ConfigurationSerializable {
             this.type = type;
         }
 
+        public IgnoreBlockInfo() {
+        }
+
+        @SuppressWarnings("unused")
         public IgnoreBlockInfo(Map<String, Object> map) {
             this.type = (String) map.get("type");
             this.count = (int) map.get("count");
@@ -346,6 +378,26 @@ public final class Residence implements ConfigurationSerializable {
             map.put("count", getCount());
 
             return map;
+        }
+
+        @Override
+        public String convertToDatabaseColumn(IgnoreBlockInfo attribute) {
+            JsonObject jsonObject = new JsonObject();
+
+            jsonObject.addProperty("type", getType());
+            jsonObject.addProperty("count", getCount());
+
+            return jsonObject.toString();
+        }
+
+        @Override
+        public IgnoreBlockInfo convertToEntityAttribute(String dbData) {
+            JsonObject jsonObject = new JsonParser().parse(dbData).getAsJsonObject();
+
+            this.type = jsonObject.get("type").getAsString();
+            this.count = jsonObject.get("count").getAsInt();
+
+            return this;
         }
     }
 

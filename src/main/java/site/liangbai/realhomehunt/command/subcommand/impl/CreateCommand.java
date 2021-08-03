@@ -104,7 +104,7 @@ public final class CreateCommand implements ISubCommand {
 
         if (!sender.hasPermission("rh.unlimited.create") && !preEvent.isCheckBlock()) {
             for (Config.BlockSetting.BlockIgnoreSetting.IgnoreBlockInfo info : Config.block.ignore.ignoreBlockInfoList) {
-                int count = Blocks.containsBlockAndReturnCount(info, residence);
+                long count = Blocks.containsBlockAndReturnCount(info, residence);
 
                 if (count > info.amount) {
                     sender.sendMessage(locale.asString("command.create.containsIgnoreBlock", info.full != null ? info.full : (info.suffix.isEmpty() ? info.prefix : info.suffix)));
