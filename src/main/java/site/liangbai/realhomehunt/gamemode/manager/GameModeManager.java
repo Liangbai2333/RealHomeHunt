@@ -27,8 +27,8 @@ import site.liangbai.realhomehunt.gamemode.IGameMode;
 import site.liangbai.realhomehunt.gamemode.impl.AutoFixGameMode;
 import site.liangbai.realhomehunt.gamemode.impl.RobChestGameMode;
 import site.liangbai.realhomehunt.api.residence.Residence;
-import site.liangbai.realhomehunt.util.callback.ICallBack;
-import site.liangbai.realhomehunt.util.callback.impl.BooleanCallBack;
+import site.liangbai.realhomehunt.util.callback.ICallback;
+import site.liangbai.realhomehunt.util.callback.impl.BooleanCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,8 +41,8 @@ public final class GameModeManager {
         GAME_MODES.add(new RobChestGameMode());
     }
 
-    public static ICallBack<Boolean> submit(Residence residence, Player player, ItemStack gun, Block block, BlockData blockData, DamageCachePool.DamageCache damageCache) {
-        ICallBack<Boolean> callBack = new BooleanCallBack();
+    public static ICallback<Boolean> submit(Residence residence, Player player, ItemStack gun, Block block, BlockData blockData, DamageCachePool.DamageCache damageCache) {
+        ICallback<Boolean> callBack = new BooleanCallback();
 
         GAME_MODES.stream()
                 .filter(IGameMode::isEnabled)

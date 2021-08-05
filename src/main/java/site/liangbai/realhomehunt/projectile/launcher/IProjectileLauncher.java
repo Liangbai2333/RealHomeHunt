@@ -16,18 +16,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.gamemode;
+package site.liangbai.realhomehunt.projectile.launcher;
 
-import org.bukkit.block.Block;
-import org.bukkit.block.data.BlockData;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import site.liangbai.realhomehunt.api.cache.DamageCachePool;
-import site.liangbai.realhomehunt.api.residence.Residence;
-import site.liangbai.realhomehunt.util.callback.ICallback;
+import org.bukkit.util.RayTraceResult;
+import org.bukkit.util.Vector;
+import site.liangbai.realhomehunt.projectile.AbstractProjectile;
 
-public interface IGameMode {
-    boolean isEnabled();
+import java.util.function.Consumer;
 
-    void process(ICallback<Boolean> dropBlockItem, Residence residence, Player player, ItemStack gun, Block block, BlockData blockData, DamageCachePool.DamageCache damageCache);
+public interface IProjectileLauncher {
+    void launch(AbstractProjectile projectile, Vector velocity, Consumer<RayTraceResult> callback);
 }

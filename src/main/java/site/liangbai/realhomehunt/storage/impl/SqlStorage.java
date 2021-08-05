@@ -27,6 +27,8 @@ import site.liangbai.realhomehunt.util.SqlMaker;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public abstract class SqlStorage implements IStorage {
 
@@ -69,12 +71,15 @@ public abstract class SqlStorage implements IStorage {
 
     @Override
     public List<Residence> loadAll() {
-        List<Residence> list = getDatabase().results(Residence.class);
+        List<Residence> list = getDatabase().results(Residence.class).stream()
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
 
-        count = list.stream()
+        list.stream()
                 .map(Residence::getOwner)
-                .peek(owners::add)
-                .count();
+                .forEach(owners::add);
+
+        count = list.size();
 
         return list;
     }

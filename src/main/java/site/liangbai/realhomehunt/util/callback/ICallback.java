@@ -16,20 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.util.callback.impl;
+package site.liangbai.realhomehunt.util.callback;
 
-import site.liangbai.realhomehunt.util.callback.ICallBack;
+public interface ICallback<T> {
+    T get();
 
-public class BooleanCallBack implements ICallBack<Boolean> {
-    private boolean value;
-
-    @Override
-    public Boolean get() {
-        return value;
-    }
-
-    @Override
-    public void set(Boolean value) {
-        this.value = value;
-    }
+    void set(T value);
 }

@@ -16,18 +16,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.gamemode;
+package site.liangbai.realhomehunt.util.callback.impl;
 
-import org.bukkit.block.Block;
-import org.bukkit.block.data.BlockData;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import site.liangbai.realhomehunt.api.cache.DamageCachePool;
-import site.liangbai.realhomehunt.api.residence.Residence;
 import site.liangbai.realhomehunt.util.callback.ICallback;
 
-public interface IGameMode {
-    boolean isEnabled();
+public class BooleanCallback implements ICallback<Boolean> {
+    private boolean value;
 
-    void process(ICallback<Boolean> dropBlockItem, Residence residence, Player player, ItemStack gun, Block block, BlockData blockData, DamageCachePool.DamageCache damageCache);
+    @Override
+    public Boolean get() {
+        return value;
+    }
+
+    @Override
+    public void set(Boolean value) {
+        this.value = value;
+    }
 }

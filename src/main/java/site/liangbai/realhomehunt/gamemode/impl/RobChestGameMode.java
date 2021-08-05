@@ -32,7 +32,7 @@ import site.liangbai.realhomehunt.gamemode.IGameMode;
 import site.liangbai.realhomehunt.api.residence.Residence;
 import site.liangbai.realhomehunt.task.NaturallyDropItemTask;
 import site.liangbai.realhomehunt.util.Chances;
-import site.liangbai.realhomehunt.util.callback.ICallBack;
+import site.liangbai.realhomehunt.util.callback.ICallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ public class RobChestGameMode implements IGameMode {
     }
 
     @Override
-    public void process(ICallBack<Boolean> dropBlockItem, Residence residence, Player player, ItemStack gun, Block block, BlockData blockData, DamageCachePool.DamageCache damageCache) {
+    public void process(ICallback<Boolean> dropBlockItem, Residence residence, Player player, ItemStack gun, Block block, BlockData blockData, DamageCachePool.DamageCache damageCache) {
         BlockState blockState = block.getState();
 
         if (!(blockState instanceof Container)) return;

@@ -39,7 +39,7 @@ import site.liangbai.realhomehunt.api.residence.Residence;
 import site.liangbai.realhomehunt.task.UnloadDamageCacheTask;
 import site.liangbai.realhomehunt.util.Blocks;
 import site.liangbai.realhomehunt.util.Guns;
-import site.liangbai.realhomehunt.util.callback.ICallBack;
+import site.liangbai.realhomehunt.util.callback.ICallback;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -101,7 +101,7 @@ public class GunHitBlockProcessorImpl implements IGunHitBlockProcessor {
 
             BlockData blockData = damageCache.getBlock().getBlockData().clone();
 
-            ICallBack<Boolean> callBack = GameModeManager.submit(residence, player, gun, block, blockData, damageCache);
+            ICallback<Boolean> callBack = GameModeManager.submit(residence, player, gun, block, blockData, damageCache);
 
             Blocks.sendBreakBlockPacket(damageCache.getBlock(), Config.dropItem && callBack.get());
 
