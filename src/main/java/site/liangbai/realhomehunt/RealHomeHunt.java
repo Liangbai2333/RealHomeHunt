@@ -26,22 +26,21 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 import site.liangbai.forgeeventbridge.event.EventBridge;
-import site.liangbai.forgeeventbridge.event.EventHolder;
 import site.liangbai.lrainylib.annotation.Plugin;
 import site.liangbai.lrainylib.annotation.plugin.Info;
 import site.liangbai.lrainylib.annotation.plugin.Permission;
+import site.liangbai.realhomehunt.api.locale.manager.LocaleManager;
+import site.liangbai.realhomehunt.api.residence.Residence;
+import site.liangbai.realhomehunt.api.residence.attribute.map.AttributeMap;
+import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
 import site.liangbai.realhomehunt.command.CommandTabCompiler;
 import site.liangbai.realhomehunt.config.Config;
 import site.liangbai.realhomehunt.listener.forge.player.EventHolderGunHitBlock;
-import site.liangbai.realhomehunt.api.locale.manager.LocaleManager;
-import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
-import site.liangbai.realhomehunt.api.residence.Residence;
-import site.liangbai.realhomehunt.api.residence.attribute.map.AttributeMap;
 import site.liangbai.realhomehunt.task.PlayerMoveToResidenceMessageTask;
 import site.liangbai.realhomehunt.util.Console;
 
 @Plugin(
-        info = @Info(name = "RealHomeHunt", version = "1.2.2-SNAPSHOT", authors = "Liangbai"),
+        info = @Info(name = "RealHomeHunt", version = "1.2.2", authors = "Liangbai"),
         apiVersion = "1.13",
         softDepend = "Multiverse-Core",
         permissions = {
@@ -118,10 +117,8 @@ public final class RealHomeHunt extends JavaPlugin {
     }
 
     private void initForgeEventHolder() {
-        EventHolder<?> gunHitBlockEventHolder = new EventHolderGunHitBlock();
-        gunHitBlockEventHolder.register(EventBridge.builder()
-                .target(GunEvent.HitBlock.class)
-                .build());
+        new EventHolderGunHitBlock().register(EventBridge.builder()
+                .target(GunEvent.HitBlock.class).build());
     }
 
     private void checkForgeEventBridgeInst() {

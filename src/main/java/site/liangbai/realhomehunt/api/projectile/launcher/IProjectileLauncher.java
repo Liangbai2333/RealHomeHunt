@@ -16,11 +16,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.projectile.launcher;
+package site.liangbai.realhomehunt.api.projectile.launcher;
 
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
-import site.liangbai.realhomehunt.projectile.AbstractProjectile;
+import site.liangbai.realhomehunt.api.projectile.AbstractProjectile;
 
 import java.util.function.Consumer;
 

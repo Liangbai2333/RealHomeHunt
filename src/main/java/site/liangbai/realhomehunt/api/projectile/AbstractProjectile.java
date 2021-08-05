@@ -16,14 +16,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.projectile;
+package site.liangbai.realhomehunt.api.projectile;
 
-import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
-import site.liangbai.realhomehunt.projectile.launcher.IProjectileLauncher;
-import site.liangbai.realhomehunt.projectile.launcher.impl.ProjectileLauncherImpl;
+import site.liangbai.realhomehunt.api.projectile.launcher.IProjectileLauncher;
+import site.liangbai.realhomehunt.api.projectile.launcher.impl.ProjectileLauncherImpl;
 
 public abstract class AbstractProjectile {
     public static final IProjectileLauncher PROJECTILE_LAUNCHER_IMPL = new ProjectileLauncherImpl();

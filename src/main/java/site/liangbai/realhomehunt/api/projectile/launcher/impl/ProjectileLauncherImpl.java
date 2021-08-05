@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.projectile.launcher.impl;
+package site.liangbai.realhomehunt.api.projectile.launcher.impl;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -27,8 +27,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 import site.liangbai.realhomehunt.RealHomeHunt;
-import site.liangbai.realhomehunt.projectile.AbstractProjectile;
-import site.liangbai.realhomehunt.projectile.launcher.IProjectileLauncher;
+import site.liangbai.realhomehunt.api.projectile.AbstractProjectile;
+import site.liangbai.realhomehunt.api.projectile.launcher.IProjectileLauncher;
 
 import java.util.Objects;
 import java.util.Optional;

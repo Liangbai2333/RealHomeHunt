@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.projectile;
+package site.liangbai.realhomehunt.api.projectile;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Consumer;

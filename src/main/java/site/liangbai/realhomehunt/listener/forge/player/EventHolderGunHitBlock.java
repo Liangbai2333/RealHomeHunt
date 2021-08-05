@@ -27,9 +27,9 @@ import org.bukkit.inventory.ItemStack;
 import site.liangbai.forgeeventbridge.event.EventHolder;
 import site.liangbai.forgeeventbridge.wrapper.EventWrapper;
 import site.liangbai.forgeeventbridge.wrapper.LocationWrapper;
-import site.liangbai.forgeeventbridge.wrapper.ObjectWrapper;
 import site.liangbai.forgeeventbridge.wrapper.creator.WrapperCreators;
 import site.liangbai.realhomehunt.processor.Processors;
+import site.liangbai.realhomehunt.util.Living;
 
 public class EventHolderGunHitBlock implements EventHolder<EventHolderGunHitBlock.GunHitBlockEventObject> {
     @Override
@@ -38,15 +38,13 @@ public class EventHolderGunHitBlock implements EventHolder<EventHolderGunHitBloc
         
         LocationWrapper locationWrapper = WrapperCreators.LOCATION.create(event.getRayTraceResult().getBlockPos());
 
-        GunHitBlockEventObject eventObject = eventWrapper.as(GunHitBlockEventObject.class);
-
-        ObjectWrapper livingWrapper = WrapperCreators.OBJECT.create(eventObject.getLiving());
-
-        Entity entity = livingWrapper.invokeWrapper("getEntity", WrapperCreators.ENTITY).asEntity();
+        Entity entity = Living.asEntity(event.getLiving());
 
         if (!(entity instanceof Player)) return;
 
         Player player = ((Player) entity);
+
+        GunHitBlockEventObject eventObject = eventWrapper.as(GunHitBlockEventObject.class);
 
         ItemStack gun = eventObject.getItemStack();
 
@@ -58,8 +56,6 @@ public class EventHolderGunHitBlock implements EventHolder<EventHolderGunHitBloc
     }
 
     public static abstract class GunHitBlockEventObject extends EventWrapper.EventObject {
-        public abstract Object getLiving();
-
         public abstract ItemStack getItemStack();
 
         public abstract World getLevel();
