@@ -21,7 +21,6 @@ package site.liangbai.realhomehunt.api.projectile.launcher.impl;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Item;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.RayTraceResult;
@@ -30,6 +29,8 @@ import site.liangbai.realhomehunt.RealHomeHunt;
 import site.liangbai.realhomehunt.api.projectile.AbstractProjectile;
 import site.liangbai.realhomehunt.api.projectile.launcher.IProjectileLauncher;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -45,48 +46,46 @@ public class ProjectileLauncherImpl implements IProjectileLauncher {
 
         new BukkitRunnable() {
 
+            private final List<Object> impactedList = new ArrayList<>();
+
             @Override
             public void run() {
-                Location location = entity.getLocation();
+                Location location = entity.getLocation().clone();
 
                 Optional<Entity> hitEntity = location.getWorld().getNearbyEntities(location, 1, 1, 1).stream()
                         .filter(it -> !Objects.equals(entity, it))
                         .filter(it -> !Objects.equals(holder, it))
                         .filter(it -> !(it instanceof Item))
+                        .filter(it -> !impactedList.contains(it))
                         .findAny();
 
                 // while if none match hit's entity
-                boolean hitBlock = entity instanceof FallingBlock && entity.isDead();
+                boolean hitBlock = entity.isDead();
 
-                boolean faceHitBlock = false;
-
-                Block faceBlock = entity.getLocation().getBlock().getRelative(entity.getFacing());
-
-                if (!hitBlock && hitEntity.isEmpty() && !(entity instanceof FallingBlock)) {
-                    faceHitBlock = !faceBlock.getType().isAir();
-                }
-
-                if (hitBlock || hitEntity.isPresent() || faceHitBlock) {
-                    Location hitPosition = location.clone();
+                if (hitBlock || hitEntity.isPresent()) {
 
                     RayTraceResult result;
 
                     if (hitEntity.isPresent()) {
-                        result = new RayTraceResult(hitPosition.toVector(), hitEntity.orElse(null), entity.getFacing().getOppositeFace());
-                    } else if (hitBlock){
-                        Block block = hitPosition.getBlock();
+                        Entity hitEntityObj = hitEntity.orElse(null);
+
+                        impactedList.add(hitEntityObj);
+
+                        result = new RayTraceResult(location.toVector(), hitEntityObj, entity.getFacing().getOppositeFace());
+                    } else {
+                        Block block = location.getBlock();
 
                         // May produce an empty result.
-                        result = new RayTraceResult(hitPosition.toVector(), block, entity.getFacing().getOppositeFace());
-                    } else {
-                        result = new RayTraceResult(faceBlock.getLocation().toVector(), faceBlock, entity.getFacing().getOppositeFace());
+                        result = new RayTraceResult(location.toVector(), block, entity.getFacing().getOppositeFace());
                     }
 
-                    entity.remove();
+                    callback.accept(result);
 
-                    projectile.onImpact(result);
+                    if (hitBlock) {
+                        entity.remove();
 
-                    cancel();
+                        cancel();
+                    }
                 }
             }
         }.runTaskTimer(RealHomeHunt.getInst(), 0, 1);
