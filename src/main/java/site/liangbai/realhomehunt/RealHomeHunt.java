@@ -67,6 +67,8 @@ public final class RealHomeHunt extends JavaPlugin {
     public void onDisable() {
         saveResidences();
 
+        ResidenceManager.getStorage().close();
+
         cancelTasks();
     }
 

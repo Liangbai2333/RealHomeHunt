@@ -88,4 +88,9 @@ public abstract class SqlStorage implements IStorage {
     public long count() {
         return count;
     }
+
+    @Override
+    public void close() {
+        getDatabase().close();
+    }
 }

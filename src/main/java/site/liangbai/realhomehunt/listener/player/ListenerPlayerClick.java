@@ -19,6 +19,7 @@
 package site.liangbai.realhomehunt.listener.player;
 
 import org.bukkit.block.Block;
+import org.bukkit.block.Container;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -26,17 +27,14 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import site.liangbai.dynamic.event.EventSubscriber;
 import site.liangbai.realhomehunt.api.residence.Residence;
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
+import site.liangbai.realhomehunt.config.Config;
 import site.liangbai.realhomehunt.util.Blocks;
 
 @EventSubscriber
-public final class ListenerPlayerClickDoor implements Listener {
+public class ListenerPlayerClick implements Listener {
     @EventHandler
-    public void onPlayerInteract(PlayerInteractEvent event) {
-        if (event.getPlayer().hasPermission("rh.interact")) return;
-
-        if (!ResidenceManager.isOpened(event.getPlayer().getWorld())) return;
-
-        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+    public void onPlayerInteractDoor(PlayerInteractEvent event) {
+        if (!checkInteract(event)) return;
 
         Block block = event.getClickedBlock();
 
@@ -49,5 +47,30 @@ public final class ListenerPlayerClickDoor implements Listener {
         if (residence == null) return;
 
         if (!residence.isAdministrator(event.getPlayer())) event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onPlayerInteractContainer(PlayerInteractEvent event) {
+        if (!checkInteract(event)) return;
+
+        Block block = event.getClickedBlock();
+
+        if (block == null) return;
+
+        if (!(block.getState() instanceof Container)) return;
+
+        Residence residence = ResidenceManager.getResidenceByLocation(block.getLocation());
+
+        if (residence == null) return;
+
+        if (Config.robChestMode.enabled && !residence.isAdministrator(event.getPlayer())) event.setCancelled(true);
+    }
+
+    private static boolean checkInteract(PlayerInteractEvent event) {
+        if (event.getPlayer().hasPermission("rh.interact")) return false;
+
+        if (!ResidenceManager.isOpened(event.getPlayer().getWorld())) return false;
+
+        return event.getAction() == Action.RIGHT_CLICK_BLOCK;
     }
 }

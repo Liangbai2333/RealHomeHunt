@@ -142,4 +142,8 @@ public final class ResidenceManager {
 
         unregister(residence);
     }
+
+    public static IStorage getStorage() {
+        return storage;
+    }
 }
