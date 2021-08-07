@@ -24,14 +24,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
-import site.liangbai.lrainylib.annotation.Plugin;
+import site.liangbai.dynamic.event.EventSubscriber;
 import site.liangbai.realhomehunt.config.Config;
 import site.liangbai.realhomehunt.api.locale.impl.Locale;
 import site.liangbai.realhomehunt.api.locale.manager.LocaleManager;
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
 import site.liangbai.realhomehunt.api.residence.Residence;
 
-@Plugin.EventSubscriber
+@EventSubscriber
 public final class ListenerBlockPlace implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {

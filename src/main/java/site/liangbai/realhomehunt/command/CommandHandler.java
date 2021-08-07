@@ -22,6 +22,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
+import site.liangbai.dynamic.command.CommandProcessor;
 import site.liangbai.realhomehunt.command.subcommand.ISubCommand;
 import site.liangbai.realhomehunt.command.subcommand.impl.*;
 import site.liangbai.realhomehunt.command.subcommand.impl.admin.AdminCommand;
@@ -33,7 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@site.liangbai.lrainylib.annotation.command.CommandHandler(value = "rh", aliases = {"realhomehunt", "rhh"})
+@CommandProcessor(command = "rh")
 public final class CommandHandler implements CommandExecutor {
     private static final Map<String, ISubCommand> map = new HashMap<>();
 

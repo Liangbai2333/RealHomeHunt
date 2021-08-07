@@ -22,10 +22,10 @@ import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
-import site.liangbai.lrainylib.annotation.Plugin;
+import site.liangbai.dynamic.event.EventSubscriber;
 import site.liangbai.realhomehunt.util.Players;
 
-@Plugin.EventSubscriber
+@EventSubscriber
 public final class ListenerPlayerMove implements Listener {
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {

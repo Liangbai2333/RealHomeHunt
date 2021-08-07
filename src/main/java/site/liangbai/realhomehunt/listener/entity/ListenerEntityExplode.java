@@ -22,15 +22,16 @@ import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityExplodeEvent;
-import site.liangbai.lrainylib.annotation.Plugin;
+import site.liangbai.dynamic.event.EventSubscriber;
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
 import site.liangbai.realhomehunt.api.residence.Residence;
 import site.liangbai.realhomehunt.api.residence.attribute.impl.ExplodeAttribute;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
-@Plugin.EventSubscriber
+@EventSubscriber
 public final class ListenerEntityExplode implements Listener {
     @EventHandler
     public void onEntityExplode(EntityExplodeEvent event) {
@@ -39,11 +40,9 @@ public final class ListenerEntityExplode implements Listener {
         List<Block> blocks = event.blockList();
 
         blocks.stream()
+                .filter(Objects::nonNull)
+                .filter(it -> !it.getType().isAir())
                 .filter(it -> {
-                    if (it == null) return false;
-
-                    if (it.getType().isAir()) return false;
-
                     Residence residence = ResidenceManager.getResidenceByLocation(it.getLocation());
 
                     try {

@@ -23,13 +23,13 @@ import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
-import site.liangbai.lrainylib.annotation.Plugin;
+import site.liangbai.dynamic.event.EventSubscriber;
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
 import site.liangbai.realhomehunt.api.residence.Residence;
 import site.liangbai.realhomehunt.api.residence.attribute.IAttributable;
 import site.liangbai.realhomehunt.api.residence.attribute.impl.IgniteAttribute;
 
-@Plugin.EventSubscriber
+@EventSubscriber
 public final class ListenerBlockIgnite implements Listener {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {

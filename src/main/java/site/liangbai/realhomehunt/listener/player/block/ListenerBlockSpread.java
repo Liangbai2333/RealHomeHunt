@@ -23,13 +23,13 @@ import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockSpreadEvent;
-import site.liangbai.lrainylib.annotation.Plugin;
+import site.liangbai.dynamic.event.EventSubscriber;
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
 import site.liangbai.realhomehunt.api.residence.Residence;
 import site.liangbai.realhomehunt.api.residence.attribute.IAttributable;
 import site.liangbai.realhomehunt.api.residence.attribute.impl.SpreadFireAttribute;
 
-@Plugin.EventSubscriber
+@EventSubscriber
 public final class ListenerBlockSpread implements Listener {
     @EventHandler
     public void onBlockSpread(BlockSpreadEvent event) {

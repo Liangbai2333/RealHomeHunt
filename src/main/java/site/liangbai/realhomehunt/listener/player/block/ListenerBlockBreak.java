@@ -25,12 +25,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.jetbrains.annotations.NotNull;
-import site.liangbai.lrainylib.annotation.Plugin;
+import site.liangbai.dynamic.event.EventSubscriber;
 import site.liangbai.realhomehunt.api.residence.Residence;
 import site.liangbai.realhomehunt.config.Config;
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
 
-@Plugin.EventSubscriber
+@EventSubscriber
 public final class ListenerBlockBreak implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {

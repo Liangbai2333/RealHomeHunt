@@ -42,7 +42,7 @@ public final class AutoFixBlockTask extends BukkitRunnable {
     public void run() {
         if (Config.autoFixResidence.ignoreEnemy || !residence.hasEnemyIn()) {
             Block block = location.getBlock();
-
+            
             if (needFixed(block)) block.setBlockData(blockData);
         } else
             submit(residence, blockData, location);

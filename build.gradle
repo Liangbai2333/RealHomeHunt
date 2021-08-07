@@ -44,16 +44,28 @@ configurations {
 
 dependencies {
     minecraft group: 'net.minecraftforge', name: 'forge', version: "${minecraft_version}-${forge_version}"
-
     implementation 'ink.ptms.core:v11604:11604:all'
-
     implementation fg.deobf("curse.maven:crafting_dead-${crafting_dead_project_id}:${crafting_dead_file_id}")
-
+    // https://mvnrepository.com/artifact/org.jetbrains/annotations
+    implementation group: 'org.jetbrains', name: 'annotations', version: '21.0.1'
     // https://mvnrepository.com/artifact/com.dieselpoint/norm
     shaded group: 'com.dieselpoint', name: 'norm', version: '1.0.4'
-
+    shaded fileTree(dir: 'shaded', includes: ['*.jar'])
     implementation fileTree(dir: 'libs', includes: ['*.jar'])
-    annotationProcessor fileTree(dir: 'libs', includes: ['*.jar'])
+}
+
+processResources {
+    filesMatching("plugin.yml") {
+        expand(
+                name: rootProject.name,
+                version: project.version,
+                main: project.group + ".realhomehunt.RealHomeHunt"
+        )
+    }
+}
+
+java {
+    withSourcesJar()
 }
 
 jar {
@@ -72,6 +84,10 @@ jar {
         configurations.shaded.collect {
             it.isDirectory() ? it : zipTree(it)
         }
+    }
+
+    from("LICENSE") {
+        rename { "${it}_${rootProject.name}" }
     }
 }
 

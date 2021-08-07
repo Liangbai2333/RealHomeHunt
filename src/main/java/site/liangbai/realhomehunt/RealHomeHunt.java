@@ -22,49 +22,19 @@ import com.craftingdead.core.event.GunEvent;
 import net.minecraftforge.fml.ModList;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
+import site.liangbai.dynamic.Dynamic;
 import site.liangbai.forgeeventbridge.event.EventBridge;
-import site.liangbai.lrainylib.annotation.Plugin;
-import site.liangbai.lrainylib.annotation.plugin.Info;
-import site.liangbai.lrainylib.annotation.plugin.Permission;
 import site.liangbai.realhomehunt.api.locale.manager.LocaleManager;
 import site.liangbai.realhomehunt.api.residence.Residence;
 import site.liangbai.realhomehunt.api.residence.attribute.map.AttributeMap;
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
-import site.liangbai.realhomehunt.command.CommandTabCompiler;
 import site.liangbai.realhomehunt.config.Config;
 import site.liangbai.realhomehunt.listener.forge.player.EventHolderGunHitBlock;
 import site.liangbai.realhomehunt.task.PlayerMoveToResidenceMessageTask;
 import site.liangbai.realhomehunt.util.Console;
 
-@Plugin(
-        info = @Info(name = "RealHomeHunt", version = "1.2.3-SNAPSHOT", authors = "Liangbai"),
-        apiVersion = "1.13",
-        softDepend = "Multiverse-Core",
-        permissions = {
-                @Permission(name = "rh.select", description = "Allow player to select the residence zone.", defaultValue = "true"),
-                @Permission(name = "rh.unlimited.create", description = "Allow player ignore the zone size limit."),
-                @Permission(name = "rh.unlimited.back", description = "Allow player to teleport to other residences."),
-                @Permission(name = "rh.interact", description = "Allow player to click the residence's door."),
-                @Permission(name = "rh.break", description = "Allow player to break blocks in residences."),
-                @Permission(name = "rh.place", description = "Allow player to place blocks in residences."),
-                @Permission(name = "rh.command.help", description = "Allow player to use the /rh help command.", defaultValue = "true"),
-                @Permission(name = "rh.command.create", description = "Allow player to use the /rh create command.", defaultValue = "true"),
-                @Permission(name = "rh.command.back", description = "Allow player to use the /rh back command.", defaultValue = "true"),
-                @Permission(name = "rh.command.setspawn", description = "Allow player to use the /rh setspawn command.", defaultValue = "true"),
-                @Permission(name = "rh.command.set", description = "Allow player to use the /rh set command.", defaultValue = "true"),
-                @Permission(name = "rh.command.remove", description = "Allow player to use the /rh remove command.", defaultValue = "true"),
-                @Permission(name = "rh.command.administrator", description = "Allow player to use the /rh administrator command.", defaultValue = "true"),
-                @Permission(name = "rh.command.confirm", description = "Allow player to use the /rh confirm command.", defaultValue = "true"),
-                @Permission(name = "rh.command.reload", description = "Allow player to use the /rh reload command."),
-                @Permission(name = "rh.command.admin", description = "Allow player to use the /rh admin command."),
-                @Permission(name = "rh.command.admin.help", description = "Allow player to use the /rh admin help command."),
-                @Permission(name = "rh.command.admin.import", description = "Allow player to use the /rh admin import command."),
-                @Permission(name = "rh.reload", description = "Allow player to reload the configuration.")
-        }
-)
 public final class RealHomeHunt extends JavaPlugin {
     private static RealHomeHunt inst;
 
@@ -84,9 +54,9 @@ public final class RealHomeHunt extends JavaPlugin {
 
         ResidenceManager.init(this, Config.storage.type);
 
-        initForgeEventHolder();
+        Dynamic.installWithAccepted(this, getClass().getPackage().getName());
 
-        initCommandTabCompiler();
+        initForgeEventHolder();
 
         initTasks();
 
@@ -106,14 +76,6 @@ public final class RealHomeHunt extends JavaPlugin {
 
     public void saveResidences() {
         ResidenceManager.getResidences().forEach(Residence::save);
-    }
-
-    private void initCommandTabCompiler() {
-        PluginCommand pluginCommand = getCommand("rh");
-
-        if (pluginCommand == null) return;
-
-        pluginCommand.setTabCompleter(new CommandTabCompiler());
     }
 
     private void initForgeEventHolder() {
