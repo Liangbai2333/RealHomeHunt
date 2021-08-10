@@ -48,7 +48,7 @@ public final class InfoCommand implements ISubCommand {
                 return;
             }
 
-            sender.sendMessage(locale.asString("command.info.self.show", residence.getOwner(), residence.getAdministrators()));
+            sender.sendMessage(locale.asString("command.info.self.show", residence.getOwner(), getAdministratorListString(residence), getAttributeListString(residence)));
         } else {
             Residence residence = ResidenceManager.getResidenceByOwner(args[1]);
 
@@ -58,7 +58,23 @@ public final class InfoCommand implements ISubCommand {
                 return;
             }
 
-            sender.sendMessage(locale.asString("command.info.other.show", args[1], residence.getOwner(), residence.getAdministrators()));
+            sender.sendMessage(locale.asString("command.info.other.show", args[1], residence.getOwner(), getAdministratorListString(residence), getAttributeListString(residence)));
         }
+    }
+
+    private static String getAdministratorListString(Residence residence) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        residence.getAdministrators().forEach(it -> stringBuilder.append(" ").append("-").append(" ").append(it).append("\n"));
+
+        return stringBuilder.substring(0, stringBuilder.lastIndexOf("\n"));
+    }
+
+    private static String getAttributeListString(Residence residence) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        residence.getAttributes().forEach(it -> stringBuilder.append(" ").append("-").append(" ").append(it.getName()).append(":").append(" ").append(it.get()).append("\n"));
+
+        return stringBuilder.substring(0, stringBuilder.lastIndexOf("\n"));
     }
 }
