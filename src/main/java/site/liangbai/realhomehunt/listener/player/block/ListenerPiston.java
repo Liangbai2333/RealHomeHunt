@@ -50,17 +50,13 @@ public final class ListenerPiston implements Listener {
         }
 
         for (Block block : event.getBlocks()) {
-            Location location = block.getLocation();
+            Location location = block.getLocation().clone();
 
             Residence from = ResidenceManager.getResidenceByLocation(location);
 
             BlockFace direction = event.getDirection();
 
-            location.setX(location.getX() + direction.getModX());
-            location.setY(location.getY() + direction.getModY());
-            location.setZ(location.getZ() + direction.getModZ());
-
-            Residence to = ResidenceManager.getResidenceByLocation(location);
+            Residence to = ResidenceManager.getResidenceByLocation(location.clone().add(direction.getModX(), direction.getModY(), direction.getModZ()));
 
             if ((from != null && from.checkBooleanAttribute(PistonProtectionAttribute.class))
                     || (to != null && to.checkBooleanAttribute(PistonProtectionAttribute.class))
@@ -71,7 +67,6 @@ public final class ListenerPiston implements Listener {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @EventHandler
     public void onPistonRetract(BlockPistonRetractEvent event) {
         if (!ResidenceManager.isOpened(event.getBlock().getWorld())) return;
@@ -83,12 +78,14 @@ public final class ListenerPiston implements Listener {
         }
 
         if (event.isSticky()) {
-            Location location = event.getRetractLocation();
+            for (Block block : event.getBlocks()) {
+                residence = ResidenceManager.getResidenceByLocation(block.getLocation().clone());
 
-            residence = ResidenceManager.getResidenceByLocation(location);
+                if (residence != null && residence.checkBooleanAttribute(PistonProtectionAttribute.class)) {
+                    event.setCancelled(true);
 
-            if (residence != null && residence.checkBooleanAttribute(PistonProtectionAttribute.class)) {
-                event.setCancelled(true);
+                    return;
+                }
             }
         }
     }
