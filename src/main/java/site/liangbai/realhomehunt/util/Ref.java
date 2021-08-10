@@ -19,6 +19,7 @@
 package site.liangbai.realhomehunt.util;
 
 public class Ref {
+
     public static <T> T newInstance(Class<T> clazz) {
         try {
             return clazz.getConstructor().newInstance();
