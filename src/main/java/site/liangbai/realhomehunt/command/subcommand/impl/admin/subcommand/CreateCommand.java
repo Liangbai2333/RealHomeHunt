@@ -60,18 +60,18 @@ public final class CreateCommand implements ISubCommand {
             return;
         }
 
-        String name = args[2];
+        String target = args[2];
 
-        Residence old = ResidenceManager.getResidenceByOwner(name);
+        Residence old = ResidenceManager.getResidenceByOwner(target);
 
         if (old != null) {
-            sender.sendMessage(locale.asString("command.admin.create.hasOld", name));
+            sender.sendMessage(locale.asString("command.admin.create.hasOld", target));
 
             return;
         }
 
-        Location loc1 = SelectCache.require(SelectCache.SelectType.FIRST, name);
-        Location loc2 = SelectCache.require(SelectCache.SelectType.SECOND, name);
+        Location loc1 = SelectCache.require(SelectCache.SelectType.FIRST, player.getName());
+        Location loc2 = SelectCache.require(SelectCache.SelectType.SECOND, player.getName());
 
         if (loc1 == null || loc2 == null) {
             sender.sendMessage(locale.asString("command.admin.create.notSelectZone"));
@@ -86,14 +86,14 @@ public final class CreateCommand implements ISubCommand {
         }
 
         if (ResidenceManager.containsResidence(loc1, loc2)) {
-            SelectCache.pop(name);
+            SelectCache.pop(player.getName());
 
             sender.sendMessage(locale.asString("command.admin.create.containsOther"));
 
             return;
         }
 
-        Residence residence = new Residence.Builder().owner(player).left(loc1).right(loc2).build();
+        Residence residence = new Residence.Builder().owner(target).left(loc1).right(loc2).build();
 
         if (!new ResidenceCreateEvent.Pre(player, residence).callEvent()) return;
 
@@ -107,10 +107,10 @@ public final class CreateCommand implements ISubCommand {
 
         residence.save();
 
-        SelectCache.pop(name);
+        SelectCache.pop(target);
 
-        sender.sendMessage(locale.asString("command.admin.create.success", name));
+        sender.sendMessage(locale.asString("command.admin.create.success", target));
 
-        Messages.sendToAll("command.admin.create.sendToAll", sender.getName(), name);
+        Messages.sendToAll("command.admin.create.sendToAll", sender.getName(), target);
     }
 }
