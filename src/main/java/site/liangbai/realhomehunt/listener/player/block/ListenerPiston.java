@@ -45,9 +45,7 @@ public final class ListenerPiston implements Listener {
 
         Residence residence = ResidenceManager.getResidenceByLocation(event.getBlock().getLocation());
 
-        if (residence == null) return;
-
-        if (residence.checkBooleanAttribute(PistonAttribute.class)) {
+        if (residence != null && !residence.checkBooleanAttribute(PistonAttribute.class)) {
             event.setCancelled(true);
         }
 
@@ -64,8 +62,8 @@ public final class ListenerPiston implements Listener {
 
             Residence to = ResidenceManager.getResidenceByLocation(location);
 
-            if (from != null && from.checkBooleanAttribute(PistonProtectionAttribute.class)
-                    || to != null && to.checkBooleanAttribute(PistonProtectionAttribute.class)
+            if ((from != null && from.checkBooleanAttribute(PistonProtectionAttribute.class))
+                    || (to != null && to.checkBooleanAttribute(PistonProtectionAttribute.class))
             ) {
                 event.setCancelled(true);
                 return;
@@ -80,9 +78,7 @@ public final class ListenerPiston implements Listener {
 
         Residence residence = ResidenceManager.getResidenceByLocation(event.getBlock().getLocation());
 
-        if (residence == null) return;
-
-        if (!residence.checkBooleanAttribute(PistonAttribute.class)) {
+        if (residence != null && !residence.checkBooleanAttribute(PistonAttribute.class)) {
             event.setCancelled(true);
         }
 
@@ -91,9 +87,9 @@ public final class ListenerPiston implements Listener {
 
             residence = ResidenceManager.getResidenceByLocation(location);
 
-            if (residence == null) return;
-
-            if (residence.checkBooleanAttribute(PistonProtectionAttribute.class)) event.setCancelled(true);
+            if (residence != null && residence.checkBooleanAttribute(PistonProtectionAttribute.class)) {
+                event.setCancelled(true);
+            }
         }
     }
 }
