@@ -36,7 +36,6 @@ public interface IGameMode {
             ItemStack gun,
             Block block,
             BlockState snapshotState,
-            BlockData blockData,
-            DamageCachePool.DamageCache damageCache
+            BlockData blockData
     );
 }

@@ -23,11 +23,10 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import site.liangbai.realhomehunt.api.cache.DamageCachePool;
+import site.liangbai.realhomehunt.api.residence.Residence;
 import site.liangbai.realhomehunt.gamemode.IGameMode;
 import site.liangbai.realhomehunt.gamemode.impl.AutoFixGameMode;
 import site.liangbai.realhomehunt.gamemode.impl.RobChestGameMode;
-import site.liangbai.realhomehunt.api.residence.Residence;
 import site.liangbai.realhomehunt.util.callback.ICallback;
 import site.liangbai.realhomehunt.util.callback.impl.BooleanCallback;
 
@@ -42,12 +41,14 @@ public final class GameModeManager {
         GAME_MODES.add(new RobChestGameMode());
     }
 
-    public static ICallback<Boolean> submit(Residence residence, Player player, ItemStack gun, Block block, BlockState snapshotState, BlockData blockData, DamageCachePool.DamageCache damageCache) {
+    public static ICallback<Boolean> submit(Residence residence, Player player, ItemStack gun, Block block, BlockState snapshotState, BlockData blockData) {
         ICallback<Boolean> callBack = new BooleanCallback();
+
+        callBack.set(true);
 
         GAME_MODES.stream()
                 .filter(IGameMode::isEnabled)
-                .forEach(it -> it.process(callBack, residence, player, gun, block, snapshotState, blockData, damageCache));
+                .forEach(it -> it.process(callBack, residence, player, gun, block, snapshotState, blockData));
 
         return callBack;
     }

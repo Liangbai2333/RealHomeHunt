@@ -78,6 +78,10 @@ autoFixResidence:
   perBlockFixedMills: 15
   # 是否无视领地内敌人直接恢复, 如关闭即有敌人存在于领地时不进行修复
   ignoreEnemy: false
+  # 取消自动恢复的方块类型
+  # 如HOPPER为漏斗
+  ignoreBlockTypes:
+    - HOPPER
 
 # 存储
 storage:
@@ -130,12 +134,26 @@ block:
       amount: 1
       # 打击他下方的方块，他是否会被破坏，比如木门下方的方块被摧毁，木门也会跟着被摧毁
       upBreak: true
+    # 树叶
     leaves:
       suffix: LEAVES
       amount: 0
+    # 玻璃
     glass:
       suffix: GLASS
       amount: 0
+    # 防止出现无法放置火把一类的BUG, 可自行添加, amount为-1时即代表可以随意放置
+    torch:
+      suffix: TORCH
+      amount: -1
+    # 木牌
+    sign:
+      suffix: SIGN
+      amount: -1
+    # 按钮
+    button:
+      suffix: BUTTON
+      amount: -1
   # 自定义硬度
   custom:
     obsidian:

@@ -20,14 +20,12 @@ package site.liangbai.realhomehunt.task;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.Container;
+import org.bukkit.block.*;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.scheduler.BukkitRunnable;
 import site.liangbai.realhomehunt.RealHomeHunt;
-import site.liangbai.realhomehunt.config.Config;
 import site.liangbai.realhomehunt.api.residence.Residence;
+import site.liangbai.realhomehunt.config.Config;
 
 /**
  * The type Auto fix block task.
@@ -52,15 +50,11 @@ public final class AutoFixBlockTask extends BukkitRunnable {
     public void run() {
         if (Config.autoFixResidence.ignoreEnemy || !residence.hasEnemyIn()) {
             Block block = location.getBlock();
-            
+
             if (needFixed(block)) {
                 block.setBlockData(blockData);
 
-                BlockState state = block.getState();
-                if (blockState instanceof Container && state instanceof Container && Config.robChestMode.fixItem) {
-                    ((Container) state).getInventory()
-                            .setContents(((Container) blockState).getInventory().getContents());
-                }
+                applyBlockState(block.getState(), blockState);
             }
         } else
             submit(residence, blockState, blockData, location);
@@ -70,6 +64,31 @@ public final class AutoFixBlockTask extends BukkitRunnable {
         Material type = block.getType();
 
         return type.isAir() || (!type.isSolid() && !type.isItem());
+    }
+
+    private static void applyBlockState(BlockState newState, BlockState oldState) {
+        if (oldState instanceof Container && Config.robChestMode.fixItem) {
+            ((Container) newState).getInventory()
+                    .setContents(((Container) oldState).getSnapshotInventory().getContents());
+        } else if (oldState instanceof Sign) {
+            Sign sign = ((Sign) newState);
+            Sign snapshot = ((Sign) oldState);
+
+            String[] lines = snapshot.getLines();
+
+            sign.setEditable(snapshot.isEditable());
+            sign.setColor(snapshot.getColor());
+
+            for (int i = 0; i < lines.length; i++) {
+                sign.setLine(i, lines[i]);
+            }
+        } else if (oldState instanceof CommandBlock) {
+            CommandBlock commandBlock = ((CommandBlock) newState);
+            CommandBlock snapshot = ((CommandBlock) oldState);
+
+            commandBlock.setCommand(snapshot.getCommand());
+            commandBlock.setName(snapshot.getName());
+        }
     }
 
     public static void submit(Residence residence, BlockState snapshotState, BlockData blockData, Location location) {

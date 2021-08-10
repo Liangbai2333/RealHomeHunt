@@ -20,12 +20,22 @@ package site.liangbai.realhomehunt.task;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import site.liangbai.dynamic.event.EventSubscriber;
 import site.liangbai.realhomehunt.api.residence.Residence;
 import site.liangbai.realhomehunt.api.residence.attribute.impl.GlowAttribute;
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
 import site.liangbai.realhomehunt.util.Locations;
+
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * The type Player glow task.
@@ -33,7 +43,11 @@ import site.liangbai.realhomehunt.util.Locations;
  * @author Liangbai
  * @since 2021 /08/10 11:07 上午
  */
-public final class PlayerGlowTask extends BukkitRunnable  {
+@EventSubscriber
+public final class PlayerGlowTask extends BukkitRunnable implements Listener {
+    // 防止和其他需要设置glow的插件冲突
+    private static final Set<UUID> glowing = new CopyOnWriteArraySet<>();
+
     public static void setup(Plugin plugin) {
         new PlayerGlowTask().runTaskTimerAsynchronously(plugin, 1, 1);
     }
@@ -50,10 +64,36 @@ public final class PlayerGlowTask extends BukkitRunnable  {
                     if (residence != null) {
                         if (residence.checkBooleanAttribute(GlowAttribute.class) && !it.isGlowing()) {
                             it.setGlowing(true);
+
+                            glowing.add(it.getUniqueId());
+                        } else if (!residence.checkBooleanAttribute(GlowAttribute.class) && it.isGlowing()) {
+                            it.setGlowing(false);
+
+                            glowing.remove(it.getUniqueId());
                         }
                     } else if (it.isGlowing()) {
-                        it.setGlowing(false);
-                    }
+                        if (glowing.contains(it.getUniqueId())) {
+                            it.setGlowing(false);
+
+                            glowing.remove(it.getUniqueId());
+                        }
+                    } else glowing.remove(it.getUniqueId());
                 });
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        if (event.getPlayer().isGlowing() && glowing.contains(event.getPlayer().getUniqueId())) {
+            event.getPlayer().setGlowing(false);
+
+            glowing.remove(event.getPlayer().getUniqueId());
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        if (event.getPlayer().isGlowing()) {
+            event.getPlayer().setGlowing(false);
+        }
     }
 }

@@ -30,6 +30,7 @@ import site.liangbai.realhomehunt.api.residence.Residence;
 import site.liangbai.realhomehunt.config.Config;
 
 public final class Blocks {
+
     private static int id;
 
     public static int nextId() {

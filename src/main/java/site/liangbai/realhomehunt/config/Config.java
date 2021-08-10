@@ -32,6 +32,7 @@ import site.liangbai.realhomehunt.util.Console;
 
 import java.io.File;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public final class Config {
     private static File configFile;
@@ -200,11 +201,11 @@ public final class Config {
 
     private static void linkBlockConfig(ConfigurationSection section) {
         ConfigurationSection blockSection = section.getConfigurationSection("block");
-        
+
         if (blockSection == null) throw new IllegalStateException("can not load config part: block");
-        
+
         block = new BlockSetting();
-        
+
         ConfigurationSection blockIgnoreSection = blockSection.getConfigurationSection("ignore");
 
         BlockSetting.BlockIgnoreSetting ignore = new BlockSetting.BlockIgnoreSetting();
@@ -391,6 +392,11 @@ public final class Config {
         autoFixResidence.perBlockFixedMills = asMills(autoFixResidenceSection.getLong("perBlockFixedMills", 15));
 
         autoFixResidence.ignoreEnemy = autoFixResidenceSection.getBoolean("ignoreEnemy", false);
+
+        autoFixResidence.ignoreBlockTypes.addAll(autoFixResidenceSection.getStringList("ignoreBlockTypes").stream()
+                .map(Material::matchMaterial)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList()));
     }
 
     public static String asColored(String message) {
@@ -451,9 +457,9 @@ public final class Config {
 
     public static final class BlockSetting {
         public BlockIgnoreSetting ignore;
-        
+
         public BlockCustomSetting custom;
-        
+
         public static final class BlockIgnoreSetting {
             public final List<IgnoreBlockInfo> ignoreBlockInfoList = new LinkedList<>();
 
@@ -547,5 +553,7 @@ public final class Config {
         public long perBlockFixedMills;
 
         public boolean ignoreEnemy;
+
+        public final List<Material> ignoreBlockTypes = new LinkedList<>();
     }
 }

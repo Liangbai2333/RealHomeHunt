@@ -29,8 +29,8 @@ import site.liangbai.dynamic.event.EventSubscriber;
 import site.liangbai.realhomehunt.api.residence.Residence;
 import site.liangbai.realhomehunt.api.residence.attribute.impl.BreakAttribute;
 import site.liangbai.realhomehunt.api.residence.attribute.impl.BuildAttribute;
-import site.liangbai.realhomehunt.config.Config;
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
+import site.liangbai.realhomehunt.config.Config;
 
 @EventSubscriber
 public final class ListenerBlockBreak implements Listener {

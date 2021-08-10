@@ -23,10 +23,9 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import site.liangbai.realhomehunt.api.cache.DamageCachePool;
+import site.liangbai.realhomehunt.api.residence.Residence;
 import site.liangbai.realhomehunt.config.Config;
 import site.liangbai.realhomehunt.gamemode.IGameMode;
-import site.liangbai.realhomehunt.api.residence.Residence;
 import site.liangbai.realhomehunt.task.AutoFixBlockTask;
 import site.liangbai.realhomehunt.util.callback.ICallback;
 
@@ -36,7 +35,9 @@ public class AutoFixGameMode implements IGameMode {
         return Config.autoFixResidence.enabled;
     }
     @Override
-    public void process(ICallback<Boolean> dropBlockItem, Residence residence, Player player, ItemStack gun, Block block, BlockState snapshotState, BlockData blockData, DamageCachePool.DamageCache damageCache) {
-        AutoFixBlockTask.submit(residence, snapshotState, blockData, damageCache.getBlock().getLocation().clone());
+    public void process(ICallback<Boolean> dropBlockItem, Residence residence, Player player, ItemStack gun, Block block, BlockState snapshotState, BlockData blockData) {
+        if (Config.autoFixResidence.ignoreBlockTypes.contains(block.getType())) return;
+
+        AutoFixBlockTask.submit(residence, snapshotState, blockData, block.getLocation().clone());
     }
 }

@@ -101,7 +101,7 @@ public class GunHitBlockProcessorImpl implements IGunHitBlockProcessor {
 
             BlockData blockData = damageCache.getBlock().getBlockData().clone();
 
-            ICallback<Boolean> callBack = GameModeManager.submit(residence, player, gun, block, block.getState(), blockData, damageCache);
+            ICallback<Boolean> callBack = GameModeManager.submit(residence, player, gun, block, block.getState(), blockData);
 
             Blocks.sendBreakBlockPacket(damageCache.getBlock(), Config.dropItem && callBack.get());
 
