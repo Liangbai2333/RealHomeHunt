@@ -34,7 +34,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class PlayerMoveToResidenceMessageTask extends BukkitRunnable {
     private final Map<String, String> moveToResidenceCache = new ConcurrentHashMap<>();
 
-    public static void init(Plugin plugin) {
+    public static void setup(Plugin plugin) {
         new PlayerMoveToResidenceMessageTask().runTaskTimerAsynchronously(plugin, 1, 1);
     }
 

@@ -43,11 +43,11 @@ public final class AttributeMap {
 
         registerAttribute("ignite", IgniteAttribute.class);
 
-        registerAttribute("spreadFire", SpreadFireAttribute.class);
+        registerAttribute("spread-fire", SpreadFireAttribute.class);
     }
 
     public static void registerAttribute(String type, Class<? extends IAttributable<?>> attributeClass) {
-        map.put(type.toLowerCase(), attributeClass);
+        map.put(type, attributeClass);
     }
 
     public static void registerAttributeSerializer() {

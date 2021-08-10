@@ -19,6 +19,7 @@
 package site.liangbai.realhomehunt.gamemode;
 
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -29,5 +30,13 @@ import site.liangbai.realhomehunt.util.callback.ICallback;
 public interface IGameMode {
     boolean isEnabled();
 
-    void process(ICallback<Boolean> dropBlockItem, Residence residence, Player player, ItemStack gun, Block block, BlockData blockData, DamageCachePool.DamageCache damageCache);
+    void process(
+            ICallback<Boolean> dropBlockItem,
+            Residence residence, Player player,
+            ItemStack gun,
+            Block block,
+            BlockState snapshotState,
+            BlockData blockData,
+            DamageCachePool.DamageCache damageCache
+    );
 }

@@ -43,13 +43,15 @@ confirmWaitMills: 15
 # 是否掉落方块
 dropItem: false
 
-# TODO
 # 掠夺者模式
 # 在此模式下, 领地内的箱子无法正常打开, 并且无法直接破坏, 只能通过枪械攻击, 并且箱子内的物品都有概率随机掉落
 # 随机掉落视配置而定
 robChestMode:
   # 开关
   enabled: false
+
+  # 是否修复没有被掉落的物品(如果开启自动修复模式)
+  fixItem: true
   # 掉落物品概率设定
   dropItem:
     global:

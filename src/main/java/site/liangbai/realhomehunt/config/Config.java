@@ -342,6 +342,8 @@ public final class Config {
 
         robChestMode.enabled = modeSection.getBoolean("enabled", false);
 
+        robChestMode.fixItem = modeSection.getBoolean("fixItem", true);
+
         ConfigurationSection dropItemSection = modeSection.getConfigurationSection("dropItem");
 
         if (dropItemSection == null) throw new IllegalStateException("can not load config part: robChestMode.dropItem");
@@ -518,6 +520,8 @@ public final class Config {
 
     public static final class RobChestModeSetting {
         public boolean enabled;
+
+        public boolean fixItem;
 
         public DropItemSetting dropItem;
 

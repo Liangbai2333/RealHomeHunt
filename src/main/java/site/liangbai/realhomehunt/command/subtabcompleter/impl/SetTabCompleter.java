@@ -43,13 +43,7 @@ public final class SetTabCompleter implements ISubTabCompleter {
 
             Class<? extends IAttributable<?>> attributeClass = AttributeMap.getMap(type);
 
-            try {
-                IAttributable<?> attribute = residence.getAttributeWithoutType(attributeClass);
-
-                return attribute.allowValues();
-            } catch (Throwable ignored) {
-                return null;
-            }
+            return residence.getAttributeWithoutType(attributeClass).allowValues();
         }
 
         return null;

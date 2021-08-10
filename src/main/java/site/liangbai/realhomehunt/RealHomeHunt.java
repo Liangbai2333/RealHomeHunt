@@ -32,6 +32,7 @@ import site.liangbai.realhomehunt.api.residence.attribute.map.AttributeMap;
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
 import site.liangbai.realhomehunt.config.Config;
 import site.liangbai.realhomehunt.listener.forge.player.EventHolderGunHitBlock;
+import site.liangbai.realhomehunt.task.PlayerGlowTask;
 import site.liangbai.realhomehunt.task.PlayerMoveToResidenceMessageTask;
 import site.liangbai.realhomehunt.util.Console;
 
@@ -101,7 +102,8 @@ public final class RealHomeHunt extends JavaPlugin {
     }
 
     private void initTasks() {
-        PlayerMoveToResidenceMessageTask.init(this);
+        PlayerMoveToResidenceMessageTask.setup(this);
+        PlayerGlowTask.setup(this);
     }
 
     private void cancelTasks() {

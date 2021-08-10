@@ -37,6 +37,12 @@ import site.liangbai.realhomehunt.util.callback.ICallback;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Rob chest game mode.
+ *
+ * @author Liangbai
+ * @since 2021 /08/10 11:15 上午
+ */
 public class RobChestGameMode implements IGameMode {
     @Override
     public boolean isEnabled() {
@@ -44,16 +50,12 @@ public class RobChestGameMode implements IGameMode {
     }
 
     @Override
-    public void process(ICallback<Boolean> dropBlockItem, Residence residence, Player player, ItemStack gun, Block block, BlockData blockData, DamageCachePool.DamageCache damageCache) {
-        BlockState blockState = block.getState();
+    public void process(ICallback<Boolean> dropBlockItem, Residence residence, Player player, ItemStack gun, Block block, BlockState snapshotState, BlockData blockData, DamageCachePool.DamageCache damageCache) {
+        if (!(snapshotState instanceof Container)) return;
 
-        if (!(blockState instanceof Container)) return;
+        Container container = ((Container) snapshotState);
 
-        Container container = ((Container) blockState);
-
-        Inventory inventory = container.getSnapshotInventory();
-
-        container.getInventory().clear();
+        Inventory inventory = container.getInventory();
 
         List<ItemStack> dropItems = new ArrayList<>();
 
@@ -64,6 +66,8 @@ public class RobChestGameMode implements IGameMode {
 
             if (Chances.hasChance(chance)) {
                 dropItems.add(itemStack);
+
+                inventory.remove(itemStack);
             }
         });
 
@@ -73,4 +77,5 @@ public class RobChestGameMode implements IGameMode {
 
         dropBlockItem.set(false);
     }
+
 }

@@ -19,6 +19,7 @@
 package site.liangbai.realhomehunt.gamemode.impl;
 
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -34,9 +35,8 @@ public class AutoFixGameMode implements IGameMode {
     public boolean isEnabled() {
         return Config.autoFixResidence.enabled;
     }
-
     @Override
-    public void process(ICallback<Boolean> dropBlockItem, Residence residence, Player player, ItemStack gun, Block block, BlockData blockData, DamageCachePool.DamageCache damageCache) {
-        AutoFixBlockTask.submit(residence, blockData, damageCache.getBlock().getLocation().clone());
+    public void process(ICallback<Boolean> dropBlockItem, Residence residence, Player player, ItemStack gun, Block block, BlockState snapshotState, BlockData blockData, DamageCachePool.DamageCache damageCache) {
+        AutoFixBlockTask.submit(residence, snapshotState, blockData, damageCache.getBlock().getLocation().clone());
     }
 }

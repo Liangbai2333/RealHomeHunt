@@ -19,6 +19,7 @@
 package site.liangbai.realhomehunt.gamemode.manager;
 
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -41,12 +42,12 @@ public final class GameModeManager {
         GAME_MODES.add(new RobChestGameMode());
     }
 
-    public static ICallback<Boolean> submit(Residence residence, Player player, ItemStack gun, Block block, BlockData blockData, DamageCachePool.DamageCache damageCache) {
+    public static ICallback<Boolean> submit(Residence residence, Player player, ItemStack gun, Block block, BlockState snapshotState, BlockData blockData, DamageCachePool.DamageCache damageCache) {
         ICallback<Boolean> callBack = new BooleanCallback();
 
         GAME_MODES.stream()
                 .filter(IGameMode::isEnabled)
-                .forEach(it -> it.process(callBack, residence, player, gun, block, blockData, damageCache));
+                .forEach(it -> it.process(callBack, residence, player, gun, block, snapshotState, blockData, damageCache));
 
         return callBack;
     }

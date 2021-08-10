@@ -21,19 +21,29 @@ package site.liangbai.realhomehunt.task;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.Container;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.scheduler.BukkitRunnable;
 import site.liangbai.realhomehunt.RealHomeHunt;
 import site.liangbai.realhomehunt.config.Config;
 import site.liangbai.realhomehunt.api.residence.Residence;
 
+/**
+ * The type Auto fix block task.
+ *
+ * @author Liangbai
+ * @since 2021 /08/10 11:32 上午
+ */
 public final class AutoFixBlockTask extends BukkitRunnable {
     private final Residence residence;
+    private final BlockState blockState;
     private final BlockData blockData;
     private final Location location;
 
-    public AutoFixBlockTask(Residence residence, BlockData blockData, Location location) {
+    public AutoFixBlockTask(Residence residence, BlockState blockState, BlockData blockData, Location location) {
         this.residence = residence;
+        this.blockState = blockState;
         this.blockData = blockData;
         this.location = location;
     }
@@ -43,9 +53,17 @@ public final class AutoFixBlockTask extends BukkitRunnable {
         if (Config.autoFixResidence.ignoreEnemy || !residence.hasEnemyIn()) {
             Block block = location.getBlock();
             
-            if (needFixed(block)) block.setBlockData(blockData);
+            if (needFixed(block)) {
+                block.setBlockData(blockData);
+
+                BlockState state = block.getState();
+                if (blockState instanceof Container && state instanceof Container && Config.robChestMode.fixItem) {
+                    ((Container) state).getInventory()
+                            .setContents(((Container) blockState).getInventory().getContents());
+                }
+            }
         } else
-            submit(residence, blockData, location);
+            submit(residence, blockState, blockData, location);
     }
 
     private static boolean needFixed(Block block) {
@@ -54,7 +72,7 @@ public final class AutoFixBlockTask extends BukkitRunnable {
         return type.isAir() || (!type.isSolid() && !type.isItem());
     }
 
-    public static void submit(Residence residence, BlockData blockData, Location location) {
-        new AutoFixBlockTask(residence, blockData, location).runTaskLater(RealHomeHunt.getInst(), Config.autoFixResidence.perBlockFixedMills);
+    public static void submit(Residence residence, BlockState snapshotState, BlockData blockData, Location location) {
+        new AutoFixBlockTask(residence, snapshotState, blockData, location).runTaskLater(RealHomeHunt.getInst(), Config.autoFixResidence.perBlockFixedMills);
     }
 }

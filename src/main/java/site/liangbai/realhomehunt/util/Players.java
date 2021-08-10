@@ -22,13 +22,28 @@ import org.bukkit.entity.Player;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+/**
+ * The type Players.
+ * 用于监听玩家水平移动
+ * @author Liangbai
+ * @since 2021 /08/10 11:00 上午
+ */
 public final class Players {
     private static final List<Predicate<Player>> listenerList = new LinkedList<>();
 
     public static void addListenerOnce(Predicate<Player> playerPredicate) {
         listenerList.add(playerPredicate);
+    }
+
+    public static void addListenerAlways(Consumer<Player> consumer) {
+        listenerList.add(player -> {
+            consumer.accept(player);
+
+            return false;
+        });
     }
 
     public static void push(Player player) {
