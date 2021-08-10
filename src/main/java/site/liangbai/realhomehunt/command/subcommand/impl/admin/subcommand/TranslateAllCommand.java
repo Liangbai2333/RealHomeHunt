@@ -26,7 +26,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import site.liangbai.realhomehunt.api.locale.impl.Locale;
 import site.liangbai.realhomehunt.api.residence.Residence;
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
@@ -43,8 +42,6 @@ import site.liangbai.realhomehunt.util.Locations;
 public class TranslateAllCommand implements ISubCommand {
     @Override
     public void execute(CommandSender sender, String label, String[] args) {
-        if (!(sender instanceof Player)) return;
-
         if (!Bukkit.getPluginManager().isPluginEnabled("Residence")) return;
 
         Locale locale = Locales.require(sender);
@@ -54,7 +51,7 @@ public class TranslateAllCommand implements ISubCommand {
         int sucCount = 0;
 
         for (OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
-            ResidencePlayer residencePlayer = ResidenceApi.getPlayerManager().getResidencePlayer(sender.getName());
+            ResidencePlayer residencePlayer = ResidenceApi.getPlayerManager().getResidencePlayer(offlinePlayer.getName());
 
             ClaimedResidence claimedResidence = residencePlayer.getMainResidence();
 

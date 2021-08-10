@@ -119,6 +119,7 @@ command:
         - "&c失败数量: &e{2}"
         - "&c请尽快将Residence内的领地删除, 避免冲突."
     translate:
+      usage: "&c使用方法: /{0} admin translate <玩家名>."
       success:
         - "&a转换成功"
         - "&c请尽快将Residence内的领地删除, 避免冲突."

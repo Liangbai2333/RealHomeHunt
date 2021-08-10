@@ -24,6 +24,7 @@ import site.liangbai.realhomehunt.command.subtabcompleter.ISubTabCompleter;
 import site.liangbai.realhomehunt.command.subtabcompleter.impl.admin.subtabcompleter.CreateTabCompleter;
 import site.liangbai.realhomehunt.command.subtabcompleter.impl.admin.subtabcompleter.ImportTabCompleter;
 import site.liangbai.realhomehunt.command.subtabcompleter.impl.admin.subtabcompleter.RemoveTabCompleter;
+import site.liangbai.realhomehunt.command.subtabcompleter.impl.admin.subtabcompleter.TranslateTabCompleter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +39,8 @@ public final class AdminTabCompleter implements ISubTabCompleter {
         registerSubCompiler("remove", new RemoveTabCompleter());
 
         registerSubCompiler("create", new CreateTabCompleter());
+
+        registerSubCompiler("translate", new TranslateTabCompleter());
     }
 
     private void registerSubCompiler(String command, ISubTabCompleter iSubTabCompiler) {
