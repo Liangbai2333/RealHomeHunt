@@ -20,7 +20,16 @@ package site.liangbai.realhomehunt.api.residence.attribute.impl;
 
 import java.util.Map;
 
+/**
+ * The type Animals attribute.
+ *
+ * @author Liangbai
+ * @since 2021 /08/10 05:00 下午
+ */
 public final class AnimalsAttribute extends CreatureAttribute {
+    public AnimalsAttribute() {
+    }
+
     public AnimalsAttribute(Map<String, Object> map) {
         super(map);
     }

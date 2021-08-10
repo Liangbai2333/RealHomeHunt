@@ -31,6 +31,9 @@ public final class BuildAttribute extends BooleanAttribute {
         super(map);
     }
 
+    public BuildAttribute() {
+    }
+
     @Override
     public String getName() {
         return "build";

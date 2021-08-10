@@ -20,9 +20,18 @@ package site.liangbai.realhomehunt.api.residence.attribute.impl;
 
 import java.util.Map;
 
+/**
+ * The type Spread fire attribute.
+ *
+ * @author Liangbai
+ * @since 2021 /08/10 05:02 下午
+ */
 public final class SpreadFireAttribute extends BooleanAttribute {
     public SpreadFireAttribute(Map<String, Object> map) {
         super(map);
+    }
+
+    public SpreadFireAttribute() {
     }
 
     @Override

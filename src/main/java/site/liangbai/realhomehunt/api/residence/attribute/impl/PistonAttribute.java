@@ -31,6 +31,9 @@ public final class PistonAttribute extends BooleanAttribute {
         super(map);
     }
 
+    public PistonAttribute() {
+    }
+
     @Override
     public String getName() {
         return "piston";

@@ -31,6 +31,9 @@ public final class PlaceAttribute extends BooleanAttribute {
         super(map);
     }
 
+    public PlaceAttribute() {
+    }
+
     @Override
     public String getName() {
         return "place";

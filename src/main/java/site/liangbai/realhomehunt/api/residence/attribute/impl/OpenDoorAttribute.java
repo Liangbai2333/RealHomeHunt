@@ -31,6 +31,9 @@ public final class OpenDoorAttribute extends BooleanAttribute {
         super(map);
     }
 
+    public OpenDoorAttribute() {
+    }
+
     @Override
     public String getName() {
         return "open-door";

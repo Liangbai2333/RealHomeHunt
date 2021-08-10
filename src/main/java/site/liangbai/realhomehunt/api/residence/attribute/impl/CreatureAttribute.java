@@ -20,6 +20,12 @@ package site.liangbai.realhomehunt.api.residence.attribute.impl;
 
 import java.util.Map;
 
+/**
+ * The type Creature attribute.
+ *
+ * @author Liangbai
+ * @since 2021 /08/10 05:01 下午
+ */
 public class CreatureAttribute extends BooleanAttribute {
     public CreatureAttribute() {
         set(true);

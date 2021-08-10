@@ -27,6 +27,9 @@ import java.util.Map;
  * @since 2021 /08/10 12:04 下午
  */
 public final class BreakAttribute extends BooleanAttribute {
+    public BreakAttribute() {
+    }
+
     public BreakAttribute(Map<String, Object> map) {
         super(map);
     }

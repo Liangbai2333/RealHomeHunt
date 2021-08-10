@@ -20,9 +20,18 @@ package site.liangbai.realhomehunt.api.residence.attribute.impl;
 
 import java.util.Map;
 
+/**
+ * The type Monster attribute.
+ *
+ * @author Liangbai
+ * @since 2021 /08/10 05:01 下午
+ */
 public final class MonsterAttribute extends CreatureAttribute {
     public MonsterAttribute(Map<String, Object> map) {
         super(map);
+    }
+
+    public MonsterAttribute() {
     }
 
     @Override

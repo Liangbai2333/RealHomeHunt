@@ -20,9 +20,18 @@ package site.liangbai.realhomehunt.api.residence.attribute.impl;
 
 import java.util.Map;
 
+/**
+ * The type Explode attribute.
+ *
+ * @author Liangbai
+ * @since 2021 /08/10 05:01 下午
+ */
 public final class ExplodeAttribute extends BooleanAttribute {
     public ExplodeAttribute(Map<String, Object> map) {
         super(map);
+    }
+
+    public ExplodeAttribute() {
     }
 
     @Override
