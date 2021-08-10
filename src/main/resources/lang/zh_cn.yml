@@ -76,6 +76,19 @@ command:
       - "&c请在 &e{1} &c秒内输入哦~"
       - "&6超时将不受处理~~"
     nothing: "&c您是不是输错了什么呢~这边没有查询到您需要确认什么操作呢~"
+  info:
+    self:
+      haveNotResidence: "&c你还没有领地哦~"
+      show:
+        - "&e你的领地信息如下: "
+        - "&c领主: &e{0}"
+        - "&c管理员: &e{1}"
+    other:
+      haveNotResidence: "&c对方还没有领地哦~"
+      show:
+        - "&e{0}的领地信息如下: "
+        - "&c领主: &e{1}"
+        - "&c管理员: &e{2}"
   admin:
     help:
       - "&e=================================="
@@ -85,6 +98,32 @@ command:
       unknownParam4: "&c第四个参数必须为 <true/false>"
       unknownFile: "&c文件: {0} 不存在."
       saveToStorage: "&a成功载入到当前的 {0} 存储系统, 成功载入数量: {1} 个, 总数: {2} 个."
+    create:
+      usage: "&c使用方法: /{0} admin create <玩家名>."
+      notOpened: "&c此世界没有开放领地."
+      hasOld: "&c对方已经有领地了, 无法重复创建."
+      notSelectZone: "&c请先选择区域."
+      pointsNotInSameWorld: "&c两点必须在同一世界."
+      containsOther: "&c附近有他人领地, 不可创建."
+      success: "&a为玩家 {0} 创建成功."
+      sendToAll: "{prefix}&a管理员 {0} 为玩家 {1} 成功创建了领地."
+    remove:
+      usage: "&c使用方法: /{0} admin remove <玩家名>."
+      haveNotResidence: "&c对方还没有领地哦~"
+      success: "&a成功删除 {0} 的领地."
+    translateAll:
+      info:
+        - "&e转换完成"
+        - "&6请求转换总数: &e{0}"
+        - "&a成功数量: &e{1}"
+        - "&c失败数量: &e{2}"
+        - "&c请尽快将Residence内的领地删除, 避免冲突."
+    translate:
+      success:
+        - "&a转换成功"
+        - "&c请尽快将Residence内的领地删除, 避免冲突."
+      failed:
+        - "&c{0} 不存在或没有领地"
 action:
   residence:
     moveIn: "&e你已经进入 {0} 的领地."

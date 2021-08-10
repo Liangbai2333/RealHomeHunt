@@ -27,6 +27,8 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.jetbrains.annotations.NotNull;
 import site.liangbai.dynamic.event.EventSubscriber;
 import site.liangbai.realhomehunt.api.residence.Residence;
+import site.liangbai.realhomehunt.api.residence.attribute.impl.BreakAttribute;
+import site.liangbai.realhomehunt.api.residence.attribute.impl.BuildAttribute;
 import site.liangbai.realhomehunt.config.Config;
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
 
@@ -40,7 +42,8 @@ public final class ListenerBlockBreak implements Listener {
 
         if (residence == null) return;
 
-        if (!residence.isAdministrator(event.getPlayer()) && !event.getPlayer().hasPermission("rh.break")) {
+        if (!residence.isAdministrator(event.getPlayer()) && !event.getPlayer().hasPermission("rh.break")
+                && !residence.checkBooleanAttribute(BreakAttribute.class) && !residence.checkBooleanAttribute(BuildAttribute.class)) {
             event.setCancelled(true);
 
             return;

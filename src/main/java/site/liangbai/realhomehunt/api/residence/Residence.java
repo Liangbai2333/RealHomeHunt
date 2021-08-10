@@ -78,9 +78,13 @@ public final class Residence implements ConfigurationSerializable {
     private boolean canWarn = true;
 
     private Residence(Location left, Location right, Player owner) {
+        this(left, right, owner.getName());
+    }
+
+    private Residence(Location left, Location right, String owner) {
         this.left = left;
         this.right = right;
-        this.owner = owner.getName();
+        this.owner = owner;
         this.administrators = new ArrayList<>();
         this.ignoreBlockInfoList = new LinkedList<>();
         this.attributes = new LinkedList<>();
@@ -361,6 +365,19 @@ public final class Residence implements ConfigurationSerializable {
                 .anyMatch(it -> !isAdministrator(it));
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Residence residence = (Residence) o;
+        return owner.equals(residence.owner);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(owner);
+    }
+
     @NotNull
     @Override
     public Map<String, Object> serialize() {
@@ -451,13 +468,17 @@ public final class Residence implements ConfigurationSerializable {
     }
 
     public static final class Builder {
-        private Player owner;
+        private String owner;
 
         private Location left;
 
         private Location right;
 
         public Builder owner(Player owner) {
+            return owner(owner.getName());
+        }
+
+        public Builder owner(String owner) {
             this.owner = owner;
 
             return this;

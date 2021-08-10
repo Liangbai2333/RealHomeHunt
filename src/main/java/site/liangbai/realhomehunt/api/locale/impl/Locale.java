@@ -28,6 +28,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The type Locale.
+ *
+ * @author Liangbai
+ * @since 2021 /08/10 01:55 下午
+ */
 public final class Locale implements ILocale {
     private final Map<String, String> nodes = new HashMap<>();
 
@@ -58,9 +64,9 @@ public final class Locale implements ILocale {
     @NotNull
     @Override
     public String asString(String node, Object... args) {
-        String result = nodes.get(node);
+        if (!nodes.containsKey(node)) return "(" + node + ")";
 
-        if (result == null) return "null";
+        String result = nodes.get(node);
 
         for (int i = 0; i < args.length; i++) {
             Object arg = args[i];

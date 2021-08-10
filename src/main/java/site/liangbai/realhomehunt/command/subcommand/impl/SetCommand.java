@@ -20,6 +20,7 @@ package site.liangbai.realhomehunt.command.subcommand.impl;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import site.liangbai.realhomehunt.api.event.residence.ResidenceSetAttributeEvent;
 import site.liangbai.realhomehunt.command.subcommand.ISubCommand;
 import site.liangbai.realhomehunt.api.locale.impl.Locale;
 import site.liangbai.realhomehunt.api.locale.manager.LocaleManager;
@@ -69,6 +70,8 @@ public final class SetCommand implements ISubCommand {
             String value = args[2];
 
             if (attribute.allow(value)) {
+                if (!new ResidenceSetAttributeEvent(player, residence, attribute, value).callEvent()) return;
+
                 String attributeName = attribute.getName();
 
                 attribute.force(value);

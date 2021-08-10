@@ -32,18 +32,19 @@ public final class AttributeMap {
 
     static {
         registerAttribute("creature", CreatureAttribute.class);
-
         registerAttribute("animals", AnimalsAttribute.class);
-
         registerAttribute("monster", MonsterAttribute.class);
-
         registerAttribute("explode", ExplodeAttribute.class);
-
         registerAttribute("burn", BurnAttribute.class);
-
         registerAttribute("ignite", IgniteAttribute.class);
-
         registerAttribute("spread-fire", SpreadFireAttribute.class);
+        registerAttribute("glow", GlowAttribute.class);
+        registerAttribute("break", BreakAttribute.class);
+        registerAttribute("place", PlaceAttribute.class);
+        registerAttribute("build", BuildAttribute.class);
+        registerAttribute("open-door", OpenDoorAttribute.class);
+        registerAttribute("piston", PistonAttribute.class);
+        registerAttribute("piston-protection", PistonProtectionAttribute.class);
     }
 
     public static void registerAttribute(String type, Class<? extends IAttributable<?>> attributeClass) {

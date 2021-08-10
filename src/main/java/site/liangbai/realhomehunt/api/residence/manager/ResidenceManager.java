@@ -23,8 +23,9 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
-import site.liangbai.realhomehunt.config.Config;
+import org.jetbrains.annotations.Nullable;
 import site.liangbai.realhomehunt.api.residence.Residence;
+import site.liangbai.realhomehunt.config.Config;
 import site.liangbai.realhomehunt.storage.IStorage;
 import site.liangbai.realhomehunt.storage.StorageType;
 import site.liangbai.realhomehunt.storage.impl.MySqlStorage;
@@ -33,11 +34,13 @@ import site.liangbai.realhomehunt.storage.impl.YamlStorage;
 import site.liangbai.realhomehunt.util.Console;
 import site.liangbai.realhomehunt.util.Locations;
 
-import java.util.LinkedList;
+import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 public final class ResidenceManager {
-    private static final List<Residence> residences = new LinkedList<>();
+    private static final Set<Residence> residences = new LinkedHashSet<>();
 
     private static IStorage storage;
 
@@ -88,11 +91,6 @@ public final class ResidenceManager {
     }
 
     public static void register(Residence residence) {
-        getResidences().stream()
-                .filter(existResidence -> existResidence.getOwner().equals(residence.getOwner()))
-                .findFirst()
-                .ifPresent(getResidences()::remove);
-
         getResidences().add(residence);
     }
 
@@ -107,12 +105,14 @@ public final class ResidenceManager {
                 .orElse(null);
     }
 
-    public static List<Residence> getResidences() {
+    public static Collection<Residence> getResidences() {
         return residences;
     }
 
+    @Nullable
     public static Residence getResidenceByLocation(Location location) {
         return getResidences().stream()
+                .parallel()
                 .filter(residence -> Locations.isInResidence(location, residence))
                 .findFirst()
                 .orElse(null);
@@ -126,6 +126,7 @@ public final class ResidenceManager {
         if (getResidenceByLocation(loc1) != null || getResidenceByLocation(loc2) != null) return true;
 
         return getResidences().stream()
+                .parallel()
                 .anyMatch(residence -> Locations.isInZone(residence.getLeft(), loc1, loc2) || Locations.isInZone(residence.getRight(), loc1, loc2));
     }
 

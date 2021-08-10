@@ -16,14 +16,27 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.command.subcommand.impl.admin.subcommand;
+package site.liangbai.realhomehunt.api.residence.attribute.impl;
 
-import org.bukkit.command.CommandSender;
-import site.liangbai.realhomehunt.command.subcommand.ISubCommand;
+import java.util.Map;
 
-public final class TranslateCommand implements ISubCommand {
+/**
+ * The type Piston protection attribute.
+ *
+ * @author Liangbai
+ * @since 2021 /08/10 12:05 下午
+ */
+public final class PistonProtectionAttribute extends BooleanAttribute {
+    public PistonProtectionAttribute() {
+        set(true);
+    }
+
+    public PistonProtectionAttribute(Map<String, Object> map) {
+        super(map);
+    }
+
     @Override
-    public void execute(CommandSender sender, String label, String[] args) {
-
+    public String getName() {
+        return "piston-protection";
     }
 }

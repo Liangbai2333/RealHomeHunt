@@ -21,7 +21,9 @@ package site.liangbai.realhomehunt.command.subtabcompleter.impl.admin;
 import org.bukkit.command.CommandSender;
 import site.liangbai.realhomehunt.command.subcommand.impl.admin.AdminCommand;
 import site.liangbai.realhomehunt.command.subtabcompleter.ISubTabCompleter;
+import site.liangbai.realhomehunt.command.subtabcompleter.impl.admin.subtabcompleter.CreateTabCompleter;
 import site.liangbai.realhomehunt.command.subtabcompleter.impl.admin.subtabcompleter.ImportTabCompleter;
+import site.liangbai.realhomehunt.command.subtabcompleter.impl.admin.subtabcompleter.RemoveTabCompleter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +34,10 @@ public final class AdminTabCompleter implements ISubTabCompleter {
 
     public AdminTabCompleter() {
         registerSubCompiler("import", new ImportTabCompleter());
+
+        registerSubCompiler("remove", new RemoveTabCompleter());
+
+        registerSubCompiler("create", new CreateTabCompleter());
     }
 
     private void registerSubCompiler(String command, ISubTabCompleter iSubTabCompiler) {

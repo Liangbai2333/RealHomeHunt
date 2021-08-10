@@ -49,7 +49,6 @@ dropItem: false
 robChestMode:
   # 开关
   enabled: false
-
   # 是否修复没有被掉落的物品(如果开启自动修复模式)
   fixItem: true
   # 掉落物品概率设定

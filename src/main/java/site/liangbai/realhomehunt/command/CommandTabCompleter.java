@@ -27,6 +27,7 @@ import org.jetbrains.annotations.Nullable;
 import site.liangbai.realhomehunt.command.subtabcompleter.ISubTabCompleter;
 import site.liangbai.realhomehunt.command.subtabcompleter.impl.AdministratorTabCompleter;
 import site.liangbai.realhomehunt.command.subtabcompleter.impl.BackTabCompleter;
+import site.liangbai.realhomehunt.command.subtabcompleter.impl.InfoTabCompleter;
 import site.liangbai.realhomehunt.command.subtabcompleter.impl.SetTabCompleter;
 import site.liangbai.realhomehunt.command.subtabcompleter.impl.admin.AdminTabCompleter;
 import site.liangbai.realhomehunt.confirm.ConfirmModule;
@@ -46,6 +47,8 @@ public final class CommandTabCompleter implements TabCompleter {
         registerSubCompiler("back", new BackTabCompleter());
 
         registerSubCompiler("set", new SetTabCompleter());
+
+        registerSubCompiler("info", new InfoTabCompleter());
 
         registerSubCompiler("admin", new AdminTabCompleter());
     }

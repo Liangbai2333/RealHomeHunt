@@ -26,6 +26,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import site.liangbai.dynamic.event.EventSubscriber;
 import site.liangbai.realhomehunt.api.residence.Residence;
+import site.liangbai.realhomehunt.api.residence.attribute.impl.OpenDoorAttribute;
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
 import site.liangbai.realhomehunt.config.Config;
 import site.liangbai.realhomehunt.util.Blocks;
@@ -46,7 +47,7 @@ public class ListenerPlayerClick implements Listener {
 
         if (residence == null) return;
 
-        if (!residence.isAdministrator(event.getPlayer())) event.setCancelled(true);
+        if (!residence.isAdministrator(event.getPlayer()) && !residence.checkBooleanAttribute(OpenDoorAttribute.class)) event.setCancelled(true);
     }
 
     @EventHandler

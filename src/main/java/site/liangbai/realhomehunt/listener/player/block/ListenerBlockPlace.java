@@ -25,11 +25,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import site.liangbai.dynamic.event.EventSubscriber;
-import site.liangbai.realhomehunt.config.Config;
 import site.liangbai.realhomehunt.api.locale.impl.Locale;
 import site.liangbai.realhomehunt.api.locale.manager.LocaleManager;
-import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
 import site.liangbai.realhomehunt.api.residence.Residence;
+import site.liangbai.realhomehunt.api.residence.attribute.impl.BuildAttribute;
+import site.liangbai.realhomehunt.api.residence.attribute.impl.PlaceAttribute;
+import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
+import site.liangbai.realhomehunt.config.Config;
 
 @EventSubscriber
 public final class ListenerBlockPlace implements Listener {
@@ -41,7 +43,8 @@ public final class ListenerBlockPlace implements Listener {
 
         if (residence == null) return;
 
-        if (!residence.isAdministrator(event.getPlayer()) && !event.getPlayer().hasPermission("rh.place")) {
+        if (!residence.isAdministrator(event.getPlayer()) && !event.getPlayer().hasPermission("rh.place")
+                && !residence.checkBooleanAttribute(PlaceAttribute.class) && !residence.checkBooleanAttribute(BuildAttribute.class)) {
             event.setCancelled(true);
 
             return;
@@ -50,6 +53,8 @@ public final class ListenerBlockPlace implements Listener {
         Block block = event.getBlock();
 
         Material type = block.getType();
+
+        if (type.isAir()) return;
 
         Player player = event.getPlayer();
 

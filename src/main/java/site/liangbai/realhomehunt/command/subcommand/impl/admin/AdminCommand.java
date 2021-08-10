@@ -20,8 +20,7 @@ package site.liangbai.realhomehunt.command.subcommand.impl.admin;
 
 import org.bukkit.command.CommandSender;
 import site.liangbai.realhomehunt.command.subcommand.ISubCommand;
-import site.liangbai.realhomehunt.command.subcommand.impl.admin.subcommand.HelpCommand;
-import site.liangbai.realhomehunt.command.subcommand.impl.admin.subcommand.ImportCommand;
+import site.liangbai.realhomehunt.command.subcommand.impl.admin.subcommand.*;
 import site.liangbai.realhomehunt.api.locale.impl.Locale;
 import site.liangbai.realhomehunt.util.Locales;
 
@@ -30,6 +29,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The type Admin command.
+ *
+ * @author Liangbai
+ * @since 2021 /08/10 01:49 下午
+ */
 public final class AdminCommand implements ISubCommand {
     private static final Map<String, ISubCommand> map = new HashMap<>();
 
@@ -37,6 +42,14 @@ public final class AdminCommand implements ISubCommand {
         registerSubCommand("help", new HelpCommand());
 
         registerSubCommand("import", new ImportCommand());
+
+        registerSubCommand("translate", new TranslateCommand());
+
+        registerSubCommand("translateAll", new TranslateAllCommand());
+
+        registerSubCommand("create", new CreateCommand());
+
+        registerSubCommand("remove", new RemoveCommand());
     }
 
     private void registerSubCommand(String command, ISubCommand ISubCommand) {
