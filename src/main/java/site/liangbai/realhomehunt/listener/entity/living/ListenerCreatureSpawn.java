@@ -26,12 +26,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import site.liangbai.dynamic.event.EventSubscriber;
-import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
 import site.liangbai.realhomehunt.api.residence.Residence;
-import site.liangbai.realhomehunt.api.residence.attribute.IAttributable;
 import site.liangbai.realhomehunt.api.residence.attribute.impl.AnimalsAttribute;
 import site.liangbai.realhomehunt.api.residence.attribute.impl.CreatureAttribute;
 import site.liangbai.realhomehunt.api.residence.attribute.impl.MonsterAttribute;
+import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
 
 @EventSubscriber
 public final class ListenerCreatureSpawn implements Listener {
@@ -45,33 +44,21 @@ public final class ListenerCreatureSpawn implements Listener {
         Residence residence = ResidenceManager.getResidenceByLocation(spawnLocation);
 
         if (residence != null) {
-            try {
-                IAttributable<Boolean> creatureAttribute = residence.getAttribute(CreatureAttribute.class);
+            if (!residence.checkBooleanAttribute(CreatureAttribute.class)) {
+                event.setCancelled(true);
 
-                if (!creatureAttribute.get()) {
-                    event.setCancelled(true);
+                return;
+            }
 
-                    return;
-                }
+            if (entity instanceof Monster && !residence.checkBooleanAttribute(MonsterAttribute.class)) {
+                event.setCancelled(true);
 
-                if (entity instanceof Monster) {
-                    IAttributable<Boolean> monsterAttribute = residence.getAttribute(MonsterAttribute.class);
+                return;
+            }
 
-                    if (!monsterAttribute.get()) {
-                        event.setCancelled(true);
-
-                        return;
-                    }
-                }
-
-                if (entity instanceof Animals) {
-                    IAttributable<Boolean> animalsAttribute = residence.getAttribute(AnimalsAttribute.class);
-
-                    if (!animalsAttribute.get()) {
-                        event.setCancelled(true);
-                    }
-                }
-            } catch (Throwable ignored) { }
+            if (entity instanceof Animals && !residence.checkBooleanAttribute(AnimalsAttribute.class)) {
+                event.setCancelled(true);
+            }
         }
     }
 }

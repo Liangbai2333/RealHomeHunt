@@ -75,11 +75,6 @@ public abstract class BooleanAttribute implements IAttributable<Boolean> {
     }
 
     @Override
-    public String getName() {
-        return "boolean";
-    }
-
-    @Override
     public List<String> allowValues() {
         return Arrays.asList("true", "false");
     }

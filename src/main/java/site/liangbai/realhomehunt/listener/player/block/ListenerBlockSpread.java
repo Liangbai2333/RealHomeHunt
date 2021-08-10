@@ -24,10 +24,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockSpreadEvent;
 import site.liangbai.dynamic.event.EventSubscriber;
-import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
 import site.liangbai.realhomehunt.api.residence.Residence;
-import site.liangbai.realhomehunt.api.residence.attribute.IAttributable;
 import site.liangbai.realhomehunt.api.residence.attribute.impl.SpreadFireAttribute;
+import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
 
 @EventSubscriber
 public final class ListenerBlockSpread implements Listener {
@@ -35,20 +34,14 @@ public final class ListenerBlockSpread implements Listener {
     public void onBlockSpread(BlockSpreadEvent event) {
         Block block = event.getBlock();
 
+        if (block.getType() != Material.FIRE) return;
+
         if (!ResidenceManager.isOpened(block.getWorld())) return;
 
         Residence residence = ResidenceManager.getResidenceByLocation(block.getLocation());
 
         if (residence != null) {
-            try {
-                IAttributable<Boolean> igniteAttribute = residence.getAttribute(SpreadFireAttribute.class);
-
-                if (!igniteAttribute.get() && block.getType() == Material.FIRE) {
-                    event.setCancelled(true);
-                }
-
-            } catch (Throwable ignored) { }
-
+            if (!residence.checkBooleanAttribute(SpreadFireAttribute.class)) event.setCancelled(true);
         }
     }
 }

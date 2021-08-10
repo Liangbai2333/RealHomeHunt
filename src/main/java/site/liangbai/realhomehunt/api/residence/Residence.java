@@ -222,6 +222,10 @@ public final class Residence implements ConfigurationSerializable {
                 });
     }
 
+    public boolean checkBooleanAttribute(Class<? extends IAttributable<Boolean>> attribute) {
+        return getAttribute(attribute).get();
+    }
+
     @SuppressWarnings("unchecked")
     @NotNull
     public <T> IAttributable<T> getAttribute(Class<? extends IAttributable<T>> attribute) {

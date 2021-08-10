@@ -23,10 +23,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBurnEvent;
 import site.liangbai.dynamic.event.EventSubscriber;
-import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
 import site.liangbai.realhomehunt.api.residence.Residence;
-import site.liangbai.realhomehunt.api.residence.attribute.IAttributable;
 import site.liangbai.realhomehunt.api.residence.attribute.impl.BurnAttribute;
+import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
 
 @EventSubscriber
 public final class ListenerBlockBurn implements Listener {
@@ -39,15 +38,7 @@ public final class ListenerBlockBurn implements Listener {
         Residence residence = ResidenceManager.getResidenceByLocation(block.getLocation());
 
         if (residence != null) {
-            try {
-                IAttributable<Boolean> burnAttribute = residence.getAttribute(BurnAttribute.class);
-
-                if (!burnAttribute.get()) {
-                    event.setCancelled(true);
-                }
-
-            } catch (Throwable ignored) { }
-
+            if (!residence.checkBooleanAttribute(BurnAttribute.class)) event.setCancelled(true);
         }
     }
 }

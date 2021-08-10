@@ -44,14 +44,7 @@ public final class ListenerEntityExplode implements Listener {
                 .filter(it -> !it.getType().isAir())
                 .filter(it -> {
                     Residence residence = ResidenceManager.getResidenceByLocation(it.getLocation());
-
-                    try {
-                        return residence != null && !residence.getAttribute(ExplodeAttribute.class).get();
-                    } catch (Throwable throwable) {
-                        throwable.printStackTrace();
-
-                        return false;
-                    }
+                    return residence != null && !residence.checkBooleanAttribute(ExplodeAttribute.class);
                 })
                 .collect(Collectors.toSet())
                 .forEach(blocks::remove);

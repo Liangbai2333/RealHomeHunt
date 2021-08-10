@@ -11,6 +11,8 @@ commands:
     aliases:
       - realhomehunt
       - rhh
+      - residence
+      - res
 permissions:
   rh.select:
     description: Allow player to select the residence zone.

@@ -21,10 +21,6 @@ package site.liangbai.realhomehunt.api.residence.attribute.impl;
 import java.util.Map;
 
 public final class ExplodeAttribute extends BooleanAttribute {
-    public ExplodeAttribute() {
-        super();
-    }
-
     public ExplodeAttribute(Map<String, Object> map) {
         super(map);
     }

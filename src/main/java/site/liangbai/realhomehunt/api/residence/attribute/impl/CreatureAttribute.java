@@ -22,8 +22,6 @@ import java.util.Map;
 
 public class CreatureAttribute extends BooleanAttribute {
     public CreatureAttribute() {
-        super();
-
         set(true);
     }
 
