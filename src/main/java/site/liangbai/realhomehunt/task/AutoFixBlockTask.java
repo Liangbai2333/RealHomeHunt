@@ -18,10 +18,14 @@
 
 package site.liangbai.realhomehunt.task;
 
+import com.destroystokyo.paper.profile.PlayerProfile;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Nameable;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.*;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.loot.Lootable;
 import org.bukkit.scheduler.BukkitRunnable;
 import site.liangbai.realhomehunt.RealHomeHunt;
 import site.liangbai.realhomehunt.api.residence.Residence;
@@ -68,8 +72,10 @@ public final class AutoFixBlockTask extends BukkitRunnable {
 
     private static void applyBlockState(BlockState newState, BlockState oldState) {
         if (oldState instanceof Container && Config.robChestMode.fixItem) {
-            ((Container) newState).getInventory()
-                    .setContents(((Container) oldState).getSnapshotInventory().getContents());
+            Container container = ((Container) newState);
+            Container snapshot = ((Container) oldState);
+
+            container.getInventory().setContents(snapshot.getSnapshotInventory().getContents());
         } else if (oldState instanceof Sign) {
             Sign sign = ((Sign) newState);
             Sign snapshot = ((Sign) oldState);
@@ -88,6 +94,36 @@ public final class AutoFixBlockTask extends BukkitRunnable {
 
             commandBlock.setCommand(snapshot.getCommand());
             commandBlock.setName(snapshot.getName());
+        } else if (oldState instanceof Skull) {
+            Skull skull = ((Skull) newState);
+            Skull snapshot = ((Skull) oldState);
+
+            OfflinePlayer player = snapshot.getOwningPlayer();
+
+            if (player != null) {
+                skull.setOwningPlayer(player);
+            }
+
+            PlayerProfile profile = snapshot.getPlayerProfile();
+
+            if (profile != null) {
+                skull.setPlayerProfile(profile);
+            }
+        }
+
+        if (oldState instanceof Lockable) {
+            ((Lockable) newState).setLock(((Lockable) oldState).getLock());
+        }
+
+        if (oldState instanceof Nameable) {
+            ((Nameable) newState).setCustomName(((Nameable) oldState).getCustomName());
+        }
+
+        if (oldState instanceof Lootable) {
+            Lootable lootable = ((Lootable) newState);
+            Lootable snapshot = ((Lootable) oldState);
+
+            lootable.setLootTable(snapshot.getLootTable(), snapshot.getSeed());
         }
     }
 
