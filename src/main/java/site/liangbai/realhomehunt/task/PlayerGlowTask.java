@@ -47,8 +47,12 @@ public final class PlayerGlowTask extends BukkitRunnable  {
 
                     Residence residence = ResidenceManager.getResidenceByLocation(location);
 
-                    if (residence.checkBooleanAttribute(GlowAttribute.class) && !it.isGlowing()) {
-                        it.setGlowing(true);
+                    if (residence != null) {
+                        if (residence.checkBooleanAttribute(GlowAttribute.class) && !it.isGlowing()) {
+                            it.setGlowing(true);
+                        }
+                    } else if (it.isGlowing()) {
+                        it.setGlowing(false);
                     }
                 });
     }

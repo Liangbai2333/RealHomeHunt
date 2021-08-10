@@ -65,6 +65,8 @@ public final class InfoCommand implements ISubCommand {
     private static String getAdministratorListString(Residence residence) {
         StringBuilder stringBuilder = new StringBuilder();
 
+        if (residence.getAdministrators().isEmpty()) return "";
+
         residence.getAdministrators().forEach(it -> stringBuilder.append(" ").append("-").append(" ").append(it).append("\n"));
 
         return stringBuilder.substring(0, stringBuilder.lastIndexOf("\n"));
@@ -72,6 +74,8 @@ public final class InfoCommand implements ISubCommand {
 
     private static String getAttributeListString(Residence residence) {
         StringBuilder stringBuilder = new StringBuilder();
+
+        if (residence.getAttributes().isEmpty()) return "";
 
         residence.getAttributes().forEach(it -> stringBuilder.append(" ").append("-").append(" ").append(it.getName()).append(":").append(" ").append(it.get()).append("\n"));
 
