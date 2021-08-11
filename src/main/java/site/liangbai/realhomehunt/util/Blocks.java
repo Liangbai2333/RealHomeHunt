@@ -108,7 +108,11 @@ public final class Blocks {
     private static boolean canConnected(Block current, BlockFace outside) {
         Block outsideBlock = current.getRelative(outside);
 
-        return outsideBlock.getBlockData() instanceof MultipleFacing && !((MultipleFacing) outsideBlock.getBlockData()).hasFace(outside);
+        BlockData outData = outsideBlock.getBlockData();
+
+        BlockData currentData = current.getBlockData();
+
+        return outData.getClass().equals(currentData.getClass()) && outData instanceof MultipleFacing && !((MultipleFacing) currentData).hasFace(outside);
     }
 
     public static void applyBlockState(BlockState newState, BlockState oldState) {
