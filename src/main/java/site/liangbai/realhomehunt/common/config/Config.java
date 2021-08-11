@@ -499,7 +499,7 @@ public final class Config {
                 String name = material.name().toUpperCase();
 
                 return ignoreBlockInfoList.stream()
-                        .filter(info -> info.full != null && info.full.equalsIgnoreCase(name) || name.startsWith(info.prefix) && name.endsWith(info.suffix))
+                        .filter(info -> (info.full != null && info.full.equalsIgnoreCase(name)) || ((!info.prefix.isEmpty() || !info.suffix.isEmpty()) && name.startsWith(info.prefix) && name.endsWith(info.suffix)))
                         .findFirst()
                         .orElseGet(() -> material.isSolid() ? null : new IgnoreBlockInfo(null, null, material.name(), 0, false));
             }

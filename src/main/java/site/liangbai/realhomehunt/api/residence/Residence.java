@@ -196,9 +196,9 @@ public final class Residence implements ConfigurationSerializable {
 
                     if (ignoreBlockInfo.full != null && ignoreBlockInfo.full.equalsIgnoreCase(name)) return true;
 
-                    if (ignoreBlockInfo.prefix == null || ignoreBlockInfo.suffix == null) return false;
+                    if (ignoreBlockInfo.prefix.isEmpty() && ignoreBlockInfo.suffix.isEmpty()) return false;
 
-                    return name.startsWith(ignoreBlockInfo.prefix) && name.endsWith(ignoreBlockInfo.suffix);
+                    return name.startsWith(ignoreBlockInfo.prefix.toUpperCase()) && name.endsWith(ignoreBlockInfo.suffix.toUpperCase());
                 })
                 .findFirst()
                 .orElseGet(() -> {
@@ -209,12 +209,10 @@ public final class Residence implements ConfigurationSerializable {
                     } else {
                         String typeName;
 
-                        if (ignoreBlockInfo.prefix == null || ignoreBlockInfo.suffix == null) {
+                        if (ignoreBlockInfo.prefix.isEmpty() && ignoreBlockInfo.suffix.isEmpty()) {
                             typeName = "null";
                         } else {
                             typeName = ignoreBlockInfo.prefix + ignoreBlockInfo.suffix;
-
-                            if (typeName.isEmpty()) typeName = "null";
                         }
 
                         info = new IgnoreBlockInfo(typeName);
