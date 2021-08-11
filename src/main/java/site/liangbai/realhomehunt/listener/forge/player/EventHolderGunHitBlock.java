@@ -19,6 +19,7 @@
 package site.liangbai.realhomehunt.listener.forge.player;
 
 import com.craftingdead.core.event.GunEvent;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -26,17 +27,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import site.liangbai.forgeeventbridge.event.EventHolder;
 import site.liangbai.forgeeventbridge.wrapper.EventWrapper;
-import site.liangbai.forgeeventbridge.wrapper.LocationWrapper;
-import site.liangbai.forgeeventbridge.wrapper.creator.WrapperCreators;
+import site.liangbai.forgeeventbridge.wrapper.WrapperTransformer;
 import site.liangbai.realhomehunt.processor.Processors;
 import site.liangbai.realhomehunt.util.Living;
 
-public class EventHolderGunHitBlock implements EventHolder<EventHolderGunHitBlock.GunHitBlockEventObject> {
+/**
+ * The type Event holder gun hit block.
+ *
+ * @author Liangbai
+ * @since 2021 /08/11 02:37 下午
+ */
+public class EventHolderGunHitBlock implements EventHolder<EventWrapper.EventObject> {
     @Override
-    public void handle(EventWrapper<GunHitBlockEventObject> eventWrapper) {
+    public void handle(EventWrapper<EventWrapper.EventObject> eventWrapper) {
         GunEvent.HitBlock event = (GunEvent.HitBlock) eventWrapper.getObject();
-        
-        LocationWrapper locationWrapper = WrapperCreators.LOCATION.create(event.getRayTraceResult().getBlockPos());
 
         Entity entity = Living.asEntity(event.getLiving());
 
@@ -44,20 +48,12 @@ public class EventHolderGunHitBlock implements EventHolder<EventHolderGunHitBloc
 
         Player player = ((Player) entity);
 
-        GunHitBlockEventObject eventObject = eventWrapper.as(GunHitBlockEventObject.class);
+        ItemStack gun = (ItemStack) WrapperTransformer.require(ItemStack.class, event.getItemStack());
 
-        ItemStack gun = eventObject.getItemStack();
+        World world = (World) WrapperTransformer.require(World.class, event.getLevel());
 
-        World world = eventObject.getLevel();
-
-        Block block = world.getBlockAt(locationWrapper.asLocation());
+        Block block = world.getBlockAt((Location) WrapperTransformer.require(Location.class, event.getRayTraceResult().getBlockPos()));
 
         Processors.GUN_HIT_BLOCK_PROCESSOR.processGunHitBlock(player, gun, block);
-    }
-
-    public static abstract class GunHitBlockEventObject extends EventWrapper.EventObject {
-        public abstract ItemStack getItemStack();
-
-        public abstract World getLevel();
     }
 }

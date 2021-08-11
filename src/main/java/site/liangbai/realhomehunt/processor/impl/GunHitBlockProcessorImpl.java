@@ -45,6 +45,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * The type Gun hit block processor.
+ *
+ * @author Liangbai
+ * @since 2021 /08/11 02:48 下午
+ */
 public class GunHitBlockProcessorImpl implements IGunHitBlockProcessor {
     private final Map<UUID, DamageCachePool> damageCachePoolMap = new HashMap<>();
 

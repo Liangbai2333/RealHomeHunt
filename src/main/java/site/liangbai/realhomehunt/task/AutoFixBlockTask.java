@@ -58,6 +58,8 @@ public final class AutoFixBlockTask extends BukkitRunnable {
             if (needFixed(block)) {
                 block.setBlockData(blockData);
 
+                block.getState().update(true, true);
+
                 applyBlockState(block.getState(), blockState);
             }
         } else
@@ -123,7 +125,8 @@ public final class AutoFixBlockTask extends BukkitRunnable {
             Lootable lootable = ((Lootable) newState);
             Lootable snapshot = ((Lootable) oldState);
 
-            lootable.setLootTable(snapshot.getLootTable(), snapshot.getSeed());
+            lootable.setLootTable(snapshot.getLootTable());
+            lootable.setSeed(snapshot.getSeed());
         }
     }
 

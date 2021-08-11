@@ -20,13 +20,10 @@ package site.liangbai.realhomehunt.util;
 
 import com.craftingdead.core.world.entity.extension.LivingExtension;
 import org.bukkit.entity.Entity;
-import site.liangbai.forgeeventbridge.wrapper.ObjectWrapper;
-import site.liangbai.forgeeventbridge.wrapper.creator.WrapperCreators;
+import site.liangbai.forgeeventbridge.wrapper.WrapperTransformer;
 
 public class Living {
     public static Entity asEntity(LivingExtension<?, ?> living) {
-        ObjectWrapper livingWrapper = WrapperCreators.OBJECT.create(living);
-
-        return livingWrapper.invokeWrapper("getEntity", WrapperCreators.ENTITY).asEntity();
+        return (Entity) WrapperTransformer.require(Entity.class, living.getEntity());
     }
 }
