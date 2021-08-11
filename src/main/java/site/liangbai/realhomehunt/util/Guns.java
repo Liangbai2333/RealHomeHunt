@@ -22,7 +22,7 @@ import com.craftingdead.core.world.item.GunItem;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import site.liangbai.realhomehunt.config.Config;
+import site.liangbai.realhomehunt.common.config.Config;
 
 public final class Guns {
     public static int countBlockSit(double count, double hardness) {

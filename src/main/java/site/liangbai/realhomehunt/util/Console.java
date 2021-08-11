@@ -19,7 +19,7 @@
 package site.liangbai.realhomehunt.util;
 
 import org.bukkit.Bukkit;
-import site.liangbai.realhomehunt.config.Config;
+import site.liangbai.realhomehunt.common.config.Config;
 
 public final class Console {
     public static void sendMessage(String message) {

@@ -18,16 +18,22 @@
 
 package site.liangbai.realhomehunt.util;
 
+import com.destroystokyo.paper.profile.PlayerProfile;
 import net.minecraft.server.v1_16_R3.BlockPosition;
 import net.minecraft.server.v1_16_R3.PacketPlayOutBlockBreakAnimation;
 import net.minecraft.server.v1_16_R3.WorldServer;
 import org.bukkit.Location;
+import org.bukkit.Nameable;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
-import org.bukkit.block.Block;
+import org.bukkit.block.*;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.MultipleFacing;
 import org.bukkit.block.data.type.Door;
 import org.bukkit.craftbukkit.v1_16_R3.CraftWorld;
+import org.bukkit.loot.Lootable;
 import site.liangbai.realhomehunt.api.residence.Residence;
-import site.liangbai.realhomehunt.config.Config;
+import site.liangbai.realhomehunt.common.config.Config;
 
 public final class Blocks {
 
@@ -81,5 +87,85 @@ public final class Blocks {
                         (info.suffix != null && it.name().endsWith(info.suffix))
                 )
                 .count();
+    }
+
+    public static void applyPlaceBlock(Block block) {
+        BlockData data = block.getBlockData().clone();
+
+        if (data instanceof MultipleFacing) {
+            MultipleFacing multipleFacing = ((MultipleFacing) data);
+
+            multipleFacing.getAllowedFaces().forEach(blockFace -> {
+                if (canConnected(block, blockFace)) {
+                    multipleFacing.setFace(blockFace, true);
+                }
+            });
+        }
+
+        block.setBlockData(data);
+    }
+
+    private static boolean canConnected(Block current, BlockFace outside) {
+        Block outsideBlock = current.getRelative(outside);
+
+        return outsideBlock.getBlockData() instanceof MultipleFacing && !((MultipleFacing) outsideBlock.getBlockData()).hasFace(outside);
+    }
+
+    public static void applyBlockState(BlockState newState, BlockState oldState) {
+        if (oldState instanceof Container && Config.robChestMode.fixItem) {
+            Container container = ((Container) newState);
+            Container snapshot = ((Container) oldState);
+
+            container.getInventory().setContents(snapshot.getSnapshotInventory().getContents());
+        } else if (oldState instanceof Sign) {
+            Sign sign = ((Sign) newState);
+            Sign snapshot = ((Sign) oldState);
+
+            String[] lines = snapshot.getLines();
+
+            sign.setEditable(snapshot.isEditable());
+            sign.setColor(snapshot.getColor());
+
+            for (int i = 0; i < lines.length; i++) {
+                sign.setLine(i, lines[i]);
+            }
+        } else if (oldState instanceof CommandBlock) {
+            CommandBlock commandBlock = ((CommandBlock) newState);
+            CommandBlock snapshot = ((CommandBlock) oldState);
+
+            commandBlock.setCommand(snapshot.getCommand());
+            commandBlock.setName(snapshot.getName());
+        } else if (oldState instanceof Skull) {
+            Skull skull = ((Skull) newState);
+            Skull snapshot = ((Skull) oldState);
+
+            OfflinePlayer player = snapshot.getOwningPlayer();
+
+            if (player != null) {
+                skull.setOwningPlayer(player);
+            }
+
+            PlayerProfile profile = snapshot.getPlayerProfile();
+
+            if (profile != null) {
+                skull.setPlayerProfile(profile);
+            }
+        }
+
+        if (oldState instanceof Lockable) {
+            ((Lockable) newState).setLock(((Lockable) oldState).getLock());
+        }
+
+        if (oldState instanceof Nameable) {
+            ((Nameable) newState).setCustomName(((Nameable) oldState).getCustomName());
+        }
+
+        if (oldState instanceof Lootable) {
+            Lootable lootable = ((Lootable) newState);
+            Lootable snapshot = ((Lootable) oldState);
+
+            lootable.setLootTable(snapshot.getLootTable());
+            lootable.setSeed(snapshot.getSeed());
+        }
     }
 }

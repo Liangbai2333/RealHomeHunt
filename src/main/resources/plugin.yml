@@ -83,6 +83,9 @@ permissions:
   rh.command.admin.remove:
     description: "Allow player to use the /rh admin remove command."
     default: op
+  rh.command.admin.set:
+    description: "Allow player to use the /rh admin set command."
+    default: op
   rh.reload:
     description: "Allow player to reload the configuration."
     default: op

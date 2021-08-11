@@ -19,7 +19,7 @@
 package site.liangbai.realhomehunt.api.cache;
 
 import org.bukkit.block.Block;
-import site.liangbai.realhomehunt.bossbar.IBossBar;
+import site.liangbai.realhomehunt.common.bossbar.IBossBar;
 import site.liangbai.realhomehunt.util.Blocks;
 
 import java.util.ArrayList;

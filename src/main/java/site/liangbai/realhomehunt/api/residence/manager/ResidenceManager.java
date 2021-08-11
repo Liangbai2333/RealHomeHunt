@@ -25,12 +25,12 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import site.liangbai.realhomehunt.api.residence.Residence;
-import site.liangbai.realhomehunt.config.Config;
-import site.liangbai.realhomehunt.storage.IStorage;
-import site.liangbai.realhomehunt.storage.StorageType;
-import site.liangbai.realhomehunt.storage.impl.MySqlStorage;
-import site.liangbai.realhomehunt.storage.impl.SqliteStorage;
-import site.liangbai.realhomehunt.storage.impl.YamlStorage;
+import site.liangbai.realhomehunt.common.config.Config;
+import site.liangbai.realhomehunt.internal.storage.IStorage;
+import site.liangbai.realhomehunt.internal.storage.StorageType;
+import site.liangbai.realhomehunt.internal.storage.impl.MySqlStorage;
+import site.liangbai.realhomehunt.internal.storage.impl.SqliteStorage;
+import site.liangbai.realhomehunt.internal.storage.impl.YamlStorage;
 import site.liangbai.realhomehunt.util.Console;
 import site.liangbai.realhomehunt.util.Locations;
 

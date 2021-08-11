@@ -23,7 +23,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
-import site.liangbai.realhomehunt.config.Config;
+import site.liangbai.realhomehunt.common.config.Config;
 import site.liangbai.realhomehunt.api.locale.impl.Locale;
 import site.liangbai.realhomehunt.util.Console;
 

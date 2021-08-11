@@ -19,7 +19,7 @@
 package site.liangbai.realhomehunt.api.residence.attribute;
 
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import site.liangbai.realhomehunt.database.converter.list.IJsonEntity;
+import site.liangbai.realhomehunt.common.database.converter.list.IJsonEntity;
 
 import java.util.List;
 

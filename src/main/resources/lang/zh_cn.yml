@@ -133,6 +133,12 @@ command:
         - "&c请尽快将Residence内的领地删除, 避免冲突."
       failed:
         - "&c{0} 不存在或没有领地"
+    set:
+      usage: "&c使用方法: /{0} admin set <玩家名> <属性类型> <属性值>"
+      haveNotResidence: "&c对方 {0} 还没有领地, 无法设置领地属性."
+      unknownAttribute: "&c未知的属性名称: {0}."
+      success: "&a成功将 {0} 的领地属性 {1} 的值设定为: {2}."
+      notAllow: "&c不被允许的属性值, 该项属性允许的属性值为: {0}."
 action:
   residence:
     moveIn: "&e你已经进入 {0} 的领地."
