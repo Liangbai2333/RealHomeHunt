@@ -31,9 +31,14 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.MultipleFacing;
 import org.bukkit.block.data.type.Door;
 import org.bukkit.craftbukkit.v1_16_R3.CraftWorld;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.loot.Lootable;
 import site.liangbai.realhomehunt.api.residence.Residence;
 import site.liangbai.realhomehunt.common.config.Config;
+import site.liangbai.realhomehunt.internal.task.NaturallyDropItemTask;
+
+import java.util.List;
 
 public final class Blocks {
 
@@ -116,11 +121,18 @@ public final class Blocks {
     }
 
     public static void applyBlockState(BlockState newState, BlockState oldState) {
-        if (oldState instanceof Container && Config.robChestMode.fixItem) {
+        if (oldState instanceof Container && Config.robChestMode.enabled && Config.robChestMode.fixItem) {
             Container container = ((Container) newState);
             Container snapshot = ((Container) oldState);
 
-            container.getInventory().addItem(snapshot.getSnapshotInventory().getContents());
+            Inventory inventory = container.getInventory();
+            Inventory snapshotInventory = snapshot.getSnapshotInventory();
+
+            List<ItemStack> list = InventoryHelper.copyTo(inventory, snapshotInventory);
+
+            if (!list.isEmpty()) {
+                NaturallyDropItemTask.setup(list, newState.getLocation());
+            }
         } else if (oldState instanceof Sign) {
             Sign sign = ((Sign) newState);
             Sign snapshot = ((Sign) oldState);
