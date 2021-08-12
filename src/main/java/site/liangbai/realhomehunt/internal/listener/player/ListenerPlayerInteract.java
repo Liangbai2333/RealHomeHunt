@@ -61,7 +61,7 @@ public final class ListenerPlayerInteract implements Listener {
             return;
         }
 
-        if (ResidenceManager.getResidenceByOwner(player.getName()) != null) {
+        if (!player.hasPermission("rh.unlimited.select") && ResidenceManager.getResidenceByOwner(player.getName()) != null) {
             player.sendMessage(locale.asString("action.select.alreadyHaveResidence"));
 
             return;
@@ -72,7 +72,7 @@ public final class ListenerPlayerInteract implements Listener {
         if (action == Action.LEFT_CLICK_BLOCK) {
             if (!isLeftSelectTool(itemType)) return;
 
-            SelectCache.push(SelectCache.SelectType.FIRST, player.getName(), block.getLocation());
+            SelectCache.push(SelectCache.SelectType.FIRST, player, block.getLocation());
 
             player.sendMessage(locale.asString("action.select.selectFirst"));
 
@@ -82,7 +82,7 @@ public final class ListenerPlayerInteract implements Listener {
         if (action == Action.RIGHT_CLICK_BLOCK) {
             if (!isRightSelectTool(itemType)) return;
 
-            SelectCache.push(SelectCache.SelectType.SECOND, player.getName(), block.getLocation());
+            SelectCache.push(SelectCache.SelectType.SECOND, player, block.getLocation());
 
             player.sendMessage(locale.asString("action.select.selectSecond"));
 

@@ -36,8 +36,8 @@ import site.liangbai.realhomehunt.internal.task.PlayerGlowTask;
 import site.liangbai.realhomehunt.internal.task.PlayerMoveToResidenceMessageTask;
 import site.liangbai.realhomehunt.util.Console;
 
-public final class RealHomeHunt extends JavaPlugin {
-    private static RealHomeHunt inst;
+public final class RealHomeHuntPlugin extends JavaPlugin {
+    private static RealHomeHuntPlugin inst;
 
     private static final String FORGE_EVENT_BRIDGE_MOD_ID = "forgeeventbridge";
 
@@ -73,7 +73,7 @@ public final class RealHomeHunt extends JavaPlugin {
         cancelTasks();
     }
 
-    public static RealHomeHunt getInst() {
+    public static RealHomeHuntPlugin getInst() {
         return inst;
     }
 

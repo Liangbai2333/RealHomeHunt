@@ -119,13 +119,49 @@ residence:
     leftSelect: STICK
     # 右键圈地工具, 默认木棍
     rightSelect: STICK
-
+    # 是否开启圈地范围显示
+    showSelectZone: true
+    # 圈地范围显示使用的粒子, REDSTONE为红石
+    showParticle: REDSTONE
+    # 可以理解为细腻程度, 但是是越低越细腻
+    showParticleStep: 0.1
+    # 颜色设置
+    particleColor:
+      # 颜色名称
+      #    WHITE 白色,
+      #    SILVER 银色,
+      #    GRAY 灰色,
+      #    BLACK 黑色,
+      #    RED 红色,
+      #    MAROON 红褐色,
+      #    YELLOW 黄色,
+      #    OLIVE 黄棕色,
+      #    LIME 黄绿色,
+      #    GREEN 绿色,
+      #    AQUA 天蓝色,
+      #    TEAL 青色,
+      #    BLUE 蓝色,
+      #    NAVY 深蓝色,
+      #    FUCHSIA 紫红色,
+      #    PURPLE 紫色,
+      #    ORANGE 橘色;
+      name: RED
+      # 是否使用RGB模式, 如果启动颜色则不在name获取, 在red, green, blue组成的RGB获取
+      useRGB: false
+      red: 255
+      green: 0
+      blue: 0
   # 允许玩家使用头上仰90度+Shift潜行来向成员发出发出防御警告
   openWarn: true
 
 # 方块设置
 block:
-  # 屏蔽打击的方块
+  # 是否禁止一切非固体方块放置
+  # 非固体方块无法被枪械打击
+  # 可在下列屏蔽放置方块限制放置数量, 为-1即允许放置
+  bannedNotSolid: true
+
+  # 限制放置的方块
   ignore:
     door:
       # 类型，物品名称尾缀为DOOR，即门，可选的还有prefix, full，分别代表物品名前缀，全名，可选。
@@ -134,6 +170,8 @@ block:
       amount: 1
       # 打击他下方的方块，他是否会被破坏，比如木门下方的方块被摧毁，木门也会跟着被摧毁
       upBreak: true
+      # 是否屏蔽打击
+      ignoreHit: true
     # 树叶
     leaves:
       suffix: LEAVES

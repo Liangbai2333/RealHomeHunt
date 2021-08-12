@@ -52,6 +52,10 @@ public final class AdminCommand implements ISubCommand {
         registerSubCommand("remove", new RemoveCommand());
 
         registerSubCommand("set", new SetCommand());
+
+        registerSubCommand("expand", new ExpandCommand());
+
+        registerSubCommand("reelect", new ReelectCommand());
     }
 
     private void registerSubCommand(String command, ISubCommand ISubCommand) {

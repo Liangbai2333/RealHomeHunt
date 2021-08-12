@@ -18,28 +18,23 @@
 
 package site.liangbai.realhomehunt.api.event.residence;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import site.liangbai.realhomehunt.api.event.EventCancellable;
 import site.liangbai.realhomehunt.api.residence.Residence;
-import site.liangbai.realhomehunt.api.residence.attribute.IAttributable;
 
-public class ResidenceSetAttributeEvent extends EventCancellable<ResidenceSetAttributeEvent> {
+public class ResidenceReelectEvent extends EventCancellable<ResidenceReelectEvent> {
     private final Player operator;
     private final Residence residence;
-    private final IAttributable<?> attributable;
 
-    private String value;
+    private Location changedLeft;
+    private Location changedRight;
 
-    public ResidenceSetAttributeEvent(Player operator, Residence residence, IAttributable<?> attributable, String value) {
+    public ResidenceReelectEvent(Player operator, Residence residence, Location changedLeft, Location changedRight) {
         this.operator = operator;
         this.residence = residence;
-        this.attributable = attributable;
-        this.value = value;
-    }
-
-    @Deprecated
-    public Player getOwner() {
-        return operator;
+        this.changedLeft = changedLeft;
+        this.changedRight = changedRight;
     }
 
     public Player getOperator() {
@@ -50,15 +45,19 @@ public class ResidenceSetAttributeEvent extends EventCancellable<ResidenceSetAtt
         return residence;
     }
 
-    public IAttributable<?> getAttributable() {
-        return attributable;
+    public Location getChangedLeft() {
+        return changedLeft;
     }
 
-    public String getValue() {
-        return value;
+    public Location getChangedRight() {
+        return changedRight;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setChangedLeft(Location changedLeft) {
+        this.changedLeft = changedLeft;
+    }
+
+    public void setChangedRight(Location changedRight) {
+        this.changedRight = changedRight;
     }
 }

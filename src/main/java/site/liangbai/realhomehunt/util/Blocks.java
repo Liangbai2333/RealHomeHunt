@@ -120,7 +120,7 @@ public final class Blocks {
             Container container = ((Container) newState);
             Container snapshot = ((Container) oldState);
 
-            container.getInventory().setContents(snapshot.getSnapshotInventory().getContents());
+            container.getInventory().addItem(snapshot.getSnapshotInventory().getContents());
         } else if (oldState instanceof Sign) {
             Sign sign = ((Sign) newState);
             Sign snapshot = ((Sign) oldState);

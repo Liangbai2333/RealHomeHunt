@@ -73,6 +73,12 @@ public final class CreateCommand implements ISubCommand {
             return;
         }
 
+        if (!ResidenceManager.isOpened(loc1.getWorld())) {
+            sender.sendMessage(locale.asString("command.create.notOpened"));
+
+            return;
+        }
+
         Locations.DistanceInfo distanceInfo = Locations.countDistanceInfo(loc1, loc2);
 
         Config.ResidenceSetting.ResidenceSizeSetting sizeSetting = Config.residence.sizeLimit;
@@ -89,7 +95,7 @@ public final class CreateCommand implements ISubCommand {
         }
 
         if (ResidenceManager.containsResidence(loc1, loc2)) {
-            SelectCache.pop(name);
+            SelectCache.pop(player);
 
             sender.sendMessage(locale.asString("command.create.containsOther"));
 
@@ -124,7 +130,7 @@ public final class CreateCommand implements ISubCommand {
 
         residence.save();
 
-        SelectCache.pop(name);
+        SelectCache.pop(player);
 
         Sounds.playLevelUpSound(player, 1, 0);
 

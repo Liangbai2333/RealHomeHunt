@@ -21,7 +21,7 @@ package site.liangbai.realhomehunt.internal.task;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import site.liangbai.realhomehunt.RealHomeHunt;
+import site.liangbai.realhomehunt.RealHomeHuntPlugin;
 import site.liangbai.realhomehunt.util.Locations;
 import site.liangbai.realhomehunt.util.Players;
 import site.liangbai.realhomehunt.util.Titles;
@@ -48,7 +48,7 @@ public final class PlayerBackTask extends BukkitRunnable {
     private final long seconds;
 
     public static void tryTeleportPlayer(Player player, Location location, String doneMessage, String denyMessage, String titleMessage, String teleportFormatSubTitleMessage, long seconds, Consumer<Player> finishBlock) {
-        new PlayerBackTask(player, location, doneMessage, denyMessage, titleMessage, teleportFormatSubTitleMessage, seconds, finishBlock).runTaskTimer(RealHomeHunt.getInst(), 0, 20);
+        new PlayerBackTask(player, location, doneMessage, denyMessage, titleMessage, teleportFormatSubTitleMessage, seconds, finishBlock).runTaskTimer(RealHomeHuntPlugin.getInst(), 0, 20);
     }
 
     public PlayerBackTask(Player player, Location location, String doneMessage, String denyMessage, String titleMessage, String teleportFormatSubTitleMessage, long seconds, Consumer<Player> finishBlock) {

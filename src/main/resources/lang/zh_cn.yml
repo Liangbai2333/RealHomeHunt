@@ -100,9 +100,16 @@ command:
   admin:
     help:
       - "&e=================================="
-      - "{prefix}&2/{0} import <YAML文件夹/数据库文件名 (不得有空格)> <清除原数据(true/false)> &e - 导入一个YAML文件夹/数据库文件的内容到当前存储系统中"
+      - "{prefix}&2/{0} admin import <YAML文件夹/数据库文件名 (不得有空格)> <清除原数据(true/false)> &e - 导入一个YAML文件夹/数据库文件的内容到当前存储系统中"
+      - "{prefix}&2/{0} admin translate <玩家名> &e - 将他人的residence中的主领地转移至RealHomeHunt"
+      - "{prefix}&2/{0} admin translateall &e - 将所有人的residence中的主领地转移至RealHomeHunt"
+      - "{prefix}&2/{0} admin create <玩家名> &e - 为他人创造领地"
+      - "{prefix}&2/{0} admin remove <玩家名> &e - 删除他人领地"
+      - "{prefix}&2/{0} admin set <玩家名> <属性类型> <属性值> &e - 为他人领地设置属性"
+      - "{prefix}&2/{0} admin expand <玩家名> <类型[north/south/west/east/up/down/all]> <大小> &e - 为他人领地进行扩展"
+      - "{prefix}&2/{0} admin reelect <玩家名> &e - 为他人领地重选范围"
     import:
-      usage: "&c使用方法: /{0} import <文件夹/数据库文件名> <清除原数据(true/false)>"
+      usage: "&c使用方法: /{0} admin import <文件夹/数据库文件名> <清除原数据(true/false)>"
       unknownParam4: "&c第四个参数必须为 <true/false>"
       unknownFile: "&c文件: {0} 不存在."
       saveToStorage: "&a成功载入到当前的 {0} 存储系统, 成功载入数量: {1} 个, 总数: {2} 个."
@@ -139,6 +146,19 @@ command:
       unknownAttribute: "&c未知的属性名称: {0}."
       success: "&a成功将 {0} 的领地属性 {1} 的值设定为: {2}."
       notAllow: "&c不被允许的属性值, 该项属性允许的属性值为: {0}."
+    expand:
+      usage: "&c使用方法: /{0} admin expand <玩家名> <类型[north/south/west/east/up/down/all]> <大小>"
+      haveNotResidence: "&c对方 {0} 还没有领地, 无法扩展领地大小."
+      unknownExpand: "&c未知的拓展类型[{0}]."
+      mustBeNumber: "&c大小必须为一个数字"
+      success: "&a成功为玩家 {0} 的领地扩展 &e{1} &a方向, 大小: &e{2}&a."
+    reelect:
+      usage: "&c使用方法: /{0} admin reelect <玩家名>."
+      notOpened: "&c此世界没有开放领地."
+      notSelectZone: "&c请先选择区域."
+      pointsNotInSameWorld: "&c两点必须在同一世界."
+      containsOther: "&c附近有他人领地, 不可选择此范围."
+      success: "&a为玩家 {0} 重选范围成功."
 action:
   residence:
     moveIn: "&e你已经进入 {0} 的领地."

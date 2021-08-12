@@ -72,6 +72,7 @@ public final class LocaleManager {
         plugin.saveResource("lang/zh_cn.yml", false);
     }
 
+
     public static String getDefaultLocale() {
         return "zh_cn";
     }

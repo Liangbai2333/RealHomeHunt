@@ -22,7 +22,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.scheduler.BukkitRunnable;
-import site.liangbai.realhomehunt.RealHomeHunt;
+import site.liangbai.realhomehunt.RealHomeHuntPlugin;
 import site.liangbai.realhomehunt.common.actionbar.IActionBar;
 import site.liangbai.realhomehunt.util.ActionBar;
 
@@ -86,14 +86,14 @@ public final class DynamicActionBar implements IActionBar, Cancellable {
                 }
 
             }
-        }.runTaskTimer(RealHomeHunt.getInst(), 0, 1);
+        }.runTaskTimer(RealHomeHuntPlugin.getInst(), 0, 1);
     }
 
     @Override
     public void show(Player player, long mills) {
         show(player);
 
-        Bukkit.getScheduler().runTaskLater(RealHomeHunt.getInst(), () -> clear(player), mills);
+        Bukkit.getScheduler().runTaskLater(RealHomeHuntPlugin.getInst(), () -> clear(player), mills);
     }
 
     @Override

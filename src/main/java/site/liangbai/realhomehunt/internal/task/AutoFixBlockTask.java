@@ -24,7 +24,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.scheduler.BukkitRunnable;
-import site.liangbai.realhomehunt.RealHomeHunt;
+import site.liangbai.realhomehunt.RealHomeHuntPlugin;
 import site.liangbai.realhomehunt.api.residence.Residence;
 import site.liangbai.realhomehunt.common.config.Config;
 import site.liangbai.realhomehunt.util.Blocks;
@@ -70,6 +70,6 @@ public final class AutoFixBlockTask extends BukkitRunnable {
     }
 
     public static void submit(Residence residence, BlockState snapshotState, BlockData blockData, Location location) {
-        new AutoFixBlockTask(residence, snapshotState, blockData, location).runTaskLater(RealHomeHunt.getInst(), Config.autoFixResidence.perBlockFixedMills);
+        new AutoFixBlockTask(residence, snapshotState, blockData, location).runTaskLater(RealHomeHuntPlugin.getInst(), Config.autoFixResidence.perBlockFixedMills);
     }
 }

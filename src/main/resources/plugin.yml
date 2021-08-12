@@ -23,6 +23,9 @@ permissions:
   rh.unlimited.back:
     description: "Allow player to teleport to other residences."
     default: op
+  rh.unlimited.select:
+    description: "Allow player to select zone for creating a residence for others."
+    default: op
   rh.interact:
     description: "Allow player to click the residence's door."
     default: op
@@ -85,6 +88,12 @@ permissions:
     default: op
   rh.command.admin.set:
     description: "Allow player to use the /rh admin set command."
+    default: op
+  rh.command.admin.expand:
+    description: "Allow player to use the /rh admin expand command."
+    default: op
+  rh.command.admin.reelect:
+    description: "Allow player to use the /rh admin expand command."
     default: op
   rh.reload:
     description: "Allow player to reload the configuration."

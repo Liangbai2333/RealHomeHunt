@@ -22,7 +22,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-import site.liangbai.realhomehunt.RealHomeHunt;
+import site.liangbai.realhomehunt.RealHomeHuntPlugin;
 
 import java.util.List;
 
@@ -43,6 +43,6 @@ public class NaturallyDropItemTask extends BukkitRunnable {
     }
 
     public static void setup(List<ItemStack> dropItems, Location dropLocation) {
-        new NaturallyDropItemTask(dropItems, dropLocation).runTaskLater(RealHomeHunt.getInst(), 1);
+        new NaturallyDropItemTask(dropItems, dropLocation).runTaskLater(RealHomeHuntPlugin.getInst(), 1);
     }
 }

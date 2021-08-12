@@ -69,11 +69,12 @@ public final class SetCommand implements ISubCommand {
         String value = args[2];
 
         if (attribute.allow(value)) {
-            if (!new ResidenceSetAttributeEvent(player, residence, attribute, value).callEvent()) return;
+            ResidenceSetAttributeEvent event = new ResidenceSetAttributeEvent(player, residence, attribute, value);
+            if (!event.callEvent()) return;
 
             String attributeName = attribute.getName();
 
-            attribute.force(value);
+            attribute.force(event.getValue());
 
             sender.sendMessage(locale.asString("command.set.success", attributeName, value));
 

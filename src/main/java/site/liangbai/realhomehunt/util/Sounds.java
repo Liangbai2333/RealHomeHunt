@@ -21,7 +21,7 @@ package site.liangbai.realhomehunt.util;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import site.liangbai.realhomehunt.RealHomeHunt;
+import site.liangbai.realhomehunt.RealHomeHuntPlugin;
 
 public final class Sounds {
     public static void playSound(Player player, Sound sound, int count, double delaySeconds) {
@@ -40,7 +40,7 @@ public final class Sounds {
 
                 alreadyCount++;
             }
-        }.runTaskTimer(RealHomeHunt.getInst(), 0, (long) (delaySeconds * 20));
+        }.runTaskTimer(RealHomeHuntPlugin.getInst(), 0, (long) (delaySeconds * 20));
     }
 
     public static void playDragonAmbientSound(Player player, int count, double delaySeconds) {

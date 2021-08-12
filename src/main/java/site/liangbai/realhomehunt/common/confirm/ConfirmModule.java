@@ -20,7 +20,7 @@ package site.liangbai.realhomehunt.common.confirm;
 
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import site.liangbai.realhomehunt.RealHomeHunt;
+import site.liangbai.realhomehunt.RealHomeHuntPlugin;
 import site.liangbai.realhomehunt.api.locale.impl.Locale;
 import site.liangbai.realhomehunt.api.locale.manager.LocaleManager;
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
@@ -47,7 +47,7 @@ public final class ConfirmModule {
             public void run() {
                 popConfirmCache(player);
             }
-        }.runTaskLater(RealHomeHunt.getInst(), waitMills);
+        }.runTaskLater(RealHomeHuntPlugin.getInst(), waitMills);
     }
 
     public static void sendPrepare(Player player, String label, long waitMills) {

@@ -20,7 +20,7 @@ package site.liangbai.realhomehunt.internal.command.subtabcompleter.impl.admin.s
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
-import site.liangbai.realhomehunt.RealHomeHunt;
+import site.liangbai.realhomehunt.RealHomeHuntPlugin;
 import site.liangbai.realhomehunt.internal.command.subtabcompleter.ISubTabCompleter;
 
 import java.io.File;
@@ -32,7 +32,7 @@ public final class ImportTabCompleter implements ISubTabCompleter {
     @Override
     public List<String> handle(CommandSender sender, int length, String[] args) {
         if (length == 3) {
-            Plugin plugin = RealHomeHunt.getInst();
+            Plugin plugin = RealHomeHuntPlugin.getInst();
 
             File folder = plugin.getDataFolder();
 

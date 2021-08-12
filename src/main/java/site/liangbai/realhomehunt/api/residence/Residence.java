@@ -25,7 +25,7 @@ import org.bukkit.Location;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import site.liangbai.realhomehunt.RealHomeHunt;
+import site.liangbai.realhomehunt.RealHomeHuntPlugin;
 import site.liangbai.realhomehunt.common.actionbar.impl.DynamicActionBar;
 import site.liangbai.realhomehunt.api.locale.impl.Locale;
 import site.liangbai.realhomehunt.api.locale.manager.LocaleManager;
@@ -198,7 +198,7 @@ public final class Residence implements ConfigurationSerializable {
 
                     if (ignoreBlockInfo.prefix.isEmpty() && ignoreBlockInfo.suffix.isEmpty()) return false;
 
-                    return name.startsWith(ignoreBlockInfo.prefix.toUpperCase()) && name.endsWith(ignoreBlockInfo.suffix.toUpperCase());
+                    return name.startsWith(ignoreBlockInfo.prefix) && name.endsWith(ignoreBlockInfo.suffix);
                 })
                 .findFirst()
                 .orElseGet(() -> {
@@ -280,7 +280,7 @@ public final class Residence implements ConfigurationSerializable {
     public void addAttack(String attack) {
         attacks.add(attack);
 
-        new UnloadPlayerAttackTask(this, attack).runTaskLater(RealHomeHunt.getInst(), Config.unloadPlayerAttackMills);
+        new UnloadPlayerAttackTask(this, attack).runTaskLater(RealHomeHuntPlugin.getInst(), Config.unloadPlayerAttackMills);
     }
 
     public boolean hasAttack(String attack) {
@@ -298,7 +298,7 @@ public final class Residence implements ConfigurationSerializable {
             Sounds.playLevelUpSound(member, 3, 0.5);
         });
 
-        new UnloadWarnTask(this).runTaskLater(RealHomeHunt.getInst(), Config.unloadWarnMills);
+        new UnloadWarnTask(this).runTaskLater(RealHomeHuntPlugin.getInst(), Config.unloadWarnMills);
     }
 
     @Transient

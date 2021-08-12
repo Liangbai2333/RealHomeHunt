@@ -25,7 +25,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
-import site.liangbai.realhomehunt.RealHomeHunt;
+import site.liangbai.realhomehunt.RealHomeHuntPlugin;
 import site.liangbai.realhomehunt.api.projectile.AbstractProjectile;
 import site.liangbai.realhomehunt.api.projectile.launcher.IProjectileLauncher;
 
@@ -88,6 +88,6 @@ public class ProjectileLauncherImpl implements IProjectileLauncher {
                     }
                 }
             }
-        }.runTaskTimer(RealHomeHunt.getInst(), 0, 1);
+        }.runTaskTimer(RealHomeHuntPlugin.getInst(), 0, 1);
     }
 }

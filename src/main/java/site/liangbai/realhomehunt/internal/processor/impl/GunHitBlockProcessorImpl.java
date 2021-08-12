@@ -23,7 +23,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import site.liangbai.realhomehunt.RealHomeHunt;
+import site.liangbai.realhomehunt.RealHomeHuntPlugin;
 import site.liangbai.realhomehunt.api.event.residence.ResidenceHurtEvent;
 import site.liangbai.realhomehunt.common.bossbar.IBossBar;
 import site.liangbai.realhomehunt.common.bossbar.factory.BossBarFactory;
@@ -62,7 +62,7 @@ public class GunHitBlockProcessorImpl implements IGunHitBlockProcessor {
 
         if (!damageCachePoolMap.containsKey(player.getUniqueId())) damageCachePoolMap.put(player.getUniqueId(), new DamageCachePool());
 
-        if (Config.block.ignore.contains(block.getType())) return;
+        if (Config.block.ignore.isIgnoreHit(block.getType())) return;
 
         Residence residence = ResidenceManager.getResidenceByLocation(block.getLocation());
 
@@ -125,7 +125,7 @@ public class GunHitBlockProcessorImpl implements IGunHitBlockProcessor {
 
             Blocks.sendBreakAnimationPacket(damageCache.getId(), damageCache.getBlock(), blockSit);
 
-            new UnloadDamageCacheTask(damageCachePool, damageCache).runTaskLater(RealHomeHunt.getInst(), Config.maxWaitMills);
+            new UnloadDamageCacheTask(damageCachePool, damageCache).runTaskLater(RealHomeHuntPlugin.getInst(), Config.maxWaitMills);
         }
 
         if (!residence.hasAttack(player.getName())) {

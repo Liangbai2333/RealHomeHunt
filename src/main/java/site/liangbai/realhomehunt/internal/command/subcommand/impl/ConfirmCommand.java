@@ -20,9 +20,9 @@ package site.liangbai.realhomehunt.internal.command.subcommand.impl;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import site.liangbai.realhomehunt.common.confirm.IConfirmProcessor;
 import site.liangbai.realhomehunt.internal.command.subcommand.ISubCommand;
 import site.liangbai.realhomehunt.common.confirm.ConfirmModule;
-import site.liangbai.realhomehunt.common.confirm.IConfirmProcessor;
 import site.liangbai.realhomehunt.api.locale.impl.Locale;
 import site.liangbai.realhomehunt.api.locale.manager.LocaleManager;
 import site.liangbai.realhomehunt.api.residence.Residence;

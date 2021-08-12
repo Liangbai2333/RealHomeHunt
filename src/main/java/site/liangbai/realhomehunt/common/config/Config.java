@@ -19,7 +19,9 @@
 package site.liangbai.realhomehunt.common.config;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -27,6 +29,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import site.liangbai.realhomehunt.common.item.ItemType;
+import site.liangbai.realhomehunt.internal.color.ProxyColor;
 import site.liangbai.realhomehunt.util.Console;
 import site.liangbai.realhomehunt.internal.storage.StorageType;
 
@@ -194,6 +197,30 @@ public final class Config {
 
         toolSetting.rightSelect = rightSelect != null ? rightSelect : Material.STICK;
 
+        toolSetting.showSelectZone = residenceToolSection.getBoolean("showSelectZone", true);
+
+        String particleName = Objects.requireNonNull(residenceToolSection.getString("showParticle", "REDSTONE")).toUpperCase();
+        try {
+            toolSetting.showParticle = Particle.valueOf(particleName);
+        } catch (Throwable t) {
+            Console.sendRawMessage(ChatColor.RED + "can not find the particle: " + particleName + ", use default: REDSTONE");
+            toolSetting.showParticle = Particle.REDSTONE;
+        }
+
+        toolSetting.showParticleStep = residenceToolSection.getDouble("showParticleStep", 0.1);
+
+        ConfigurationSection particleColorSection = residenceToolSection.getConfigurationSection("particleColor");
+
+        if (particleColorSection == null) throw new IllegalStateException("can not load config part: residence.tool.particleColor");
+
+        ResidenceSetting.ResidenceToolSetting.ParticleColorSetting particleColorSetting = new ResidenceSetting.ResidenceToolSetting.ParticleColorSetting();
+
+        particleColorSetting.color = particleColorSection.getBoolean("useRGB", false) ?
+                Color.fromRGB(particleColorSection.getInt("red", 255), particleColorSection.getInt("green", 0), particleColorSection.getInt("blue", 0)) :
+                ProxyColor.matches(particleColorSection.getString("name", "RED"), ProxyColor.RED).toColor();
+
+        toolSetting.particleColor = particleColorSetting;
+
         residence.tool = toolSetting;
 
         residence.openWarn = residenceSection.getBoolean("openWarn", true);
@@ -205,6 +232,8 @@ public final class Config {
         if (blockSection == null) throw new IllegalStateException("can not load config part: block");
 
         block = new BlockSetting();
+
+        block.bannedNotSolid = blockSection.getBoolean("bannedNotSolid", true);
 
         ConfigurationSection blockIgnoreSection = blockSection.getConfigurationSection("ignore");
 
@@ -222,9 +251,11 @@ public final class Config {
 
                         String full = it.getString("full");
 
-                        int amount = it.getInt("amount");
+                        int amount = it.getInt("amount", -1);
 
                         boolean upBreak = it.getBoolean("upBreak", false);
+
+                        boolean ignoreHit = it.getBoolean("ignoreHit", false);
 
                         BlockSetting.BlockIgnoreSetting.IgnoreBlockInfo info
                                 = new BlockSetting.BlockIgnoreSetting.IgnoreBlockInfo();
@@ -238,6 +269,8 @@ public final class Config {
                         info.amount = amount;
 
                         info.upBreak = upBreak;
+
+                        info.ignoreHit = ignoreHit;
 
                         ignore.ignoreBlockInfoList.add(info);
                     });
@@ -452,10 +485,24 @@ public final class Config {
             public Material leftSelect;
 
             public Material rightSelect;
+
+            public boolean showSelectZone;
+
+            public Particle showParticle;
+
+            public double showParticleStep;
+
+            public ParticleColorSetting particleColor;
+
+            public static final class ParticleColorSetting {
+                public Color color;
+            }
         }
     }
 
     public static final class BlockSetting {
+        public boolean bannedNotSolid;
+
         public BlockIgnoreSetting ignore;
 
         public BlockCustomSetting custom;
@@ -474,6 +521,8 @@ public final class Config {
 
                 public boolean upBreak;
 
+                public boolean ignoreHit;
+
                 public boolean isUpBreak() {
                     return upBreak;
                 }
@@ -491,8 +540,9 @@ public final class Config {
                 }
             }
 
-            public boolean contains(@NotNull Material material) {
-                return !material.isSolid() || getByMaterial(material) != null;
+            public boolean isIgnoreHit(@NotNull Material material) {
+                IgnoreBlockInfo info = getByMaterial(material);
+                return info != null && info.ignoreHit;
             }
 
             public IgnoreBlockInfo getByMaterial(@NotNull Material material) {
@@ -501,7 +551,7 @@ public final class Config {
                 return ignoreBlockInfoList.stream()
                         .filter(info -> (info.full != null && info.full.equalsIgnoreCase(name)) || ((!info.prefix.isEmpty() || !info.suffix.isEmpty()) && name.startsWith(info.prefix) && name.endsWith(info.suffix)))
                         .findFirst()
-                        .orElseGet(() -> material.isSolid() ? null : new IgnoreBlockInfo(null, null, material.name(), 0, false));
+                        .orElseGet(() -> !material.isSolid() && Config.block.bannedNotSolid ? new IgnoreBlockInfo(null, null, material.name(), 0, false) : null);
             }
         }
 

@@ -40,6 +40,10 @@ public final class AdminTabCompleter implements ISubTabCompleter {
         registerSubCompiler("translate", new TranslateTabCompleter());
 
         registerSubCompiler("set", new SetTabCompleter());
+
+        registerSubCompiler("expand", new ExpandTabCompleter());
+
+        registerSubCompiler("reelect", new ReelectTabCompleter());
     }
 
     private void registerSubCompiler(String command, ISubTabCompleter iSubTabCompiler) {

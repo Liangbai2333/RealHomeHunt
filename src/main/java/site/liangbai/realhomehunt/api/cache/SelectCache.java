@@ -19,38 +19,92 @@
 package site.liangbai.realhomehunt.api.cache;
 
 import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.entity.Player;
+import org.bukkit.util.BoundingBox;
+import site.liangbai.realhomehunt.common.config.Config;
+import site.liangbai.realhomehunt.common.particle.EffectGroup;
+import site.liangbai.realhomehunt.util.Zones;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public final class SelectCache {
     private static final Map<String, Location> firstCaches = new HashMap<>();
     private static final Map<String, Location> secondCaches = new HashMap<>();
 
-    public static void push(SelectType selectType, String player, Location location) {
+    private static final Map<String, EffectGroup> showCaches = new ConcurrentHashMap<>();
+
+    public static void push(SelectType selectType, Player player, Location location) {
         if (selectType == SelectType.FIRST) {
-            firstCaches.put(player, location.clone());
+            firstCaches.put(player.getName(), location.clone());
         }
 
         if (selectType == SelectType.SECOND) {
-            secondCaches.put(player, location.clone());
+            secondCaches.put(player.getName(), location.clone());
         }
+
+        updatePlayerShowSelectZone(player);
     }
 
-    public static void pop(SelectType selectType, String player) {
+    public static void pop(SelectType selectType, Player player) {
         if (selectType == SelectType.FIRST) {
-            firstCaches.remove(player);
+            firstCaches.remove(player.getName());
         }
 
         if (selectType == SelectType.SECOND) {
-            secondCaches.remove(player);
+            secondCaches.remove(player.getName());
         }
+
+        updatePlayerShowSelectZone(player);
     }
 
-    public static void pop(String player) {
+    public static void pop(Player player) {
         pop(SelectType.FIRST, player);
 
         pop(SelectType.SECOND, player);
+    }
+
+    public static void updatePlayerShowSelectZone(Player player) {
+        if (!Config.residence.tool.showSelectZone) return;
+
+        String name = player.getName();
+
+        Location first = require(SelectType.FIRST, name);
+        Location second = require(SelectType.SECOND, name);
+
+        if (first != null && second != null && !first.equals(second)) {
+            if (showCaches.containsKey(name)) {
+                EffectGroup effectGroup = showCaches.get(name);
+
+                effectGroup.turnOff();
+
+                showCaches.remove(name);
+            }
+
+            BoundingBox box = BoundingBox.of(first.clone(), second.clone());
+
+            World world = first.getWorld();
+
+            Location min = box.getMin().toLocation(world).clone();
+            Location max = box.getMax().toLocation(world).clone();
+
+            EffectGroup effectGroup = Zones.getZoneEffectGroup(min.add(-0.2, -0.2, -0.2), max.add(1.2, 1.2, 1.2),
+                            Config.residence.tool.showParticleStep)
+                    .setColor(Config.residence.tool.particleColor.color)
+                    .setPeriod(5)
+                    .alwaysShowAsync(player);
+
+            showCaches.put(name, effectGroup);
+
+        } else if (showCaches.containsKey(name)) {
+            EffectGroup effectGroup = showCaches.get(name);
+
+            effectGroup.turnOff();
+
+            showCaches.remove(name);
+        }
     }
 
     public static Location require(SelectType selectType, String player) {

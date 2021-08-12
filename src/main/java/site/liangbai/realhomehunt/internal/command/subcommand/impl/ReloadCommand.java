@@ -19,7 +19,7 @@
 package site.liangbai.realhomehunt.internal.command.subcommand.impl;
 
 import org.bukkit.command.CommandSender;
-import site.liangbai.realhomehunt.RealHomeHunt;
+import site.liangbai.realhomehunt.RealHomeHuntPlugin;
 import site.liangbai.realhomehunt.internal.command.subcommand.ISubCommand;
 import site.liangbai.realhomehunt.common.config.Config;
 import site.liangbai.realhomehunt.api.locale.impl.Locale;
@@ -38,11 +38,11 @@ public final class ReloadCommand implements ISubCommand {
             return;
         }
 
-        Config.init(RealHomeHunt.getInst());
+        Config.init(RealHomeHuntPlugin.getInst());
 
-        LocaleManager.init(RealHomeHunt.getInst());
+        LocaleManager.init(RealHomeHuntPlugin.getInst());
 
-        ResidenceManager.init(RealHomeHunt.getInst(), Config.storage.type);
+        ResidenceManager.init(RealHomeHuntPlugin.getInst(), Config.storage.type);
 
         sender.sendMessage(locale.asString("command.reload.success"));
     }
