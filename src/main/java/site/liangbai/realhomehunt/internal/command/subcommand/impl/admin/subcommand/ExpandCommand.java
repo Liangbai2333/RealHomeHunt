@@ -45,7 +45,7 @@ public class ExpandCommand implements ISubCommand {
         Locale locale = Locales.require(sender);
 
         if (args.length < 5) {
-            sender.sendMessage(locale.asString("command.admin.expand.usage"));
+            sender.sendMessage(locale.asString("command.admin.expand.usage", label));
 
             return;
         }

@@ -60,6 +60,8 @@ public final class CommandHandler implements CommandExecutor {
         registerSubCommand("confirm", new ConfirmCommand());
 
         registerSubCommand("info", new InfoCommand());
+
+        registerSubCommand("unselect", new UnselectCommand());
     }
 
     private void registerSubCommand(String command, ISubCommand ISubCommand) {

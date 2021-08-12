@@ -25,10 +25,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import site.liangbai.realhomehunt.internal.command.subtabcompleter.ISubTabCompleter;
-import site.liangbai.realhomehunt.internal.command.subtabcompleter.impl.AdministratorTabCompleter;
-import site.liangbai.realhomehunt.internal.command.subtabcompleter.impl.BackTabCompleter;
-import site.liangbai.realhomehunt.internal.command.subtabcompleter.impl.InfoTabCompleter;
-import site.liangbai.realhomehunt.internal.command.subtabcompleter.impl.SetTabCompleter;
+import site.liangbai.realhomehunt.internal.command.subtabcompleter.impl.*;
 import site.liangbai.realhomehunt.internal.command.subtabcompleter.impl.admin.AdminTabCompleter;
 import site.liangbai.realhomehunt.common.confirm.ConfirmModule;
 
@@ -37,6 +34,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * The type Command tab completer.
+ *
+ * @author Liangbai
+ * @since 2021 /08/12 02:46 下午
+ */
 @site.liangbai.dynamic.command.CommandTabCompleter(command = "rh")
 public final class CommandTabCompleter implements TabCompleter {
     private static final Map<String, ISubTabCompleter> map = new HashMap<>();

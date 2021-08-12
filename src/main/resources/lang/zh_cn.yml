@@ -48,6 +48,8 @@ command:
       - "{prefix}&2/{0} back <玩家名> &e - 回到他人(拥有管理员权限)的领地"
       - "{prefix}&2/{0} info &e - 查看自己的领地信息"
       - "{prefix}&2/{0} info <玩家名> &e - 查看他人的领地信息"
+      - "{prefix}&2/{0} unselect &e - 取消选择领地范围"
+      - "{prefix}&2/{0} show <on/off> &e - 显示自己的领地范围(仅向自己显示)"
     reload:
       - "{prefix}&2/{0} reload &e - 重载配置文件"
   reload:
@@ -97,6 +99,13 @@ command:
         - "&e{2}"
         - "&c属性: "
         - "&e{3}"
+  unselect:
+    success: "&a成功取消选择范围."
+  show:
+    haveNotResidence: "&c你还没有领地哦~"
+    notOpened: "&c此世界没有开放领地."
+    successOn: "&a成功开启显示领地范围"
+    successOff: "&a成功关闭显示领地范围"
   admin:
     help:
       - "&e=================================="

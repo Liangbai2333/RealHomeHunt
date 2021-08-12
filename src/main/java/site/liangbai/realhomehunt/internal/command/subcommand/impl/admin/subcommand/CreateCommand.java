@@ -65,6 +65,8 @@ public final class CreateCommand implements ISubCommand {
         Residence old = ResidenceManager.getResidenceByOwner(target);
 
         if (old != null) {
+            SelectCache.pop(player);
+
             sender.sendMessage(locale.asString("command.admin.create.hasOld", target));
 
             return;

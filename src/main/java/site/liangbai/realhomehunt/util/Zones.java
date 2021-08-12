@@ -21,7 +21,9 @@ package site.liangbai.realhomehunt.util;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.util.BoundingBox;
+import site.liangbai.realhomehunt.common.config.Config;
 import site.liangbai.realhomehunt.common.particle.EffectGroup;
 import site.liangbai.realhomehunt.common.particle.Line;
 
@@ -35,6 +37,21 @@ import java.util.Objects;
  * @since 2021 /08/12 10:15 上午
  */
 public final class Zones {
+    public static EffectGroup startShowWithBlockLocation(Player player, Location left, Location right) {
+        BoundingBox box = BoundingBox.of(left.clone(), right.clone());
+
+        World world = left.getWorld();
+
+        Location min = box.getMin().toLocation(world).clone();
+        Location max = box.getMax().toLocation(world).clone();
+
+        return Zones.getZoneEffectGroup(min.add(-0.2, -0.2, -0.2), max.add(1.2, 1.2, 1.2),
+                        Config.residence.tool.showParticleStep)
+                .setColor(Config.residence.tool.particleColor.color)
+                .setPeriod(2)
+                .alwaysShowAsync(player);
+    }
+
     public static EffectGroup getZoneEffectGroup(Location left, Location right) {
         return getZoneEffectGroup(left, right, 0.1);
     }

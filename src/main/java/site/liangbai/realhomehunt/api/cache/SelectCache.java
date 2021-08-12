@@ -19,9 +19,7 @@
 package site.liangbai.realhomehunt.api.cache;
 
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.util.BoundingBox;
 import site.liangbai.realhomehunt.common.config.Config;
 import site.liangbai.realhomehunt.common.particle.EffectGroup;
 import site.liangbai.realhomehunt.util.Zones;
@@ -74,7 +72,7 @@ public final class SelectCache {
         Location first = require(SelectType.FIRST, name);
         Location second = require(SelectType.SECOND, name);
 
-        if (first != null && second != null && !first.equals(second)) {
+        if (first != null && second != null && !first.equals(second) && player.getWorld().equals(first.getWorld())) {
             if (showCaches.containsKey(name)) {
                 EffectGroup effectGroup = showCaches.get(name);
 
@@ -83,20 +81,7 @@ public final class SelectCache {
                 showCaches.remove(name);
             }
 
-            BoundingBox box = BoundingBox.of(first.clone(), second.clone());
-
-            World world = first.getWorld();
-
-            Location min = box.getMin().toLocation(world).clone();
-            Location max = box.getMax().toLocation(world).clone();
-
-            EffectGroup effectGroup = Zones.getZoneEffectGroup(min.add(-0.2, -0.2, -0.2), max.add(1.2, 1.2, 1.2),
-                            Config.residence.tool.showParticleStep)
-                    .setColor(Config.residence.tool.particleColor.color)
-                    .setPeriod(5)
-                    .alwaysShowAsync(player);
-
-            showCaches.put(name, effectGroup);
+            showCaches.put(name, Zones.startShowWithBlockLocation(player, first, second));
 
         } else if (showCaches.containsKey(name)) {
             EffectGroup effectGroup = showCaches.get(name);
