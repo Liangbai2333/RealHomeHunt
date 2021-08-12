@@ -49,7 +49,7 @@ command:
       - "{prefix}&2/{0} info &e - 查看自己的领地信息"
       - "{prefix}&2/{0} info <玩家名> &e - 查看他人的领地信息"
       - "{prefix}&2/{0} unselect &e - 取消选择领地范围"
-      - "{prefix}&2/{0} show <on/off> &e - 显示自己的领地范围(仅向自己显示)"
+      - "{prefix}&2/{0} show &e - 显示自己的领地范围(仅向自己显示)"
     reload:
       - "{prefix}&2/{0} reload &e - 重载配置文件"
   reload:

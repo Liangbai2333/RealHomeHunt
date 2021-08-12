@@ -71,11 +71,11 @@ public final class ShowCommand implements ISubCommand {
 
             SHOW_CACHES.remove(name);
 
-            sender.sendMessage(locale.asString("command.show.successOn"));
+            sender.sendMessage(locale.asString("command.show.successOff"));
         } else {
             SHOW_CACHES.put(name, Zones.startShowWithBlockLocation(player, residence.getLeft(), residence.getRight()));
 
-            player.sendMessage(locale.asString("command.show.successOff"));
+            player.sendMessage(locale.asString("command.show.successOn"));
         }
     }
 
