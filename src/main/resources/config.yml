@@ -127,6 +127,8 @@ residence:
     showParticleStep: 0.1
     # 颜色设置
     particleColor:
+      # 是否开启, 如果开启只能使用红石粒子或其他可以被颜色渲染的粒子
+      enabled: true
       # 颜色名称
       #    WHITE 白色,
       #    SILVER 银色,

@@ -20,6 +20,7 @@ package site.liangbai.realhomehunt.util;
 
 import org.bukkit.Color;
 import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BoundingBox;
@@ -47,7 +48,8 @@ public final class Zones {
 
         return Zones.getZoneEffectGroup(min.add(-0.2, -0.2, -0.2), max.add(1.2, 1.2, 1.2),
                         Config.residence.tool.showParticleStep)
-                .setColor(Config.residence.tool.particleColor.color)
+                .setParticle(Config.residence.tool.showParticle)
+                .setColor(Config.residence.tool.particleColor.enabled ? Config.residence.tool.particleColor.color : (Config.residence.tool.showParticle == Particle.REDSTONE ? Color.RED : null))
                 .setPeriod(2)
                 .alwaysShowAsync(player);
     }

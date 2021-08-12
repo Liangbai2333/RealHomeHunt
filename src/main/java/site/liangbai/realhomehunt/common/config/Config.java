@@ -215,6 +215,8 @@ public final class Config {
 
         ResidenceSetting.ResidenceToolSetting.ParticleColorSetting particleColorSetting = new ResidenceSetting.ResidenceToolSetting.ParticleColorSetting();
 
+        particleColorSetting.enabled = particleColorSection.getBoolean("enabled", true);
+
         particleColorSetting.color = particleColorSection.getBoolean("useRGB", false) ?
                 Color.fromRGB(particleColorSection.getInt("red", 255), particleColorSection.getInt("green", 0), particleColorSection.getInt("blue", 0)) :
                 ProxyColor.matches(particleColorSection.getString("name", "RED"), ProxyColor.RED).toColor();
@@ -495,6 +497,8 @@ public final class Config {
             public ParticleColorSetting particleColor;
 
             public static final class ParticleColorSetting {
+                public boolean enabled;
+
                 public Color color;
             }
         }
