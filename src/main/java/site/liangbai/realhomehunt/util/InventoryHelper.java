@@ -19,6 +19,7 @@
 package site.liangbai.realhomehunt.util;
 
 import com.google.common.collect.Lists;
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -44,7 +45,7 @@ public final class InventoryHelper {
 
             ItemStack original = i >= copyTo.getSize() ? null : copyTo.getItem(i);
 
-            if (i >= copyTo.getSize() || (original != null && !original.getType().isAir())) {
+            if (i >= copyTo.getSize() || original != null) {
                 int firstEmpty = copyTo.firstEmpty();
 
                 if (firstEmpty == -1) {
@@ -90,5 +91,13 @@ public final class InventoryHelper {
         }
 
         return list;
+    }
+
+    public static Inventory clone(Inventory fromInventory) {
+        Inventory copyTo = Bukkit.createInventory(fromInventory.getHolder(), fromInventory.getSize());
+
+        copyTo.setContents(fromInventory.getContents());
+
+        return copyTo;
     }
 }

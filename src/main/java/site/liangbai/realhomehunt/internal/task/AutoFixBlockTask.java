@@ -57,6 +57,7 @@ public final class AutoFixBlockTask extends BukkitRunnable {
                 block.setBlockData(blockData);
 
                 Blocks.applyPlaceBlock(block);
+
                 Blocks.applyBlockState(block.getState(), blockState);
             }
         } else

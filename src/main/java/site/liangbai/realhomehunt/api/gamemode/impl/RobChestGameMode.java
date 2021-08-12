@@ -26,11 +26,13 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import site.liangbai.realhomehunt.api.gamemode.IGameMode;
 import site.liangbai.realhomehunt.api.residence.Residence;
 import site.liangbai.realhomehunt.common.config.Config;
-import site.liangbai.realhomehunt.api.gamemode.IGameMode;
 import site.liangbai.realhomehunt.internal.task.NaturallyDropItemTask;
+import site.liangbai.realhomehunt.util.Blocks;
 import site.liangbai.realhomehunt.util.Chances;
+import site.liangbai.realhomehunt.util.InventoryHelper;
 import site.liangbai.realhomehunt.util.callback.ICallback;
 
 import java.util.ArrayList;
@@ -54,23 +56,25 @@ public class RobChestGameMode implements IGameMode {
 
         Container container = ((Container) snapshotState);
 
-        Inventory snapshotInventory = container.getSnapshotInventory();
-
         Inventory inventory = container.getInventory();
+
+        Inventory snapshotInventory = InventoryHelper.clone(inventory);
 
         List<ItemStack> dropItems = new ArrayList<>();
 
-        inventory.forEach(itemStack -> {
+        snapshotInventory.forEach(itemStack -> {
             if (itemStack == null || itemStack.getType().isAir()) return;
 
             double chance = Config.robChestMode.dropItem.getChance(itemStack);
 
             if (Chances.hasChance(chance)) {
                 dropItems.add(itemStack);
-
-                snapshotInventory.remove(itemStack);
             }
         });
+
+        dropItems.forEach(snapshotInventory::remove);
+
+        Blocks.CACHED_INVENTORY.put(container, snapshotInventory);
 
         inventory.clear();
 

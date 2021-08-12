@@ -39,8 +39,11 @@ import site.liangbai.realhomehunt.common.config.Config;
 import site.liangbai.realhomehunt.internal.task.NaturallyDropItemTask;
 
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public final class Blocks {
+    public static final Map<Container, Inventory> CACHED_INVENTORY = new ConcurrentHashMap<>();
 
     private static int id;
 
@@ -126,7 +129,9 @@ public final class Blocks {
             Container snapshot = ((Container) oldState);
 
             Inventory inventory = container.getInventory();
-            Inventory snapshotInventory = snapshot.getSnapshotInventory();
+            Inventory snapshotInventory = CACHED_INVENTORY.containsKey(snapshot) ? CACHED_INVENTORY.get(snapshot) : snapshot.getSnapshotInventory();
+
+            CACHED_INVENTORY.remove(snapshot);
 
             List<ItemStack> list = InventoryHelper.copyTo(inventory, snapshotInventory);
 
