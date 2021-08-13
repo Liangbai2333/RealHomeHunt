@@ -44,9 +44,9 @@ public final class Zones {
         World world = left.getWorld();
 
         Location min = box.getMin().toLocation(world).clone();
-        Location max = box.getMax().toLocation(world).clone();
+        Location max = box.getMax().toLocation(world).clone().add(1, 1, 1);
 
-        return Zones.getZoneEffectGroup(min.add(-0.2, -0.2, -0.2), max.add(1.2, 1.2, 1.2),
+        return Zones.getZoneEffectGroup(min.add(-0.2, -0.2, -0.2), max.add(0.2, 0.2, 0.2),
                         Config.residence.tool.showParticleStep)
                 .setParticle(Config.residence.tool.showParticle)
                 .setColor(Config.residence.tool.particleColor.enabled ? Config.residence.tool.particleColor.color : (Config.residence.tool.showParticle == Particle.REDSTONE ? Color.RED : null))

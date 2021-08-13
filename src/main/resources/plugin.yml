@@ -65,6 +65,9 @@ permissions:
   rh.command.unselect:
     description: "Allow player to use the /rh unselect command."
     default: 'true'
+  rh.command.show:
+    description: "Allow player to use the /rh show command."
+    default: 'true'
   rh.command.reload:
     description: "Allow player to use the /rh reload command."
     default: op
