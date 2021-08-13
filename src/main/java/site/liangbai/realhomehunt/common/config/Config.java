@@ -548,12 +548,12 @@ public final class Config {
                 }
             }
 
-            public boolean isPierceable(@NotNull Material material) {
+            public boolean isPierceable(@NotNull Material material, boolean original) {
                 IgnoreBlockInfo info = getByMaterial(material);
 
                 // 方便理解
                 if (info == null) {
-                    return false;
+                    return original;
                 }
 
                 return info.customPierceable;

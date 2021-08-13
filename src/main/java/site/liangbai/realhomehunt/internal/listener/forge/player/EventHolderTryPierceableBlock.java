@@ -36,6 +36,6 @@ public class EventHolderTryPierceableBlock implements EventHolder<EventWrapper.E
 
         Block block = world.getBlockAt((Location) WrapperTransformer.require(Location.class, event.getRayTraceResult().getBlockPos()));
 
-        event.setPierceable(Config.block.ignore.isPierceable(block.getType()));
+        event.setPierceable(Config.block.ignore.isPierceable(block.getType(), event.isPierceable()));
     }
 }
