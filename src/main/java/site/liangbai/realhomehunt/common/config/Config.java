@@ -259,6 +259,8 @@ public final class Config {
 
                         boolean ignoreHit = it.getBoolean("ignoreHit", false);
 
+                        boolean customPierceable = it.getBoolean("customPierceable", true);
+
                         BlockSetting.BlockIgnoreSetting.IgnoreBlockInfo info
                                 = new BlockSetting.BlockIgnoreSetting.IgnoreBlockInfo();
 
@@ -527,6 +529,8 @@ public final class Config {
 
                 public boolean ignoreHit;
 
+                public boolean customPierceable;
+
                 public boolean isUpBreak() {
                     return upBreak;
                 }
@@ -542,6 +546,17 @@ public final class Config {
                 public IgnoreBlockInfo() {
 
                 }
+            }
+
+            public boolean isPierceable(@NotNull Material material) {
+                IgnoreBlockInfo info = getByMaterial(material);
+
+                // 方便理解
+                if (info == null) {
+                    return false;
+                }
+
+                return info.customPierceable;
             }
 
             public boolean isIgnoreHit(@NotNull Material material) {

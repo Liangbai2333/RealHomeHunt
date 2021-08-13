@@ -32,14 +32,17 @@ import site.liangbai.realhomehunt.api.residence.attribute.map.AttributeMap;
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
 import site.liangbai.realhomehunt.common.config.Config;
 import site.liangbai.realhomehunt.internal.listener.forge.player.EventHolderGunHitBlock;
+import site.liangbai.realhomehunt.internal.listener.forge.player.EventHolderTryPierceableBlock;
 import site.liangbai.realhomehunt.internal.task.PlayerGlowTask;
 import site.liangbai.realhomehunt.internal.task.PlayerMoveToResidenceMessageTask;
 import site.liangbai.realhomehunt.util.Console;
+import site.liangbai.realhomehuntforge.event.BlockRayTraceEvent;
 
 public final class RealHomeHuntPlugin extends JavaPlugin {
     private static RealHomeHuntPlugin inst;
 
     private static final String FORGE_EVENT_BRIDGE_MOD_ID = "forgeeventbridge";
+    private static final String REAL_HOME_HUNT_FORGE_MOD_ID = "realhomehuntforge";
 
     @Override
     public void onEnable() {
@@ -58,6 +61,8 @@ public final class RealHomeHuntPlugin extends JavaPlugin {
         Dynamic.installWithAccepted(this, getClass().getPackage().getName());
 
         initForgeEventHolder();
+
+        tryInitRealHomeHuntForge();
 
         initTasks();
 
@@ -91,6 +96,15 @@ public final class RealHomeHuntPlugin extends JavaPlugin {
             Bukkit.getPluginManager().disablePlugin(this);
 
             throw new IllegalStateException("can not found Forge-Event-Bridge mod, please install it.");
+        }
+    }
+
+    private void tryInitRealHomeHuntForge() {
+        if (ModList.get().isLoaded(REAL_HOME_HUNT_FORGE_MOD_ID)) {
+            new EventHolderTryPierceableBlock().register(EventBridge.builder()
+                    .target(BlockRayTraceEvent.TryPierceableBlock.class).build());
+        } else {
+            Console.sendRawMessage(ChatColor.BOLD + "WARN: " + ChatColor.RED + "Not found RealHomeHuntForge, and some features will fail.");
         }
     }
 

@@ -1,3 +1,5 @@
+# 这里是抄家系统的所有配置项, 请务必仔细阅读, 否则造成的使用问题概不负责.
+
 # 插件前缀
 prefix: "&f[&6&l繁梦之都&f] &r"
 
@@ -174,13 +176,17 @@ block:
       upBreak: true
       # 是否屏蔽打击
       ignoreHit: true
+    # 玻璃
+    # 注意 customPierceable 代表是否为穿透性方块
+    # 默认为true, 可不填, 如为false将绕过Crafting Dead进行破坏
+    # 注意 customPierceable 功能需要RealHomeHuntForge mod支持
+    glass:
+      suffix: GLASS
+      amount: -1
+      customPierceable: false
     # 树叶
     leaves:
       suffix: LEAVES
-      amount: 0
-    # 玻璃
-    glass:
-      suffix: GLASS
       amount: 0
     # 防止出现无法放置火把一类的BUG, 可自行添加, amount为-1时即代表可以随意放置
     torch:
