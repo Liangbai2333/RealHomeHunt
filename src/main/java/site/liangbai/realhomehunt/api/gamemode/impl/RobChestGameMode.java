@@ -58,7 +58,9 @@ public class RobChestGameMode implements IGameMode {
 
         Inventory inventory = container.getInventory();
 
-        Inventory snapshotInventory = InventoryHelper.clone(inventory);
+        Inventory clone = InventoryHelper.clone(inventory);
+
+        Inventory snapshotInventory = clone != null ? clone : container.getSnapshotInventory();
 
         List<ItemStack> dropItems = new ArrayList<>();
 

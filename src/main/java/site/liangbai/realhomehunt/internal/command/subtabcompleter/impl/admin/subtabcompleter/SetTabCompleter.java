@@ -45,11 +45,15 @@ public class SetTabCompleter implements ISubTabCompleter {
         if (length == 5) {
             String type = args[3].toLowerCase();
 
+            if (type.isEmpty()) return null;
+
             Residence residence = ResidenceManager.getResidenceByOwner(args[2]);
 
             if (residence == null) return null;
 
             Class<? extends IAttributable<?>> attributeClass = AttributeMap.getMap(type);
+
+            if (attributeClass == null) return null;
 
             return residence.getAttributeWithoutType(attributeClass).allowValues();
         }

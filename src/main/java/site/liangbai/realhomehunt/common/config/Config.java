@@ -607,7 +607,7 @@ public final class Config {
                 return ignoreBlockInfoList.stream()
                         .filter(info -> (info.full != null && info.full.equalsIgnoreCase(name)) || ((!info.prefix.isEmpty() || !info.suffix.isEmpty()) && name.startsWith(info.prefix) && name.endsWith(info.suffix)))
                         .findFirst()
-                        .orElseGet(() -> !material.isSolid() && Config.block.bannedNotSolid ? new IgnoreBlockInfo(null, null, material.name(), 0, false, true) : null);
+                        .orElseGet(() -> !material.isSolid() && Config.block.bannedNotSolid ? new IgnoreBlockInfo("", "", material.name(), 0, false, true) : null);
             }
         }
 

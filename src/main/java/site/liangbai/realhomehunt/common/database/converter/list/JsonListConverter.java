@@ -36,6 +36,8 @@ public abstract class JsonListConverter<X extends IJsonEntity<X>> implements Att
 
         JsonParser parser = new JsonParser();
         attribute.forEach(it -> {
+            if (it == null) return;
+
             JsonElement jsonElement = parser.parse(it.convertToDatabaseColumn(it));
 
             if (jsonElement == null) {

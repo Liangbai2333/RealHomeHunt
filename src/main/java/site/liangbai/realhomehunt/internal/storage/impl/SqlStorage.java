@@ -48,7 +48,7 @@ public abstract class SqlStorage implements IStorage {
     }
 
     @Override
-    public void save(Residence residence) {
+    public synchronized void save(Residence residence) {
         if (!owners.contains(residence.getOwner())) {
             getDatabase().insert(residence);
 
@@ -61,7 +61,7 @@ public abstract class SqlStorage implements IStorage {
     }
 
     @Override
-    public void remove(Residence residence) {
+    public synchronized void remove(Residence residence) {
         if (owners.contains(residence.getOwner())) {
             getDatabase().delete(residence);
 

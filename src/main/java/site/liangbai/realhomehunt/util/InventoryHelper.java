@@ -94,10 +94,14 @@ public final class InventoryHelper {
     }
 
     public static Inventory clone(Inventory fromInventory) {
-        Inventory copyTo = Bukkit.createInventory(fromInventory.getHolder(), fromInventory.getSize());
+        try {
+            Inventory copyTo = Bukkit.createInventory(fromInventory.getHolder(), fromInventory.getSize());
 
-        copyTo.setContents(fromInventory.getContents());
+            copyTo.setContents(fromInventory.getContents());
 
-        return copyTo;
+            return copyTo;
+        } catch (Throwable throwable) {
+            return null;
+        }
     }
 }

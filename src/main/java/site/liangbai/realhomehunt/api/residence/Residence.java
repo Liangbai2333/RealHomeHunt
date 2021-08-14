@@ -40,6 +40,7 @@ import site.liangbai.realhomehunt.common.database.converter.list.StringListConve
 import site.liangbai.realhomehunt.internal.task.UnloadPlayerAttackTask;
 import site.liangbai.realhomehunt.internal.task.UnloadWarnTask;
 import site.liangbai.realhomehunt.util.Messages;
+import site.liangbai.realhomehunt.util.Ref;
 import site.liangbai.realhomehunt.util.Sounds;
 import site.liangbai.realhomehunt.util.Titles;
 
@@ -194,7 +195,7 @@ public final class Residence implements ConfigurationSerializable {
                 .filter(info -> {
                     String name = info.type.toUpperCase();
 
-                    if (ignoreBlockInfo.full != null && ignoreBlockInfo.full.equalsIgnoreCase(name)) return true;
+                    if (ignoreBlockInfo.full != null && !ignoreBlockInfo.full.isEmpty() && ignoreBlockInfo.full.equalsIgnoreCase(name)) return true;
 
                     if (ignoreBlockInfo.prefix.isEmpty() && ignoreBlockInfo.suffix.isEmpty()) return false;
 
@@ -235,20 +236,13 @@ public final class Residence implements ConfigurationSerializable {
     }
 
     @NotNull
-    public IAttributable<?> getAttributeWithoutType(Class<? extends IAttributable<?>> attribute) {
+    public IAttributable<?> getAttributeWithoutType(@NotNull Class<? extends IAttributable<?>> attribute) {
         return Objects.requireNonNull(attributes.stream()
                 .filter(it -> it.getClass().equals(attribute))
                 .findFirst()
                 .orElseGet(() -> {
-                    IAttributable<?> iAttributable = null;
-                    try {
-                        iAttributable = attribute.getConstructor().newInstance();
-                    } catch (Throwable e) {
-                        e.printStackTrace();
-                    }
-
+                    IAttributable<?> iAttributable = Ref.newInstance(attribute);
                     attributes.add(iAttributable);
-
                     return iAttributable;
                 }));
     }
