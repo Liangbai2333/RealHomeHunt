@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.internal.listener.forge.player;
+package site.liangbai.realhomehunt.internal.listener.forge.block;
 
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -36,6 +36,8 @@ public class EventHolderTryPierceableBlock implements EventHolder<EventWrapper.E
 
         Block block = world.getBlockAt((Location) WrapperTransformer.require(Location.class, event.getRayTraceResult().getBlockPos()));
 
-        event.setPierceable(Config.block.ignore.isPierceable(block.getType(), event.isPierceable()));
+        boolean original = event.isPierceable();
+
+        event.setPierceable(Config.block.ignore.isPierceable(block.getType(), original));
     }
 }

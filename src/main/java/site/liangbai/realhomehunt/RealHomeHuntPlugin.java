@@ -32,7 +32,7 @@ import site.liangbai.realhomehunt.api.residence.attribute.map.AttributeMap;
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
 import site.liangbai.realhomehunt.common.config.Config;
 import site.liangbai.realhomehunt.internal.listener.forge.player.EventHolderGunHitBlock;
-import site.liangbai.realhomehunt.internal.listener.forge.player.EventHolderTryPierceableBlock;
+import site.liangbai.realhomehunt.internal.listener.forge.block.EventHolderTryPierceableBlock;
 import site.liangbai.realhomehunt.internal.task.PlayerGlowTask;
 import site.liangbai.realhomehunt.internal.task.PlayerMoveToResidenceMessageTask;
 import site.liangbai.realhomehunt.util.Console;

@@ -276,6 +276,8 @@ public final class Config {
 
                         info.ignoreHit = ignoreHit;
 
+                        info.customPierceable = customPierceable;
+
                         ignore.ignoreBlockInfoList.add(info);
                     });
         }
@@ -531,16 +533,19 @@ public final class Config {
 
                 public boolean customPierceable;
 
+                public boolean temp;
+
                 public boolean isUpBreak() {
                     return upBreak;
                 }
 
-                public IgnoreBlockInfo(String prefix, String suffix, String full, int amount, boolean upBreak) {
+                public IgnoreBlockInfo(String prefix, String suffix, String full, int amount, boolean upBreak, boolean temp) {
                     this.prefix = prefix;
                     this.suffix = suffix;
                     this.full = full;
                     this.amount = amount;
                     this.upBreak = upBreak;
+                    this.temp = temp;
                 }
 
                 public IgnoreBlockInfo() {
@@ -552,7 +557,7 @@ public final class Config {
                 IgnoreBlockInfo info = getByMaterial(material);
 
                 // 方便理解
-                if (info == null) {
+                if (info == null || info.temp) {
                     return original;
                 }
 
@@ -570,7 +575,7 @@ public final class Config {
                 return ignoreBlockInfoList.stream()
                         .filter(info -> (info.full != null && info.full.equalsIgnoreCase(name)) || ((!info.prefix.isEmpty() || !info.suffix.isEmpty()) && name.startsWith(info.prefix) && name.endsWith(info.suffix)))
                         .findFirst()
-                        .orElseGet(() -> !material.isSolid() && Config.block.bannedNotSolid ? new IgnoreBlockInfo(null, null, material.name(), 0, false) : null);
+                        .orElseGet(() -> !material.isSolid() && Config.block.bannedNotSolid ? new IgnoreBlockInfo(null, null, material.name(), 0, false, true) : null);
             }
         }
 
