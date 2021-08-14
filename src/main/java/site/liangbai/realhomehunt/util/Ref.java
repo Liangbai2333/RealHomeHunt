@@ -24,7 +24,7 @@ public class Ref {
         try {
             return clazz.getConstructor().newInstance();
         } catch (Throwable e) {
-            throw new IllegalStateException("could not find a empty constructor for: " + clazz.getSimpleName(), e);
+            throw new IllegalStateException("could not find a empty constructor for: " + (clazz != null ? clazz.getSimpleName() : "Unknown"), e);
         }
     }
 }

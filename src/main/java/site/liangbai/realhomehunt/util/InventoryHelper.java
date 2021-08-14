@@ -20,6 +20,7 @@ package site.liangbai.realhomehunt.util;
 
 import com.google.common.collect.Lists;
 import org.bukkit.Bukkit;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -95,7 +96,13 @@ public final class InventoryHelper {
 
     public static Inventory clone(Inventory fromInventory) {
         try {
-            Inventory copyTo = Bukkit.createInventory(fromInventory.getHolder(), fromInventory.getSize());
+            Inventory copyTo;
+
+            if (fromInventory.getType() == InventoryType.CHEST) {
+                copyTo = Bukkit.createInventory(fromInventory.getHolder(), fromInventory.getSize());
+            } else {
+                copyTo = Bukkit.createInventory(fromInventory.getHolder(), fromInventory.getType());
+            }
 
             copyTo.setContents(fromInventory.getContents());
 
