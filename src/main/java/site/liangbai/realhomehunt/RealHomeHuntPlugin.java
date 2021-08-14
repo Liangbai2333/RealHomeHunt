@@ -104,7 +104,7 @@ public final class RealHomeHuntPlugin extends JavaPlugin {
             new EventHolderTryPierceableBlock().register(EventBridge.builder()
                     .target(BlockRayTraceEvent.TryPierceableBlock.class).build());
         } else {
-            Console.sendRawMessage(ChatColor.BOLD + "WARN: " + ChatColor.RED + "Not found RealHomeHuntForge, and some features will fail.");
+            Console.sendRawMessage(ChatColor.YELLOW + "WARN: " + ChatColor.RED + "Not found RealHomeHuntForge, and some features will fail.");
         }
     }
 
