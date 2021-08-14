@@ -71,6 +71,6 @@ public final class AutoFixBlockTask extends BukkitRunnable {
     }
 
     public static void submit(Residence residence, BlockState snapshotState, BlockData blockData, Location location) {
-        new AutoFixBlockTask(residence, snapshotState, blockData, location).runTaskLater(RealHomeHuntPlugin.getInst(), Config.autoFixResidence.perBlockFixedMills);
+        new AutoFixBlockTask(residence, snapshotState, blockData, location).runTaskLater(RealHomeHuntPlugin.getInst(), Config.block.ignore.getFixedTime(blockData.getMaterial()));
     }
 }

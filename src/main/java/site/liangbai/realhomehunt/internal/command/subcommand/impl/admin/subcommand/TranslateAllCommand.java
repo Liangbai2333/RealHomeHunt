@@ -53,6 +53,8 @@ public final class TranslateAllCommand implements ISubCommand {
         for (OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
             ResidencePlayer residencePlayer = ResidenceApi.getPlayerManager().getResidencePlayer(offlinePlayer.getName());
 
+            if (residencePlayer == null) continue;
+
             ClaimedResidence claimedResidence = residencePlayer.getMainResidence();
 
             if (claimedResidence != null) {

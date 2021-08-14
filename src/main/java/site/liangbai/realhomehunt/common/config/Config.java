@@ -74,6 +74,8 @@ public final class Config {
 
     public static boolean showBlockHealth;
 
+    public static boolean showOnlyTargetBlock;
+
     public static long actionBarShowMills;
 
     public static long confirmWaitMills;
@@ -120,6 +122,8 @@ public final class Config {
         showActionBar = yamlConfiguration.getBoolean("showActionBar", true);
 
         showBlockHealth = yamlConfiguration.getBoolean("showBlockHealth", true);
+
+        showOnlyTargetBlock = yamlConfiguration.getBoolean("showOnlyTargetBlock", true);
 
         actionBarShowMills = asMills(yamlConfiguration.getLong("actionBarShowMills", 600));
 
@@ -259,7 +263,15 @@ public final class Config {
 
                         boolean ignoreHit = it.getBoolean("ignoreHit", false);
 
+                        boolean isCustomPierceable = false;
+
+                        if (it.contains("customPierceable")) {
+                            isCustomPierceable = true;
+                        }
+
                         boolean customPierceable = it.getBoolean("customPierceable", true);
+
+                        long fixTime = it.getLong("fixTime", -1);
 
                         BlockSetting.BlockIgnoreSetting.IgnoreBlockInfo info
                                 = new BlockSetting.BlockIgnoreSetting.IgnoreBlockInfo();
@@ -276,7 +288,13 @@ public final class Config {
 
                         info.ignoreHit = ignoreHit;
 
+                        info.isCustomPierceable = isCustomPierceable;
+
                         info.customPierceable = customPierceable;
+
+                        if (fixTime > -1) {
+                            info.fixTime = asMills(fixTime);
+                        }
 
                         ignore.ignoreBlockInfoList.add(info);
                     });
@@ -531,7 +549,11 @@ public final class Config {
 
                 public boolean ignoreHit;
 
+                public boolean isCustomPierceable;
+
                 public boolean customPierceable;
+
+                public long fixTime = -1;
 
                 public boolean temp;
 
@@ -553,11 +575,21 @@ public final class Config {
                 }
             }
 
+            public long getFixedTime(@NotNull Material material) {
+                IgnoreBlockInfo info = getByMaterial(material);
+
+                if (info == null || info.fixTime < 0) {
+                    return Config.autoFixResidence.perBlockFixedMills;
+                }
+
+                return info.fixTime;
+            }
+
             public boolean isPierceable(@NotNull Material material, boolean original) {
                 IgnoreBlockInfo info = getByMaterial(material);
 
                 // 方便理解
-                if (info == null || info.temp) {
+                if (info == null || info.temp || !info.isCustomPierceable) {
                     return original;
                 }
 

@@ -61,6 +61,18 @@ public final class Guns {
         return (gunItem.getGunType().getDamage() + (Config.perPowerLevelDamage * powerLevel)) / Config.gunDamageMultiple;
     }
 
+    public static double getDistance(@NotNull ItemStack gun) {
+        net.minecraft.item.ItemStack itemStack = ItemStacks.getMinecraftItemStack(gun);
+
+        if (itemStack == null) return 0.0D;
+
+        if (!isGun(itemStack)) return 0.0D;
+
+        GunItem gunItem = (GunItem) itemStack.getItem();
+
+        return gunItem.getGunType().getRange();
+    }
+
     public static boolean isGun(net.minecraft.item.ItemStack itemStack) {
         return itemStack.getItem() instanceof GunItem;
     }

@@ -52,7 +52,7 @@ import java.util.UUID;
  * @since 2021 /08/11 02:48 下午
  */
 public class GunHitBlockProcessorImpl implements IGunHitBlockProcessor {
-    private final Map<UUID, DamageCachePool> damageCachePoolMap = new HashMap<>();
+    private static final Map<UUID, DamageCachePool> DAMAGE_CACHE_POOL_MAP = new HashMap<>();
 
     @Override
     public void processGunHitBlock(Player player, ItemStack gun, Block block) {
@@ -60,7 +60,7 @@ public class GunHitBlockProcessorImpl implements IGunHitBlockProcessor {
 
         if (gun == null) return;
 
-        if (!damageCachePoolMap.containsKey(player.getUniqueId())) damageCachePoolMap.put(player.getUniqueId(), new DamageCachePool());
+        if (!DAMAGE_CACHE_POOL_MAP.containsKey(player.getUniqueId())) DAMAGE_CACHE_POOL_MAP.put(player.getUniqueId(), new DamageCachePool());
 
         if (Config.block.ignore.isIgnoreHit(block.getType())) return;
 
@@ -68,7 +68,7 @@ public class GunHitBlockProcessorImpl implements IGunHitBlockProcessor {
 
         if (residence == null || residence.isAdministrator(player)) return;
 
-        DamageCachePool damageCachePool = damageCachePoolMap.get(player.getUniqueId());
+        DamageCachePool damageCachePool = DAMAGE_CACHE_POOL_MAP.get(player.getUniqueId());
 
         Locale locale = LocaleManager.require(player);
 
@@ -88,7 +88,7 @@ public class GunHitBlockProcessorImpl implements IGunHitBlockProcessor {
 
         IBossBar healthBossBar = damageCache.getHealthBossBar();
 
-        if (Config.showBlockHealth) {
+        if (Config.showBlockHealth && !Config.showOnlyTargetBlock) {
             healthBossBar.show(player);
         }
 
@@ -131,5 +131,10 @@ public class GunHitBlockProcessorImpl implements IGunHitBlockProcessor {
         if (!residence.hasAttack(player.getName())) {
             residence.attackBy(player);
         }
+    }
+
+    @Override
+    public Map<UUID, DamageCachePool> getDamageCachePoolMap() {
+        return DAMAGE_CACHE_POOL_MAP;
     }
 }

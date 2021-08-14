@@ -35,6 +35,7 @@ import site.liangbai.realhomehunt.internal.listener.forge.player.EventHolderGunH
 import site.liangbai.realhomehunt.internal.listener.forge.block.EventHolderTryPierceableBlock;
 import site.liangbai.realhomehunt.internal.task.PlayerGlowTask;
 import site.liangbai.realhomehunt.internal.task.PlayerMoveToResidenceMessageTask;
+import site.liangbai.realhomehunt.internal.task.ShowOnlyTargetBlockTask;
 import site.liangbai.realhomehunt.util.Console;
 import site.liangbai.realhomehuntforge.event.BlockRayTraceEvent;
 
@@ -118,6 +119,7 @@ public final class RealHomeHuntPlugin extends JavaPlugin {
     private void initTasks() {
         PlayerMoveToResidenceMessageTask.setup(this);
         PlayerGlowTask.setup(this);
+        ShowOnlyTargetBlockTask.setup(this);
     }
 
     private void cancelTasks() {

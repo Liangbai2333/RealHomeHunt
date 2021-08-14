@@ -14,6 +14,9 @@ teleportMills: 10
 # 打击方块时是否显示方块剩余血量
 showBlockHealth: true
 
+# 是否只显示玩家当前目标方块的血量, 也就是当前看的方块
+showOnlyTargetBlock: true
+
 # 恢复方块裂纹的秒数
 maxWaitMills: 10
 
@@ -54,6 +57,7 @@ robChestMode:
   enabled: false
   # 是否修复没有被掉落的物品(如果开启自动修复模式)
   fixItem: true
+
   # 掉落物品概率设定
   dropItem:
     global:
@@ -179,12 +183,18 @@ block:
       ignoreHit: true
     # 玻璃
     # 注意 customPierceable 代表是否为穿透性方块
-    # 默认为true, 可不填, 如为false将绕过Crafting Dead进行破坏
+    # 默认为原来的值, 可不填, 如为false将绕过Crafting Dead进行破坏
     # 注意 customPierceable 功能需要RealHomeHuntForge mod支持
     glass:
       suffix: GLASS
       amount: -1
       customPierceable: false
+    # 箱子
+    # fixTime表示修复的时间， 默认为-1则使用默认的修复时间, 单位: s
+    chest:
+      suffix: CHEST
+      amount: -1
+      fixTime: 300
     # 树叶
     leaves:
       suffix: LEAVES

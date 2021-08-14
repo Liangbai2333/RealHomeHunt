@@ -16,18 +16,28 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.internal.processor;
+package site.liangbai.realhomehunt.util;
 
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import site.liangbai.realhomehunt.api.cache.DamageCachePool;
+import org.bukkit.util.RayTraceResult;
+import org.bukkit.util.Vector;
 
-import java.util.Map;
-import java.util.UUID;
+import java.util.Optional;
 
-public interface IGunHitBlockProcessor {
-    void processGunHitBlock(Player player, ItemStack gun, Block block);
+public class RayTraceUtil {
+    public static Optional<Block> rayTraceBlock(Player player, double distance) {
+        Location location = player.getEyeLocation();
 
-    Map<UUID, DamageCachePool> getDamageCachePoolMap();
+        Vector start = player.getEyeLocation().getDirection();
+
+        RayTraceResult rayTraceResult = player.getWorld().rayTraceBlocks(location, start, distance);
+
+        if (rayTraceResult == null) {
+            return Optional.empty();
+        }
+
+        return Optional.ofNullable(rayTraceResult.getHitBlock());
+    }
 }
