@@ -18,23 +18,24 @@
 
 package site.liangbai.realhomehunt.internal.listener.forge.block;
 
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import site.liangbai.forgeeventbridge.event.EventHolder;
 import site.liangbai.forgeeventbridge.wrapper.EventWrapper;
-import site.liangbai.forgeeventbridge.wrapper.WrapperTransformer;
 import site.liangbai.realhomehunt.common.config.Config;
+import site.liangbai.realhomehunt.util.kt.Utils;
 import site.liangbai.realhomehuntforge.event.BlockRayTraceEvent;
+import taboolib.common.Isolated;
 
+@Isolated
 public class EventHolderTryPierceableBlock implements EventHolder<EventWrapper.EventObject> {
     @Override
     public void handle(EventWrapper<EventWrapper.EventObject> eventWrapper) {
         BlockRayTraceEvent.TryPierceableBlock event = (BlockRayTraceEvent.TryPierceableBlock) eventWrapper.getObject();
 
-        World world = (World) WrapperTransformer.require(World.class, event.getLevel());
+        World world = Utils.toBukkitWorld(event.getLevel());
 
-        Block block = world.getBlockAt((Location) WrapperTransformer.require(Location.class, event.getRayTraceResult().getBlockPos()));
+        Block block = world.getBlockAt(Utils.toLocation(event.getRayTraceResult().getBlockPos()));
 
         boolean original = event.isPierceable();
 

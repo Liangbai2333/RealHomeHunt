@@ -16,14 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.util;
+package site.liangbai.realhomehunt.util.kt
 
-import com.craftingdead.core.world.entity.extension.LivingExtension;
-import org.bukkit.entity.Entity;
-import site.liangbai.forgeeventbridge.wrapper.WrapperTransformer;
+import io.izzel.arclight.api.Arclight
+import net.minecraftforge.eventbus.api.IEventBus
+import site.liangbai.realhomehunt.RealHomeHuntPlugin.inst
 
-public class Living {
-    public static Entity asEntity(LivingExtension<?, ?> living) {
-        return (Entity) WrapperTransformer.require(Entity.class, living.getEntity());
-    }
-}
+fun <T : IEventBus> registerForgeEvent(eventBus: T, target: Any) = Arclight.registerForgeEvent(inst, eventBus, target)

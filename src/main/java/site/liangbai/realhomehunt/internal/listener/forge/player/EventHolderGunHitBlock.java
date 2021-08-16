@@ -19,7 +19,6 @@
 package site.liangbai.realhomehunt.internal.listener.forge.player;
 
 import com.craftingdead.core.event.GunEvent;
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -27,9 +26,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import site.liangbai.forgeeventbridge.event.EventHolder;
 import site.liangbai.forgeeventbridge.wrapper.EventWrapper;
-import site.liangbai.forgeeventbridge.wrapper.WrapperTransformer;
 import site.liangbai.realhomehunt.internal.processor.Processors;
-import site.liangbai.realhomehunt.util.Living;
+import site.liangbai.realhomehunt.util.kt.Utils;
+import taboolib.common.Isolated;
 
 /**
  * The type Event holder gun hit block.
@@ -37,22 +36,23 @@ import site.liangbai.realhomehunt.util.Living;
  * @author Liangbai
  * @since 2021 /08/11 02:37 下午
  */
+@Isolated
 public class EventHolderGunHitBlock implements EventHolder<EventWrapper.EventObject> {
     @Override
     public void handle(EventWrapper<EventWrapper.EventObject> eventWrapper) {
         GunEvent.HitBlock event = (GunEvent.HitBlock) eventWrapper.getObject();
 
-        Entity entity = Living.asEntity(event.getLiving());
+        Entity entity = Utils.toBukkitEntity(event.getLiving().getEntity());
 
         if (!(entity instanceof Player)) return;
 
         Player player = ((Player) entity);
 
-        ItemStack gun = (ItemStack) WrapperTransformer.require(ItemStack.class, event.getItemStack());
+        ItemStack gun = Utils.toBukkitItemStack(event.getItemStack());
 
-        World world = (World) WrapperTransformer.require(World.class, event.getLevel());
+        World world = Utils.toBukkitWorld(event.getLevel());
 
-        Block block = world.getBlockAt((Location) WrapperTransformer.require(Location.class, event.getRayTraceResult().getBlockPos()));
+        Block block = world.getBlockAt(Utils.toLocation(event.getRayTraceResult().getBlockPos()));
 
         Processors.GUN_HIT_BLOCK_PROCESSOR.processGunHitBlock(player, gun, block);
     }

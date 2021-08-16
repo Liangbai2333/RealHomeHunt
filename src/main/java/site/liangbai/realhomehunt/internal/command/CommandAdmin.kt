@@ -56,7 +56,7 @@ internal object CommandAdmin {
     @CommandBody(permission = "rh.command.admin.create", optional = true)
     val create = subCommand {
         dynamic {
-            suggestion<Player> { _, _ ->
+            suggestion<Player>(uncheck = true) { _, _ ->
                 Bukkit.getOnlinePlayers()
                     .map { it.name }
                     .filter {
@@ -186,7 +186,7 @@ internal object CommandAdmin {
     @CommandBody(permission = "rh.command.admin.translate", optional = true)
     val translate = subCommand {
         dynamic {
-            suggestion<CommandSender> { _, _ ->
+            suggestion<CommandSender>(uncheck = true) { _, _ ->
                 Bukkit.getOnlinePlayers().stream()
                     .parallel()
                     .map { it.name }

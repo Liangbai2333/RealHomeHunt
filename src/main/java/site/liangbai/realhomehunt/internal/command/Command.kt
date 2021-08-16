@@ -120,10 +120,10 @@ internal object Command {
         }
     }
 
-    @CommandBody(permission = "rh.command.help", optional = true)
+    @CommandBody(permission = "rh.command.administrator", optional = true)
     val administrator = subCommand {
         dynamic {
-            suggestion<Player> { sender, _ ->
+            suggestion<Player>(uncheck = true) { sender, _ ->
                 val residence = ResidenceManager.getResidenceByOwner(sender.name)
 
                 val players = Bukkit.getOnlinePlayers()

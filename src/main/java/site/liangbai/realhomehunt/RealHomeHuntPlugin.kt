@@ -19,6 +19,7 @@
 package site.liangbai.realhomehunt
 
 import com.craftingdead.core.event.GunEvent
+import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.ModList
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
@@ -30,12 +31,16 @@ import site.liangbai.realhomehunt.api.residence.Residence
 import site.liangbai.realhomehunt.api.residence.attribute.map.AttributeMap
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager
 import site.liangbai.realhomehunt.common.config.Config
+import site.liangbai.realhomehunt.internal.listener.forge.arclight.EventHandlerGunHitBlock
+import site.liangbai.realhomehunt.internal.listener.forge.arclight.EventHandlerTryPierceableBlock
 import site.liangbai.realhomehunt.internal.listener.forge.block.EventHolderTryPierceableBlock
 import site.liangbai.realhomehunt.internal.listener.forge.player.EventHolderGunHitBlock
 import site.liangbai.realhomehunt.internal.task.PlayerGlowTask
 import site.liangbai.realhomehunt.internal.task.PlayerMoveToResidenceMessageTask
 import site.liangbai.realhomehunt.internal.task.ShowOnlyTargetBlockTask
 import site.liangbai.realhomehunt.util.Console
+import site.liangbai.realhomehunt.util.kt.isArclight
+import site.liangbai.realhomehunt.util.kt.registerForgeEvent
 import site.liangbai.realhomehuntforge.event.BlockRayTraceEvent
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
@@ -80,30 +85,45 @@ object RealHomeHuntPlugin : Plugin() {
         ResidenceManager.getResidences().forEach(Residence::save)
     }
 
-    @Awake(LifeCycle.LOAD)
+    @Awake(LifeCycle.ENABLE)
     private fun initForgeEventHolder() {
         checkForgeEventBridgeInst()
 
-        EventHolderGunHitBlock().register(EventBridge.builder()
-            .target(GunEvent.HitBlock::class.java).build())
+        var rhhForgeLoaded = false
 
-        tryInitRealHomeHuntForge()
-    }
+        if (ModList.get().isLoaded(REAL_HOME_HUNT_FORGE_MOD_ID)) {
+            rhhForgeLoaded = true
+        } else {
+            Console.sendRawMessage("${ChatColor.YELLOW}WARN: ${ChatColor.RED}Not found RealHomeHuntForge, and some features will fail.")
+        }
 
-    private fun checkForgeEventBridgeInst() {
-        if (!ModList.get().isLoaded(FORGE_EVENT_BRIDGE_MOD_ID)) {
-            disablePlugin()
+        // Arclight 暂时有BUG
+        if (isArclight() && false) {
+            Console.sendRawMessage("${ChatColor.GREEN}Found the Arclight server, unused Forge-Event-Bridge, start optimized.")
 
-            throw IllegalStateException("can not found Forge-Event-Bridge mod, please install it.")
+            val bus = MinecraftForge.EVENT_BUS
+
+            registerForgeEvent(bus, EventHandlerGunHitBlock())
+
+            if (rhhForgeLoaded) {
+                registerForgeEvent(bus, EventHandlerTryPierceableBlock())
+            }
+        } else {
+            EventHolderGunHitBlock().register(EventBridge.builder()
+                .target(GunEvent.HitBlock::class.java).build())
+
+            if (rhhForgeLoaded) {
+                EventHolderTryPierceableBlock().register(EventBridge.builder()
+                    .target(BlockRayTraceEvent.TryPierceableBlock::class.java).build())
+            }
         }
     }
 
-    private fun tryInitRealHomeHuntForge() {
-        if (ModList.get().isLoaded(REAL_HOME_HUNT_FORGE_MOD_ID)) {
-            EventHolderTryPierceableBlock().register(EventBridge.builder()
-                    .target(BlockRayTraceEvent.TryPierceableBlock::class.java).build())
-        } else {
-            Console.sendRawMessage("${ChatColor.YELLOW}WARN: ${ChatColor.RED}Not found RealHomeHuntForge, and some features will fail.")
+    private fun checkForgeEventBridgeInst() {
+        if (!ModList.get().isLoaded(FORGE_EVENT_BRIDGE_MOD_ID) && !isArclight()) {
+            disablePlugin()
+
+            throw IllegalStateException("can not found Forge-Event-Bridge mod, please install it.")
         }
     }
 
