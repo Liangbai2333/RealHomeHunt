@@ -1,7 +1,6 @@
 command:
   common:
     unknownSubCommand: "&c子命令错误, 请查看帮助/{0} help."
-    haveNotPermission: "&c缺少权限: {0}"
 
   create:
     notOpened: "&c此世界没有开放领地."
@@ -29,7 +28,6 @@ command:
       waitTitle: "&e即将传送至: {0} 的领地"
       waitSubTitle: "&e传送将在: {0} 秒后启动, 请不要移动"
   administrator:
-    usage: "&c使用方法: /{0} administrator <玩家ID> <true/false>"
     unknownParam: "&c第三个参数必须为 <true/false>"
     haveNotResidence: "&c你还没有领地, 无法设置领地权限."
     alreadyIsAdministrator: "&c对方已经拥有领地权限."
@@ -59,7 +57,6 @@ command:
     haveNotResidence: "&c你还没有领地, 无法删除."
     success: "&a成功删除."
   set:
-    usage: "&c使用方法: /{0} set <属性类型> <属性值>"
     haveNotResidence: "&c你还没有领地, 无法设置领地属性."
     unknownAttribute: "&c未知的属性名称: {0}."
     success: "&a成功将属性 {0} 的值设定为: {1}."
@@ -109,21 +106,19 @@ command:
   admin:
     help:
       - "&e=================================="
-      - "{prefix}&2/{0} admin import <YAML文件夹/数据库文件名 (不得有空格)> <清除原数据(true/false)> &e - 导入一个YAML文件夹/数据库文件的内容到当前存储系统中"
-      - "{prefix}&2/{0} admin translate <玩家名> &e - 将他人的residence中的主领地转移至RealHomeHunt"
-      - "{prefix}&2/{0} admin translateall &e - 将所有人的residence中的主领地转移至RealHomeHunt"
-      - "{prefix}&2/{0} admin create <玩家名> &e - 为他人创造领地"
-      - "{prefix}&2/{0} admin remove <玩家名> &e - 删除他人领地"
-      - "{prefix}&2/{0} admin set <玩家名> <属性类型> <属性值> &e - 为他人领地设置属性"
-      - "{prefix}&2/{0} admin expand <玩家名> <类型[north/south/west/east/up/down/all]> <大小> &e - 为他人领地进行扩展"
-      - "{prefix}&2/{0} admin reelect <玩家名> &e - 为他人领地重选范围"
+      - "{prefix}&2/{0} import <YAML文件夹/数据库文件名 (不得有空格)> <清除原数据(true/false)> &e - 导入一个YAML文件夹/数据库文件的内容到当前存储系统中"
+      - "{prefix}&2/{0} translate <玩家名> &e - 将他人的residence中的主领地转移至RealHomeHunt"
+      - "{prefix}&2/{0} translateall &e - 将所有人的residence中的主领地转移至RealHomeHunt"
+      - "{prefix}&2/{0} create <玩家名> &e - 为他人创造领地"
+      - "{prefix}&2/{0} remove <玩家名> &e - 删除他人领地"
+      - "{prefix}&2/{0} set <玩家名> <属性类型> <属性值> &e - 为他人领地设置属性"
+      - "{prefix}&2/{0} expand <玩家名> <类型[north/south/west/east/up/down/all]> <大小> &e - 为他人领地进行扩展"
+      - "{prefix}&2/{0} reelect <玩家名> &e - 为他人领地重选范围"
     import:
-      usage: "&c使用方法: /{0} admin import <文件夹/数据库文件名> <清除原数据(true/false)>"
       unknownParam4: "&c第四个参数必须为 <true/false>"
       unknownFile: "&c文件: {0} 不存在."
       saveToStorage: "&a成功载入到当前的 {0} 存储系统, 成功载入数量: {1} 个, 总数: {2} 个."
     create:
-      usage: "&c使用方法: /{0} admin create <玩家名>."
       notOpened: "&c此世界没有开放领地."
       hasOld: "&c对方已经有领地了, 无法重复创建."
       notSelectZone: "&c请先选择区域."
@@ -132,7 +127,6 @@ command:
       success: "&a为玩家 {0} 创建成功."
       sendToAll: "{prefix}&a管理员 {0} 为玩家 {1} 成功创建了领地."
     remove:
-      usage: "&c使用方法: /{0} admin remove <玩家名>."
       haveNotResidence: "&c对方还没有领地哦~"
       success: "&a成功删除 {0} 的领地."
     translateAll:
@@ -143,26 +137,22 @@ command:
         - "&c失败数量: &e{2}"
         - "&c请尽快将Residence内的领地删除, 避免冲突."
     translate:
-      usage: "&c使用方法: /{0} admin translate <玩家名>."
       success:
         - "&a转换成功"
         - "&c请尽快将Residence内的领地删除, 避免冲突."
       failed:
         - "&c{0} 不存在或没有领地"
     set:
-      usage: "&c使用方法: /{0} admin set <玩家名> <属性类型> <属性值>"
       haveNotResidence: "&c对方 {0} 还没有领地, 无法设置领地属性."
       unknownAttribute: "&c未知的属性名称: {0}."
       success: "&a成功将 {0} 的领地属性 {1} 的值设定为: {2}."
       notAllow: "&c不被允许的属性值, 该项属性允许的属性值为: {0}."
     expand:
-      usage: "&c使用方法: /{0} admin expand <玩家名> <类型[north/south/west/east/up/down/all]> <大小>"
       haveNotResidence: "&c对方 {0} 还没有领地, 无法扩展领地大小."
       unknownExpand: "&c未知的拓展类型[{0}]."
       mustBeNumber: "&c大小必须为一个数字"
       success: "&a成功为玩家 {0} 的领地扩展 &e{1} &a方向, 大小: &e{2}&a."
     reelect:
-      usage: "&c使用方法: /{0} admin reelect <玩家名>."
       notOpened: "&c此世界没有开放领地."
       notSelectZone: "&c请先选择区域."
       pointsNotInSameWorld: "&c两点必须在同一世界."
