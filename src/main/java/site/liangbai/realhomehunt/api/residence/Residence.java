@@ -39,10 +39,7 @@ import site.liangbai.realhomehunt.common.database.converter.list.IgnoreBlockInfo
 import site.liangbai.realhomehunt.common.database.converter.list.StringListConverter;
 import site.liangbai.realhomehunt.internal.task.UnloadPlayerAttackTask;
 import site.liangbai.realhomehunt.internal.task.UnloadWarnTask;
-import site.liangbai.realhomehunt.util.Messages;
-import site.liangbai.realhomehunt.util.Ref;
-import site.liangbai.realhomehunt.util.Sounds;
-import site.liangbai.realhomehunt.util.Titles;
+import site.liangbai.realhomehunt.util.*;
 
 import javax.persistence.*;
 import java.util.*;
@@ -274,7 +271,7 @@ public final class Residence implements ConfigurationSerializable {
     public void addAttack(String attack) {
         attacks.add(attack);
 
-        new UnloadPlayerAttackTask(this, attack).runTaskLater(RealHomeHuntPlugin.getInst(), Config.unloadPlayerAttackMills);
+        new UnloadPlayerAttackTask(this, attack).runTaskLater(RealHomeHuntPlugin.INSTANCE.getInst(), Config.unloadPlayerAttackMills);
     }
 
     public boolean hasAttack(String attack) {
@@ -292,7 +289,7 @@ public final class Residence implements ConfigurationSerializable {
             Sounds.playLevelUpSound(member, 3, 0.5);
         });
 
-        new UnloadWarnTask(this).runTaskLater(RealHomeHuntPlugin.getInst(), Config.unloadWarnMills);
+        new UnloadWarnTask(this).runTaskLater(RealHomeHuntPlugin.INSTANCE.getInst(), Config.unloadWarnMills);
     }
 
     @Transient
@@ -347,8 +344,9 @@ public final class Residence implements ConfigurationSerializable {
 
     public List<Player> findPlayersIn() {
         return Bukkit.getOnlinePlayers().stream()
+                .parallel()
                 .filter(it -> ResidenceManager.isOpened(it.getWorld()))
-                .filter(it -> ResidenceManager.isInResidence(it.getLocation(), this))
+                .filter(it -> ResidenceManager.isInResidence(Locations.toBlockLocation(it.getLocation()), this))
                 .collect(Collectors.toList());
     }
 

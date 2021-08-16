@@ -100,8 +100,9 @@ public final class ResidenceManager {
 
     public static Residence getResidenceByOwner(String owner) {
         return getResidences().stream()
+                .parallel()
                 .filter(residence -> residence.isOwner(owner))
-                .findFirst()
+                .findAny()
                 .orElse(null);
     }
 
@@ -114,7 +115,7 @@ public final class ResidenceManager {
         return getResidences().stream()
                 .parallel()
                 .filter(residence -> Locations.isInResidence(location, residence))
-                .findFirst()
+                .findAny()
                 .orElse(null);
     }
 

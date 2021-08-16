@@ -16,22 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.internal.command.subcommand.impl;
+package site.liangbai.realhomehunt.util.kt
 
-import org.bukkit.command.CommandSender;
-import site.liangbai.realhomehunt.internal.command.subcommand.ISubCommand;
-import site.liangbai.realhomehunt.api.locale.impl.Locale;
-import site.liangbai.realhomehunt.util.Locales;
+import java.util.regex.Pattern
 
-public final class HelpCommand implements ISubCommand {
-    @Override
-    public void execute(CommandSender sender, String label, String[] args) {
-        Locale locale = Locales.require(sender);
+private val BOOLEAN_PATTERN = Pattern.compile("true|false")
 
-        sender.sendMessage(locale.asString("command.help.common", label));
-
-        if (sender.hasPermission("rh.reload")) {
-            sender.sendMessage(locale.asString("command.help.reload", label));
-        }
-    }
-}
+fun CharSequence.isBoolean() = BOOLEAN_PATTERN.matcher(this).matches()

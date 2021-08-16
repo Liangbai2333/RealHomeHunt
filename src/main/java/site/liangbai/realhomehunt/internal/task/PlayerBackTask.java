@@ -48,7 +48,7 @@ public final class PlayerBackTask extends BukkitRunnable {
     private final long seconds;
 
     public static void tryTeleportPlayer(Player player, Location location, String doneMessage, String denyMessage, String titleMessage, String teleportFormatSubTitleMessage, long seconds, Consumer<Player> finishBlock) {
-        new PlayerBackTask(player, location, doneMessage, denyMessage, titleMessage, teleportFormatSubTitleMessage, seconds, finishBlock).runTaskTimer(RealHomeHuntPlugin.getInst(), 0, 20);
+        new PlayerBackTask(player, location, doneMessage, denyMessage, titleMessage, teleportFormatSubTitleMessage, seconds, finishBlock).runTaskTimer(RealHomeHuntPlugin.INSTANCE.getInst(), 0, 20);
     }
 
     public PlayerBackTask(Player player, Location location, String doneMessage, String denyMessage, String titleMessage, String teleportFormatSubTitleMessage, long seconds, Consumer<Player> finishBlock) {

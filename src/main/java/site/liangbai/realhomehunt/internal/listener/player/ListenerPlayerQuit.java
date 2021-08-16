@@ -24,7 +24,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import site.liangbai.dynamic.event.EventSubscriber;
 import site.liangbai.realhomehunt.api.cache.SelectCache;
 import site.liangbai.realhomehunt.common.particle.EffectGroup;
-import site.liangbai.realhomehunt.internal.command.subcommand.impl.ShowCommand;
+import site.liangbai.realhomehunt.internal.command.Command;
 
 @EventSubscriber
 public final class ListenerPlayerQuit implements Listener {
@@ -34,12 +34,12 @@ public final class ListenerPlayerQuit implements Listener {
 
         String name = event.getPlayer().getName();
 
-        if (ShowCommand.SHOW_CACHES.containsKey(name)) {
-            EffectGroup effectGroup = ShowCommand.SHOW_CACHES.get(name);
+        if (Command.INSTANCE.getShowCaches().containsKey(name)) {
+            EffectGroup effectGroup = Command.INSTANCE.getShowCaches().get(name);
 
             effectGroup.turnOff();
 
-            ShowCommand.SHOW_CACHES.remove(name);
+            Command.INSTANCE.getShowCaches().remove(name);
         }
     }
 }

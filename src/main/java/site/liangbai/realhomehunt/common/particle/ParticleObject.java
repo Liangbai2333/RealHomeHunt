@@ -42,28 +42,28 @@ public abstract class ParticleObject {
     public abstract void show(List<Player> receivers);
 
     public void showAsync(List<Player> receivers) {
-        Bukkit.getScheduler().runTaskAsynchronously(RealHomeHuntPlugin.getInst(), () -> show(receivers));
+        Bukkit.getScheduler().runTaskAsynchronously(RealHomeHuntPlugin.INSTANCE.getInst(), () -> show(receivers));
     }
 
     public void alwaysShow(List<Player> receivers) {
-        Bukkit.getScheduler().runTaskLater(RealHomeHuntPlugin.getInst(), () -> {
+        Bukkit.getScheduler().runTaskLater(RealHomeHuntPlugin.INSTANCE.getInst(), () -> {
             showTask = new BukkitRunnable() {
                 @Override
                 public void run() {
                     show(receivers);
                 }
-            }.runTaskTimer(RealHomeHuntPlugin.getInst(), 0L, period);
+            }.runTaskTimer(RealHomeHuntPlugin.INSTANCE.getInst(), 0L, period);
         }, 2L);
     }
 
     public void alwaysShowAsync(List<Player> receivers) {
-        Bukkit.getScheduler().runTaskLater(RealHomeHuntPlugin.getInst(), () -> {
+        Bukkit.getScheduler().runTaskLater(RealHomeHuntPlugin.INSTANCE.getInst(), () -> {
             showTask = new BukkitRunnable() {
                 @Override
                 public void run() {
                     show(receivers);
                 }
-            }.runTaskTimerAsynchronously(RealHomeHuntPlugin.getInst(), 0L, period);
+            }.runTaskTimerAsynchronously(RealHomeHuntPlugin.INSTANCE.getInst(), 0L, period);
         }, 2L);
     }
 

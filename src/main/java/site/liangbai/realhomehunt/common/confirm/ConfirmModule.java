@@ -47,7 +47,7 @@ public final class ConfirmModule {
             public void run() {
                 popConfirmCache(player);
             }
-        }.runTaskLater(RealHomeHuntPlugin.getInst(), waitMills);
+        }.runTaskLater(RealHomeHuntPlugin.INSTANCE.getInst(), waitMills);
     }
 
     public static void sendPrepare(Player player, String label, long waitMills) {

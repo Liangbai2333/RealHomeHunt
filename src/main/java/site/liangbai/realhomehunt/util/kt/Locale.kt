@@ -16,12 +16,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.internal.command.subtabcompleter;
+package site.liangbai.realhomehunt.util.kt
 
-import org.bukkit.command.CommandSender;
+import org.bukkit.command.CommandSender
+import org.bukkit.entity.Player
+import site.liangbai.realhomehunt.api.locale.impl.Locale
+import site.liangbai.realhomehunt.api.locale.manager.LocaleManager
 
-import java.util.List;
+fun CommandSender.require(): Locale {
+    return if (this is Player) LocaleManager.require(this) else LocaleManager.requireDefault()
+}
 
-public interface ISubTabCompleter {
-    List<String> handle(CommandSender sender, int length, String[] args);
+fun CommandSender.sendLang(node: String, vararg arguments: Any) {
+    sendMessage(require().asString(node, *arguments))
 }

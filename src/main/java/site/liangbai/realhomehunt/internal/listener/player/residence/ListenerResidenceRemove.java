@@ -23,7 +23,7 @@ import org.bukkit.event.Listener;
 import site.liangbai.dynamic.event.EventSubscriber;
 import site.liangbai.realhomehunt.api.event.residence.ResidenceRemoveEvent;
 import site.liangbai.realhomehunt.common.particle.EffectGroup;
-import site.liangbai.realhomehunt.internal.command.subcommand.impl.ShowCommand;
+import site.liangbai.realhomehunt.internal.command.Command;
 
 @EventSubscriber
 public class ListenerResidenceRemove implements Listener {
@@ -31,12 +31,12 @@ public class ListenerResidenceRemove implements Listener {
     public void onResidenceRemove(ResidenceRemoveEvent event) {
         String owner = event.getResidence().getOwner();
 
-        if (ShowCommand.SHOW_CACHES.containsKey(owner)) {
-            EffectGroup effectGroup = ShowCommand.SHOW_CACHES.get(owner);
+        if (Command.INSTANCE.getShowCaches().containsKey(owner)) {
+            EffectGroup effectGroup = Command.INSTANCE.getShowCaches().get(owner);
 
             effectGroup.turnOff();
 
-            ShowCommand.SHOW_CACHES.remove(owner);
+            Command.INSTANCE.getShowCaches().remove(owner);
         }
     }
 }

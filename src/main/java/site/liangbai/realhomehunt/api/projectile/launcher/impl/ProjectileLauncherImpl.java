@@ -88,6 +88,6 @@ public class ProjectileLauncherImpl implements IProjectileLauncher {
                     }
                 }
             }
-        }.runTaskTimer(RealHomeHuntPlugin.getInst(), 0, 1);
+        }.runTaskTimer(RealHomeHuntPlugin.INSTANCE.getInst(), 0, 1);
     }
 }
