@@ -41,26 +41,21 @@ import net.minecraft.entity.Entity
 import net.minecraft.item.ItemStack
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
-import org.bukkit.Bukkit
 import org.bukkit.ChatColor
-import org.bukkit.Location
-import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack
-import org.bukkit.entity.Player
-import taboolib.module.nms.sendPacket
-import java.util.function.Predicate
+import site.liangbai.realhomehunt.api.nms.NMS
 import java.util.regex.Pattern
 
 private val BOOLEAN_PATTERN = Pattern.compile("true|false")
 
 fun CharSequence.isBoolean() = BOOLEAN_PATTERN.matcher(this).matches()
 
-fun ItemStack.toBukkitItemStack(): org.bukkit.inventory.ItemStack? = CraftItemStack.asBukkitCopy(this as net.minecraft.server.v1_16_R3.ItemStack)
+fun ItemStack.toBukkitItemStack() = NMS.INSTANCE.toBukkitItemStack(this)
 
-fun World.toBukkitWorld(): org.bukkit.World = (this as net.minecraft.server.v1_16_R3.World).world
+fun World.toBukkitWorld() = NMS.INSTANCE.toBukkitWorld(this)
 
-fun BlockPos.toLocation(): Location = Location(null, x.toDouble(), y.toDouble(), z.toDouble())
+fun BlockPos.toLocation() = NMS.INSTANCE.toBukkitLocation(this)
 
-fun Entity.toBukkitEntity(): org.bukkit.entity.Entity = (this as net.minecraft.server.v1_16_R3.Entity).bukkitEntity
+fun Entity.toBukkitEntity() = NMS.INSTANCE.toBukkitEntity(this)
 
 fun String.colored() = ChatColor.translateAlternateColorCodes('&', this)
 

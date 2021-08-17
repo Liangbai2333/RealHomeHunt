@@ -18,6 +18,11 @@
 
 package site.liangbai.realhomehunt.api.nms
 
+import net.minecraft.entity.Entity
+import net.minecraft.item.ItemStack
+import net.minecraft.util.math.BlockPos
+import net.minecraft.world.World
+import org.bukkit.Location
 import org.bukkit.block.Block
 import org.bukkit.entity.Player
 
@@ -27,6 +32,14 @@ abstract class NMS {
     abstract fun sendBreakAnimationPacket(id: Int, block: Block, breakSit: Int, receivers: List<Player>)
 
     abstract fun sendBreakBlock(block: Block, dropItem: Boolean)
+
+    abstract fun toBukkitEntity(entity: Entity): org.bukkit.entity.Entity
+
+    abstract fun toBukkitLocation(blockPos: BlockPos): Location
+
+    abstract fun toBukkitWorld(world: World): org.bukkit.World
+
+    abstract fun toBukkitItemStack(itemStack: ItemStack): org.bukkit.inventory.ItemStack
 
     companion object {
         @JvmStatic

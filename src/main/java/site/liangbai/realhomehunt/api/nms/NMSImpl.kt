@@ -18,11 +18,17 @@
 
 package site.liangbai.realhomehunt.api.nms
 
+import net.minecraft.entity.Entity
+import net.minecraft.item.ItemStack
 import net.minecraft.server.v1_16_R3.BlockPosition
 import net.minecraft.server.v1_16_R3.ChatMessageType
 import net.minecraft.server.v1_16_R3.PacketPlayOutChat
+import net.minecraft.util.math.BlockPos
+import net.minecraft.world.World
+import org.bukkit.Location
 import org.bukkit.block.Block
 import org.bukkit.craftbukkit.v1_16_R3.CraftWorld
+import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack
 import org.bukkit.craftbukkit.v1_16_R3.util.CraftChatMessage
 import org.bukkit.entity.Player
 import taboolib.common.reflect.Reflex.Companion.setProperty
@@ -72,4 +78,12 @@ class NMSImpl : NMS() {
 
         worldServer.b(blockPosition, dropItem)
     }
+
+    override fun toBukkitEntity(entity: Entity): org.bukkit.entity.Entity = (entity as net.minecraft.server.v1_16_R3.Entity).bukkitEntity
+
+    override fun toBukkitLocation(blockPos: BlockPos) = Location(null, blockPos.x.toDouble(), blockPos.y.toDouble(), blockPos.z.toDouble())
+
+    override fun toBukkitWorld(world: World): org.bukkit.World = (world as net.minecraft.server.v1_16_R3.World).world
+
+    override fun toBukkitItemStack(itemStack: ItemStack): org.bukkit.inventory.ItemStack = CraftItemStack.asCraftMirror(itemStack as net.minecraft.server.v1_16_R3.ItemStack)
 }
