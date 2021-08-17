@@ -46,8 +46,10 @@ import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
 import taboolib.common.platform.Plugin
 import taboolib.common.platform.function.disablePlugin
+import taboolib.common.platform.function.info
 import taboolib.common.platform.function.pluginId
 import taboolib.common.platform.function.pluginVersion
+import taboolib.module.nms.MinecraftVersion
 import taboolib.platform.BukkitPlugin
 
 object RealHomeHuntPlugin : Plugin() {
@@ -57,6 +59,14 @@ object RealHomeHuntPlugin : Plugin() {
 
     private const val FORGE_EVENT_BRIDGE_MOD_ID = "forgeeventbridge"
     private const val REAL_HOME_HUNT_FORGE_MOD_ID = "realhomehuntforge"
+
+    override fun onLoad() {
+        if (MinecraftVersion.majorLegacy < 11600 || !MinecraftVersion.isSupported) {
+            info("The version ${MinecraftVersion.runningVersion} is not supported, at least be 1.16+")
+
+            disablePlugin()
+        }
+    }
 
     override fun onEnable() {
         Config.init(inst)

@@ -284,7 +284,7 @@ internal object Command {
         val attribute = residence.getAttributeWithoutType(attributeClass)
 
         if (attribute.allow(value)) {
-            val event = ResidenceSetAttributeEvent(player, residence, attribute, value)
+            val event = ResidenceSetAttributeEvent(this, residence, attribute, value)
             if (!event.callEvent()) return
             val attributeName = attribute.name
             attribute.force(event.value)
@@ -483,7 +483,7 @@ internal object Command {
             return
         }
 
-        if (!ResidenceManager.isOpened(loc1.world)) {
+        if (!ResidenceManager.isOpened(loc1.world!!)) {
             sendLang("command.create.notOpened")
             return
         }

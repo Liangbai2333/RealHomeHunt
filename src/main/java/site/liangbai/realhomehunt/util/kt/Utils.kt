@@ -41,8 +41,12 @@ import net.minecraft.entity.Entity
 import net.minecraft.item.ItemStack
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
+import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack
+import org.bukkit.entity.Player
+import taboolib.module.nms.sendPacket
+import java.util.function.Predicate
 import java.util.regex.Pattern
 
 private val BOOLEAN_PATTERN = Pattern.compile("true|false")

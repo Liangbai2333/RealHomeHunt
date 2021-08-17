@@ -23,8 +23,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.scheduler.BukkitRunnable;
 import site.liangbai.realhomehunt.RealHomeHuntPlugin;
+import site.liangbai.realhomehunt.api.nms.NMS;
 import site.liangbai.realhomehunt.common.actionbar.IActionBar;
-import site.liangbai.realhomehunt.util.ActionBar;
 
 public final class DynamicActionBar implements IActionBar, Cancellable {
     private final String message;
@@ -80,7 +80,7 @@ public final class DynamicActionBar implements IActionBar, Cancellable {
 
                     String showString = message.substring(0, count);
 
-                    ActionBar.sendActionBar(player, showString);
+                    NMS.getINSTANCE().sendActionBar(player, showString);
 
                     frameCount = 0;
                 }
@@ -100,7 +100,7 @@ public final class DynamicActionBar implements IActionBar, Cancellable {
     public void clear(Player player) {
         setCancelled(true);
 
-        ActionBar.sendActionBar(player, "");
+        NMS.getINSTANCE().sendActionBar(player, "");
     }
 
     @Override

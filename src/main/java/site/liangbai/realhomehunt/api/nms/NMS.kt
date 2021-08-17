@@ -16,17 +16,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.util;
+package site.liangbai.realhomehunt.api.nms
 
-import net.minecraft.server.v1_16_R3.ChatMessageType;
-import net.minecraft.server.v1_16_R3.PacketPlayOutChat;
-import org.bukkit.craftbukkit.v1_16_R3.util.CraftChatMessage;
-import org.bukkit.entity.Player;
+import org.bukkit.block.Block
+import org.bukkit.entity.Player
 
-public final class ActionBar {
-    public static void sendActionBar(Player player, String message) {
-        PacketPlayOutChat packet = new PacketPlayOutChat(CraftChatMessage.fromStringOrNull(message), ChatMessageType.GAME_INFO, player.getUniqueId());
+abstract class NMS {
+    abstract fun sendActionBar(player: Player, message: String)
 
-        Packets.sendPacket(player, packet);
+    abstract fun sendBreakAnimationPacket(id: Int, block: Block, breakSit: Int, receivers: List<Player>)
+
+    abstract fun sendBreakBlock(block: Block, dropItem: Boolean)
+
+    companion object {
+        @JvmStatic
+        val INSTANCE by lazy {
+            NMSImpl()
+        }
     }
 }

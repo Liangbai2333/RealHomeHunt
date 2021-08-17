@@ -34,7 +34,6 @@ import site.liangbai.realhomehunt.common.config.Config.StorageSetting.SqliteSett
 import site.liangbai.realhomehunt.common.expand.Expand
 import site.liangbai.realhomehunt.internal.storage.impl.SqliteStorage
 import site.liangbai.realhomehunt.internal.storage.impl.YamlStorage
-import site.liangbai.realhomehunt.util.Locales
 import site.liangbai.realhomehunt.util.Locations
 import site.liangbai.realhomehunt.util.Messages
 import site.liangbai.realhomehunt.util.kt.expand
@@ -412,25 +411,25 @@ internal object CommandAdmin {
             return
         }
 
-        if (!ResidenceManager.isOpened(loc1.world)) {
+        if (!ResidenceManager.isOpened(loc1.world!!)) {
             sendLang("command.admin.reelect.notOpened")
             return
         }
 
         if (ResidenceManager.containsResidence(loc1, loc2)) {
-            SelectCache.pop(player)
+            SelectCache.pop(this)
             sendLang("command.admin.reelect.containsOther")
             return
         }
 
-        val event = ResidenceReelectEvent(player, residence, loc1, loc2)
+        val event = ResidenceReelectEvent(this, residence, loc1, loc2)
 
         if (!event.callEvent()) return
 
         residence.left = loc1
         residence.right = loc2
 
-        SelectCache.pop(player)
+        SelectCache.pop(this)
 
         sendLang("command.admin.reelect.success", target)
     }
@@ -496,7 +495,7 @@ internal object CommandAdmin {
             return
         }
 
-        if (!ResidenceManager.isOpened(loc1.world)) {
+        if (!ResidenceManager.isOpened(loc1.world!!)) {
             sendLang("command.create.notOpened")
             return
         }

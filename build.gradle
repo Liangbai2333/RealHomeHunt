@@ -46,6 +46,7 @@ taboolib {
     }
     install("common")
     install("platform-bukkit")
+    install("module-nms")
     classifier = null
     version = "6.0.0-pre46"
 }
@@ -69,6 +70,7 @@ configurations {
 dependencies {
     minecraft group: 'net.minecraftforge', name: 'forge', version: "${minecraft_version}-${forge_version}"
     implementation 'org.jetbrains.kotlin:kotlin-stdlib'
+    implementation 'ink.ptms.core:v11701:11701:universal'
     implementation 'ink.ptms.core:v11604:11604:all'
     implementation 'io.izzel.arclight:arclight-api:1.0.1'
     implementation fg.deobf("curse.maven:crafting_dead-${crafting_dead_project_id}:${crafting_dead_file_id}")
