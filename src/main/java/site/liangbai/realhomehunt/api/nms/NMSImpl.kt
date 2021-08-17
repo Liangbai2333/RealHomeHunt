@@ -31,6 +31,7 @@ import org.bukkit.craftbukkit.v1_16_R3.CraftWorld
 import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack
 import org.bukkit.craftbukkit.v1_16_R3.util.CraftChatMessage
 import org.bukkit.entity.Player
+import taboolib.common.reflect.Reflex.Companion.getProperty
 import taboolib.common.reflect.Reflex.Companion.setProperty
 import taboolib.module.nms.MinecraftVersion
 import taboolib.module.nms.sendPacket
@@ -88,6 +89,8 @@ class NMSImpl : NMS() {
     override fun toBukkitItemStack(itemStack: ItemStack): org.bukkit.inventory.ItemStack = CraftItemStack.asCraftMirror(itemStack as net.minecraft.server.v1_16_R3.ItemStack)
 
     override fun toMinecraftItemStack(itemStack: org.bukkit.inventory.ItemStack): ItemStack {
-        return (if (itemStack is CraftItemStack) (if (itemStack.handle == null) CraftItemStack.asNMSCopy(itemStack) else itemStack.handle) else CraftItemStack.asNMSCopy(itemStack)) as ItemStack
+        return (if (itemStack is CraftItemStack) {
+            itemStack.getProperty<net.minecraft.server.v1_16_R3.ItemStack>("handle") ?: CraftItemStack.asNMSCopy(itemStack)
+        } else CraftItemStack.asNMSCopy(itemStack)) as ItemStack
     }
 }
