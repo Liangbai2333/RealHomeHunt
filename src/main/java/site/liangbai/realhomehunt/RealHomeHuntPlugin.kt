@@ -101,25 +101,36 @@ object RealHomeHuntPlugin : Plugin() {
             Console.sendMessage("${ChatColor.YELLOW}WARN: ${ChatColor.RED}Not found RealHomeHuntForge, and some features will fail.")
         }
 
-        // Arclight 暂时有BUG
-        if (isArclight() && false) {
+        if (isArclight()) {
             Console.sendMessage("${ChatColor.GREEN}Found the Arclight server, unused Forge-Event-Bridge, start optimized.")
 
-            val bus = MinecraftForge.EVENT_BUS
+            try {
+                val bus = MinecraftForge.EVENT_BUS
 
-            registerForgeEvent(bus, EventHandlerGunHitBlock())
+                registerForgeEvent(bus, EventHandlerGunHitBlock())
 
-            if (rhhForgeLoaded) {
-                registerForgeEvent(bus, EventHandlerTryPierceableBlock())
+                if (rhhForgeLoaded) {
+                    registerForgeEvent(bus, EventHandlerTryPierceableBlock())
+                }
+            } catch (e: Throwable) {
+                Console.sendMessage("${ChatColor.RED}Failed to register listener to Arclight, check your Arclight version is higher than 1.0.21, try to use ${ChatColor.YELLOW}Forge-Event-Bridge")
+
+                registerForgeEventBridgeListener(rhhForgeLoaded)
             }
         } else {
-            EventHolderGunHitBlock().register(EventBridge.builder()
-                .target(GunEvent.HitBlock::class.java).build())
+            registerForgeEventBridgeListener(rhhForgeLoaded)
+        }
+    }
 
-            if (rhhForgeLoaded) {
-                EventHolderTryPierceableBlock().register(EventBridge.builder()
-                    .target(BlockRayTraceEvent.TryPierceableBlock::class.java).build())
-            }
+    private fun registerForgeEventBridgeListener(useRhh: Boolean) {
+        checkForgeEventBridgeInst()
+
+        EventHolderGunHitBlock().register(EventBridge.builder()
+            .target(GunEvent.HitBlock::class.java).build())
+
+        if (useRhh) {
+            EventHolderTryPierceableBlock().register(EventBridge.builder()
+                .target(BlockRayTraceEvent.TryPierceableBlock::class.java).build())
         }
     }
 
