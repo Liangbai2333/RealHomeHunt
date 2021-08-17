@@ -141,7 +141,7 @@ command:
         - "&a转换成功"
         - "&c请尽快将Residence内的领地删除, 避免冲突."
       failed:
-        - "&c{0} 不存在或没有领地"
+        - "&c{0} 不存在或没有领地或世界未开放"
     set:
       haveNotResidence: "&c对方 {0} 还没有领地, 无法设置领地属性."
       unknownAttribute: "&c未知的属性名称: {0}."

@@ -241,6 +241,11 @@ internal object CommandAdmin {
             return
         }
 
+        if (!ResidenceManager.isOpened(area!!.world)) {
+            sendLang("command.admin.translate.failed", target)
+            return
+        }
+
         val residence: Residence =
             Residence.Builder().owner(target).left(area!!.highLocation).right(area!!.lowLocation).build()
 
@@ -268,6 +273,9 @@ internal object CommandAdmin {
             if (claimedResidence != null) {
                 count++
                 val area = claimedResidence.mainArea
+
+                if (!ResidenceManager.isOpened(area.world)) return
+
                 if (area != null) {
                     val residence =
                         Residence.Builder().owner(offlinePlayer.name).left(area.highLocation).right(area.lowLocation)

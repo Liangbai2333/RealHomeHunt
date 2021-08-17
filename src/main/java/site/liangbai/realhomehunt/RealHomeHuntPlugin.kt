@@ -91,8 +91,6 @@ object RealHomeHuntPlugin : Plugin() {
 
     @Awake(LifeCycle.ENABLE)
     private fun initForgeEventListener() {
-        checkForgeEventBridgeInst()
-
         var rhhForgeLoaded = false
 
         if (ModList.get().isLoaded(REAL_HOME_HUNT_FORGE_MOD_ID)) {
