@@ -54,13 +54,13 @@ private val BOOLEAN_PATTERN = Pattern.compile("true|false")
 
 fun CharSequence.isBoolean() = BOOLEAN_PATTERN.matcher(this).matches()
 
-fun ItemStack.toBukkitItemStack(): org.bukkit.inventory.ItemStack? = CraftItemStack.asBukkitCopy((this as Any) as net.minecraft.server.v1_16_R3.ItemStack)
+fun ItemStack.toBukkitItemStack(): org.bukkit.inventory.ItemStack? = CraftItemStack.asBukkitCopy(this as net.minecraft.server.v1_16_R3.ItemStack)
 
-fun World.toBukkitWorld(): org.bukkit.World = ((this as Any) as net.minecraft.server.v1_16_R3.World).world
+fun World.toBukkitWorld(): org.bukkit.World = (this as net.minecraft.server.v1_16_R3.World).world
 
 fun BlockPos.toLocation(): Location = Location(null, x.toDouble(), y.toDouble(), z.toDouble())
 
-fun Entity.toBukkitEntity(): org.bukkit.entity.Entity = ((this as Any) as net.minecraft.server.v1_16_R3.Entity).bukkitEntity
+fun Entity.toBukkitEntity(): org.bukkit.entity.Entity = (this as net.minecraft.server.v1_16_R3.Entity).bukkitEntity
 
 fun String.colored() = ChatColor.translateAlternateColorCodes('&', this)
 

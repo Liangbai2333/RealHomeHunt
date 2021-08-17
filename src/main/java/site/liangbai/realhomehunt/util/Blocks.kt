@@ -73,8 +73,8 @@ object Blocks {
             .filter { !it.isAir }
             .filter {
                 it.name.equals(info.full, ignoreCase = true) ||
-                        info.prefix != null && it.name.startsWith(info.prefix) ||
-                        info.suffix != null && it.name.endsWith(info.suffix)
+                        (info.prefix.isNotEmpty() || info.suffix.isNotEmpty() &&
+                                it.name.startsWith(info.prefix) && it.name.endsWith(info.suffix))
             }
             .count()
     }
