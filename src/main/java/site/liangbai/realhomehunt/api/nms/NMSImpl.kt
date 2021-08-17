@@ -25,7 +25,6 @@ import org.bukkit.block.Block
 import org.bukkit.craftbukkit.v1_16_R3.CraftWorld
 import org.bukkit.craftbukkit.v1_16_R3.util.CraftChatMessage
 import org.bukkit.entity.Player
-import taboolib.common.reflect.Reflex.Companion.invokeMethod
 import taboolib.common.reflect.Reflex.Companion.setProperty
 import taboolib.module.nms.MinecraftVersion
 import taboolib.module.nms.sendPacket
@@ -71,6 +70,6 @@ class NMSImpl : NMS() {
 
         val blockPosition = BlockPosition(location.blockX, location.blockY, location.blockZ)
 
-        worldServer.invokeMethod<Any>("b", blockPosition, dropItem, fixed = false)
+        worldServer.b(blockPosition, dropItem)
     }
 }

@@ -16,25 +16,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.internal.listener.player;
+package site.liangbai.realhomehunt.internal.listener.player.residence
 
-import org.bukkit.Location;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerMoveEvent;
-import site.liangbai.dynamic.event.EventSubscriber;
-import site.liangbai.realhomehunt.util.Players;
+import site.liangbai.realhomehunt.api.event.residence.ResidenceRemoveEvent
+import site.liangbai.realhomehunt.common.particle.EffectGroup
+import site.liangbai.realhomehunt.internal.command.Command
+import taboolib.common.platform.event.SubscribeEvent
 
-@EventSubscriber
-public final class ListenerPlayerMove implements Listener {
-    @EventHandler
-    public void onPlayerMove(PlayerMoveEvent event) {
-        Location loc1 = event.getFrom();
-
-        Location loc2 = event.getTo();
-
-        if (loc1.getX() != loc2.getX() || loc1.getZ() != loc2.getZ()) {
-            Players.push(event.getPlayer());
+internal object ListenerResidenceRemove {
+    @SubscribeEvent
+    fun onResidenceRemove(event: ResidenceRemoveEvent) {
+        val owner: String = event.residence.owner
+        if (Command.showCaches.containsKey(owner)) {
+            val effectGroup: EffectGroup? = Command.showCaches[owner]
+            effectGroup?.turnOff()
+            Command.showCaches.remove(owner)
         }
     }
 }

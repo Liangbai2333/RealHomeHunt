@@ -24,7 +24,6 @@ import net.minecraftforge.fml.ModList
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.configuration.serialization.ConfigurationSerialization
-import site.liangbai.dynamic.Dynamic
 import site.liangbai.forgeeventbridge.event.EventBridge
 import site.liangbai.realhomehunt.api.locale.manager.LocaleManager
 import site.liangbai.realhomehunt.api.residence.Residence
@@ -35,9 +34,6 @@ import site.liangbai.realhomehunt.internal.listener.forge.arclight.EventHandlerG
 import site.liangbai.realhomehunt.internal.listener.forge.arclight.EventHandlerTryPierceableBlock
 import site.liangbai.realhomehunt.internal.listener.forge.block.EventHolderTryPierceableBlock
 import site.liangbai.realhomehunt.internal.listener.forge.player.EventHolderGunHitBlock
-import site.liangbai.realhomehunt.internal.task.PlayerGlowTask
-import site.liangbai.realhomehunt.internal.task.PlayerMoveToResidenceMessageTask
-import site.liangbai.realhomehunt.internal.task.ShowOnlyTargetBlockTask
 import site.liangbai.realhomehunt.util.Console
 import site.liangbai.realhomehunt.util.kt.isArclight
 import site.liangbai.realhomehunt.util.kt.registerForgeEvent
@@ -68,21 +64,19 @@ object RealHomeHuntPlugin : Plugin() {
         }
     }
 
-    override fun onEnable() {
+    @Awake(LifeCycle.ENABLE)
+    private fun init() {
         Config.init(inst)
 
         LocaleManager.init(inst)
 
         ResidenceManager.init(inst, Config.storage.type)
 
-        Dynamic.installWithAccepted(inst, this::class.java.`package`.name)
-
-        initTasks()
-
         processSuccess()
     }
 
-    override fun onDisable() {
+    @Awake(LifeCycle.DISABLE)
+    private fun closeStorage() {
         saveResidences()
         doCloseStorage()
     }
@@ -96,7 +90,7 @@ object RealHomeHuntPlugin : Plugin() {
     }
 
     @Awake(LifeCycle.ENABLE)
-    private fun initForgeEventHolder() {
+    private fun initForgeEventListener() {
         checkForgeEventBridgeInst()
 
         var rhhForgeLoaded = false
@@ -104,12 +98,12 @@ object RealHomeHuntPlugin : Plugin() {
         if (ModList.get().isLoaded(REAL_HOME_HUNT_FORGE_MOD_ID)) {
             rhhForgeLoaded = true
         } else {
-            Console.sendRawMessage("${ChatColor.YELLOW}WARN: ${ChatColor.RED}Not found RealHomeHuntForge, and some features will fail.")
+            Console.sendMessage("${ChatColor.YELLOW}WARN: ${ChatColor.RED}Not found RealHomeHuntForge, and some features will fail.")
         }
 
         // Arclight 暂时有BUG
         if (isArclight() && false) {
-            Console.sendRawMessage("${ChatColor.GREEN}Found the Arclight server, unused Forge-Event-Bridge, start optimized.")
+            Console.sendMessage("${ChatColor.GREEN}Found the Arclight server, unused Forge-Event-Bridge, start optimized.")
 
             val bus = MinecraftForge.EVENT_BUS
 
@@ -143,12 +137,6 @@ object RealHomeHuntPlugin : Plugin() {
         ConfigurationSerialization.registerClass(Residence.IgnoreBlockInfo::class.java)
 
         AttributeMap.registerAttributeSerializer()
-    }
-
-    private fun initTasks() {
-        PlayerMoveToResidenceMessageTask.setup(inst)
-        PlayerGlowTask.setup(inst)
-        ShowOnlyTargetBlockTask.setup(inst)
     }
 
     @Awake(LifeCycle.DISABLE)

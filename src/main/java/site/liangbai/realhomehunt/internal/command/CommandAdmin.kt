@@ -84,7 +84,7 @@ internal object CommandAdmin {
                 }
 
                 dynamic {
-                    suggestion<CommandSender> { _, _ ->
+                    suggestion<CommandSender>(uncheck = true) { _, _ ->
                         listOf("5", "10", "20", "30", "40", "50")
                     }
 

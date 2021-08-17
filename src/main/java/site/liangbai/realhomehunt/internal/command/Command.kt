@@ -522,7 +522,7 @@ internal object Command {
                 if (count > info.amount) {
                     sendLang(
                         "command.create.containsIgnoreBlock",
-                        if (info.full != null) info.full else if (info.suffix.isEmpty()) info.prefix else info.suffix
+                        info.full.let { it ?: info.suffix.ifEmpty { info.prefix } }
                     )
                     return
                 }

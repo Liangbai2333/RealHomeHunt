@@ -42,6 +42,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import org.bukkit.Bukkit
+import org.bukkit.ChatColor
 import org.bukkit.Location
 import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack
 import org.bukkit.entity.Player
@@ -60,3 +61,7 @@ fun World.toBukkitWorld(): org.bukkit.World = ((this as Any) as net.minecraft.se
 fun BlockPos.toLocation(): Location = Location(null, x.toDouble(), y.toDouble(), z.toDouble())
 
 fun Entity.toBukkitEntity(): org.bukkit.entity.Entity = ((this as Any) as net.minecraft.server.v1_16_R3.Entity).bukkitEntity
+
+fun String.colored() = ChatColor.translateAlternateColorCodes('&', this)
+
+fun Long.asTicks() = this * 20
