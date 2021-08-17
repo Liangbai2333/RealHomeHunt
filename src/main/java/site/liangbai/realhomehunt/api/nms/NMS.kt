@@ -41,6 +41,8 @@ abstract class NMS {
 
     abstract fun toBukkitItemStack(itemStack: ItemStack): org.bukkit.inventory.ItemStack
 
+    abstract fun toMinecraftItemStack(itemStack: org.bukkit.inventory.ItemStack): ItemStack
+
     companion object {
         @JvmStatic
         val INSTANCE by lazy {

@@ -23,6 +23,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import site.liangbai.realhomehunt.common.config.Config;
+import site.liangbai.realhomehunt.util.kt.Utils;
 
 public final class Guns {
     public static int countBlockSit(double count, double hardness) {
@@ -48,9 +49,7 @@ public final class Guns {
     }
 
     public static double countDamage(@NotNull ItemStack gun) {
-        net.minecraft.item.ItemStack itemStack = ItemStacks.getMinecraftItemStack(gun);
-
-        if (itemStack == null) return 0.0D;
+        net.minecraft.item.ItemStack itemStack = Utils.toMinecraftItemStack(gun);
 
         if (!isGun(itemStack)) return 0.0D;
 
@@ -62,9 +61,7 @@ public final class Guns {
     }
 
     public static double getDistance(@NotNull ItemStack gun) {
-        net.minecraft.item.ItemStack itemStack = ItemStacks.getMinecraftItemStack(gun);
-
-        if (itemStack == null) return 0.0D;
+        net.minecraft.item.ItemStack itemStack = Utils.toMinecraftItemStack(gun);
 
         if (!isGun(itemStack)) return 0.0D;
 

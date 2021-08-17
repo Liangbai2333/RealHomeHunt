@@ -86,4 +86,8 @@ class NMSImpl : NMS() {
     override fun toBukkitWorld(world: World): org.bukkit.World = (world as net.minecraft.server.v1_16_R3.World).world
 
     override fun toBukkitItemStack(itemStack: ItemStack): org.bukkit.inventory.ItemStack = CraftItemStack.asCraftMirror(itemStack as net.minecraft.server.v1_16_R3.ItemStack)
+
+    override fun toMinecraftItemStack(itemStack: org.bukkit.inventory.ItemStack): ItemStack {
+        return (if (itemStack is CraftItemStack) (if (itemStack.handle == null) CraftItemStack.asNMSCopy(itemStack) else itemStack.handle) else CraftItemStack.asNMSCopy(itemStack)) as ItemStack
+    }
 }

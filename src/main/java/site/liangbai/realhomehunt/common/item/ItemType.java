@@ -24,7 +24,7 @@ import com.craftingdead.core.world.item.MagazineItem;
 import com.craftingdead.core.world.item.StorageItem;
 import net.minecraft.item.ItemStack;
 import site.liangbai.realhomehunt.common.config.Config;
-import site.liangbai.realhomehunt.util.ItemStacks;
+import site.liangbai.realhomehunt.util.kt.Utils;
 
 import java.util.Arrays;
 import java.util.function.Predicate;
@@ -60,7 +60,7 @@ public enum ItemType {
     }
 
     public static ItemType matches(org.bukkit.inventory.ItemStack itemStack) {
-        ItemStack copy = ItemStacks.getMinecraftItemStack(itemStack);
+        ItemStack copy = Utils.toMinecraftItemStack(itemStack);
 
         return Arrays.stream(values())
                 .filter(it -> it.isType(copy))

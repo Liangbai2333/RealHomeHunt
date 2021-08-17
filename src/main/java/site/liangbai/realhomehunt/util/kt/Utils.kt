@@ -57,6 +57,8 @@ fun BlockPos.toLocation() = NMS.INSTANCE.toBukkitLocation(this)
 
 fun Entity.toBukkitEntity() = NMS.INSTANCE.toBukkitEntity(this)
 
+fun org.bukkit.inventory.ItemStack.toMinecraftItemStack() = NMS.INSTANCE.toMinecraftItemStack(this)
+
 fun String.colored() = ChatColor.translateAlternateColorCodes('&', this)
 
 fun Long.asTicks() = this * 20
