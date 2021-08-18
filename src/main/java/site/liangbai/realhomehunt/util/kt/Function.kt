@@ -19,5 +19,11 @@
 package site.liangbai.realhomehunt.util.kt
 
 import org.bukkit.Bukkit
+import org.bukkit.entity.Player
+import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager
 
 fun isArclight() = Bukkit.getServer().name == "Arclight"
+
+fun <T : Player> Collection<T>.filterNotActive() = filter { !it.isDead }
+
+fun <T : Player> Collection<T>.filterNotOpenedWorld() = filter { ResidenceManager.isOpened(it.world) }

@@ -27,6 +27,8 @@ import site.liangbai.realhomehunt.common.config.Config
 import site.liangbai.realhomehunt.internal.processor.Processors
 import site.liangbai.realhomehunt.util.Guns
 import site.liangbai.realhomehunt.util.RayTraceUtil
+import site.liangbai.realhomehunt.util.kt.filterNotActive
+import site.liangbai.realhomehunt.util.kt.filterNotOpenedWorld
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
 import taboolib.common.platform.function.submit
@@ -37,33 +39,30 @@ internal object ShowOnlyTargetBlockTask {
     fun setup() {
         submit(async = true, delay = 20, period = 1) {
             if (Config.showOnlyTargetBlock) {
-                Bukkit.getOnlinePlayers().stream()
-                    .filter { it: Player? ->
-                        ResidenceManager.isOpened(
-                            it!!.world
-                        )
-                    }
-                    .forEach { player: Player? ->
-                        val itemStack = player!!.inventory.itemInMainHand
+                Bukkit.getOnlinePlayers()
+                    .filterNotActive()
+                    .filterNotOpenedWorld()
+                    .forEach {
+                        val itemStack = it.inventory.itemInMainHand
                         if (itemStack == null || itemStack.type.isAir) return@forEach
                         val range = Guns.getDistance(itemStack)
                         if (range <= 0.0) return@forEach
-                        val rayTraceResult = RayTraceUtil.rayTraceBlock(player, range)
+                        val rayTraceResult = RayTraceUtil.rayTraceBlock(it, range)
                         val damageCachePoolMap = Processors.GUN_HIT_BLOCK_PROCESSOR.damageCachePoolMap
-                        if (!damageCachePoolMap.containsKey(player.uniqueId)) return@forEach
-                        val damageCachePool = damageCachePoolMap[player.uniqueId]
+                        if (!damageCachePoolMap.containsKey(it.uniqueId)) return@forEach
+                        val damageCachePool = damageCachePoolMap[it.uniqueId]
                         if (rayTraceResult.isEmpty) {
-                            damageCachePool!!.damageCaches.forEach(Consumer { it: DamageCache ->
-                                it.healthBossBar.hide(
-                                    player
+                            damageCachePool!!.damageCaches.forEach { cache ->
+                                cache.healthBossBar.hide(
+                                    it
                                 )
-                            })
+                            }
                         }
-                        RayTraceUtil.rayTraceBlock(player, range).ifPresent { result: Block? ->
+                        RayTraceUtil.rayTraceBlock(it, range).ifPresent { result: Block? ->
                             damageCachePool!!.getDamageCacheWithoutBlock(result)
-                                .forEach(Consumer { it: DamageCache -> it.healthBossBar.hide(player) })
+                                .forEach { cache -> cache.healthBossBar.hide(it) }
                             damageCachePool.getDamageCacheByBlockOrEmpty(result)
-                                .ifPresent { damageCache: DamageCache -> damageCache.healthBossBar.show(player) }
+                                .ifPresent { cache -> cache.healthBossBar.show(it) }
                         }
                     }
             }

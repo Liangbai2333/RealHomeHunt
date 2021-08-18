@@ -22,6 +22,8 @@ import org.bukkit.Bukkit
 import site.liangbai.realhomehunt.api.locale.manager.LocaleManager
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager
 import site.liangbai.realhomehunt.util.Locations
+import site.liangbai.realhomehunt.util.kt.filterNotActive
+import site.liangbai.realhomehunt.util.kt.filterNotOpenedWorld
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
 import taboolib.common.platform.function.submit
@@ -33,12 +35,9 @@ internal object PlayerMoveToResidenceMessageTask {
     @Awake(LifeCycle.ACTIVE)
     fun setup() {
         submit(async = true, delay = 20, period = 1) {
-            Bukkit.getOnlinePlayers().stream()
-                .filter {
-                    !it.isDead && ResidenceManager.isOpened(
-                        it.world
-                    )
-                }
+            Bukkit.getOnlinePlayers()
+                .filterNotActive()
+                .filterNotOpenedWorld()
                 .forEach {
                     val locale = LocaleManager.require(it)
                     val name = it.name

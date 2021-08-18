@@ -24,6 +24,8 @@ import org.bukkit.event.player.PlayerQuitEvent
 import site.liangbai.realhomehunt.api.residence.attribute.impl.GlowAttribute
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager
 import site.liangbai.realhomehunt.util.Locations
+import site.liangbai.realhomehunt.util.kt.filterNotActive
+import site.liangbai.realhomehunt.util.kt.filterNotOpenedWorld
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
 import taboolib.common.platform.event.EventPriority
@@ -45,11 +47,8 @@ internal object PlayerGlowTask {
     fun setup() {
         submit(async = true, delay = 20, period = 1) {
             Bukkit.getOnlinePlayers()
-                .filter {
-                    !it.isDead && ResidenceManager.isOpened(
-                        it.world
-                    )
-                }
+                .filterNotActive()
+                .filterNotOpenedWorld()
                 .forEach {
                     val location = Locations.toBlockLocation(
                         it.location
