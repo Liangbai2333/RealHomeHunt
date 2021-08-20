@@ -24,14 +24,6 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import site.liangbai.realhomehunt.api.cache.DamageCachePool.DamageCache
 import site.liangbai.realhomehunt.api.event.EventCancellable
-import site.liangbai.realhomehunt.api.event.residence.ResidenceHurtEvent
-import site.liangbai.realhomehunt.api.event.residence.ResidenceCreateEvent
-import site.liangbai.realhomehunt.api.event.residence.ResidenceExpandEvent
-import site.liangbai.realhomehunt.api.event.residence.ResidenceRemoveEvent
-import site.liangbai.realhomehunt.api.event.residence.ResidenceReelectEvent
-import site.liangbai.realhomehunt.api.residence.attribute.IAttributable
-import site.liangbai.realhomehunt.api.event.residence.ResidenceSetAttributeEvent
-import site.liangbai.realhomehunt.api.event.residence.ResidenceAdministratorEvent
 import site.liangbai.realhomehunt.api.residence.Residence
 
 class ResidenceHurtEvent(

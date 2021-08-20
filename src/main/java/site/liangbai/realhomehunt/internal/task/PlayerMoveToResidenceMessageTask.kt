@@ -56,6 +56,7 @@ internal object PlayerMoveToResidenceMessageTask {
                             if (lastResidence != null) {
                                 it.sendMessage(locale.asString("action.residence.moveOut", lastResidence))
                             }
+
                             it.sendMessage(locale.asString("action.residence.moveIn", other))
                             moveToResidenceCache[name] = other
                         }

@@ -18,7 +18,9 @@
 
 package site.liangbai.realhomehunt.api.projectile;
 
+import org.apache.commons.lang3.Validate;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.FallingBlock;
@@ -32,9 +34,11 @@ public class BlockProjectile extends AbstractProjectile {
     private Consumer<RayTraceResult> callback = it -> { };
 
     public BlockProjectile(BlockData blockData, Entity projectileHolder, Location spawnLocation) {
-        if (!blockData.getMaterial().isBlock()) {
-            throw new IllegalArgumentException("block projectile material must be a block");
-        }
+        Validate.isTrue(blockData.getMaterial().isBlock(), "block projectile material must be a block");
+
+        World world = spawnLocation.getWorld();
+
+        Validate.notNull(world, "spawn world can not be null");
 
         this.projectileEntity = spawnLocation.getWorld().spawnFallingBlock(spawnLocation, blockData);
         this.projectileHolder = projectileHolder;

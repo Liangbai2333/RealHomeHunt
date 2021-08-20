@@ -46,10 +46,10 @@ taboolib {
     }
     install("common")
     install("platform-bukkit")
-    install("module-nms")
     install("module-chat")
+    install("module-nms")
     classifier = null
-    version = "6.0.0-pre46"
+    version = "6.0.0-pre55"
 }
 
 repositories {
@@ -80,16 +80,6 @@ dependencies {
     // https://mvnrepository.com/artifact/com.dieselpoint/norm
     shaded group: 'com.dieselpoint', name: 'norm', version: '1.0.4'
     implementation fileTree(dir: 'libs', includes: ['*.jar'])
-}
-
-processResources {
-    filesMatching("plugin.yml") {
-        expand(
-                name: rootProject.name,
-                version: project.version,
-                main: project.group + ".realhomehunt.RealHomeHuntPlugin"
-        )
-    }
 }
 
 tasks.withType(JavaCompile) {
