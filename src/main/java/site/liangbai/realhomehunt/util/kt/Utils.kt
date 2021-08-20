@@ -42,6 +42,8 @@ import net.minecraft.item.ItemStack
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import org.bukkit.ChatColor
+import org.bukkit.Location
+import org.bukkit.util.BoundingBox
 import site.liangbai.realhomehunt.api.nms.NMS
 import java.util.regex.Pattern
 
@@ -62,3 +64,14 @@ fun org.bukkit.inventory.ItemStack.toMinecraftItemStack() = NMS.INSTANCE.toMinec
 fun String.colored() = ChatColor.translateAlternateColorCodes('&', this)
 
 fun Long.asTicks() = this * 20
+
+fun boundingBoxOf(left: Location, right: Location, isBlockPos: Boolean = false, clone: Boolean = true): BoundingBox {
+    val left0 = if (clone) left.clone() else left
+    val right0 = if  (clone) right.clone() else right
+
+    if (isBlockPos) {
+        right0.add(1.0, 1.0, 1.0)
+    }
+
+    return BoundingBox.of(left0, right0)
+}
