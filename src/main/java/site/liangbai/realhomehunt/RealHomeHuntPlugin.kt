@@ -93,14 +93,19 @@ object RealHomeHuntPlugin : Plugin() {
     private fun initForgeEventListener() {
         var rhhForgeLoaded = false
 
+        val useBridge = isForgeEventBridgeLoaded()
+
         if (ModList.get().isLoaded(REAL_HOME_HUNT_FORGE_MOD_ID)) {
             rhhForgeLoaded = true
         } else {
             Console.sendMessage("${ChatColor.YELLOW}WARN: ${ChatColor.RED}Not found RealHomeHuntForge, and some features will fail.")
         }
 
-        if (isArclight()) {
-            Console.sendMessage("${ChatColor.GREEN}Found the Arclight server, unused Forge-Event-Bridge, start optimized.")
+        if (useBridge) {
+            registerForgeEventBridgeListener(rhhForgeLoaded)
+        } else if (isArclight()) {
+            Console.sendMessage("${ChatColor.YELLOW}WARN: Found the Arclight server, the plugin will use it, but the server can not found Forge-Event-Bridge mod.")
+            Console.sendMessage("${ChatColor.YELLOW}WARN: If the plugin throw the NullPointerException, please update your Arclight version to 1.0.21 or newer, or use the Forge-Event-Bridge.")
 
             try {
                 val bus = MinecraftForge.EVENT_BUS
@@ -116,29 +121,27 @@ object RealHomeHuntPlugin : Plugin() {
                 registerForgeEventBridgeListener(rhhForgeLoaded)
             }
         } else {
-            registerForgeEventBridgeListener(rhhForgeLoaded)
-        }
-    }
-
-    private fun registerForgeEventBridgeListener(useRhh: Boolean) {
-        checkForgeEventBridgeInst()
-
-        EventHolderGunHitBlock().register(EventBridge.builder()
-            .target(GunEvent.HitBlock::class.java).build())
-
-        if (useRhh) {
-            EventHolderTryPierceableBlock().register(EventBridge.builder()
-                .target(BlockRayTraceEvent.TryPierceableBlock::class.java).build())
-        }
-    }
-
-    private fun checkForgeEventBridgeInst() {
-        if (!ModList.get().isLoaded(FORGE_EVENT_BRIDGE_MOD_ID) && !isArclight()) {
             disablePlugin()
 
             throw IllegalStateException("can not found Forge-Event-Bridge mod, please install it.")
         }
     }
+
+    private fun registerForgeEventBridgeListener(useRhh: Boolean) {
+        EventHolderGunHitBlock().register(
+            EventBridge.builder()
+                .target(GunEvent.HitBlock::class.java).build()
+        )
+
+        if (useRhh) {
+            EventHolderTryPierceableBlock().register(
+                EventBridge.builder()
+                    .target(BlockRayTraceEvent.TryPierceableBlock::class.java).build()
+            )
+        }
+    }
+
+    private fun isForgeEventBridgeLoaded() = ModList.get().isLoaded(FORGE_EVENT_BRIDGE_MOD_ID)
 
     @Awake(LifeCycle.ENABLE)
     private fun initConfigurationSerializer() {

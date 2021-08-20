@@ -55,6 +55,6 @@ class Zone(val left: Location, val right: Location) {
         val line11 = line1.clone().setStart(pos4).setEnd(pos5)
         val line12 = line1.clone().setStart(pos2).setEnd(pos8)
 
-        return mutableListOf(line1, line2, line3, line4, line5, line6, line7, line8, line9, line10, line11, line12)
+        return listOf(line1, line2, line3, line4, line5, line6, line7, line8, line9, line10, line11, line12)
     }
 }
