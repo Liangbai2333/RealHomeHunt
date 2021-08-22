@@ -15,21 +15,20 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+package site.liangbai.realhomehunt.internal.storage.impl
 
-package site.liangbai.realhomehunt.internal.storage;
+import com.dieselpoint.norm.Database
+import org.bukkit.plugin.Plugin
+import site.liangbai.realhomehunt.common.config.Config.StorageSetting.SqliteSetting
 
-import site.liangbai.realhomehunt.api.residence.Residence;
+class SqliteStorage(plugin: Plugin, setting: SqliteSetting) : SqlStorage() {
+    override val database: Database = Database()
 
-import java.util.List;
-
-public interface IStorage {
-    void save(Residence residence);
-
-    void remove(Residence residence);
-
-    List<Residence> loadAll();
-
-    long count();
-
-    void close();
+    init {
+        val url =
+            if (setting.onlyInPluginFolder) "jdbc:sqlite:" + plugin.dataFolder.absolutePath + "/" + setting.databaseFile else "jdbc:sqlite:" + setting.databaseFile
+        database.setDriverClassName("org.sqlite.JDBC")
+        database.setJdbcUrl(url)
+        initTable()
+    }
 }

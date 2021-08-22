@@ -15,30 +15,19 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+package site.liangbai.realhomehunt.internal.storage.impl
 
-package site.liangbai.realhomehunt.internal.storage.impl;
+import com.dieselpoint.norm.Database
+import site.liangbai.realhomehunt.common.config.Config.StorageSetting.MySqlSetting
 
-import com.dieselpoint.norm.Database;
-import site.liangbai.realhomehunt.common.config.Config;
+class MySqlStorage(setting: MySqlSetting) : SqlStorage() {
+    override val database: Database = Database()
 
-public final class MySqlStorage extends SqlStorage {
-    private final Database database;
-
-    public MySqlStorage(Config.StorageSetting.MySqlSetting setting) {
-        database = new Database();
-
-        database.setDriverClassName("com.mysql.jdbc.Driver");
-
-        database.setJdbcUrl("jdbc:mysql://" + setting.address + ":" + setting.port + "/" + setting.options);
-
-        database.setUser(setting.user);
-        database.setPassword(setting.password);
-
-        initTable();
-    }
-
-    @Override
-    public Database getDatabase() {
-        return database;
+    init {
+        database.setDriverClassName("com.mysql.jdbc.Driver")
+        database.setJdbcUrl("jdbc:mysql://" + setting.address + ":" + setting.port + "/" + setting.options)
+        database.setUser(setting.user)
+        database.setPassword(setting.password)
+        initTable()
     }
 }

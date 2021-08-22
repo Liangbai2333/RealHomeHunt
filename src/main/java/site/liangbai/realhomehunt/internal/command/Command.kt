@@ -21,13 +21,12 @@ package site.liangbai.realhomehunt.internal.command
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
-import site.liangbai.realhomehunt.RealHomeHuntPlugin.inst
+import site.liangbai.realhomehunt.RealHomeHuntPlugin
 import site.liangbai.realhomehunt.api.cache.SelectCache
 import site.liangbai.realhomehunt.api.event.residence.ResidenceAdministratorEvent.Give
 import site.liangbai.realhomehunt.api.event.residence.ResidenceAdministratorEvent.Remove
 import site.liangbai.realhomehunt.api.event.residence.ResidenceCreateEvent
 import site.liangbai.realhomehunt.api.event.residence.ResidenceSetAttributeEvent
-import site.liangbai.realhomehunt.api.locale.manager.LocaleManager
 import site.liangbai.realhomehunt.api.residence.Residence
 import site.liangbai.realhomehunt.api.residence.attribute.map.AttributeMap
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager
@@ -65,11 +64,7 @@ internal object Command {
                 return@execute
             }
 
-            Config.init(inst)
-
-            LocaleManager.init(inst)
-
-            ResidenceManager.init(inst, Config.storage.type)
+            RealHomeHuntPlugin.init()
 
             sender.sendLang("command.reload.success")
         }

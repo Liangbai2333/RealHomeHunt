@@ -19,7 +19,6 @@
 package site.liangbai.realhomehunt.api.zone
 
 import org.bukkit.Location
-import org.bukkit.util.BoundingBox
 import site.liangbai.realhomehunt.common.particle.Line
 import site.liangbai.realhomehunt.util.kt.boundingBoxOf
 

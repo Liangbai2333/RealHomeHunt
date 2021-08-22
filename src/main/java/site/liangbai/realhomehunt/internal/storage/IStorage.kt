@@ -15,19 +15,14 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+package site.liangbai.realhomehunt.internal.storage
 
-package site.liangbai.realhomehunt.internal.processor;
+import site.liangbai.realhomehunt.api.residence.Residence
 
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import site.liangbai.realhomehunt.api.cache.DamageCachePool;
-
-import java.util.Map;
-import java.util.UUID;
-
-public interface IGunHitBlockProcessor {
-    void processGunHitBlock(Player player, ItemStack gun, Block block);
-
-    Map<UUID, DamageCachePool> getDamageCachePoolMap();
+interface IStorage {
+    fun save(residence: Residence)
+    fun remove(residence: Residence)
+    fun loadAll(): List<Residence>
+    fun count(): Long
+    fun close()
 }

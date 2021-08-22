@@ -156,10 +156,10 @@ object Config {
         val toolSetting = ResidenceToolSetting()
         val left = residenceToolSection.getString("leftSelect", "STICK")
         val right = residenceToolSection.getString("rightSelect", "STICK")
-        val leftSelect = left?.let { Material.matchMaterial(it) }
-        val rightSelect = right?.let { Material.matchMaterial(it) }
-        toolSetting.leftSelect = leftSelect ?: Material.STICK
-        toolSetting.rightSelect = rightSelect ?: Material.STICK
+        val leftSelect = left?.let { Material.matchMaterial(it) } ?: Material.STICK
+        val rightSelect = right?.let { Material.matchMaterial(it) } ?: Material.STICK
+        toolSetting.leftSelect = leftSelect
+        toolSetting.rightSelect = rightSelect
         toolSetting.showSelectZone = residenceToolSection.getBoolean("showSelectZone", true)
         val particleName = residenceToolSection.getString("showParticle", "REDSTONE")!!.uppercase()
         try {

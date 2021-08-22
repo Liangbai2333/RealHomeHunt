@@ -47,6 +47,8 @@ import java.util.concurrent.ConcurrentHashMap
  * @since 2021 /08/11 02:48 下午
  */
 class GunHitBlockProcessorImpl : IGunHitBlockProcessor {
+    override val damageCachePoolMap: Map<UUID, DamageCachePool> = DAMAGE_CACHE_POOL_MAP
+
     override fun processGunHitBlock(player: Player, gun: ItemStack, block: Block) {
         if (!ResidenceManager.isOpened(player.world)) return
         if (!DAMAGE_CACHE_POOL_MAP.containsKey(player.uniqueId)) DAMAGE_CACHE_POOL_MAP[player.uniqueId] =
@@ -115,10 +117,6 @@ class GunHitBlockProcessorImpl : IGunHitBlockProcessor {
         if (!residence.hasAttack(player.name)) {
             residence.attackBy(player)
         }
-    }
-
-    override fun getDamageCachePoolMap(): Map<UUID, DamageCachePool> {
-        return DAMAGE_CACHE_POOL_MAP
     }
 
     companion object {
