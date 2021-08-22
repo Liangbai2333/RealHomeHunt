@@ -25,6 +25,7 @@ import net.minecraft.world.World
 import org.bukkit.Location
 import org.bukkit.block.Block
 import org.bukkit.entity.Player
+import taboolib.module.nms.nmsProxy
 
 abstract class NMS {
     abstract fun sendActionBar(player: Player, message: String)
@@ -46,7 +47,7 @@ abstract class NMS {
     companion object {
         @JvmStatic
         val INSTANCE by lazy {
-            NMSImpl()
+            nmsProxy<NMS>()
         }
     }
 }

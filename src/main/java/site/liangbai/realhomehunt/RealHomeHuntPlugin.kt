@@ -107,18 +107,12 @@ object RealHomeHuntPlugin : Plugin() {
             Console.sendMessage("${ChatColor.YELLOW}WARN: Found the Arclight server, the plugin will use it, but the server can not found Forge-Event-Bridge mod.")
             Console.sendMessage("${ChatColor.YELLOW}WARN: If the plugin throw the NullPointerException, please update your Arclight version to 1.0.21 or newer, or use the Forge-Event-Bridge.")
 
-            try {
-                val bus = MinecraftForge.EVENT_BUS
+            val bus = MinecraftForge.EVENT_BUS
 
-                registerForgeEvent(bus, EventHandlerGunHitBlock())
+            registerForgeEvent(bus, EventHandlerGunHitBlock())
 
-                if (rhhForgeLoaded) {
-                    registerForgeEvent(bus, EventHandlerTryPierceableBlock())
-                }
-            } catch (e: Throwable) {
-                Console.sendMessage("${ChatColor.RED}Failed to register listener to Arclight, check your Arclight version is higher than 1.0.21, try to use ${ChatColor.YELLOW}Forge-Event-Bridge")
-
-                registerForgeEventBridgeListener(rhhForgeLoaded)
+            if (rhhForgeLoaded) {
+                registerForgeEvent(bus, EventHandlerTryPierceableBlock())
             }
         } else {
             disablePlugin()

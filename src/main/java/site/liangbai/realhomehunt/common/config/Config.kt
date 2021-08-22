@@ -428,7 +428,7 @@ object Config {
                     this.temp = temp
                 }
 
-                constructor() {}
+                constructor()
             }
 
             fun getFixedTime(material: Material): Long {
@@ -467,8 +467,8 @@ object Config {
                             "",
                             material.name,
                             0,
-                            false,
-                            true
+                            upBreak = false,
+                            temp = true
                         ) else null
                 }
             }
