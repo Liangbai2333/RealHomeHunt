@@ -77,7 +77,7 @@ class EffectGroup {
      *
      * @param period 循环tick
      */
-    fun setPeriod(period: Long): EffectGroup {
+    fun withPeriod(period: Long): EffectGroup {
         effectList.forEach { it.period = period }
         return this
     }

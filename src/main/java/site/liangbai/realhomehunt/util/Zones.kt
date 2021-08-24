@@ -47,7 +47,7 @@ object Zones {
         return useZoneEffectGroup(min, max, step = Config.residence.tool.showParticleStep, isBlockPos = true) {
             withParticle(Config.residence.tool.showParticle)
             withColor(if (Config.residence.tool.particleColor.enabled) Config.residence.tool.particleColor.color else if (Config.residence.tool.showParticle == Particle.REDSTONE) Color.RED else null)
-            setPeriod(2)
+            withPeriod(2)
             overlap(player)
         }.alwaysShowAsync()
     }

@@ -66,8 +66,6 @@ object RealHomeHuntPlugin : Plugin() {
 
     @Awake(LifeCycle.ENABLE)
     fun init() {
-        cancelTasks()
-
         Config.init(inst)
 
         LocaleManager.init(inst)
