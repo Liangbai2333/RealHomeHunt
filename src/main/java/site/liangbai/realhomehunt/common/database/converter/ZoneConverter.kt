@@ -22,6 +22,8 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import site.liangbai.realhomehunt.api.zone.Zone
 import site.liangbai.realhomehunt.common.database.converter.LocationConverter.Companion.asJsonObject
+import taboolib.platform.util.toBukkitLocation
+import taboolib.platform.util.toProxyLocation
 import javax.persistence.AttributeConverter
 
 // Pre for 1.5
@@ -31,9 +33,9 @@ class ZoneConverter : AttributeConverter<Zone, String> {
     override fun convertToDatabaseColumn(attribute: Zone): String {
         val json = JsonObject()
 
-        val leftJson = attribute.left.asJsonObject()
+        val leftJson = attribute.left.toBukkitLocation().asJsonObject()
 
-        val rightJson = attribute.right.asJsonObject()
+        val rightJson = attribute.right.toBukkitLocation().asJsonObject()
 
         json.add("left", leftJson)
         json.add("right", rightJson)
@@ -47,6 +49,6 @@ class ZoneConverter : AttributeConverter<Zone, String> {
         val left = locationConverter.convertToEntityAttribute(json["left"].toString())
         val right = locationConverter.convertToEntityAttribute(json["right"].toString())
 
-        return Zone(left, right)
+        return Zone(left.toProxyLocation(), right.toProxyLocation())
     }
 }

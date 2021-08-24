@@ -18,15 +18,17 @@
 
 package site.liangbai.realhomehunt.api.zone
 
-import org.bukkit.Location
-import site.liangbai.realhomehunt.common.particle.Line
 import site.liangbai.realhomehunt.util.kt.boundingBoxOf
+import taboolib.common.util.Location
+import taboolib.module.effect.Line
+import taboolib.module.effect.ParticleSpawner
+import taboolib.platform.util.toBukkitLocation
 
 class Zone(val left: Location, val right: Location) {
     fun releaseLines(useBlockPos: Boolean): List<Line> {
         require(left.world == right.world) { "the two points' world must be same." }
         val world = left.world
-        val box = boundingBoxOf(left, right, isBlockPos = useBlockPos, clone = true)
+        val box = boundingBoxOf(left.toBukkitLocation(), right.toBukkitLocation(), isBlockPos = useBlockPos, clone = true)
         val minX = box.minX
         val minY = box.minY
         val minZ = box.minZ
@@ -41,7 +43,11 @@ class Zone(val left: Location, val right: Location) {
         val pos6 = Location(world, maxX, maxY, maxZ)
         val pos7 = Location(world, maxX, minY, maxZ)
         val pos8 = Location(world, minX, maxY, maxZ)
-        val line1 = Line(pos1, pos2)
+        val line1 = Line(pos1, pos2, object : ParticleSpawner {
+            override fun spawn(location: Location) {
+                // TODO, empty object for custom.
+            }
+        })
         val line2 = line1.clone().setStart(pos1).setEnd(pos3)
         val line3 = line1.clone().setStart(pos1).setEnd(pos4)
         val line4 = line1.clone().setStart(pos6).setEnd(pos5)
@@ -56,4 +62,6 @@ class Zone(val left: Location, val right: Location) {
 
         return listOf(line1, line2, line3, line4, line5, line6, line7, line8, line9, line10, line11, line12)
     }
+
+    private fun Line.clone() = Line(start, end, step, period, spawner)
 }

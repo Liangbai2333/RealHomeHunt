@@ -26,6 +26,7 @@ import site.liangbai.realhomehunt.api.zone.Zone
 import site.liangbai.realhomehunt.common.config.Config
 import site.liangbai.realhomehunt.common.particle.EffectGroup
 import site.liangbai.realhomehunt.util.kt.boundingBoxOf
+import taboolib.platform.util.toProxyLocation
 
 /**
  * The type Zones.
@@ -36,7 +37,7 @@ import site.liangbai.realhomehunt.util.kt.boundingBoxOf
  */
 object Zones {
     @JvmStatic
-    fun startShowWithBlockLocation(player: Player?, left: Location, right: Location): EffectGroup {
+    fun startShowWithBlockLocation(player: Player, left: Location, right: Location): EffectGroup {
         require(left.world == right.world) { "the two points' world must be same." }
         val box = boundingBoxOf(left, right, clone = true)
         val world = left.world!!
@@ -44,14 +45,15 @@ object Zones {
         val max = box.max.toLocation(world).add(0.2, 0.2, 0.2)
 
         return useZoneEffectGroup(min, max, step = Config.residence.tool.showParticleStep, isBlockPos = true) {
-            setParticle(Config.residence.tool.showParticle)
-            setColor(if (Config.residence.tool.particleColor.enabled) Config.residence.tool.particleColor.color else if (Config.residence.tool.showParticle == Particle.REDSTONE) Color.RED else null)
+            withParticle(Config.residence.tool.showParticle)
+            withColor(if (Config.residence.tool.particleColor.enabled) Config.residence.tool.particleColor.color else if (Config.residence.tool.showParticle == Particle.REDSTONE) Color.RED else null)
             setPeriod(2)
-        }.alwaysShowAsync(player)
+            overlap(player)
+        }.alwaysShowAsync()
     }
 
     fun useZoneEffectGroup(left: Location, right: Location, step: Double = 0.1, color: Color? = null, isBlockPos: Boolean = false, func: EffectGroup.() -> Unit): EffectGroup {
-        val lines = Zone(left, right).releaseLines(isBlockPos)
+        val lines = Zone(left.toProxyLocation(), right.toProxyLocation()).releaseLines(isBlockPos)
             .onEach {
                 it.step = step
             }
@@ -62,7 +64,7 @@ object Zones {
                     it.addEffect(line)
                 }
 
-                it.setColor(color)
+                it.withColor(color)
             }.apply(func)
     }
 }

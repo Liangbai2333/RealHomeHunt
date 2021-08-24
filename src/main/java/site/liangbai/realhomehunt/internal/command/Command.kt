@@ -309,7 +309,7 @@ internal object Command {
             showCaches.remove(name)
             sendLang("command.show.successOff")
         } else {
-            showCaches[name] = Zones.startShowWithBlockLocation(player, residence.left, residence.right)
+            showCaches[name] = Zones.startShowWithBlockLocation(this, residence.left, residence.right)
             sendLang("command.show.successOn")
         }
     }
