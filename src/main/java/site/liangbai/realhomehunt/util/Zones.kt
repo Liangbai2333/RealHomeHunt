@@ -22,10 +22,11 @@ import org.bukkit.Color
 import org.bukkit.Location
 import org.bukkit.Particle
 import org.bukkit.entity.Player
-import site.liangbai.realhomehunt.api.zone.Zone
 import site.liangbai.realhomehunt.common.config.Config
 import site.liangbai.realhomehunt.common.particle.EffectGroup
 import site.liangbai.realhomehunt.util.kt.boundingBoxOf
+import taboolib.module.effect.Cube
+import taboolib.module.effect.ParticleSpawner
 import taboolib.platform.util.toProxyLocation
 
 /**
@@ -53,18 +54,21 @@ object Zones {
     }
 
     fun useZoneEffectGroup(left: Location, right: Location, step: Double = 0.1, color: Color? = null, isBlockPos: Boolean = false, func: EffectGroup.() -> Unit): EffectGroup {
-        val lines = Zone(left.toProxyLocation(), right.toProxyLocation()).releaseLines(isBlockPos)
-            .onEach {
-                it.step = step
+        require(left.world == right.world) { "the two points' world must be same." }
+        val box = boundingBoxOf(left, right, isBlockPos, clone = true)
+
+        val minLoc = box.min.toLocation(left.world!!).toProxyLocation()
+        val maxLoc = box.max.toLocation(left.world!!).toProxyLocation()
+
+        val cube = Cube(minLoc, maxLoc, object : ParticleSpawner {
+            override fun spawn(location: taboolib.common.util.Location) {
+                // TODO, empty object for custom.
             }
+        })
 
         return EffectGroup()
-            .also {
-                lines.forEach { line ->
-                    it.addEffect(line)
-                }
-
-                it.withColor(color)
-            }.apply(func)
+            .addEffect(cube)
+            .withColor(color)
+            .apply(func)
     }
 }

@@ -144,6 +144,7 @@ object Config {
         val residenceSection = section.getConfigurationSection("residence")
             ?: throw IllegalStateException("can not load config part: residence")
         residence = ResidenceSetting()
+        residence.bannedCreateInResidence = residenceSection.getBoolean("banned-create-in-residence", true)
         val residenceSizeLimitSection = residenceSection.getConfigurationSection("sizeLimit")
             ?: throw IllegalStateException("can not load config part: residence.sizeLimit")
         val sizeSetting = ResidenceSizeSetting()
@@ -353,6 +354,8 @@ object Config {
     }
 
     class ResidenceSetting {
+        var bannedCreateInResidence = false
+
         lateinit var sizeLimit: ResidenceSizeSetting
 
         lateinit var tool: ResidenceToolSetting

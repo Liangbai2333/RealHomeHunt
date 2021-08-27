@@ -316,7 +316,7 @@ internal object Command {
     }
 
     private fun Player.commandBack(label: String, cache: MutableSet<UUID>, target: String = name) {
-        val residence: Residence
+        val residence: Residence?
 
         if (target == name) {
             residence = ResidenceManager.getResidenceByOwner(name)
@@ -488,7 +488,7 @@ internal object Command {
             }
         }
 
-        if (ResidenceManager.containsResidence(loc1, loc2)) {
+        if (ResidenceManager.hasResidence(loc1, loc2)) {
             SelectCache.pop(this)
             sendLang("command-create-contains-other")
             return

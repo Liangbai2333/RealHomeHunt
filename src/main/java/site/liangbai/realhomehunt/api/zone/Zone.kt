@@ -18,50 +18,6 @@
 
 package site.liangbai.realhomehunt.api.zone
 
-import site.liangbai.realhomehunt.util.kt.boundingBoxOf
 import taboolib.common.util.Location
-import taboolib.module.effect.Line
-import taboolib.module.effect.ParticleSpawner
-import taboolib.platform.util.toBukkitLocation
 
-class Zone(val left: Location, val right: Location) {
-    fun releaseLines(useBlockPos: Boolean): List<Line> {
-        require(left.world == right.world) { "the two points' world must be same." }
-        val world = left.world
-        val box = boundingBoxOf(left.toBukkitLocation(), right.toBukkitLocation(), isBlockPos = useBlockPos, clone = true)
-        val minX = box.minX
-        val minY = box.minY
-        val minZ = box.minZ
-        val maxX = box.maxX
-        val maxY = box.maxY
-        val maxZ = box.maxZ
-        val pos1 = Location(world, minX, minY, minZ)
-        val pos2 = Location(world, minX, minY, maxZ)
-        val pos3 = Location(world, minX, maxY, minZ)
-        val pos4 = Location(world, maxX, minY, minZ)
-        val pos5 = Location(world, maxX, maxY, minZ)
-        val pos6 = Location(world, maxX, maxY, maxZ)
-        val pos7 = Location(world, maxX, minY, maxZ)
-        val pos8 = Location(world, minX, maxY, maxZ)
-        val line1 = Line(pos1, pos2, object : ParticleSpawner {
-            override fun spawn(location: Location) {
-                // TODO, empty object for custom.
-            }
-        })
-        val line2 = line1.clone().setStart(pos1).setEnd(pos3)
-        val line3 = line1.clone().setStart(pos1).setEnd(pos4)
-        val line4 = line1.clone().setStart(pos6).setEnd(pos5)
-        val line5 = line1.clone().setStart(pos6).setEnd(pos7)
-        val line6 = line1.clone().setStart(pos6).setEnd(pos8)
-        val line7 = line1.clone().setStart(pos3).setEnd(pos5)
-        val line8 = line1.clone().setStart(pos3).setEnd(pos8)
-        val line9 = line1.clone().setStart(pos7).setEnd(pos4)
-        val line10 = line1.clone().setStart(pos7).setEnd(pos2)
-        val line11 = line1.clone().setStart(pos4).setEnd(pos5)
-        val line12 = line1.clone().setStart(pos2).setEnd(pos8)
-
-        return listOf(line1, line2, line3, line4, line5, line6, line7, line8, line9, line10, line11, line12)
-    }
-
-    private fun Line.clone() = Line(start, end, step, period, spawner)
-}
+data class Zone(val left: Location, val right: Location)

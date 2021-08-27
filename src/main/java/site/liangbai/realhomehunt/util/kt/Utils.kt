@@ -44,6 +44,7 @@ import net.minecraft.world.World
 import org.bukkit.ChatColor
 import org.bukkit.Location
 import org.bukkit.util.BoundingBox
+import org.bukkit.util.Vector
 import site.liangbai.realhomehunt.api.nms.NMS
 import java.util.regex.Pattern
 
@@ -69,9 +70,13 @@ fun boundingBoxOf(left: Location, right: Location, isBlockPos: Boolean = false, 
     val left0 = if (clone) left.clone() else left
     val right0 = if  (clone) right.clone() else right
 
-    if (isBlockPos) {
-        right0.add(1.0, 1.0, 1.0)
-    }
+    return BoundingBox.of(left0, right0).also { it.overlaps(it.min, it.max.apply { if (isBlockPos) add(Vector(1.0, 1.0, 1.0)) }) }
+}
 
-    return BoundingBox.of(left0, right0)
+operator fun Vector.minus(other: Vector): Vector {
+    return this.subtract(other)
+}
+
+operator fun Vector.plus(other: Vector): Vector {
+    return this.add(other)
 }

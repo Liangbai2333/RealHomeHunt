@@ -115,6 +115,8 @@ storage:
     options: "web_study?useSSL=false"
 # 领地设置
 residence:
+  # 禁止在Residence领地内创建领地
+  banned-create-in-residence: true
   # 大小限制
   sizeLimit:
     x: 16

@@ -26,7 +26,7 @@ import taboolib.platform.util.asLangText
 import taboolib.platform.util.sendLang
 
 fun Player.sendLang(node: String, vararg args: Any) {
-    sendLang(node, args)
+    sendLang(node, *args)
 }
 
 fun Player.asLangText(node: String, vararg args: Any) = asLangText(node, args)

@@ -82,7 +82,7 @@ object RealHomeHuntPlugin : Plugin() {
     }
 
     private fun doCloseStorage() {
-        ResidenceManager.getStorage().close()
+        ResidenceManager.storage.close()
     }
 
     private fun saveResidences() {

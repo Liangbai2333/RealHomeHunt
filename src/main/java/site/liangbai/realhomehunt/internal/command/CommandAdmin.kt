@@ -337,7 +337,7 @@ internal object CommandAdmin {
             return
         }
 
-        val storageType = ResidenceManager.getStorageType().name
+        val storageType = ResidenceManager.storageType.name
 
         if (file.isFile) {
             val setting = SqliteSetting()
@@ -424,7 +424,7 @@ internal object CommandAdmin {
             return
         }
 
-        if (ResidenceManager.containsResidence(loc1, loc2)) {
+        if (ResidenceManager.hasResidence(loc1, loc2)) {
             SelectCache.pop(this)
             sendLang("command-admin-reelect-contains-other")
             return
@@ -508,7 +508,7 @@ internal object CommandAdmin {
             return
         }
 
-        if (ResidenceManager.containsResidence(loc1, loc2)) {
+        if (ResidenceManager.hasResidence(loc1, loc2)) {
             SelectCache.pop(this)
             sendLang("command-admin-create-contains-other")
             return

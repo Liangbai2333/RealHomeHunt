@@ -24,8 +24,8 @@ import taboolib.platform.util.sendLang
 
 fun sendToAll(node: String, vararg args: Any) {
     Bukkit.getOnlinePlayers().forEach {
-        it.sendLang(node, args)
+        it.sendLang(node, *args)
     }
 
-    Bukkit.getConsoleSender().sendLang(node, args)
+    Bukkit.getConsoleSender().sendLang(node, *args)
 }

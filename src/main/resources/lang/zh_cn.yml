@@ -1,187 +1,204 @@
-command:
-  common:
-    unknownSubCommand: "&c子命令错误, 请查看帮助/{0} help."
+command-unknown-sub-command: "&c子命令错误, 请查看帮助/{0} help."
+command-create-not-opened: "&c此世界没有开放领地."
+command-create-has-old: "&c你已经有领地了, 无法重复创建."
+command-create-not-select-zone: "&c请先选择区域."
+command-create-points-not-in-same-world: "&c两点必须在同一世界."
+command-create-too-large-zone: "&c超出范围限制: &e{0}*{1}*{2}."
+command-create-contains-other: "&c附近有他人领地, 不可创建."
+command-create-contains-ignore-block: "&c区域内有超出数量的限制放置的方块: {0}."
+command-create-success:
+  - type: TITLE
+    title: "&a成功创建领地"
+    subtitle: "&c快去寻找物资保护你的领地吧!"
+    fadein: 10
+    stay: 70
+    fadeout: 20
+command-create-send-to-all: "&f[&6&l抄家系统&f] &r&a玩家 {0} 成功创建了领地."
 
-  create:
-    notOpened: "&c此世界没有开放领地."
-    hasOld: "&c你已经有领地了, 无法重复创建."
-    notSelectZone: "&c请先选择区域."
-    pointsNotInSameWorld: "&c两点必须在同一世界."
-    tooLargeZone: "&c超出范围限制: &e{0}*{1}*{2}."
-    containsOther: "&c附近有他人领地, 不可创建."
-    containsIgnoreBlock: "&c区域内有超出数量的限制放置的方块: {0}."
-    successTitle: "&a成功创建领地"
-    successSubTitle: "&c快去寻找物资保护你的领地吧!"
-    sendToAll: "{prefix}&a玩家 {0} 成功创建了领地."
-  back:
-    other:
-      notHaveResidence: "&c对方没有领地."
-      notHavePermission: "&c你没有对方领地管理员的权限."
-    self:
-      notHaveResidence:
-        - "&c你还没有领地, 无法回到出生点."
-        - "&c回到他人领地(拥有管理员权限): /{0} back <玩家ID>"
-      notHaveSpawnPoint: "领地还未设置出生点."
-    teleport:
-      doneTitle: "&a传送成功"
-      denyTitle: "&c待处理的传送已取消"
-      waitTitle: "&e即将传送至: {0} 的领地"
-      waitSubTitle: "&e传送将在: {0} 秒后启动, 请不要移动"
-  administrator:
-    unknownParam: "&c第三个参数必须为 <true/false>"
-    haveNotResidence: "&c你还没有领地, 无法设置领地权限."
-    alreadyIsAdministrator: "&c对方已经拥有领地权限."
-    successGivePermission: "&a成功给予玩家: {0} 领地权限."
-    notIsAdministrator: "&c对方还没有领地权限."
-    successDeletePermission: "&a成功删除玩家: {0} 的领地权限."
-  help:
-    common:
-      - "&e=================================="
-      - "{prefix}&2/{0} create &e - 创建一个领地"
-      - "{prefix}&2/{0} remove &e - 删除一个领地"
-      - "{prefix}&2/{0} administrator <玩家名> <true/false> &e - 给予/撤销玩家领地权限"
-      - "{prefix}&2/{0} setspawn &e - 设置当前位置为领地出生点(必须在领地内)"
-      - "{prefix}&2/{0} set <属性类型> <属性值> &e - 设置领地属性"
-      - "{prefix}&2/{0} back &e - 回到自己的领地"
-      - "{prefix}&2/{0} back <玩家名> &e - 回到他人(拥有管理员权限)的领地"
-      - "{prefix}&2/{0} info &e - 查看自己的领地信息"
-      - "{prefix}&2/{0} info <玩家名> &e - 查看他人的领地信息"
-      - "{prefix}&2/{0} unselect &e - 取消选择领地范围"
-      - "{prefix}&2/{0} show &e - 显示自己的领地范围(仅向自己显示)"
-    reload:
-      - "{prefix}&2/{0} reload &e - 重载配置文件"
-  reload:
-    haveNotPermission: "&c缺少权限: {0}"
-    success: "&a重载成功."
-  remove:
-    haveNotResidence: "&c你还没有领地, 无法删除."
-    success: "&a成功删除."
-  set:
-    haveNotResidence: "&c你还没有领地, 无法设置领地属性."
-    unknownAttribute: "&c未知的属性名称: {0}."
-    success: "&a成功将属性 {0} 的值设定为: {1}."
-    notAllow: "&c不被允许的属性值, 该项属性允许的属性值为: {0}."
-  setspawn:
-    haveNotResidence: "&c你还没有领地, 无法设置."
-    isNotOwner: "&c你不是领地主人, 无法设置."
-    notInResidence: "&c出生地必须在领地内."
-    success: "&a成功设置."
-  confirm:
-    prepare:
-      - "&a&l------------------------"
-      - "&e确认继续执行当前操作吗?"
-      - "&e建议再深思熟虑一会儿呢~"
-      - " "
-      - "&c如需确认请输入/{0} confirm"
-      - " "
-      - "&c请在 &e{1} &c秒内输入哦~"
-      - "&6超时将不受处理~~"
-    nothing: "&c您是不是输错了什么呢~这边没有查询到您需要确认什么操作呢~"
-  info:
-    self:
-      haveNotResidence: "&c你还没有领地哦~"
-      show:
-        - "&e你的领地信息如下: "
-        - "&c领主: &e{0}"
-        - "&c管理员: "
-        - "&e{1}"
-        - "&c属性: "
-        - "&e{2}"
-    other:
-      haveNotResidence: "&c对方还没有领地哦~"
-      show:
-        - "&e{0}的领地信息如下: "
-        - "&c领主: &e{1}"
-        - "&c管理员: "
-        - "&e{2}"
-        - "&c属性: "
-        - "&e{3}"
-  unselect:
-    success: "&a成功取消选择范围."
-  show:
-    haveNotResidence: "&c你还没有领地哦~"
-    notOpened: "&c此世界没有开放领地."
-    successOn: "&a成功开启显示领地范围"
-    successOff: "&a成功关闭显示领地范围"
-  admin:
-    help:
-      - "&e=================================="
-      - "{prefix}&2/{0} import <YAML文件夹/数据库文件名 (不得有空格)> <清除原数据(true/false)> &e - 导入一个YAML文件夹/数据库文件的内容到当前存储系统中"
-      - "{prefix}&2/{0} translate <玩家名> &e - 将他人的residence中的主领地转移至RealHomeHunt"
-      - "{prefix}&2/{0} translateall &e - 将所有人的residence中的主领地转移至RealHomeHunt"
-      - "{prefix}&2/{0} create <玩家名> &e - 为他人创造领地"
-      - "{prefix}&2/{0} remove <玩家名> &e - 删除他人领地"
-      - "{prefix}&2/{0} set <玩家名> <属性类型> <属性值> &e - 为他人领地设置属性"
-      - "{prefix}&2/{0} expand <玩家名> <类型[north/south/west/east/up/down/all]> <大小> &e - 为他人领地进行扩展"
-      - "{prefix}&2/{0} reelect <玩家名> &e - 为他人领地重选范围"
-    import:
-      unknownParam4: "&c第四个参数必须为 <true/false>"
-      unknownFile: "&c文件: {0} 不存在."
-      saveToStorage: "&a成功载入到当前的 {0} 存储系统, 成功载入数量: {1} 个, 总数: {2} 个."
-    create:
-      notOpened: "&c此世界没有开放领地."
-      hasOld: "&c对方已经有领地了, 无法重复创建."
-      notSelectZone: "&c请先选择区域."
-      pointsNotInSameWorld: "&c两点必须在同一世界."
-      containsOther: "&c附近有他人领地, 不可创建."
-      success: "&a为玩家 {0} 创建成功."
-      sendToAll: "{prefix}&a管理员 {0} 为玩家 {1} 成功创建了领地."
-    remove:
-      haveNotResidence: "&c对方还没有领地哦~"
-      success: "&a成功删除 {0} 的领地."
-    translateAll:
-      info:
-        - "&e转换完成"
-        - "&6请求转换总数: &e{0}"
-        - "&a成功数量: &e{1}"
-        - "&c失败数量: &e{2}"
-        - "&c请尽快将Residence内的领地删除, 避免冲突."
-    translate:
-      success:
-        - "&a转换成功"
-        - "&c请尽快将Residence内的领地删除, 避免冲突."
-      failed:
-        - "&c{0} 不存在或没有领地或世界未开放"
-    set:
-      haveNotResidence: "&c对方 {0} 还没有领地, 无法设置领地属性."
-      unknownAttribute: "&c未知的属性名称: {0}."
-      success: "&a成功将 {0} 的领地属性 {1} 的值设定为: {2}."
-      notAllow: "&c不被允许的属性值, 该项属性允许的属性值为: {0}."
-    expand:
-      haveNotResidence: "&c对方 {0} 还没有领地, 无法扩展领地大小."
-      unknownExpand: "&c未知的拓展类型[{0}]."
-      mustBeNumber: "&c大小必须为一个数字"
-      success: "&a成功为玩家 {0} 的领地扩展 &e{1} &a方向, 大小: &e{2}&a."
-    reelect:
-      notOpened: "&c此世界没有开放领地."
-      notSelectZone: "&c请先选择区域."
-      pointsNotInSameWorld: "&c两点必须在同一世界."
-      containsOther: "&c附近有他人领地, 不可选择此范围."
-      success: "&a为玩家 {0} 重选范围成功."
-action:
-  residence:
-    moveIn: "&e你已经进入 {0} 的领地."
-    moveOut: "&e你已经离开 {0} 的领地."
-  select:
-    haveNotPermission: "&c缺少权限: {0}"
-    alreadyHaveResidence: "&c你已经有领地了, 无法重复选择."
-    selectFirst: "&a成功选择第一个点."
-    selectSecond: "&a成功选择第二个点."
-  place:
-    limit: "{prefix}&c此类型({0})的方块已经达到放置上限."
-  hitBlock:
-    self:
-      title: "&c你的领地被攻击"
-      subTitle: "&6攻击者: {0}"
-      actionBar:
-        show: "&c你的领地正在被 &e{0} &c攻击"
-    all:
-      message: "{prefix}&c玩家: {0} 的领地正在被: {1} 攻击!"
-    performer:
-      bossBar: "玩家领地 {0} 中此方块剩余血量 {1}/{2}"
-  warn:
-    haveNotResidence: "&c咦? 这里没有领地呢, 请在一个领地范围内再试试看吧~"
-    isNotAdministrator: "&c你不是领地管理员, 无法警告哦~"
-    waitMessage: "&c不可以频繁警告的哦, 请再等一会儿吧~"
+command-back-other-not-have-residence: "&c对方没有领地."
+command-back-other-not-have-permission: "&c你没有对方领地管理员的权限."
+command-back-self-not-have-residence:
+  - "&c你还没有领地, 无法回到出生点."
+  - "&c回到他人领地(拥有管理员权限): /{0} back <玩家ID>"
+command-back-self-not-have-spawn-point: "领地还未设置出生点."
+command-back-teleport-done:
+  - type: TITLE
+    title: "&a传送成功"
+    subtitle: ""
+    fadein: 10
+    stay: 70
+    fadeout: 20
+command-back-teleport-deny:
+  - type: TITLE
+    title: "&c待处理的传送已取消"
+    subtitle: ""
+    fadein: 10
+    stay: 70
+    fadeout: 20
+command-back-teleport-wait:
+  - type: TITLE
+    title: "&e即将传送至: {0} 的领地"
+    subtitle: "&e传送将在: {1} 秒后启动, 请不要移动"
+    fadein: 0
+    stay: 40
+    fadeout: 10
+
+command-administrator-unknown-param: "&c第三个参数必须为 <true/false>"
+command-administrator-have-not-residence: "&c你还没有领地, 无法设置领地权限."
+command-administrator-already-is-administrator: "&c对方已经拥有领地权限."
+command-administrator-success-give: "&a成功给予玩家: {0} 领地权限."
+command-administrator-is-not-administrator: "&c对方还没有领地权限."
+command-administrator-success-delete: "&a成功删除玩家: {0} 的领地权限."
+
+command-help-common:
+  - "&e=================================="
+  - "&f[&6&l抄家系统&f] &r&2/{0} create &e - 创建一个领地"
+  - "&f[&6&l抄家系统&f] &r&2/{0} remove &e - 删除一个领地"
+  - "&f[&6&l抄家系统&f] &r&2/{0} administrator <玩家名> <true/false> &e - 给予/撤销玩家领地权限"
+  - "&f[&6&l抄家系统&f] &r&2/{0} setspawn &e - 设置当前位置为领地出生点(必须在领地内)"
+  - "&f[&6&l抄家系统&f] &r&2/{0} set <属性类型> <属性值> &e - 设置领地属性"
+  - "&f[&6&l抄家系统&f] &r&2/{0} back &e - 回到自己的领地"
+  - "&f[&6&l抄家系统&f] &r&2/{0} back <玩家名> &e - 回到他人(拥有管理员权限)的领地"
+  - "&f[&6&l抄家系统&f] &r&2/{0} info &e - 查看自己的领地信息"
+  - "&f[&6&l抄家系统&f] &r&2/{0} info <玩家名> &e - 查看他人的领地信息"
+  - "&f[&6&l抄家系统&f] &r&2/{0} unselect &e - 取消选择领地范围"
+  - "&f[&6&l抄家系统&f] &r&2/{0} show &e - 显示自己的领地范围(仅向自己显示)"
+command-help-reload:
+  - "&f[&6&l抄家系统&f] &r&2/{0} reload &e - 重载配置文件"
+
+command-reload-have-not-permission: "&c缺少权限: {0}"
+command-reload-success: "&a重载成功."
+
+command-remove-have-not-residence: "&c你还没有领地, 无法删除."
+command-remove-success: "&a成功删除."
+
+command-set-have-not-residence: "&c你还没有领地, 无法设置领地属性."
+command-set-unknown-attribute: "&c未知的属性名称: {0}."
+command-set-success: "&a成功将属性 {0} 的值设定为: {1}."
+command-set-not-allow: "&c不被允许的属性值, 该项属性允许的属性值为: {0}."
+
+command-setspawn-have-not-residence: "&c你还没有领地, 无法设置."
+command-setspawn-not-is-owner: "&c你不是领地主人, 无法设置."
+command-setspawn-not-in-residence: "&c出生地必须在领地内."
+command-setspawn-success: "&a成功设置."
+
+command-confirm-prepare:
+  - "&a&l------------------------"
+  - "&e确认继续执行当前操作吗?"
+  - "&e建议再深思熟虑一会儿呢~"
+  - " "
+  - "&c如需确认请输入/{0} confirm"
+  - " "
+  - "&c请在 &e{1} &c秒内确认哦~"
+  - "&6超时将不受处理~~"
+command-confirm-nothing: "&c您是不是输错了什么呢~这边没有查询到您需要确认什么操作呢~"
+
+command-info-self-have-not-residence: "&c你还没有领地哦~"
+command-info-self-show:
+  - "&e你的领地信息如下: "
+  - "&c领主: &e{0}"
+  - "&c管理员: "
+  - "&e{1}"
+  - "&c属性: "
+  - "&e{2}"
+command-info-other-have-not-residence: "&c对方还没有领地哦~"
+command-info-other-show:
+  - "&e{0}的领地信息如下: "
+  - "&c领主: &e{1}"
+  - "&c管理员: "
+  - "&e{2}"
+  - "&c属性: "
+  - "&e{3}"
+
+command-unselect-success: "&a成功取消选择范围."
+
+command-show-have-not-residence: "&c你还没有领地哦~"
+command-show-not-opened: "&c此世界没有开放领地."
+command-show-success-on: "&a成功开启显示领地范围"
+command-show-success-off: "&a成功关闭显示领地范围"
+
+command-admin-help:
+  - "&e=================================="
+  - "&f[&6&l抄家系统&f] &r&2/{0} import <YAML文件夹/数据库文件名 (不得有空格)> <清除原数据(true/false)> &e - 导入一个YAML文件夹/数据库文件的内容到当前存储系统中"
+  - "&f[&6&l抄家系统&f] &r&2/{0} translate <玩家名> &e - 将他人的residence中的主领地转移至RealHomeHunt"
+  - "&f[&6&l抄家系统&f] &r&2/{0} translateall &e - 将所有人的residence中的主领地转移至RealHomeHunt"
+  - "&f[&6&l抄家系统&f] &r&2/{0} create <玩家名> &e - 为他人创造领地"
+  - "&f[&6&l抄家系统&f] &r&2/{0} remove <玩家名> &e - 删除他人领地"
+  - "&f[&6&l抄家系统&f] &r&2/{0} set <玩家名> <属性类型> <属性值> &e - 为他人领地设置属性"
+  - "&f[&6&l抄家系统&f] &r&2/{0} expand <玩家名> <类型[north/south/west/east/up/down/all]> <大小> &e - 为他人领地进行扩展"
+  - "&f[&6&l抄家系统&f] &r&2/{0} reelect <玩家名> &e - 为他人领地重选范围"
+
+command-admin-import-unknown-param4: "&c第四个参数必须为 <true/false>"
+command-admin-import-unknown-file: "&c文件: {0} 不存在."
+command-admin-import-success: "&a成功载入到当前的 {0} 存储系统, 成功载入数量: {1} 个, 总数: {2} 个."
+
+command-admin-create-not-opened: "&c此世界没有开放领地."
+command-admin-create-has-old: "&c对方已经有领地了, 无法重复创建."
+command-admin-create-not-select-zone: "&c请先选择区域."
+command-admin-create-points-not-in-same-world: "&c两点必须在同一世界."
+command-admin-create-contains-other: "&c附近有他人领地, 不可创建."
+command-admin-create-success: "&a为玩家 {0} 创建成功."
+command-admin-create-send-to-all: "&f[&6&l抄家系统&f] &r&a管理员 {0} 为玩家 {1} 成功创建了领地."
+
+command-admin-remove-have-not-residence: "&c对方还没有领地哦~"
+command-admin-remove-success: "&a成功删除 {0} 的领地."
+
+command-admin-translate-all-info:
+  - "&e转换完成"
+  - "&6请求转换总数: &e{0}"
+  - "&a成功数量: &e{1}"
+  - "&c失败数量: &e{2}"
+  - "&c请尽快将Residence内的领地删除, 避免冲突."
+
+command-admin-translate-success:
+  - "&a转换成功"
+  - "&c请尽快将Residence内的领地删除, 避免冲突."
+command-admin-translate-failded: "&c{0} 不存在或没有领地或世界未开放"
+
+command-admin-set-have-not-residence: "&c对方 {0} 还没有领地, 无法设置领地属性."
+command-admin-set-unknown-attribute: "&c未知的属性名称: {0}."
+command-admin-set-success: "&a成功将 {0} 的领地属性 {1} 的值设定为: {2}."
+command-admin-set-not-allow: "&c不被允许的属性值, 该项属性允许的属性值为: {0}."
+
+command-admin-expand-have-not-residence: "&c对方 {0} 还没有领地, 无法扩展领地大小."
+command-admin-expand-unknown-expand: "&c未知的拓展类型[{0}]."
+command-admin-expand-must-be-number: "&c大小必须为一个数字"
+command-admin-expand-success: "&a成功为玩家 {0} 的领地扩展 &e{1} &a方向, 大小: &e{2}&a."
+
+command-admin-reelect-not-opened: "&c此世界没有开放领地."
+command-admin-reelect-not-select-zone: "&c请先选择区域."
+command-admin-reelect-points-not-in-same-world: "&c两点必须在同一世界."
+command-admin-reelect-contains-other: "&c附近有他人领地, 不可选择此范围."
+command-admin-reelect-success: "&a为玩家 {0} 重选范围成功."
+
+action-residence-move-in: "&e你已经进入 {0} 的领地."
+action-residence-move-out: "&e你已经离开 {0} 的领地."
+
+action-select-have-not-permission: "&c缺少权限: {0}"
+action-select-already-have-residence: "&c你已经有领地了, 无法重复选择."
+action-select-first: "&a成功选择第一个点."
+action-select-second: "&a成功选择第二个点."
+
+action-place-limit: "&f[&6&l抄家系统&f] &r&c此类型({0})的方块已经达到放置上限."
+
+action-hit-block-self-title:
+  - type: TITLE
+    title: "&c你的领地被攻击"
+    subtitle: "&6攻击者: {0}"
+    fadein: 10
+    stay: 70
+    fadeout: 20
+action-hit-block-self-action-bar: "&c你的领地正在被 &e{0} &c攻击"
+action-hit-block-all-message: "&f[&6&l抄家系统&f] &r&c玩家: {0} 的领地正在被: {1} 攻击!"
+action-hit-block-performer-boss-bar: "玩家领地 {0} 中此方块剩余血量 {1}/{2}"
+
+action-warn-have-not-residence: "&c咦? 这里没有领地呢, 请在一个领地范围内再试试看吧~"
+action-warn-not-is-administrator: "&c你不是领地管理员, 无法警告哦~"
+action-warn-wait-message: "&c不可以频繁警告的哦, 请再等一会儿吧~"
+action-warn-title:
+  - type: TITLE
     title: "&d请赶快前往支援吧~"
-    subTitle: "&e{0}说: &c&l我们的领地正在被攻击!"
+    subtitle: "&e{0}说: &c&l我们的领地正在被攻击!"
+    fadein: 10
+    stay: 70
+    fadeout: 20
