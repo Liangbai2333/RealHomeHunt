@@ -19,13 +19,14 @@
 package site.liangbai.realhomehunt.internal.listener.player.block
 
 import org.bukkit.event.block.BlockPlaceEvent
-import site.liangbai.realhomehunt.api.locale.manager.LocaleManager
+import org.bukkit.inventory.ItemStack
 import site.liangbai.realhomehunt.api.residence.attribute.impl.BuildAttribute
 import site.liangbai.realhomehunt.api.residence.attribute.impl.PlaceAttribute
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager
 import site.liangbai.realhomehunt.common.config.Config
+import site.liangbai.realhomehunt.util.sendLang
 import taboolib.common.platform.event.SubscribeEvent
-import java.util.*
+import taboolib.module.nms.i18n.I18n
 
 internal object ListenerBlockPlace {
     @SubscribeEvent
@@ -51,8 +52,9 @@ internal object ListenerBlockPlace {
             val info = residence.getIgnoreBlockInfo(ignoreBlockInfo)
             if (info.count >= limit) {
                 if (!player.hasPermission("rh.place")) {
-                    val locale = LocaleManager.require(player)
-                    player.sendMessage(locale.asString("action.place.limit", type.name.lowercase(Locale.getDefault())))
+                    val itemStack = ItemStack(block.type)
+                    val name = I18n.instance.getName(player, itemStack)
+                    player.sendLang("action-place-limit", name)
                     event.isCancelled = true
                 } else {
                     info.increaseCount()

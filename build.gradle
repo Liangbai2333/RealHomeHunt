@@ -12,7 +12,7 @@ plugins {
     id 'java'
     id 'idea'
     id 'org.cadixdev.licenser' version '0.6.1'
-    id "io.izzel.taboolib" version '1.22'
+    id "io.izzel.taboolib" version '1.26'
     id "org.jetbrains.kotlin.jvm" version '1.5.10'
 }
 
@@ -37,10 +37,11 @@ minecraft {
 taboolib {
     description {
         it.contributors {
-            it.name("Liangbai")
+            it.name("Liangbai").description("The plugin's author.")
         }
 
         it.dependencies {
+            it.name("Residence").optional(true)
             it.name("Multiverse-Core").optional(true)
         }
     }
@@ -48,9 +49,11 @@ taboolib {
     install("platform-bukkit")
     install("module-chat")
     install("module-effect")
+    install("module-lang")
     install("module-nms")
+    install("module-nms-util")
     classifier = null
-    version = "6.0.0-pre57"
+    version = "6.0.0-29"
 }
 
 repositories {

@@ -19,7 +19,6 @@
 package site.liangbai.realhomehunt.internal.task
 
 import org.bukkit.Bukkit
-import site.liangbai.realhomehunt.api.locale.manager.LocaleManager
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager
 import site.liangbai.realhomehunt.util.Locations
 import site.liangbai.realhomehunt.util.kt.filterNotActive
@@ -27,6 +26,7 @@ import site.liangbai.realhomehunt.util.kt.filterNotOpenedWorld
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
 import taboolib.common.platform.function.submit
+import taboolib.platform.util.sendLang
 import java.util.concurrent.ConcurrentHashMap
 
 internal object PlayerMoveToResidenceMessageTask {
@@ -39,14 +39,13 @@ internal object PlayerMoveToResidenceMessageTask {
                 .filterNotActive()
                 .filterNotOpenedWorld()
                 .forEach {
-                    val locale = LocaleManager.require(it)
                     val name = it.name
                     val location = Locations.toBlockLocation(it.location)
                     val residence = ResidenceManager.getResidenceByLocation(location)
                     if (residence == null) {
-                        if (moveToResidenceCache.containsKey(name)) {
-                            val other = moveToResidenceCache[name]
-                            it.sendMessage(locale.asString("action.residence.moveOut", other))
+                        if (name in moveToResidenceCache) {
+                            val other = moveToResidenceCache[name]!!
+                            it.sendLang("action-residence-move-out", other)
                             moveToResidenceCache.remove(name)
                         }
                     } else {
@@ -54,10 +53,10 @@ internal object PlayerMoveToResidenceMessageTask {
                         if (residence.owner != lastResidence) {
                             val other = residence.owner
                             if (lastResidence != null) {
-                                it.sendMessage(locale.asString("action.residence.moveOut", lastResidence))
+                                it.sendLang("action-residence-move-out", lastResidence)
                             }
 
-                            it.sendMessage(locale.asString("action.residence.moveIn", other))
+                            it.sendLang("action-residence-move-in", other)
                             moveToResidenceCache[name] = other
                         }
                     }

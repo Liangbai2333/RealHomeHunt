@@ -35,11 +35,11 @@ import site.liangbai.realhomehunt.common.expand.Expand
 import site.liangbai.realhomehunt.internal.storage.impl.SqliteStorage
 import site.liangbai.realhomehunt.internal.storage.impl.YamlStorage
 import site.liangbai.realhomehunt.util.Locations
-import site.liangbai.realhomehunt.util.Messages
 import site.liangbai.realhomehunt.util.kt.expand
 import site.liangbai.realhomehunt.util.kt.isBoolean
-import site.liangbai.realhomehunt.util.kt.sendLang
+import site.liangbai.realhomehunt.util.sendToAll
 import taboolib.common.platform.command.*
+import taboolib.platform.util.sendLang
 import java.io.File
 import java.util.stream.Collectors
 
@@ -48,7 +48,7 @@ internal object CommandAdmin {
     @CommandBody(permission = "rh.command.admin.help", optional = true)
     val help = subCommand {
         execute<CommandSender> { sender, context, _ ->
-            sender.sendLang("command.admin.help", context.name)
+            sender.sendLang("command-admin-help", context.name)
         }
     }
 
@@ -214,12 +214,12 @@ internal object CommandAdmin {
     val main = mainCommand {
         execute<CommandSender> { sender, context, argument ->
             if (argument.isEmpty()) {
-                sender.sendLang("command.admin.help", context.name)
+                sender.sendLang("command-admin-help", context.name)
 
                 return@execute
             }
 
-            sender.sendLang("command.common.unknownSubCommand", context.name)
+            sender.sendLang("command-unknown-sub-command", context.name)
         }
     }
 
@@ -229,7 +229,7 @@ internal object CommandAdmin {
         val residencePlayer = ResidenceApi.getPlayerManager().getResidencePlayer(target)
 
         if (residencePlayer == null) {
-            sendLang("command.admin.translate.failed", target)
+            sendLang("command-admin-translate-failed", target)
         }
 
         val claimedResidence = residencePlayer.mainResidence
@@ -237,12 +237,12 @@ internal object CommandAdmin {
         var area: CuboidArea? = null
 
         if (claimedResidence == null || claimedResidence.mainArea.also { area = it } == null) {
-            sendLang("command.admin.translate.failed", target)
+            sendLang("command-admin-translate-failed", target)
             return
         }
 
         if (!ResidenceManager.isOpened(area!!.world)) {
-            sendLang("command.admin.translate.failed", target)
+            sendLang("command-admin-translate-failed", target)
             return
         }
 
@@ -257,7 +257,7 @@ internal object CommandAdmin {
 
         residence.save()
 
-        sendLang("command.admin.translate.success", target)
+        sendLang("command-admin-translate-success", target)
     }
 
     private fun CommandSender.commandTranslateAll() {
@@ -290,21 +290,21 @@ internal object CommandAdmin {
             }
         }
 
-        sendLang("command.admin.translateAll.info", count, sucCount, count - sucCount)
+        sendLang("command-admin-translate-all-info", count, sucCount, count - sucCount)
     }
 
     private fun CommandSender.commandSet(target: String, attributeType: String, value: String) {
         val residence = ResidenceManager.getResidenceByOwner(target)
 
         if (residence == null) {
-            sendLang("command.admin.set.haveNotResidence", target)
+            sendLang("command-admin-set-have-not-residence", target)
             return
         }
 
         val attributeClass = AttributeMap.getMap(attributeType)
 
         if (attributeClass == null) {
-            sendLang("command.admin.set.unknownAttribute", attributeType)
+            sendLang("command-admin-set-unknown-attribute", attributeType)
             return
         }
 
@@ -315,16 +315,16 @@ internal object CommandAdmin {
             if (!event.callEvent()) return
             val attributeName = attribute.name
             attribute.force(event.value)
-            sendLang("command.admin.set.success", target, attributeName, value)
+            sendLang("command-admin-set-success", target, attributeName, value)
             residence.save()
         } else {
-            sendLang("command.admin.set.notAllow", attribute.allowValues())
+            sendLang("command-admin-set-not-allow", attribute.allowValues())
         }
     }
 
     private fun CommandSender.commandImport(filePath: String, cleanOldString: String) {
         if (!cleanOldString.isBoolean()) {
-            sendLang("command.admin.import.unknownParam4")
+            sendLang("command-admin-import-unknown-param4")
             return
         }
 
@@ -333,7 +333,7 @@ internal object CommandAdmin {
         val file = File(inst.dataFolder, filePath)
 
         if (!file.exists()) {
-            sendLang("command.admin.import.unknownFile", file.name)
+            sendLang("command-admin-import-unknown-file", file.name)
             return
         }
 
@@ -353,7 +353,7 @@ internal object CommandAdmin {
                 .forEach { ResidenceManager.register(it) }
             ResidenceManager.getResidences().forEach { it.save() }
             sendLang(
-                "command.admin.import.saveToStorage",
+                "command-admin-import-save-to-storage",
                 storageType,
                 residenceList.size,
                 storage.count()
@@ -370,7 +370,7 @@ internal object CommandAdmin {
             residenceList.forEach { ResidenceManager.register(it) }
             ResidenceManager.getResidences().forEach { it.save() }
             sendLang(
-                "command.admin.import.saveToStorage",
+                "command-admin-import-save-to-storage",
                 storageType,
                 residenceList.size,
                 storage.count()
@@ -382,7 +382,7 @@ internal object CommandAdmin {
         val residence = ResidenceManager.getResidenceByOwner(target)
 
         if (residence == null) {
-            sendLang("command.admin.remove.haveNotResidence")
+            sendLang("command-admin-remove-have-not-residence")
             return
         }
 
@@ -390,19 +390,19 @@ internal object CommandAdmin {
 
         residence.remove()
 
-        sendLang("command.admin.remove.success", target)
+        sendLang("command-admin-remove-success", target)
     }
 
     private fun Player.commandReelect(target: String) {
         if (!ResidenceManager.isOpened(player!!.world)) {
-            sendLang("command.admin.reelect.notOpened")
+            sendLang("command-admin-reelect-not-opened")
             return
         }
 
         val residence = ResidenceManager.getResidenceByOwner(target)
 
         if (residence == null) {
-            sendLang("command.admin.reelect.notHaveResidence", target)
+            sendLang("command-admin-reelect-not-have-residence", target)
             return
         }
 
@@ -410,23 +410,23 @@ internal object CommandAdmin {
         val loc2 = SelectCache.require(SelectCache.SelectType.SECOND, player!!.name)
 
         if (loc1 == null || loc2 == null) {
-            sendLang("command.admin.reelect.notSelectZone")
+            sendLang("command-admin-reelect-not-select-zone")
             return
         }
 
         if (loc1.world != loc2.world) {
-            sendLang("command.admin.reelect.pointsNotInSameWorld")
+            sendLang("command-admin-reelect-points-not-in-same-world")
             return
         }
 
         if (!ResidenceManager.isOpened(loc1.world!!)) {
-            sendLang("command.admin.reelect.notOpened")
+            sendLang("command-admin-reelect-not-opened")
             return
         }
 
         if (ResidenceManager.containsResidence(loc1, loc2)) {
             SelectCache.pop(this)
-            sendLang("command.admin.reelect.containsOther")
+            sendLang("command-admin-reelect-contains-other")
             return
         }
 
@@ -439,28 +439,28 @@ internal object CommandAdmin {
 
         SelectCache.pop(this)
 
-        sendLang("command.admin.reelect.success", target)
+        sendLang("command-admin-reelect-success", target)
     }
 
     private fun CommandSender.commandExpand(target: String, expandType: String, sizeString: String) {
         val residence = ResidenceManager.getResidenceByOwner(target)
 
         if (residence == null) {
-            sendLang("command.admin.expand.haveNotResidence", target)
+            sendLang("command-admin-expand-have-not-residence", target)
             return
         }
 
         val expand = Expand.matches(expandType)
 
         if (expand == null) {
-            sendLang("command.admin.expand.unknownExpand", expandType)
+            sendLang("command-admin-expand-unknown-expand", expandType)
             return
         }
 
         val size: Double = try {
             sizeString.toDouble()
         } catch (e: Throwable) {
-            sendLang("command.admin.expand.mustBeNumber", sizeString)
+            sendLang("command-admin-expand-must-be-number", sizeString)
             return
         }
 
@@ -478,7 +478,7 @@ internal object CommandAdmin {
         residence.left = postEvent.changedLeft
         residence.right = postEvent.changedRight
 
-        sendLang("command.admin.expand.success", target, expandType, size)
+        sendLang("command-admin-expand-success", target, expandType, size)
     }
 
     private fun Player.commandCreate(target: String) {
@@ -486,7 +486,7 @@ internal object CommandAdmin {
 
         if (old != null) {
             SelectCache.pop(this)
-            sendLang("command.admin.create.hasOld", target)
+            sendLang("command-admin-create-has-old", target)
             return
         }
 
@@ -494,23 +494,23 @@ internal object CommandAdmin {
         val loc2 = SelectCache.require(SelectCache.SelectType.SECOND, player!!.name)
 
         if (loc1 == null || loc2 == null) {
-            sendLang("command.admin.create.notSelectZone")
+            sendLang("command-admin-create-not-select-zone")
             return
         }
 
         if (loc1.world != loc2.world) {
-            sendLang("command.admin.create.pointsNotInSameWorld")
+            sendLang("command-admin-create-points-not-in-same-world")
             return
         }
 
         if (!ResidenceManager.isOpened(loc1.world!!)) {
-            sendLang("command.create.notOpened")
+            sendLang("command-create-not-opened")
             return
         }
 
         if (ResidenceManager.containsResidence(loc1, loc2)) {
             SelectCache.pop(this)
-            sendLang("command.admin.create.containsOther")
+            sendLang("command-admin-create-contains-other")
             return
         }
 
@@ -530,8 +530,8 @@ internal object CommandAdmin {
 
         SelectCache.pop(this)
 
-        sendLang("command.admin.create.success", target)
+        sendLang("command-admin-create-success", target)
 
-        Messages.sendToAll("command.admin.create.sendToAll", name, target)
+        sendToAll("command-admin-create-send-to-all", name, target)
     }
 }

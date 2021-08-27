@@ -19,10 +19,10 @@
 package site.liangbai.realhomehunt.internal.listener.player
 
 import org.bukkit.event.player.PlayerToggleSneakEvent
-import site.liangbai.realhomehunt.api.locale.manager.LocaleManager
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager
 import site.liangbai.realhomehunt.common.config.Config
 import taboolib.common.platform.event.SubscribeEvent
+import taboolib.platform.util.sendLang
 
 internal object ListenerPlayerToggleSneak {
     @SubscribeEvent
@@ -35,17 +35,16 @@ internal object ListenerPlayerToggleSneak {
             return
         }
         val residence = ResidenceManager.getResidenceByLocation(location)
-        val locale = LocaleManager.require(player)
         if (residence == null) {
-            player.sendMessage(locale.asString("action.warn.haveNotResidence"))
+            player.sendLang("action-warn-have-not-residence")
             return
         }
         if (!residence.isAdministrator(player)) {
-            player.sendMessage(locale.asString("action.warn.isNotAdministrator"))
+            player.sendLang("action-warn-is-not-administrator")
             return
         }
         if (!residence.isCanWarn) {
-            player.sendMessage(locale.asString("action.warn.waitMessage"))
+            player.sendLang("action-warn-wait-message")
             return
         }
         residence.warn(player)

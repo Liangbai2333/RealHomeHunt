@@ -22,10 +22,10 @@ import org.bukkit.Material
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
 import site.liangbai.realhomehunt.api.cache.SelectCache
-import site.liangbai.realhomehunt.api.locale.manager.LocaleManager
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager
 import site.liangbai.realhomehunt.common.config.Config
 import taboolib.common.platform.event.SubscribeEvent
+import taboolib.platform.util.sendLang
 
 internal object ListenerPlayerInteract {
     @SubscribeEvent(ignoreCancelled = true)
@@ -38,26 +38,25 @@ internal object ListenerPlayerInteract {
         if (!isLeftSelectTool(itemType!!) && !isRightSelectTool(itemType!!)) return
         val block = event.clickedBlock
         if (block == null || block.type == Material.AIR) return
-        val locale = LocaleManager.require(player)
         if (!player.hasPermission("rh.select")) {
-            player.sendMessage(locale.asString("action.select.haveNotPermission", "rh.select"))
+            player.sendLang("action-select-have-not-permission", "rh.select")
             return
         }
         if (!player.hasPermission("rh.unlimited.select") && ResidenceManager.getResidenceByOwner(player.name) != null) {
-            player.sendMessage(locale.asString("action.select.alreadyHaveResidence"))
+            player.sendLang("action-select-already-have-residence")
             return
         }
         val action = event.action
         if (action == Action.LEFT_CLICK_BLOCK) {
             if (!isLeftSelectTool(itemType!!)) return
             SelectCache.push(SelectCache.SelectType.FIRST, player, block.location)
-            player.sendMessage(locale.asString("action.select.selectFirst"))
+            player.sendLang("action-select-first")
             event.isCancelled = true
         }
         if (action == Action.RIGHT_CLICK_BLOCK) {
             if (!isRightSelectTool(itemType!!)) return
             SelectCache.push(SelectCache.SelectType.SECOND, player, block.location)
-            player.sendMessage(locale.asString("action.select.selectSecond"))
+            player.sendLang("action-select-second")
             event.isCancelled = true
         }
     }

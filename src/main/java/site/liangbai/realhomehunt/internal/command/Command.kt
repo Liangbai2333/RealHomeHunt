@@ -38,6 +38,7 @@ import site.liangbai.realhomehunt.internal.task.PlayerBackTask
 import site.liangbai.realhomehunt.util.*
 import site.liangbai.realhomehunt.util.kt.*
 import taboolib.common.platform.command.*
+import taboolib.platform.util.sendLang
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
@@ -48,10 +49,10 @@ internal object Command {
     @CommandBody(permission = "rh.command.help", optional = true)
     val help = subCommand {
         execute<CommandSender> { sender, context, _ ->
-            sender.sendLang("command.help.common", context.name)
+            sender.sendLang("command-help-common", context.name)
 
             if (sender.hasPermission("rh.reload")) {
-                sender.sendLang("command.help.reload", context.name)
+                sender.sendLang("command-help-reload", context.name)
             }
         }
     }
@@ -60,13 +61,13 @@ internal object Command {
     val reload = subCommand {
         execute<CommandSender> { sender, _, _ ->
             if (!sender.hasPermission("rh.reload")) {
-                sender.sendLang("command.reload.haveNotPermission", "rh.reload")
+                sender.sendLang("command-reload-have-not-permission", "rh.reload")
                 return@execute
             }
 
             RealHomeHuntPlugin.init()
 
-            sender.sendLang("command.reload.success")
+            sender.sendLang("command-reload-success")
         }
     }
 
@@ -83,7 +84,7 @@ internal object Command {
             val residence = ResidenceManager.getResidenceByOwner(sender.name)
 
             if (residence == null) {
-                sender.sendLang("command.remove.haveNotResidence")
+                sender.sendLang("command-remove-have-not-residence")
                 return@execute
             }
 
@@ -143,7 +144,7 @@ internal object Command {
                 execute<Player> { sender, context, argument ->
                     argument.isBoolean().apply {
                         if (!this) {
-                            sender.sendLang("command.administrator.unknownParam")
+                            sender.sendLang("command-administrator-unknown-param")
                         } else context.argument(-1)?.let { sender.commandAdministrator(it, argument.toBoolean()) }
                     }
                 }
@@ -155,7 +156,7 @@ internal object Command {
     val confirm = subCommand {
         execute<Player> { sender, _, _ ->
             if (!ConfirmModule.hasConfirmCache(sender)) {
-                sender.sendLang("command.confirm.nothing")
+                sender.sendLang("command-confirm-nothing")
                 return@execute
             }
 
@@ -176,7 +177,7 @@ internal object Command {
     val unselect = subCommand {
         execute<Player> { sender, _, _ ->
             SelectCache.pop(sender)
-            sender.sendLang("command.unselect.success")
+            sender.sendLang("command-unselect-success")
         }
     }
 
@@ -248,16 +249,16 @@ internal object Command {
     val main = mainCommand {
         execute<CommandSender> { sender, context, argument ->
             if (argument.isEmpty()) {
-                sender.sendLang("command.help.common", context.name)
+                sender.sendLang("command-help-common", context.name)
 
                 if (sender.hasPermission("rh.reload")) {
-                    sender.sendLang("command.help.reload", context.name)
+                    sender.sendLang("command-help-reload", context.name)
                 }
 
                 return@execute
             }
 
-            sender.sendLang("command.common.unknownSubCommand", context.name)
+            sender.sendLang("command-unknown-sub-command", context.name)
         }
     }
 
@@ -265,14 +266,14 @@ internal object Command {
         val residence = ResidenceManager.getResidenceByOwner(name)
 
         if (residence == null) {
-            sendLang("command.set.haveNotResidence")
+            sendLang("command-set-have-not-residence")
             return
         }
 
         val attributeClass = AttributeMap.getMap(attributeType)
 
         if (attributeClass == null) {
-            sendLang("command.set.unknownAttribute", attributeType)
+            sendLang("command-set-unknown-attribute", attributeType)
             return
         }
 
@@ -283,23 +284,23 @@ internal object Command {
             if (!event.callEvent()) return
             val attributeName = attribute.name
             attribute.force(event.value)
-            sendLang("command.set.success", attributeName, value)
+            sendLang("command-set-success", attributeName, value)
             residence.save()
         } else {
-            sendLang("command.set.notAllow", attribute.allowValues())
+            sendLang("command-set-not-allow", attribute.allowValues())
         }
     }
 
     private fun Player.commandShow() {
         if (!ResidenceManager.isOpened(world)) {
-            sendLang("command.show.notOpened")
+            sendLang("command-show-not-opened")
             return
         }
 
         val residence = ResidenceManager.getResidenceByOwner(name)
 
         if (residence == null) {
-            sendLang("command.show.haveNotResidence")
+            sendLang("command-show-have-not-residence")
             return
         }
 
@@ -307,38 +308,36 @@ internal object Command {
             val effectGroup = showCaches[name]
             effectGroup?.turnOff()
             showCaches.remove(name)
-            sendLang("command.show.successOff")
+            sendLang("command-show-success-off")
         } else {
             showCaches[name] = Zones.startShowWithBlockLocation(this, residence.left, residence.right)
-            sendLang("command.show.successOn")
+            sendLang("command-show-success-on")
         }
     }
 
     private fun Player.commandBack(label: String, cache: MutableSet<UUID>, target: String = name) {
-        val locale = require()
-
         val residence: Residence
 
         if (target == name) {
             residence = ResidenceManager.getResidenceByOwner(name)
             if (residence == null) {
-                sendLang("command.back.other.notHaveResidence")
+                sendLang("command-back-other-not-have-residence")
                 return
             }
             if (!residence.isAdministrator(name) && !hasPermission("rh.unlimited.back")) {
-                sendLang("command.back.other.notHavePermission")
+                sendLang("command-back-other-not-have-permission")
                 return
             }
         } else {
             residence = ResidenceManager.getResidenceByOwner(target)
             if (residence == null) {
-                sendLang("command.back.self.notHaveResidence", label)
+                sendLang("command-back-self-not-have-residence", label)
                 return
             }
         }
 
         if (residence.spawn == null) {
-            sendLang("command.back.self.notHaveSpawnPoint")
+            sendLang("command-back-self-not-have-spawn-point")
             return
         }
 
@@ -347,20 +346,12 @@ internal object Command {
             return
         }
 
-        val doneMessage: String = locale.asString("command.back.teleport.doneTitle", residence.owner)
-
-        val denyMessage: String = locale.asString("command.back.teleport.denyTitle", residence.owner)
-
-        val titleMessage: String = locale.asString("command.back.teleport.waitTitle", residence.owner)
-
-        val teleportFormatSubTitleMessage: String = locale.asString("command.back.teleport.waitSubTitle", "%s")
-
         val seconds = Config.teleportMills / 20
 
         cache.add(uniqueId)
 
         PlayerBackTask.tryTeleportPlayer(
-            player, residence.spawn, doneMessage, denyMessage, titleMessage, teleportFormatSubTitleMessage, seconds
+            this, residence.owner, residence.spawn, seconds
         ) { cache.remove(uniqueId) }
     }
 
@@ -368,19 +359,19 @@ internal object Command {
         val residence = ResidenceManager.getResidenceByOwner(name)
 
         if (residence == null) {
-            sendLang("command.setspawn.haveNotResidence")
+            sendLang("command-setspawn-have-not-residence")
             return
         }
 
         if (!residence.isOwner(name)) {
-            sendLang("command.setspawn.isNotOwner")
+            sendLang("command-setspawn-is-not-owner")
             return
         }
 
         val blockLocation = Locations.toBlockLocation(location)
 
         if (!ResidenceManager.isInResidence(blockLocation, residence)) {
-            sendLang("command.setspawn.notInResidence")
+            sendLang("command-setspawn-not-in-residence")
             return
         }
 
@@ -388,33 +379,33 @@ internal object Command {
 
         residence.save()
 
-        sendLang("command.setspawn.success")
+        sendLang("command-setspawn-success")
     }
 
     private fun Player.commandAdministrator(target: String, give: Boolean) {
         val residence = ResidenceManager.getResidenceByOwner(name)
 
         if (residence == null) {
-            sendLang("command.administrator.haveNotResidence")
+            sendLang("command-administrator-have-not-residence")
             return
         }
 
         if (give) {
             if (residence.isAdministrator(target)) {
-                sendLang("command.administrator.alreadyIsAdministrator", target)
+                sendLang("command-administrator-already-is-administrator", target)
                 return
             }
             if (!Give(residence, this, target).callEvent()) return
             residence.addAdministrator(target)
-            sendLang("command.administrator.successGivePermission", target)
+            sendLang("command-administrator-success-give", target)
         } else {
             if (!residence.isAdministrator(target)) {
-                sendLang("command.administrator.notIsAdministrator", target)
+                sendLang("command-administrator-is-not-administrator", target)
                 return
             }
             if (!Remove(residence, this, target).callEvent()) return
             residence.removeAdministrator(target)
-            sendLang("command.administrator.successDeletePermission", target)
+            sendLang("command-administrator-success-delete", target)
         }
 
         residence.save()
@@ -424,11 +415,11 @@ internal object Command {
         if (target == name) {
             val residence = ResidenceManager.getResidenceByOwner(name)
             if (residence == null) {
-                sendLang("command.info.self.haveNotResidence")
+                sendLang("command-info-self-have-not-residence")
                 return
             }
             sendLang(
-                "command.info.self.show",
+                "command-info-self-show",
                 residence.owner,
                 residence.getAdministratorListString(),
                 residence.getAttributeListString()
@@ -436,11 +427,11 @@ internal object Command {
         } else {
             val residence = ResidenceManager.getResidenceByOwner(target)
             if (residence == null) {
-                sendLang("command.info.other.haveNotResidence")
+                sendLang("command-info-other-have-not-residence")
                 return
             }
             sendLang(
-                "command.info.other.show",
+                "command-info-other-show",
                 target,
                 residence.owner,
                 residence.getAdministratorListString(),
@@ -450,10 +441,8 @@ internal object Command {
     }
 
     private fun Player.commandCreate() {
-        val locale = require()
-
         if (!ResidenceManager.isOpened(world)) {
-            sendLang("command.create.notOpened")
+            sendLang("command-create-not-opened")
             return
         }
 
@@ -461,7 +450,7 @@ internal object Command {
 
         if (old != null) {
             SelectCache.pop(this)
-            sendLang("command.create.hasOld")
+            sendLang("command-create-has-old")
             return
         }
 
@@ -469,17 +458,17 @@ internal object Command {
         val loc2 = SelectCache.require(SelectCache.SelectType.SECOND, name)
 
         if (loc1 == null || loc2 == null) {
-            sendLang("command.create.notSelectZone")
+            sendLang("command-create-not-select-zone")
             return
         }
 
         if (loc1.world != loc2.world) {
-            sendLang("command.create.pointsNotInSameWorld")
+            sendLang("command-create-points-not-in-same-world")
             return
         }
 
         if (!ResidenceManager.isOpened(loc1.world!!)) {
-            sendLang("command.create.notOpened")
+            sendLang("command-create-not-opened")
             return
         }
 
@@ -490,7 +479,7 @@ internal object Command {
         if (!hasPermission("rh.unlimited.create")) {
             if (distanceInfo.x > sizeSetting.x || distanceInfo.y > sizeSetting.y || distanceInfo.z > sizeSetting.z) {
                 sendLang(
-                    "command.create.tooLargeZone",
+                    "command-create-too-large-zone",
                     sizeSetting.x,
                     sizeSetting.y,
                     sizeSetting.z
@@ -501,7 +490,7 @@ internal object Command {
 
         if (ResidenceManager.containsResidence(loc1, loc2)) {
             SelectCache.pop(this)
-            sendLang("command.create.containsOther")
+            sendLang("command-create-contains-other")
             return
         }
 
@@ -516,7 +505,7 @@ internal object Command {
                 val count = Blocks.containsBlockAndReturnCount(info, residence)
                 if (count > info.amount) {
                     sendLang(
-                        "command.create.containsIgnoreBlock",
+                        "command-create-contains-ignore-block",
                         info.full.let { it ?: info.suffix.ifEmpty { info.prefix } }
                     )
                     return
@@ -538,12 +527,8 @@ internal object Command {
 
         Sounds.playLevelUpSound(this, 1, 0.0)
 
-        Titles.sendTitle(
-            this,
-            locale.asString("command.create.successTitle"),
-            locale.asString("command.create.successSubTitle")
-        )
+        sendLang("command-create-success")
 
-        Messages.sendToAll("command.create.sendToAll", name)
+        sendToAll("command-create-send-to-all", name)
     }
 }

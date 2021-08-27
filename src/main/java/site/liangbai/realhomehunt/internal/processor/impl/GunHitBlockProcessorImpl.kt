@@ -26,7 +26,6 @@ import site.liangbai.realhomehunt.RealHomeHuntPlugin.inst
 import site.liangbai.realhomehunt.api.cache.DamageCachePool
 import site.liangbai.realhomehunt.api.event.residence.ResidenceHurtEvent
 import site.liangbai.realhomehunt.api.gamemode.manager.GameModeManager
-import site.liangbai.realhomehunt.api.locale.manager.LocaleManager
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager
 import site.liangbai.realhomehunt.common.bossbar.factory.BossBarFactory
 import site.liangbai.realhomehunt.common.config.Config
@@ -37,6 +36,7 @@ import site.liangbai.realhomehunt.util.Blocks.sendBreakAnimationPacket
 import site.liangbai.realhomehunt.util.Blocks.sendBreakBlockPacket
 import site.liangbai.realhomehunt.util.Blocks.sendClearBreakAnimationPacket
 import site.liangbai.realhomehunt.util.Guns
+import site.liangbai.realhomehunt.util.asLangText
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
@@ -57,11 +57,10 @@ class GunHitBlockProcessorImpl : IGunHitBlockProcessor {
         val residence = ResidenceManager.getResidenceByLocation(block.location)
         if (residence == null || residence.isAdministrator(player)) return
         val damageCachePool = DAMAGE_CACHE_POOL_MAP[player.uniqueId]
-        val locale = LocaleManager.require(player)
         val damageCache = damageCachePool!!.getDamageCacheByBlock(block,
             { Config.block.custom.getHardness(block) }
         ) {
-            val title = locale.asString("action.hitBlock.performer.bossBar", residence.owner, 0, 0)
+            val title = player.asLangText("action-hit-block-performer-boss-bar", residence.owner, 0, 0)
             BossBarFactory.newHealthBossBar(title, 70, 30)
         }
         if (!ResidenceHurtEvent(
@@ -83,8 +82,8 @@ class GunHitBlockProcessorImpl : IGunHitBlockProcessor {
             sendClearBreakAnimationPacket(damageCache.id, damageCache.block)
             healthBossBar.update(0)
             healthBossBar.handle.setTitle(
-                locale.asString(
-                    "action.hitBlock.performer.bossBar",
+                player.asLangText(
+                    "action-hit-block-performer-boss-bar",
                     residence.owner,
                     0,
                     damageCache.hardness.toInt()
@@ -104,8 +103,8 @@ class GunHitBlockProcessorImpl : IGunHitBlockProcessor {
             val health = damageCache.hardness - damageCache.damage
             val healthString = String.format("%.1f", health)
             healthBossBar.handle.setTitle(
-                locale.asString(
-                    "action.hitBlock.performer.bossBar",
+                player.asLangText(
+                    "action-hit-block-performer-boss-bar",
                     residence.owner,
                     healthString,
                     damageCache.hardness.toInt()

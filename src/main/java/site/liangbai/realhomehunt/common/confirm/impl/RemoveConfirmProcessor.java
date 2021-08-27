@@ -20,10 +20,9 @@ package site.liangbai.realhomehunt.common.confirm.impl;
 
 import org.bukkit.entity.Player;
 import site.liangbai.realhomehunt.api.event.residence.ResidenceRemoveEvent;
-import site.liangbai.realhomehunt.api.locale.impl.Locale;
-import site.liangbai.realhomehunt.api.locale.manager.LocaleManager;
 import site.liangbai.realhomehunt.api.residence.Residence;
 import site.liangbai.realhomehunt.common.confirm.IConfirmProcessor;
+import site.liangbai.realhomehunt.util.LangBridge;
 
 public final class RemoveConfirmProcessor implements IConfirmProcessor {
     @Override
@@ -32,8 +31,6 @@ public final class RemoveConfirmProcessor implements IConfirmProcessor {
 
         residence.remove();
 
-        Locale locale = LocaleManager.require(player);
-
-        player.sendMessage(locale.asString("command.remove.success"));
+        LangBridge.sendLang(player, "command-remove-success");
     }
 }

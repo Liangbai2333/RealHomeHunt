@@ -25,7 +25,6 @@ import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.configuration.serialization.ConfigurationSerialization
 import site.liangbai.forgeeventbridge.event.EventBridge
-import site.liangbai.realhomehunt.api.locale.manager.LocaleManager
 import site.liangbai.realhomehunt.api.residence.Residence
 import site.liangbai.realhomehunt.api.residence.attribute.map.AttributeMap
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager
@@ -45,6 +44,7 @@ import taboolib.common.platform.function.disablePlugin
 import taboolib.common.platform.function.info
 import taboolib.common.platform.function.pluginId
 import taboolib.common.platform.function.pluginVersion
+import taboolib.module.lang.Language
 import taboolib.module.nms.MinecraftVersion
 import taboolib.platform.BukkitPlugin
 
@@ -68,7 +68,7 @@ object RealHomeHuntPlugin : Plugin() {
     fun init() {
         Config.init(inst)
 
-        LocaleManager.init(inst)
+        Language.reload()
 
         ResidenceManager.init(inst, Config.storage.type)
 

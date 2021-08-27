@@ -27,8 +27,6 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import site.liangbai.realhomehunt.RealHomeHuntPlugin;
 import site.liangbai.realhomehunt.common.actionbar.impl.DynamicActionBar;
-import site.liangbai.realhomehunt.api.locale.impl.Locale;
-import site.liangbai.realhomehunt.api.locale.manager.LocaleManager;
 import site.liangbai.realhomehunt.api.residence.attribute.IAttributable;
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
 import site.liangbai.realhomehunt.common.config.Config;
@@ -250,14 +248,14 @@ public final class Residence implements ConfigurationSerializable {
         Sounds.playDragonAmbientSound(attacker, 1, 0);
 
         if (owner != null && owner.isOnline()) {
-            Locale locale = LocaleManager.require(owner);
-
             Sounds.playDragonAmbientSound(owner, 1, 0);
 
-            Titles.sendTitle(owner, locale.asString("action.hitBlock.self.title", attacker.getName()), locale.asString("action.hitBlock.self.subTitle", attacker.getName()));
+            LangBridge.sendLang(owner, "action-hit-block-self-title", attacker.getName());
 
             if (Config.showActionBar) {
-                DynamicActionBar actionBar = new DynamicActionBar(locale.asString("action.hitBlock.self.actionBar.show", attacker.getName()), 5, 20);
+                String message = LangBridge.asLangText(owner, "action-hit-block-self-action-bar", attacker.getName());
+
+                DynamicActionBar actionBar = new DynamicActionBar(message, 5, 20);
 
                 actionBar.show(owner, Config.actionBarShowMills);
             }
@@ -282,9 +280,7 @@ public final class Residence implements ConfigurationSerializable {
         setCanWarn(false);
 
         getOnlineMembers().forEach(member -> {
-            Locale locale = LocaleManager.require(member);
-
-            Titles.sendTitle(member, locale.asString("action.warn.title", sender.getName()), locale.asString("action.warn.subTitle", sender.getName()));
+            LangBridge.sendLang(member, "action-warn-title", sender.getName());
 
             Sounds.playLevelUpSound(member, 3, 0.5);
         });

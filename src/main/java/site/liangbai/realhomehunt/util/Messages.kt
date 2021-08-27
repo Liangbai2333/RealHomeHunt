@@ -16,25 +16,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.util;
+@file:JvmName("Messages")
+package site.liangbai.realhomehunt.util
 
-import org.bukkit.Bukkit;
-import org.bukkit.command.ConsoleCommandSender;
-import site.liangbai.realhomehunt.api.locale.impl.Locale;
-import site.liangbai.realhomehunt.api.locale.manager.LocaleManager;
+import org.bukkit.Bukkit
+import taboolib.platform.util.sendLang
 
-public final class Messages {
-    public static void sendToAll(String node, Object... args) {
-        Bukkit.getOnlinePlayers().forEach(it -> {
-            Locale locale = LocaleManager.require(it);
-
-            it.sendMessage(locale.asString(node, args));
-        });
-
-        ConsoleCommandSender sender = Bukkit.getConsoleSender();
-
-        Locale locale = Locales.require(sender);
-
-        sender.sendMessage(locale.asString(node, args));
+fun sendToAll(node: String, vararg args: Any) {
+    Bukkit.getOnlinePlayers().forEach {
+        it.sendLang(node, args)
     }
+
+    Bukkit.getConsoleSender().sendLang(node, args)
 }

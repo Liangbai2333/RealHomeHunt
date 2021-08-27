@@ -16,15 +16,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.util;
+@file:JvmName("LangBridge")
+@file:Isolated
+package site.liangbai.realhomehunt.util
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import site.liangbai.realhomehunt.api.locale.impl.Locale;
-import site.liangbai.realhomehunt.api.locale.manager.LocaleManager;
+import org.bukkit.entity.Player
+import taboolib.common.Isolated
+import taboolib.platform.util.asLangText
+import taboolib.platform.util.sendLang
 
-public final class Locales {
-    public static Locale require(CommandSender sender) {
-        return sender instanceof Player ? LocaleManager.require(((Player) sender)) : LocaleManager.requireDefault();
-    }
+fun Player.sendLang(node: String, vararg args: Any) {
+    sendLang(node, args)
 }
+
+fun Player.asLangText(node: String, vararg args: Any) = asLangText(node, args)
+

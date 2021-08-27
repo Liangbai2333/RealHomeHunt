@@ -16,95 +16,68 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.internal.task;
+package site.liangbai.realhomehunt.internal.task
 
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-import site.liangbai.realhomehunt.RealHomeHuntPlugin;
-import site.liangbai.realhomehunt.util.Locations;
-import site.liangbai.realhomehunt.util.Players;
-import site.liangbai.realhomehunt.util.Titles;
+import org.bukkit.Location
+import org.bukkit.entity.Player
+import org.bukkit.scheduler.BukkitRunnable
+import site.liangbai.realhomehunt.RealHomeHuntPlugin.inst
+import site.liangbai.realhomehunt.util.Locations
+import site.liangbai.realhomehunt.util.Players
+import taboolib.platform.util.sendLang
 
-import java.util.function.Consumer;
-
-public final class PlayerBackTask extends BukkitRunnable {
-    private final Player player;
-
-    private final Location location;
-
-    private final String doneMessage;
-
-    private final String titleMessage;
-
-    private final String teleportFormatSubTitleMessage;
-
-    private final Consumer<Player> finishBlock;
-
-    private boolean cancel;
-
-    private int count;
-
-    private final long seconds;
-
-    public static void tryTeleportPlayer(Player player, Location location, String doneMessage, String denyMessage, String titleMessage, String teleportFormatSubTitleMessage, long seconds, Consumer<Player> finishBlock) {
-        new PlayerBackTask(player, location, doneMessage, denyMessage, titleMessage, teleportFormatSubTitleMessage, seconds, finishBlock).runTaskTimer(RealHomeHuntPlugin.INSTANCE.getInst(), 0, 20);
-    }
-
-    public PlayerBackTask(Player player, Location location, String doneMessage, String denyMessage, String titleMessage, String teleportFormatSubTitleMessage, long seconds, Consumer<Player> finishBlock) {
-        this.player = player;
-
-        this.location = location.clone();
-
-        this.doneMessage = doneMessage;
-
-        this.seconds = seconds;
-
-        this.titleMessage = titleMessage;
-
-        this.teleportFormatSubTitleMessage = teleportFormatSubTitleMessage;
-
-        this.finishBlock = finishBlock;
-
-        Players.addListenerOnce(it -> {
-            if (it.equals(player)) {
-                if (cancel) return true;
-
-                cancel();
-
-                finishBlock.accept(player);
-
-                if (denyMessage != null) {
-                    Titles.sendTitle(player, denyMessage, "");
-                }
-
-                return true;
-            }
-
-            return cancel;
-        });
-    }
-
-    @Override
-    public void run() {
+class PlayerBackTask(
+    private val player: Player,
+    private val owner: String,
+    private val location: Location,
+    private val seconds: Long,
+    private val finishBlock: Player.() -> Unit
+) : BukkitRunnable() {
+    private var cancel = false
+    private var count = 0
+    override fun run() {
         if (count < seconds) {
-            Titles.sendFastTitle(player, titleMessage, String.format(teleportFormatSubTitleMessage, (seconds - count)));
-
-            count++;
-
-            return;
+            player.sendLang("command-back-teleport-wait", owner, seconds - count)
+            count++
+            return
         }
+        cancel = true
+        Locations.teleportAfterChunkLoaded(player, location)
+        player.finishBlock()
+        player.sendLang("command-back-teleport-done", owner)
+        cancel()
+    }
 
-        this.cancel = true;
-
-        Locations.teleportAfterChunkLoaded(player, location);
-
-        finishBlock.accept(player);
-
-        if (doneMessage != null) {
-            Titles.sendTitle(player, doneMessage, "");
+    companion object {
+        fun tryTeleportPlayer(
+            player: Player,
+            owner: String,
+            location: Location,
+            seconds: Long,
+            finishBlock: Player.() -> Unit
+        ) {
+            PlayerBackTask(
+                player,
+                owner,
+                location,
+                seconds,
+                finishBlock
+            ).runTaskTimer(
+                inst, 0, 20
+            )
         }
+    }
 
-        cancel();
+    init {
+        Players.addListenerOnce {
+            if (it == player) {
+                if (cancel) return@addListenerOnce true
+                cancel()
+                player.finishBlock()
+                player.sendLang("command-back-teleport-deny", owner)
+                return@addListenerOnce true
+            }
+            cancel
+        }
     }
 }

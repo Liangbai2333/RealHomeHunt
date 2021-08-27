@@ -21,10 +21,9 @@ package site.liangbai.realhomehunt.common.confirm;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import site.liangbai.realhomehunt.RealHomeHuntPlugin;
-import site.liangbai.realhomehunt.api.locale.impl.Locale;
-import site.liangbai.realhomehunt.api.locale.manager.LocaleManager;
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
 import site.liangbai.realhomehunt.api.residence.Residence;
+import site.liangbai.realhomehunt.util.LangBridge;
 import site.liangbai.realhomehunt.util.Pair;
 
 import java.util.Map;
@@ -51,9 +50,7 @@ public final class ConfirmModule {
     }
 
     public static void sendPrepare(Player player, String label, long waitMills) {
-        Locale locale = LocaleManager.require(player);
-
-        player.sendMessage(locale.asString("command.confirm.prepare", label, waitMills / 20));
+        LangBridge.sendLang(player, "command-confirm-prepare", label, waitMills / 20);
     }
 
     public static void popConfirmCache(Player player) {

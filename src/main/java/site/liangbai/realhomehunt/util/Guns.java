@@ -19,6 +19,7 @@
 package site.liangbai.realhomehunt.util;
 
 import com.craftingdead.core.world.item.GunItem;
+import kotlin.Unit;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -29,6 +30,7 @@ public final class Guns {
     public static int countBlockSit(double count, double hardness) {
         int realHardness = (int) (getHardnessMix(count, hardness) * 9);
 
+        taboolib.common.platform.function.ExecutorKt.submit(false, false, 0, 0, null, task -> Unit.INSTANCE);
         return realHardness > 9 || realHardness < 0 ? -1 : realHardness;
     }
 
