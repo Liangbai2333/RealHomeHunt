@@ -24,10 +24,11 @@ import site.liangbai.realhomehunt.internal.storage.IStorage
 import site.liangbai.realhomehunt.util.kt.createTableIfNotExists
 
 abstract class SqlStorage : IStorage {
+    abstract val database: Database
+
     private val owners = mutableListOf<String>()
 
     private var count: Long = 0
-    abstract val database: Database
     fun initTable() {
         database.createTableIfNotExists(Residence::class.java)
     }

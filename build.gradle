@@ -48,12 +48,13 @@ taboolib {
     install("common")
     install("platform-bukkit")
     install("module-chat")
+    install("module-configuration")
     install("module-effect")
     install("module-lang")
     install("module-nms")
     install("module-nms-util")
     classifier = null
-    version = "6.0.0-29"
+    version = "6.0.0-31"
 }
 
 repositories {

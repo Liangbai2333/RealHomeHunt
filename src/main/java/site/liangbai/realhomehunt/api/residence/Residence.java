@@ -188,7 +188,7 @@ public final class Residence implements ConfigurationSerializable {
     public IgnoreBlockInfo getIgnoreBlockInfo(Config.BlockSetting.BlockIgnoreSetting.IgnoreBlockInfo ignoreBlockInfo) {
         return ignoreBlockInfoList.stream()
                 .filter(info -> {
-                    String name = info.type.toUpperCase();
+                    String name = info.type;
 
                     if (ignoreBlockInfo.full != null && !ignoreBlockInfo.full.isEmpty() && ignoreBlockInfo.full.equalsIgnoreCase(name)) return true;
 

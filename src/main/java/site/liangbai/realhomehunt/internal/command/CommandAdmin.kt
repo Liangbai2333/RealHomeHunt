@@ -43,16 +43,16 @@ import taboolib.platform.util.sendLang
 import java.io.File
 import java.util.stream.Collectors
 
-@CommandHeader(name = "rhadmin", aliases = ["rhhadmin", "realhomehuntadmin"], permission = "rh.command.admin", permissionDefault = PermissionDefault.OP)
+@CommandHeader(name = "rhadmin", aliases = ["rhhadmin", "realhomehuntadmin"], permission = "rh.admin", permissionDefault = PermissionDefault.OP)
 internal object CommandAdmin {
-    @CommandBody(permission = "rh.command.admin.help", optional = true)
+    @CommandBody(permission = "rh.admin.help", optional = true)
     val help = subCommand {
         execute<CommandSender> { sender, context, _ ->
             sender.sendLang("command-admin-help", context.name)
         }
     }
 
-    @CommandBody(permission = "rh.command.admin.create", optional = true)
+    @CommandBody(permission = "rh.admin.create", optional = true)
     val create = subCommand {
         dynamic {
             suggestion<Player>(uncheck = true) { _, _ ->
@@ -71,7 +71,7 @@ internal object CommandAdmin {
         }
     }
 
-    @CommandBody(permission = "rh.command.admin.expand", optional = true)
+    @CommandBody(permission = "rh.admin.expand", optional = true)
     val expand = subCommand {
         dynamic {
             suggestion<CommandSender> { _, _ ->
@@ -96,7 +96,7 @@ internal object CommandAdmin {
         }
     }
 
-    @CommandBody(permission = "rh.command.admin.import", optional = true)
+    @CommandBody(permission = "rh.admin.import", optional = true)
     val import = subCommand {
         dynamic {
             suggestion<CommandSender> { _, _ ->
@@ -120,7 +120,7 @@ internal object CommandAdmin {
         }
     }
 
-    @CommandBody(permission = "rh.command.admin.reelect", optional = true)
+    @CommandBody(permission = "rh.admin.reelect", optional = true)
     val reelect = subCommand {
         dynamic {
             suggestion<Player> { _, _ ->
@@ -133,7 +133,7 @@ internal object CommandAdmin {
         }
     }
 
-    @CommandBody(permission = "rh.command.admin.remove", optional = true)
+    @CommandBody(permission = "rh.admin.remove", optional = true)
     val remove = subCommand {
         dynamic {
             suggestion<CommandSender> { _, _ ->
@@ -146,7 +146,7 @@ internal object CommandAdmin {
         }
     }
 
-    @CommandBody(permission = "rh.command.admin.set", optional = true)
+    @CommandBody(permission = "rh.admin.set", optional = true)
     val set = subCommand {
         dynamic {
             suggestion<CommandSender> { _, _ ->
@@ -182,7 +182,7 @@ internal object CommandAdmin {
         }
     }
 
-    @CommandBody(permission = "rh.command.admin.translate", optional = true)
+    @CommandBody(permission = "rh.admin.translate", optional = true)
     val translate = subCommand {
         dynamic {
             suggestion<CommandSender>(uncheck = true) { _, _ ->
@@ -203,14 +203,14 @@ internal object CommandAdmin {
         }
     }
 
-    @CommandBody(permission = "rh.command.admin.translateall", optional = true)
+    @CommandBody(permission = "rh.admin.translateall", optional = true)
     val translateall = subCommand {
         execute<CommandSender> { sender, _, _ ->
             sender.commandTranslateAll()
         }
     }
 
-    @CommandBody
+    @CommandBody(permission = "rh.admin.help")
     val main = mainCommand {
         execute<CommandSender> { sender, context, argument ->
             if (argument.isEmpty()) {

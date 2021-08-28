@@ -458,12 +458,12 @@ object Config {
             fun getByMaterial(material: Material): IgnoreBlockInfo? {
                 val name = material.name.uppercase()
                 return ignoreBlockInfoList.firstOrNull {
-                    it.full != null && it.full.equals(
+                    (it.full != null && it.full.equals(
                         name,
                         ignoreCase = true
-                    ) || (it.prefix.isNotEmpty() || it.suffix.isNotEmpty()) && name.startsWith(
+                    )) || ((it.prefix.isNotEmpty() || it.suffix.isNotEmpty()) && name.startsWith(
                         it.prefix
-                    ) && name.endsWith(it.suffix)
+                    ) && name.endsWith(it.suffix))
                 }.let {
                     it ?: if (!material.isSolid && block.bannedNotSolid) IgnoreBlockInfo(
                             "",
