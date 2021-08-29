@@ -18,12 +18,10 @@
 
 package site.liangbai.realhomehunt.internal.listener.entity
 
-import org.bukkit.block.Block
 import org.bukkit.event.entity.EntityExplodeEvent
 import site.liangbai.realhomehunt.api.residence.attribute.impl.ExplodeAttribute
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager
 import taboolib.common.platform.event.SubscribeEvent
-import java.util.*
 
 internal object ListenerEntityExplode {
     @SubscribeEvent
@@ -31,7 +29,7 @@ internal object ListenerEntityExplode {
         if (!ResidenceManager.isOpened(event.entity.world)) return
         val blocks = event.blockList()
         blocks
-            .filter { obj: Block? -> Objects.nonNull(obj) }
+            .filterNotNull()
             .filter { !it.type.isAir }
             .filter {
                 val residence = ResidenceManager.getResidenceByLocation(it.location)
