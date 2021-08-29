@@ -18,8 +18,6 @@
 
 package site.liangbai.realhomehunt.api.residence.attribute.impl;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import org.jetbrains.annotations.NotNull;
 import site.liangbai.realhomehunt.api.residence.attribute.IAttributable;
 
@@ -87,25 +85,5 @@ public abstract class BooleanAttribute implements IAttributable<Boolean> {
         map.put("value", get());
 
         return map;
-    }
-
-    @Override
-    public String convertToDatabaseColumn(IAttributable<Boolean> attribute) {
-        JsonObject jsonObject = new JsonObject();
-
-        jsonObject.addProperty("target", attribute.getName());
-
-        jsonObject.addProperty("value", value);
-
-        return jsonObject.toString();
-    }
-
-    @Override
-    public IAttributable<Boolean> convertToEntityAttribute(String dbData) {
-        JsonObject jsonObject = new JsonParser().parse(dbData).getAsJsonObject();
-
-        set(jsonObject.get("value").getAsBoolean());
-
-        return this;
     }
 }

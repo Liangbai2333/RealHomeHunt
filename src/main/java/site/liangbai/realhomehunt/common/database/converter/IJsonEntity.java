@@ -16,9 +16,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.common.database.converter.list;
+package site.liangbai.realhomehunt.common.database.converter;
 
-import javax.persistence.AttributeConverter;
+/**
+ * The interface Json entity.
+ *
+ * @param <X> the type parameter
+ * @author Liangbai
+ * @since 2021 /08/29 08:26 下午
+ */
+public interface IJsonEntity<X> {
+    String convertToDatabaseColumn(X attribute);
 
-public interface IJsonEntity<X extends IJsonEntity<X>> extends AttributeConverter<X, String> {
+    X convertToEntityAttribute(String dbData);
 }

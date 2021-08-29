@@ -46,7 +46,7 @@ import java.util.concurrent.ConcurrentHashMap
 internal object Command {
     val showCaches: MutableMap<String, EffectGroup> = ConcurrentHashMap()
 
-    @CommandBody(permission = "rh.command.help", optional = true)
+    @CommandBody(permission = "rh.command.help", optional = true, permissionDefault = PermissionDefault.TRUE)
     val help = subCommand {
         execute<CommandSender> { sender, context, _ ->
             sender.sendLang("command-help-common", context.name)
@@ -71,14 +71,14 @@ internal object Command {
         }
     }
 
-    @CommandBody(permission = "rh.command.create", optional = true)
+    @CommandBody(permission = "rh.command.create", optional = true, permissionDefault = PermissionDefault.TRUE)
     val create = subCommand {
         execute<Player> { sender, _, _ ->
             sender.commandCreate()
         }
     }
 
-    @CommandBody(permission = "rh.command.remove", optional = true)
+    @CommandBody(permission = "rh.command.remove", optional = true, permissionDefault = PermissionDefault.TRUE)
     val remove = subCommand {
         execute<Player> { sender, context, _ ->
             val residence = ResidenceManager.getResidenceByOwner(sender.name)
@@ -99,7 +99,7 @@ internal object Command {
         }
     }
 
-    @CommandBody(permission = "rh.command.info", optional = true)
+    @CommandBody(permission = "rh.command.info", optional = true, permissionDefault = PermissionDefault.TRUE)
     val info = subCommand {
         dynamic(optional = true) {
             suggestion<CommandSender> { _, _ ->
@@ -116,7 +116,7 @@ internal object Command {
         }
     }
 
-    @CommandBody(permission = "rh.command.administrator", optional = true)
+    @CommandBody(permission = "rh.command.administrator", optional = true, permissionDefault = PermissionDefault.TRUE)
     val administrator = subCommand {
         dynamic {
             suggestion<Player>(uncheck = true) { sender, _ ->
@@ -152,7 +152,7 @@ internal object Command {
         }
     }
 
-    @CommandBody(permission = "rh.command.confirm", optional = true)
+    @CommandBody(permission = "rh.command.confirm", optional = true, permissionDefault = PermissionDefault.TRUE)
     val confirm = subCommand {
         execute<Player> { sender, _, _ ->
             if (!ConfirmModule.hasConfirmCache(sender)) {
@@ -166,14 +166,14 @@ internal object Command {
         }
     }
 
-    @CommandBody(permission = "rh.command.setspawn", optional = true)
+    @CommandBody(permission = "rh.command.setspawn", optional = true, permissionDefault = PermissionDefault.TRUE)
     val setspawn = subCommand {
         execute<Player> { sender, _, _ ->
             sender.commandSetSpawn()
         }
     }
 
-    @CommandBody(permission = "rh.command.unselect", optional = true)
+    @CommandBody(permission = "rh.command.unselect", optional = true, permissionDefault = PermissionDefault.TRUE)
     val unselect = subCommand {
         execute<Player> { sender, _, _ ->
             SelectCache.pop(sender)
@@ -181,7 +181,7 @@ internal object Command {
         }
     }
 
-    @CommandBody(permission = "rh.command.back", optional = true)
+    @CommandBody(permission = "rh.command.back", optional = true, permissionDefault = PermissionDefault.TRUE)
     val back = subCommand {
         val teleportPlayers: MutableSet<UUID> = mutableSetOf()
 
@@ -208,14 +208,14 @@ internal object Command {
         }
     }
 
-    @CommandBody(permission = "rh.command.show", optional = true)
+    @CommandBody(permission = "rh.command.show", optional = true, permissionDefault = PermissionDefault.TRUE)
     val show = subCommand {
         execute<Player> { sender, _, _ ->
             sender.commandShow()
         }
     }
 
-    @CommandBody(permission = "rh.command.set", optional = true)
+    @CommandBody(permission = "rh.command.set", optional = true, permissionDefault = PermissionDefault.TRUE)
     val set = subCommand {
         dynamic {
             suggestion<Player> { _, _ ->

@@ -18,54 +18,56 @@
 
 package site.liangbai.realhomehunt.internal.storage.impl
 
-import org.bukkit.plugin.Plugin
-import site.liangbai.realhomehunt.common.config.Config.StorageSetting.SqliteSetting
-import taboolib.common.io.newFile
+import site.liangbai.realhomehunt.common.config.Config
 import taboolib.module.database.*
 
-class SqliteStorage(plugin: Plugin, setting: SqliteSetting) : SqlStorage<Host<SQLite>, SQLite>() {
-    override val host = newFile(if (setting.onlyInPluginFolder) plugin.dataFolder.absolutePath + "/" + setting.databaseFile else setting.databaseFile).getHost()
+class MySQLStorage(setting: Config.StorageSetting.MySqlSetting) : SqlStorage<Host<SQL>, SQL>() {
+    override val host = HostSQL(setting.address, setting.port.toString(), setting.user, setting.password, setting.database)
 
     override val table = Table("residences", host) {
         add {
             name("owner")
-            type(ColumnTypeSQLite.TEXT, 36) {
-                options(ColumnOptionSQLite.PRIMARY_KEY)
+            type(ColumnTypeSQL.TEXT, 36) {
+                options(ColumnOptionSQL.PRIMARY_KEY)
             }
         }
 
         add {
             name("left")
-            type(ColumnTypeSQLite.TEXT)
+            type(ColumnTypeSQL.TEXT)
         }
 
         add {
             name("right")
-            type(ColumnTypeSQLite.TEXT)
+            type(ColumnTypeSQL.TEXT)
         }
 
         add {
             name("administrators")
-            type(ColumnTypeSQLite.TEXT)
+            type(ColumnTypeSQL.TEXT)
         }
 
         add {
             name("attributes")
-            type(ColumnTypeSQLite.TEXT)
+            type(ColumnTypeSQL.TEXT)
         }
 
         add {
             name("ignoreBlockInfoList")
-            type(ColumnTypeSQLite.TEXT)
+            type(ColumnTypeSQL.TEXT)
         }
 
         add {
             name("spawn")
-            type(ColumnTypeSQLite.TEXT)
+            type(ColumnTypeSQL.TEXT)
         }
     }
 
     init {
+        if (setting.options.isNotEmpty()) {
+            host.flags.add(setting.options)
+        }
+
         table.workspace(dataSource) { createTable(true) }.run()
     }
 }

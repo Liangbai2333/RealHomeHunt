@@ -16,25 +16,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.common.database.converter
+package site.liangbai.realhomehunt.common.database.converter.impl
 
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import site.liangbai.realhomehunt.api.zone.Zone
-import site.liangbai.realhomehunt.common.database.converter.LocationConverter.Companion.asJsonObject
+import site.liangbai.realhomehunt.common.database.converter.IJsonEntity
+import site.liangbai.realhomehunt.common.database.converter.impl.LocationConverter.Companion.asJsonObject
 import taboolib.platform.util.toBukkitLocation
 import taboolib.platform.util.toProxyLocation
-import javax.persistence.AttributeConverter
 
 // Pre for 1.5
-class ZoneConverter : AttributeConverter<Zone, String> {
+class ZoneConverter : IJsonEntity<Zone> {
     private val locationConverter = LocationConverter()
 
     override fun convertToDatabaseColumn(attribute: Zone): String {
         val json = JsonObject()
-
         val leftJson = attribute.left.toBukkitLocation().asJsonObject()
-
         val rightJson = attribute.right.toBukkitLocation().asJsonObject()
 
         json.add("left", leftJson)

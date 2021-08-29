@@ -16,6 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import com.google.gson.JsonParser;
+
 public class Test {
     public static void main(String[] args) {
         // TODO

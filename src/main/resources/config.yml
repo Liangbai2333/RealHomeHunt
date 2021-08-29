@@ -3,52 +3,34 @@
 
 # 插件前缀
 prefix: "&f[&6&l繁梦之都&f] &r"
-
 # 开放的世界
 openWorlds:
   - sc
-
 # 传送回家的秒数
 teleportMills: 10
-
 # 打击方块时是否显示方块剩余血量
 showBlockHealth: true
-
 # 是否只显示玩家当前目标方块的血量, 也就是当前看的方块
 showOnlyTargetBlock: true
-
 # 恢复方块裂纹的秒数
 maxWaitMills: 10
-
 # 玩家下蹲+上仰发起警告敌人入侵的间隔秒数
 unloadWarnMills: 10
-
 # 卸载玩家打击领地缓存的秒数
 unloadPlayerAttackMills: 600
-
 # 打击的算法, (枪械伤害 + (perPowerLevelDamage * 枪械力量附魔等级)) / gunDamageMultiple
 gunDamageMultiple: 4
-
 perPowerLevelDamage: 1
-
 # 方块硬度的倍数, (方块原硬度 * defaultBlockHardnessMultiple)
 defaultBlockHardnessMultiple: 3.2
-
-# 控制台使用的语言文件
-consoleLanguage: zh_cn
-
 # 显示物品栏上方的提示文字
 showActionBar: true
-
 # 物品栏上方的文字的显示秒数
 actionBarShowMills: 30
-
 # 执行确认操作时的等待秒数
 confirmWaitMills: 15
-
 # 是否掉落方块
 dropItem: false
-
 # 掠夺者模式
 # 在此模式下, 领地内的箱子无法正常打开, 并且无法直接破坏, 只能通过枪械攻击, 并且箱子内的物品都有概率随机掉落
 # 随机掉落视配置而定
@@ -57,7 +39,6 @@ robChestMode:
   enabled: false
   # 是否修复没有被掉落的物品(如果开启自动修复模式)
   fixItem: true
-
   # 掉落物品概率设定
   dropItem:
     global:
@@ -76,7 +57,6 @@ robChestMode:
       # 单独的物品类型, 如STONE代表石头
       type: STONE
       chance: 0.1
-
 # 是否开启领地自动修复
 autoFixResidence:
   # 开关
@@ -89,12 +69,10 @@ autoFixResidence:
   # 如HOPPER为漏斗
   ignoreBlockTypes:
     - HOPPER
-
 # 存储
 storage:
   # 可以填写SQLITE、MYSQL与YAML
   type: SQLITE
-
   # SQLite配置
   sqlite:
     # 仅仅在插件配置目录下查找文件，如果填false则在全盘中获取
@@ -111,8 +89,10 @@ storage:
     user: root
     # 密码
     password: 123456
+    # Database
+    database: ""
     # 附加参数
-    options: "web_study?useSSL=false"
+    options: ""
 # 领地设置
 residence:
   # 禁止在Residence领地内创建领地
@@ -164,14 +144,12 @@ residence:
       blue: 0
   # 允许玩家使用头上仰90度+Shift潜行来向成员发出发出防御警告
   openWarn: true
-
 # 方块设置
 block:
   # 是否禁止一切非固体方块放置
   # 非固体方块无法被枪械打击
   # 可在下列屏蔽放置方块限制放置数量, 为-1即允许放置
   bannedNotSolid: true
-
   # 限制放置的方块
   ignore:
     door:

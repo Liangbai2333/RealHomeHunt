@@ -30,49 +30,26 @@ import site.liangbai.realhomehunt.common.actionbar.impl.DynamicActionBar;
 import site.liangbai.realhomehunt.api.residence.attribute.IAttributable;
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
 import site.liangbai.realhomehunt.common.config.Config;
-import site.liangbai.realhomehunt.common.database.converter.LocationConverter;
-import site.liangbai.realhomehunt.common.database.converter.list.AttributableListConverter;
-import site.liangbai.realhomehunt.common.database.converter.list.IJsonEntity;
-import site.liangbai.realhomehunt.common.database.converter.list.IgnoreBlockInfoListConverter;
-import site.liangbai.realhomehunt.common.database.converter.list.StringListConverter;
+import site.liangbai.realhomehunt.common.database.converter.IJsonEntity;
 import site.liangbai.realhomehunt.internal.task.UnloadPlayerAttackTask;
 import site.liangbai.realhomehunt.internal.task.UnloadWarnTask;
 import site.liangbai.realhomehunt.util.*;
 
-import javax.persistence.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Entity
-@Table(name = "residences")
 public final class Residence implements ConfigurationSerializable {
 
-    @Id
     private String owner;
-
-    @Convert(converter = LocationConverter.class)
     private Location left;
-
-    @Convert(converter = LocationConverter.class)
     private Location right;
-
-    @Convert(converter = LocationConverter.class)
     private Location spawn;
-
-    @Convert(converter = StringListConverter.class)
     private List<String> administrators;
-
-    @Convert(converter = IgnoreBlockInfoListConverter.class)
     private List<IgnoreBlockInfo> ignoreBlockInfoList;
-
-    @Convert(converter = AttributableListConverter.class)
     private List<IAttributable<?>> attributes;
 
-    @Transient
     private final List<String> attacks = new ArrayList<>();
-
     private boolean canWarn = true;
-
     private Residence(Location left, Location right, Player owner) {
         this(left, right, owner.getName());
     }
@@ -110,42 +87,34 @@ public final class Residence implements ConfigurationSerializable {
 
     // Data
 
-    @Id
     public String getOwner() {
         return owner;
     }
 
-    @Convert(converter = LocationConverter.class)
     public Location getLeft() {
         return left;
     }
 
-    @Convert(converter = LocationConverter.class)
     public Location getRight() {
         return right;
     }
 
-    @Convert(converter = LocationConverter.class)
     public Location getSpawn() {
         return spawn;
     }
 
-    @Convert(converter = StringListConverter.class)
     public List<String> getAdministrators() {
         return administrators;
     }
 
-    @Convert(converter = IgnoreBlockInfoListConverter.class)
     public List<IgnoreBlockInfo> getIgnoreBlockInfoList() {
         return ignoreBlockInfoList;
     }
 
-    @Convert(converter = AttributableListConverter.class)
     public List<IAttributable<?>> getAttributes() {
         return attributes;
     }
 
-    @Transient
     public boolean isCanWarn() {
         return canWarn;
     }
@@ -261,7 +230,7 @@ public final class Residence implements ConfigurationSerializable {
             }
         }
 
-        Messages.sendToAll("action.hitBlock.all.message", getOwner(), attacker.getName());
+        Messages.sendToAll("action-hit-block-all-message", getOwner(), attacker.getName());
 
         addAttack(attacker.getName());
     }
@@ -288,7 +257,6 @@ public final class Residence implements ConfigurationSerializable {
         new UnloadWarnTask(this).runTaskLater(RealHomeHuntPlugin.INSTANCE.getInst(), Config.unloadWarnMills);
     }
 
-    @Transient
     public List<Player> getOnlineMembers() {
         List<Player> players = new ArrayList<>();
 

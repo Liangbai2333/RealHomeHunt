@@ -19,14 +19,10 @@ plugins {
 apply plugin: 'net.minecraftforge.gradle'
 
 group = 'site.liangbai'
-version = '1.4.0-rc'
+version = '1.4.0-rc1'
 
 java {
     withSourcesJar()
-
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(11)
-    }
 }
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
@@ -49,16 +45,20 @@ taboolib {
     install("platform-bukkit")
     install("module-chat")
     install("module-configuration")
+    install("module-database")
     install("module-effect")
     install("module-lang")
     install("module-nms")
     install("module-nms-util")
     classifier = null
-    version = "6.0.0-31"
+    version = "6.0.0-44"
 }
 
 repositories {
     maven { url 'https://maven.izzel.io/releases' }
+
+    // For test
+    mavenLocal()
 
     maven {
         name 'cursemaven'
@@ -80,10 +80,7 @@ dependencies {
     implementation 'ink.ptms.core:v11604:11604:all'
     implementation 'io.izzel.arclight:arclight-api:1.0.1'
     implementation fg.deobf("curse.maven:crafting_dead-${crafting_dead_project_id}:${crafting_dead_file_id}")
-    // https://mvnrepository.com/artifact/org.jetbrains/annotations
     implementation group: 'org.jetbrains', name: 'annotations', version: '21.0.1'
-    // https://mvnrepository.com/artifact/com.dieselpoint/norm
-    shaded group: 'com.dieselpoint', name: 'norm', version: '1.0.4'
     implementation fileTree(dir: 'libs', includes: ['*.jar'])
 }
 

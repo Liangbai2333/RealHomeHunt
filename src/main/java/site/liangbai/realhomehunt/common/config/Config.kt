@@ -77,8 +77,6 @@ object Config {
     @JvmField
     var perPowerLevelDamage = 0.0
 
-    lateinit var consoleLanguage: String
-
     @JvmField
     var showActionBar = false
 
@@ -115,7 +113,6 @@ object Config {
         gunDamageMultiple = yamlConfiguration.getDouble("gunDamageMultiple", 4.0)
         defaultBlockHardnessMultiple = yamlConfiguration.getDouble("defaultBlockHardnessMultiple", 3.2)
         perPowerLevelDamage = yamlConfiguration.getDouble("perPowerLevelDamage", 1.0)
-        consoleLanguage = yamlConfiguration.getString("consoleLanguage", "zh_cn")!!
         showActionBar = yamlConfiguration.getBoolean("showActionBar", true)
         showBlockHealth = yamlConfiguration.getBoolean("showBlockHealth", true)
         showOnlyTargetBlock = yamlConfiguration.getBoolean("showOnlyTargetBlock", true)
@@ -267,12 +264,14 @@ object Config {
             ?: throw IllegalStateException("can not load config part: storage.mysql.user")
         val password = mySqlSection.getString("password", "123456")
             ?: throw IllegalStateException("can not load config part: storage.mysql.password")
+        val database = mySqlSection.getString("database", "")!!
         var options = mySqlSection.getString("options", "")
         if (options == null) options = ""
         mySqlSetting.address = address
         mySqlSetting.port = port
         mySqlSetting.user = user
         mySqlSetting.password = password
+        mySqlSetting.database = database
         mySqlSetting.options = options
         storage.mySqlSetting = mySqlSetting
     }
@@ -348,6 +347,8 @@ object Config {
             lateinit var user: String
 
             lateinit var password: String
+
+            lateinit var database: String
 
             lateinit var options: String
         }

@@ -18,47 +18,85 @@
 
 package site.liangbai.realhomehunt.internal.storage.impl
 
-import com.dieselpoint.norm.Database
 import site.liangbai.realhomehunt.api.residence.Residence
+import site.liangbai.realhomehunt.common.database.ConverterManager.convertToEntity
+import site.liangbai.realhomehunt.common.database.ConverterManager.convertToEntityList
+import site.liangbai.realhomehunt.common.database.ConverterManager.convertToString
 import site.liangbai.realhomehunt.internal.storage.IStorage
-import site.liangbai.realhomehunt.util.kt.createTableIfNotExists
+import taboolib.module.database.ColumnBuilder
+import taboolib.module.database.Host
+import taboolib.module.database.Table
 
-abstract class SqlStorage : IStorage {
-    abstract val database: Database
+abstract class SqlStorage<T: Host<E>, E : ColumnBuilder> : IStorage {
+    abstract val host: Host<E>
 
-    private val owners = mutableListOf<String>()
+    abstract val table: Table<T, E>
 
-    private var count: Long = 0
-    fun initTable() {
-        database.createTableIfNotExists(Residence::class.java)
+    val dataSource by lazy {
+        host.createDataSource()
     }
+    private var count = 0L
+    private val cache = mutableListOf<String>()
 
-    @Synchronized
-    override fun save(residence: Residence) {
-        if (!owners.contains(residence.owner)) {
-            database.insert(residence)
-            owners.add(residence.owner)
-            return
-        }
-        database.update(residence)
-    }
-
-    @Synchronized
     override fun remove(residence: Residence) {
-        if (owners.contains(residence.owner)) {
-            database.delete(residence)
-            owners.remove(residence.owner)
+        table.workspace(dataSource) {
+            delete { where { "owner" eq residence.owner } }
+        }.run()
+
+        cache.remove(residence.owner)
+    }
+
+    override fun save(residence: Residence) {
+        if (residence.owner in cache) {
+            table.workspace(dataSource) {
+                update {
+                    set("left", residence.left.convertToString())
+                    set("right", residence.right.convertToString())
+                    set("administrators", residence.administrators.convertToString())
+                    set("attributes", residence.attributes.convertToString())
+                    set("ignoreBlockInfoList", residence.ignoreBlockInfoList.convertToString())
+                    set("spawn", residence.spawn.convertToString())
+                    where {
+                        "owner" eq residence.owner
+                    }
+                }
+            }.run()
+        } else {
+            table.workspace(dataSource) {
+                insert("owner", "left", "right", "administrators", "attributes", "ignoreBlockInfoList", "spawn") {
+                    value(
+                        residence.owner,
+                        residence.left.convertToString(),
+                        residence.right.convertToString(),
+                        residence.administrators.convertToString(),
+                        residence.attributes.convertToString(),
+                        residence.ignoreBlockInfoList.convertToString(),
+                        residence.spawn.convertToString()
+                    )
+                }
+            }.run()
+
+            cache.add(residence.owner)
         }
     }
 
     override fun loadAll(): List<Residence> {
-        val list = database.results(
-            Residence::class.java
-        ).filterNotNull()
-        list.map { it.owner }
-            .forEach { owners.add(it) }
-        count = list.size.toLong()
-        return list
+        return table.workspace(dataSource) {
+            select {  }
+        }.map {
+            val residence = Residence()
+            residence.owner = getString("owner")
+            residence.left = getString("left").convertToEntity()
+            residence.right = getString("right").convertToEntity()
+            residence.administrators = getString("administrators").convertToEntityList()
+            residence.attributes = getString("attributes").convertToEntityList()
+            residence.ignoreBlockInfoList = getString("ignoreBlockInfoList").convertToEntityList()
+            residence.spawn = getString("spawn").convertToEntity()
+            count++
+            cache.add(residence.owner)
+
+            residence
+        }
     }
 
     override fun count(): Long {
@@ -66,6 +104,6 @@ abstract class SqlStorage : IStorage {
     }
 
     override fun close() {
-        database.close()
+        dataSource.connection.close()
     }
 }

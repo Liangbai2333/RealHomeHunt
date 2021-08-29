@@ -16,18 +16,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.common.database.converter
+package site.liangbai.realhomehunt.common.database.converter.impl
 
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.World
-import javax.persistence.AttributeConverter
-import javax.persistence.Converter
+import site.liangbai.realhomehunt.common.database.converter.IJsonEntity
 
-@Converter
-class LocationConverter : AttributeConverter<Location, String> {
+class LocationConverter :
+    IJsonEntity<Location> {
     companion object {
         fun Location.asJsonObject(): JsonObject {
             return JsonObject()
