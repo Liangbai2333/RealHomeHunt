@@ -77,6 +77,7 @@ object RealHomeHuntPlugin : Plugin() {
     fun init() {
         Config.init(inst)
         Language.reload()
+        closeStorage()
         ResidenceManager.init(inst, Config.storage.type)
         processSuccess()
     }
