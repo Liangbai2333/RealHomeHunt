@@ -27,7 +27,7 @@ import site.liangbai.realhomehunt.util.LangBridge;
 public final class RemoveConfirmProcessor implements IConfirmProcessor {
     @Override
     public void process(Player player, Residence residence) {
-        if (!new ResidenceRemoveEvent(residence, player).callEvent()) return;
+        if (!new ResidenceRemoveEvent(residence, player).post()) return;
 
         residence.remove();
 

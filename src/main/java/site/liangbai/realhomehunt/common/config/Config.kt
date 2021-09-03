@@ -60,6 +60,8 @@ object Config {
 
     lateinit var autoFixResidence: AutoFixResidenceSetting
 
+    lateinit var gun: GunSetting
+
     lateinit var openWorlds: List<String>
 
     @JvmField
@@ -101,24 +103,25 @@ object Config {
 
     private fun reload() {
         Console.sendMessage(ChatColor.GREEN.toString() + "Reload config...")
+
         val yamlConfiguration = YamlConfiguration.loadConfiguration(
             configFile
         )
         prefix = yamlConfiguration.getString("prefix", "")!!.colored()
-        openWorlds = yamlConfiguration.getStringList("openWorlds")
-        maxWaitMills = yamlConfiguration.getLong("maxWaitMills", 5).asTicks()
-        teleportMills = yamlConfiguration.getLong("teleportMills", 10).asTicks()
-        unloadPlayerAttackMills = yamlConfiguration.getLong("unloadPlayerAttackMills", 600).asTicks()
-        unloadWarnMills = yamlConfiguration.getLong("unloadWarnMills", 10).asTicks()
-        gunDamageMultiple = yamlConfiguration.getDouble("gunDamageMultiple", 4.0)
-        defaultBlockHardnessMultiple = yamlConfiguration.getDouble("defaultBlockHardnessMultiple", 3.2)
-        perPowerLevelDamage = yamlConfiguration.getDouble("perPowerLevelDamage", 1.0)
-        showActionBar = yamlConfiguration.getBoolean("showActionBar", true)
-        showBlockHealth = yamlConfiguration.getBoolean("showBlockHealth", true)
-        showOnlyTargetBlock = yamlConfiguration.getBoolean("showOnlyTargetBlock", true)
-        actionBarShowMills = yamlConfiguration.getLong("actionBarShowMills", 600).asTicks()
-        confirmWaitMills = yamlConfiguration.getLong("confirmWaitMills", 15).asTicks()
-        dropItem = yamlConfiguration.getBoolean("dropItem", false)
+        openWorlds = yamlConfiguration.getStringList("open-worlds")
+        maxWaitMills = yamlConfiguration.getLong("max-wait-mills", 5).asTicks()
+        teleportMills = yamlConfiguration.getLong("teleport-mills", 10).asTicks()
+        unloadPlayerAttackMills = yamlConfiguration.getLong("unload-player-attack-mills", 600).asTicks()
+        unloadWarnMills = yamlConfiguration.getLong("unload-warn-mills", 10).asTicks()
+        gunDamageMultiple = yamlConfiguration.getDouble("gun-damage-multiple", 4.0)
+        defaultBlockHardnessMultiple = yamlConfiguration.getDouble("default-block-hardness-multiple", 3.2)
+        perPowerLevelDamage = yamlConfiguration.getDouble("per-power-level-damage", 1.0)
+        showActionBar = yamlConfiguration.getBoolean("show-action-bar", true)
+        showBlockHealth = yamlConfiguration.getBoolean("show-block-health", true)
+        showOnlyTargetBlock = yamlConfiguration.getBoolean("show-only-target-block", true)
+        actionBarShowMills = yamlConfiguration.getLong("action-bar-show-mills", 600).asTicks()
+        confirmWaitMills = yamlConfiguration.getLong("confirm-wait-mills", 15).asTicks()
+        dropItem = yamlConfiguration.getBoolean("drop-item", false)
         Console.sendRawMessage(ChatColor.GREEN.toString() + "Linking storage settings...")
         linkStorageConfig(yamlConfiguration)
         Console.sendRawMessage(ChatColor.GREEN.toString() + "Linking storage settings successful.")
@@ -134,6 +137,9 @@ object Config {
         Console.sendRawMessage(ChatColor.GREEN.toString() + "Linking rob chest mode settings...")
         linkRobChestModeConfig(yamlConfiguration)
         Console.sendRawMessage(ChatColor.GREEN.toString() + "Linking rob chest mode settings successful.")
+        Console.sendRawMessage(ChatColor.GREEN.toString() + "Linking gun settings...")
+        linkGunConfig(yamlConfiguration)
+        Console.sendRawMessage(ChatColor.GREEN.toString() + "Linking gun settings successful.")
         Console.sendRawMessage(ChatColor.GREEN.toString() + "Reload config successful.")
     }
 
@@ -142,8 +148,8 @@ object Config {
             ?: throw IllegalStateException("can not load config part: residence")
         residence = ResidenceSetting()
         residence.bannedCreateInResidence = residenceSection.getBoolean("banned-create-in-residence", true)
-        val residenceSizeLimitSection = residenceSection.getConfigurationSection("sizeLimit")
-            ?: throw IllegalStateException("can not load config part: residence.sizeLimit")
+        val residenceSizeLimitSection = residenceSection.getConfigurationSection("size-limit")
+            ?: throw IllegalStateException("can not load config part: residence.size-limit")
         val sizeSetting = ResidenceSizeSetting()
         sizeSetting.x = residenceSizeLimitSection.getInt("x", 16)
         sizeSetting.y = residenceSizeLimitSection.getInt("y", 16)
@@ -152,40 +158,40 @@ object Config {
         val residenceToolSection = residenceSection.getConfigurationSection("tool")
             ?: throw IllegalStateException("can not load config part: residence.tool")
         val toolSetting = ResidenceToolSetting()
-        val left = residenceToolSection.getString("leftSelect", "STICK")
-        val right = residenceToolSection.getString("rightSelect", "STICK")
+        val left = residenceToolSection.getString("left-select", "STICK")
+        val right = residenceToolSection.getString("right-select", "STICK")
         val leftSelect = left?.let { Material.matchMaterial(it) } ?: Material.STICK
         val rightSelect = right?.let { Material.matchMaterial(it) } ?: Material.STICK
         toolSetting.leftSelect = leftSelect
         toolSetting.rightSelect = rightSelect
-        toolSetting.showSelectZone = residenceToolSection.getBoolean("showSelectZone", true)
-        val particleName = residenceToolSection.getString("showParticle", "REDSTONE")!!.uppercase()
+        toolSetting.showSelectZone = residenceToolSection.getBoolean("show-select-zone", true)
+        val particleName = residenceToolSection.getString("show-particle", "REDSTONE")!!.uppercase()
         try {
             toolSetting.showParticle = Particle.valueOf(particleName)
         } catch (t: Throwable) {
             Console.sendRawMessage(ChatColor.RED.toString() + "can not find the particle: " + particleName + ", use default: REDSTONE")
             toolSetting.showParticle = Particle.REDSTONE
         }
-        toolSetting.showParticleStep = residenceToolSection.getDouble("showParticleStep", 0.1)
-        val particleColorSection = residenceToolSection.getConfigurationSection("particleColor")
-            ?: throw IllegalStateException("can not load config part: residence.tool.particleColor")
+        toolSetting.showParticleStep = residenceToolSection.getDouble("show-particle-step", 0.1)
+        val particleColorSection = residenceToolSection.getConfigurationSection("particle-color")
+            ?: throw IllegalStateException("can not load config part: residence.tool.particle-color")
         val particleColorSetting = ParticleColorSetting()
         particleColorSetting.enabled = particleColorSection.getBoolean("enabled", true)
-        particleColorSetting.color = if (particleColorSection.getBoolean("useRGB", false)) Color.fromRGB(
+        particleColorSetting.color = if (particleColorSection.getBoolean("use-rgb", false)) Color.fromRGB(
             particleColorSection.getInt("red", 255),
             particleColorSection.getInt("green", 0),
             particleColorSection.getInt("blue", 0)
         ) else ProxyColor.matches(particleColorSection.getString("name", "RED"), ProxyColor.RED).toColor()
         toolSetting.particleColor = particleColorSetting
         residence.tool = toolSetting
-        residence.openWarn = residenceSection.getBoolean("openWarn", true)
+        residence.openWarn = residenceSection.getBoolean("open-warn", true)
     }
 
     private fun linkBlockConfig(section: ConfigurationSection) {
         val blockSection = section.getConfigurationSection("block")
             ?: throw IllegalStateException("can not load config part: block")
         block = BlockSetting()
-        block.bannedNotSolid = blockSection.getBoolean("bannedNotSolid", true)
+        block.bannedNotSolid = blockSection.getBoolean("banned-not-solid", true)
         val blockIgnoreSection = blockSection.getConfigurationSection("ignore")
         val ignore = BlockIgnoreSetting()
         blockIgnoreSection?.getKeys(false)!!.filter {
@@ -197,11 +203,11 @@ object Config {
             val suffix =it.getString("suffix", "")!!.uppercase()
             val full = it.getString("full")
             val amount = it.getInt("amount", -1)
-            val upBreak = it.getBoolean("upBreak", false)
-            val ignoreHit = it.getBoolean("ignoreHit", false)
-            val useCustomPierceable = it.contains("customPierceable")
-            val customPierceable = it.getBoolean("customPierceable", true)
-            val fixTime = it.getLong("fixTime", -1)
+            val upBreak = it.getBoolean("up-break", false)
+            val ignoreHit = it.getBoolean("ignore-hit", false)
+            val useCustomPierceable = it.contains("custom-pierceable")
+            val customPierceable = it.getBoolean("custom-pierceable", true)
+            val fixTime = it.getLong("fix-time", -1)
             val info = BlockIgnoreSetting.IgnoreBlockInfo()
             info.full = full
             info.prefix = prefix
@@ -240,6 +246,32 @@ object Config {
         block.custom = custom
     }
 
+    private fun linkGunConfig(section: ConfigurationSection) {
+        val gunSection = section.getConfigurationSection("gun")
+            ?: throw IllegalStateException("can not load config part: gun")
+
+        gun = GunSetting()
+        val ignoreSetting = GunSetting.GunIgnoreSetting()
+        ignoreSetting.ignoreList.addAll(
+            gunSection.getStringList("ignore").mapNotNull { Material.matchMaterial(it) }
+        )
+        gun.ignore = ignoreSetting
+        val customSection = gunSection.getConfigurationSection("custom")
+        val customSetting = GunSetting.GunCustomSetting()
+        customSetting.customInfoList.addAll(
+            customSection?.getKeys(false)?.mapNotNull { customSection.getConfigurationSection(it) }?.map {
+                    val type = Material.matchMaterial(
+                        it.getString("type") ?: throw throw IllegalStateException("can not load config part: gun.custom.${it.name}.type")
+                    ) ?: throw throw IllegalStateException("can not found the gun type: ${it.getString("type")}")
+
+                    val info = GunSetting.GunCustomSetting.GunCustomInfo(type, it.getDouble("damage", -1.0), it.getBoolean("without", false))
+
+                    info
+                } ?: emptyList()
+        )
+        gun.custom = customSetting
+    }
+
     private fun linkStorageConfig(section: ConfigurationSection) {
         val storageSection = section.getConfigurationSection("storage")
             ?: throw IllegalStateException("can not load config part: storage")
@@ -249,9 +281,9 @@ object Config {
         val sqliteSection = storageSection.getConfigurationSection("sqlite")
             ?: throw IllegalStateException("can not load config part: storage.sqlite")
         val sqliteSetting = SqliteSetting()
-        sqliteSetting.onlyInPluginFolder = sqliteSection.getBoolean("onlyInPluginFolder", true)
-        val databaseFile = sqliteSection.getString("databaseFile", "residences.db")
-            ?: throw IllegalStateException("can not load config part: storage.sqlite.databaseFile")
+        sqliteSetting.onlyInPluginFolder = sqliteSection.getBoolean("only-in-plugin-folder", true)
+        val databaseFile = sqliteSection.getString("database-file", "residences.db")
+            ?: throw IllegalStateException("can not load config part: storage.sqlite.database-file")
         sqliteSetting.databaseFile = databaseFile
         storage.sqliteSetting = sqliteSetting
         val mySqlSection = storageSection.getConfigurationSection("mysql")
@@ -277,13 +309,13 @@ object Config {
     }
 
     private fun linkRobChestModeConfig(section: ConfigurationSection) {
-        val modeSection = section.getConfigurationSection("robChestMode")
-            ?: throw IllegalStateException("can not load config part: robChestMode")
+        val modeSection = section.getConfigurationSection("rob-chest-mode")
+            ?: throw IllegalStateException("can not load config part: rob-chest-mode")
         robChestMode = RobChestModeSetting()
         robChestMode.enabled = modeSection.getBoolean("enabled", false)
-        robChestMode.fixItem = modeSection.getBoolean("fixItem", true)
-        val dropItemSection = modeSection.getConfigurationSection("dropItem")
-            ?: throw IllegalStateException("can not load config part: robChestMode.dropItem")
+        robChestMode.fixItem = modeSection.getBoolean("fix-item", true)
+        val dropItemSection = modeSection.getConfigurationSection("drop-item")
+            ?: throw IllegalStateException("can not load config part: rob-chest-mode.drop-item")
         robChestMode.dropItem = DropItemSetting()
         dropItemSection.getKeys(false)
             .mapNotNull {
@@ -291,9 +323,9 @@ object Config {
                     it
                 )
             }
-            .filter { (it.contains("globalType") || it.contains("type")) && it.contains("chance") }
+            .filter { (it.contains("global-type") || it.contains("type")) && it.contains("chance") }
             .forEach {
-                val globalType = it.getString("globalType")
+                val globalType = it.getString("global-type")
                 val chance = it.getDouble("chance")
                 if (globalType != null) {
                     val itemType = ItemType.matchType(globalType)
@@ -309,13 +341,13 @@ object Config {
     }
 
     private fun linkAutoFixResidenceConfig(section: ConfigurationSection) {
-        val autoFixResidenceSection = section.getConfigurationSection("autoFixResidence")
-            ?: throw IllegalStateException("can not load config part: autoFixResidence")
+        val autoFixResidenceSection = section.getConfigurationSection("auto-fix-residence")
+            ?: throw IllegalStateException("can not load config part: auto-fix-residence")
         autoFixResidence = AutoFixResidenceSetting()
         autoFixResidence.enabled = autoFixResidenceSection.getBoolean("enabled", true)
-        autoFixResidence.perBlockFixedMills = autoFixResidenceSection.getLong("perBlockFixedMills", 15).asTicks()
-        autoFixResidence.ignoreEnemy = autoFixResidenceSection.getBoolean("ignoreEnemy", false)
-        autoFixResidence.ignoreBlockTypes.addAll(autoFixResidenceSection.getStringList("ignoreBlockTypes")
+        autoFixResidence.perBlockFixedMills = autoFixResidenceSection.getLong("per-block-fixed-mills", 15).asTicks()
+        autoFixResidence.ignoreEnemy = autoFixResidenceSection.getBoolean("ignore-enemy", false)
+        autoFixResidence.ignoreBlockTypes.addAll(autoFixResidenceSection.getStringList("ignore-block-types")
             .mapNotNull {
                 Material.matchMaterial(
                     it
@@ -501,6 +533,41 @@ object Config {
         }
     }
 
+    class GunSetting {
+        lateinit var ignore: GunIgnoreSetting
+        lateinit var custom: GunCustomSetting
+
+        class GunIgnoreSetting {
+            val ignoreList = mutableListOf<Material>()
+
+            fun isIgnored(material: Material) = material in ignoreList
+        }
+
+        class GunCustomSetting {
+            val customInfoList = mutableListOf<GunCustomInfo>()
+
+            fun getCustomDamage(material: Material, original: Double, powerLevel: Int = 0): Double {
+                return customInfoList.firstOrNull { it.type == material }?.let {
+                    if (it.damage < 0) {
+                        if (it.without) {
+                            original
+                        } else countDamage(it.damage, powerLevel)
+                    } else if (it.without) it.damage else countDamage(it.damage, powerLevel)
+                } ?: countDamage(original, powerLevel)
+            }
+
+            private fun countDamage(damage: Double, powerLevel: Int = 0): Double {
+                return (damage + perPowerLevelDamage * powerLevel) / gunDamageMultiple
+            }
+
+            class GunCustomInfo(
+                val type: Material,
+                var damage: Double = -1.0,
+                var without: Boolean = false
+            )
+        }
+    }
+
     class RobChestModeSetting {
         @JvmField
         var enabled = false
@@ -528,6 +595,6 @@ object Config {
         @JvmField
         var ignoreEnemy = false
         @JvmField
-        val ignoreBlockTypes: MutableList<Material?> = mutableListOf()
+        val ignoreBlockTypes: MutableList<Material> = mutableListOf()
     }
 }

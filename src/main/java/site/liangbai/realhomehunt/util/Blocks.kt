@@ -102,7 +102,7 @@ object Blocks {
     }
 
     @JvmStatic
-    fun applyBlockState(newState: BlockState, oldState: BlockState?) {
+    fun applyBlockState(newState: BlockState, oldState: BlockState) {
         if (oldState is Container && Config.robChestMode.enabled && Config.robChestMode.fixItem) {
             val container = newState as Container
             val inventory = container.inventory

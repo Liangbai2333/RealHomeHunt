@@ -53,6 +53,7 @@ class GunHitBlockProcessorImpl : IGunHitBlockProcessor {
         if (!ResidenceManager.isOpened(player.world)) return
         if (!DAMAGE_CACHE_POOL_MAP.containsKey(player.uniqueId)) DAMAGE_CACHE_POOL_MAP[player.uniqueId] =
             DamageCachePool()
+        if (Config.gun.ignore.isIgnored(gun.type)) return
         if (Config.block.ignore.isIgnoreHit(block.type)) return
         val residence = ResidenceManager.getResidenceByLocation(block.location)
         if (residence == null || residence.isAdministrator(player)) return
@@ -70,7 +71,7 @@ class GunHitBlockProcessorImpl : IGunHitBlockProcessor {
                 gun,
                 damageCache,
                 damageCache.hardness
-            ).callEvent()
+            ).post()
         ) return
         if (damageCache.hardness <= 0) return
         damageCache.increaseDamage(Guns.countDamage(gun))

@@ -16,63 +16,59 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.util;
+package site.liangbai.realhomehunt.util
 
-import com.craftingdead.core.world.item.GunItem;
-import kotlin.Unit;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
-import site.liangbai.realhomehunt.common.config.Config;
-import site.liangbai.realhomehunt.util.kt.Utils;
+import com.craftingdead.core.world.item.GunItem
+import org.bukkit.enchantments.Enchantment
+import org.bukkit.inventory.ItemStack
+import site.liangbai.realhomehunt.common.config.Config
+import site.liangbai.realhomehunt.util.kt.toMinecraftItemStack
 
-public final class Guns {
-    public static int countBlockSit(double count, double hardness) {
-        int realHardness = (int) (getHardnessMix(count, hardness) * 9);
-
-        taboolib.common.platform.function.ExecutorKt.submit(false, false, 0, 0, null, task -> Unit.INSTANCE);
-        return realHardness > 9 || realHardness < 0 ? -1 : realHardness;
+object Guns {
+    fun countBlockSit(count: Double, hardness: Double): Int {
+        val realHardness = (getHardnessMix(count, hardness) * 9).toInt()
+        return if (realHardness > 9 || realHardness < 0) -1 else realHardness
     }
 
-    public static double getHardnessMix(double count, double hardness) {
-        return count / hardness;
+    fun getHardnessMix(count: Double, hardness: Double): Double {
+        return count / hardness
     }
 
-    public static int getHardnessMixPercent(double count, double hardness) {
-        int percent = (int) (getHardnessMix(count, hardness) * 100);
-
+    fun getHardnessMixPercent(count: Double, hardness: Double): Int {
+        var percent = (getHardnessMix(count, hardness) * 100).toInt()
         if (percent < 0) {
-            percent = 0;
+            percent = 0
         } else if (percent > 100) {
-            percent = 100;
+            percent = 100
         }
-
-        return percent;
+        return percent
     }
 
-    public static double countDamage(@NotNull ItemStack gun) {
-        net.minecraft.item.ItemStack itemStack = Utils.toMinecraftItemStack(gun);
-
-        if (!isGun(itemStack)) return 0.0D;
-
-        GunItem gunItem = (GunItem) itemStack.getItem();
-
-        int powerLevel = gun.getEnchantmentLevel(Enchantment.ARROW_DAMAGE);
-
-        return (gunItem.getGunType().getDamage() + (Config.perPowerLevelDamage * powerLevel)) / Config.gunDamageMultiple;
+    fun countDamage(gun: ItemStack): Double {
+        return gun.withGun {
+            val powerLevel = gun.getEnchantmentLevel(Enchantment.ARROW_DAMAGE)
+            if (it == null) {
+                0.0
+            } else {
+                Config.gun.custom.getCustomDamage(gun.type, it.gunType.damage.toDouble(), powerLevel)
+            }
+        }
     }
 
-    public static double getDistance(@NotNull ItemStack gun) {
-        net.minecraft.item.ItemStack itemStack = Utils.toMinecraftItemStack(gun);
 
-        if (!isGun(itemStack)) return 0.0D;
 
-        GunItem gunItem = (GunItem) itemStack.getItem();
-
-        return gunItem.getGunType().getRange();
+    fun getDistance(gun: ItemStack): Double {
+        return gun.withGun {
+            it?.gunType?.range ?: 0.0
+        }
     }
 
-    public static boolean isGun(net.minecraft.item.ItemStack itemStack) {
-        return itemStack.getItem() instanceof GunItem;
+    fun <R> ItemStack.withGun(func: (GunItem?) -> R): R {
+        val itemStack = toMinecraftItemStack()
+
+        val item = itemStack.item
+        return if (item is GunItem) {
+            func(item)
+        } else func(null)
     }
 }

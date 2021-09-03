@@ -4,70 +4,70 @@
 # 插件前缀
 prefix: "&f[&6&l繁梦之都&f] &r"
 # 开放的世界
-openWorlds:
+open-worlds:
   - sc
 # 传送回家的秒数
-teleportMills: 10
+teleport-mills: 10
 # 打击方块时是否显示方块剩余血量
-showBlockHealth: true
+show-block-health: true
 # 是否只显示玩家当前目标方块的血量, 也就是当前看的方块
-showOnlyTargetBlock: true
+show-only-target-block: true
 # 恢复方块裂纹的秒数
-maxWaitMills: 10
+max-wait-mills: 10
 # 玩家下蹲+上仰发起警告敌人入侵的间隔秒数
-unloadWarnMills: 10
+unload-warn-mills: 10
 # 卸载玩家打击领地缓存的秒数
-unloadPlayerAttackMills: 600
+unload-player-attack-mills: 600
 # 打击的算法, (枪械伤害 + (perPowerLevelDamage * 枪械力量附魔等级)) / gunDamageMultiple
-gunDamageMultiple: 4
-perPowerLevelDamage: 1
+gun-damage-multiple: 4
+per-power-level-damage: 1
 # 方块硬度的倍数, (方块原硬度 * defaultBlockHardnessMultiple)
-defaultBlockHardnessMultiple: 3.2
+default-block-hardness-multiple: 3.2
 # 显示物品栏上方的提示文字
-showActionBar: true
+show-action-bar: true
 # 物品栏上方的文字的显示秒数
-actionBarShowMills: 30
+action-bar-show-mills: 30
 # 执行确认操作时的等待秒数
-confirmWaitMills: 15
+confirm-wait-mills: 15
 # 是否掉落方块
-dropItem: false
+drop-item: false
 # 掠夺者模式
 # 在此模式下, 领地内的箱子无法正常打开, 并且无法直接破坏, 只能通过枪械攻击, 并且箱子内的物品都有概率随机掉落
 # 随机掉落视配置而定
-robChestMode:
+rob-chest-mode:
   # 开关
   enabled: false
   # 是否修复没有被掉落的物品(如果开启自动修复模式)
-  fixItem: true
+  fix-item: true
   # 掉落物品概率设定
-  dropItem:
+  drop-item:
     global:
       # 全局类型
       # GUN 枪械, MAGAZINE 弹匣, STORAGE 背心, CLOTHING 衣物, GLOBAL 全局
-      globalType: GLOBAL
+      global-type: GLOBAL
       # 概率, 为0-1之间的小数
       chance: 0.5
     gun:
-      globalType: GUN
+      global-type: GUN
       chance: 0.1
     magazine:
-      globalType: MAGAZINE
+      global-type: MAGAZINE
       chance: 0.3
     common_example:
       # 单独的物品类型, 如STONE代表石头
       type: STONE
       chance: 0.1
 # 是否开启领地自动修复
-autoFixResidence:
+auto-fix-residence:
   # 开关
   enabled: true
   # 每个方块修复使用的时间
-  perBlockFixedMills: 15
+  per-block-fixed-mills: 15
   # 是否无视领地内敌人直接恢复, 如关闭即有敌人存在于领地时不进行修复
-  ignoreEnemy: false
+  ignore-enemy: false
   # 取消自动恢复的方块类型
   # 如HOPPER为漏斗
-  ignoreBlockTypes:
+  ignore-block-types:
     - HOPPER
 # 存储
 storage:
@@ -76,9 +76,9 @@ storage:
   # SQLite配置
   sqlite:
     # 仅仅在插件配置目录下查找文件，如果填false则在全盘中获取
-    onlyInPluginFolder: true
+    only-in-plugin-folder: true
     # 数据库文件名
-    databaseFile: "residences.db"
+    database-file: "residences.db"
   # MySQL配置
   mysql:
     # 地址
@@ -98,24 +98,24 @@ residence:
   # 禁止在Residence领地内创建领地
   banned-create-in-residence: true
   # 大小限制
-  sizeLimit:
+  size-limit:
     x: 16
     y: 16
     z: 16
   # 圈地工具设置
   tool:
     # 左键圈地工具, 默认木棍
-    leftSelect: STICK
+    left-select: STICK
     # 右键圈地工具, 默认木棍
-    rightSelect: STICK
+    right-select: STICK
     # 是否开启圈地范围显示
-    showSelectZone: true
+    show-select-zone: true
     # 圈地范围显示使用的粒子, REDSTONE为红石
-    showParticle: REDSTONE
+    show-particle: REDSTONE
     # 可以理解为细腻程度, 但是是越低越细腻
-    showParticleStep: 0.1
+    show-particle-step: 0.1
     # 颜色设置
-    particleColor:
+    particle-color:
       # 是否开启, 如果开启只能使用红石粒子或其他可以被颜色渲染的粒子
       enabled: true
       # 颜色名称
@@ -138,18 +138,33 @@ residence:
       #    ORANGE 橘色;
       name: RED
       # 是否使用RGB模式, 如果启动颜色则不在name获取, 在red, green, blue组成的RGB获取
-      useRGB: false
+      use-rgb: false
       red: 255
       green: 0
       blue: 0
   # 允许玩家使用头上仰90度+Shift潜行来向成员发出发出防御警告
-  openWarn: true
+  open-warn: true
+#枪械设置
+gun:
+  # 禁止抄家的枪械
+  ignore:
+    - CRAFTINGDEAD_G18
+  # 自定义枪械伤害
+  custom:
+    # awp
+    awp:
+      # 枪械英文名
+      type: CRAFTINGDEAD_AWP
+      # 伤害
+      damage: 30.0
+      # 是否取消算法限制
+      without: false
 # 方块设置
 block:
   # 是否禁止一切非固体方块放置
   # 非固体方块无法被枪械打击
   # 可在下列屏蔽放置方块限制放置数量, 为-1即允许放置
-  bannedNotSolid: true
+  banned-not-solid: true
   # 限制放置的方块
   ignore:
     door:
@@ -158,9 +173,9 @@ block:
       # 限制放置数量
       amount: 1
       # 打击他下方的方块，他是否会被破坏，比如木门下方的方块被摧毁，木门也会跟着被摧毁
-      upBreak: true
+      up-break: true
       # 是否屏蔽打击
-      ignoreHit: true
+      ignore-hit: true
     # 玻璃
     # 注意 customPierceable 代表是否为穿透性方块
     # 默认为原来的值, 可不填, 如为false将绕过Crafting Dead进行破坏
@@ -168,13 +183,13 @@ block:
     glass:
       suffix: GLASS
       amount: -1
-      customPierceable: false
+      custom-pierceable: false
     # 箱子
     # fixTime表示修复的时间， 默认为-1则使用默认的修复时间, 单位: s
     chest:
       suffix: CHEST
       amount: -1
-      fixTime: 300
+      fix-time: 300
     # 树叶
     leaves:
       suffix: LEAVES

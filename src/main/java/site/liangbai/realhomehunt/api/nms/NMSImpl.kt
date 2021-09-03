@@ -53,7 +53,7 @@ class NMSImpl : NMS() {
     }
 
     override fun sendActionBar(player: Player, message: String) {
-        player.sendPacket(PacketPlayOutChat(CraftChatMessage.fromStringOrNull(message), ChatMessageType.a(2), player.uniqueId))
+        player.sendPacket(PacketPlayOutChat(CraftChatMessage.fromStringOrNull(message), ChatMessageType.GAME_INFO, player.uniqueId))
     }
 
     override fun sendBreakAnimationPacket(id: Int, block: Block, breakSit: Int, receivers: List<Player>) {

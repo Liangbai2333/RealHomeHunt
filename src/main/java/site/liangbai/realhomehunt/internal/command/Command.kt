@@ -281,7 +281,7 @@ internal object Command {
 
         if (attribute.allow(value)) {
             val event = ResidenceSetAttributeEvent(this, residence, attribute, value)
-            if (!event.callEvent()) return
+            if (!event.post()) return
             val attributeName = attribute.name
             attribute.force(event.value)
             sendLang("command-set-success", attributeName, value)
@@ -395,7 +395,7 @@ internal object Command {
                 sendLang("command-administrator-already-is-administrator", target)
                 return
             }
-            if (!Give(residence, this, target).callEvent()) return
+            if (!Give(residence, this, target).post()) return
             residence.addAdministrator(target)
             sendLang("command-administrator-success-give", target)
         } else {
@@ -403,7 +403,7 @@ internal object Command {
                 sendLang("command-administrator-is-not-administrator", target)
                 return
             }
-            if (!Remove(residence, this, target).callEvent()) return
+            if (!Remove(residence, this, target).post()) return
             residence.removeAdministrator(target)
             sendLang("command-administrator-success-delete", target)
         }
@@ -498,7 +498,7 @@ internal object Command {
 
         val preEvent = ResidenceCreateEvent.Pre(this, residence)
 
-        if (!preEvent.callEvent()) return
+        if (!preEvent.post()) return
 
         if (!hasPermission("rh.unlimited.create") && !preEvent.isCheckBlock) {
             for (info in Config.block.ignore.ignoreBlockInfoList) {
@@ -517,7 +517,7 @@ internal object Command {
 
         residence.spawn = defaultSpawn
 
-        if (!ResidenceCreateEvent.Post(this, residence).callEvent()) return
+        if (!ResidenceCreateEvent.Post(this, residence).post()) return
 
         ResidenceManager.register(residence)
 

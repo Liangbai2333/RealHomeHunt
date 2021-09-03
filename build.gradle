@@ -19,10 +19,14 @@ plugins {
 apply plugin: 'net.minecraftforge.gradle'
 
 group = 'site.liangbai'
-version = '1.4.0-rc1'
+version = '1.4.0-rc3'
 
 java {
     withSourcesJar()
+
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(8)
+    }
 }
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
@@ -51,7 +55,7 @@ taboolib {
     install("module-nms")
     install("module-nms-util")
     classifier = null
-    version = "6.0.0-44"
+    version = "6.0.0-53"
 }
 
 repositories {

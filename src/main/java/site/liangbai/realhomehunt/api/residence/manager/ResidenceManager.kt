@@ -34,18 +34,18 @@ import site.liangbai.realhomehunt.internal.storage.impl.YamlStorage
 import site.liangbai.realhomehunt.util.Console
 import site.liangbai.realhomehunt.util.contains
 
-object ResidenceManager {
-    private val residences: MutableSet<Residence> = linkedSetOf()
+internal object ResidenceManager {
+    private val ownerToResidenceMap = hashMapOf<String, Residence>()
     lateinit var storage: IStorage
     lateinit var storageType: StorageType
 
-    fun init(plugin: Plugin?, storageType: StorageType) {
-        residences.clear()
+    fun init(plugin: Plugin, storageType: StorageType) {
+        ownerToResidenceMap.clear()
         if (storageType == StorageType.SQLITE) {
-            storage = SqliteStorage(plugin!!, Config.storage.sqliteSetting)
+            storage = SqliteStorage(plugin, Config.storage.sqliteSetting)
         }
         if (storageType == StorageType.YAML) {
-            storage = YamlStorage(plugin!!, "data")
+            storage = YamlStorage(plugin, "data")
         }
         if (storageType == StorageType.MYSQL) {
             storage = MySQLStorage(Config.storage.mySqlSetting)
@@ -54,34 +54,32 @@ object ResidenceManager {
         Console.sendRawMessage(ChatColor.GREEN.toString() + "Using storage: " + ChatColor.YELLOW + storageType.name)
         Console.sendRawMessage(ChatColor.GREEN.toString() + "Loading player residence data...")
         val residenceList: List<Residence> = storage.loadAll()
-        residences.addAll(residenceList)
+        residenceList.forEach {
+            ownerToResidenceMap[it.owner] = it
+        }
         Console.sendRawMessage(ChatColor.GREEN.toString() + "Loading player residence data successful.")
         Console.sendRawMessage(ChatColor.GREEN.toString() + "Player residence data load info: ")
         val count = storage.count()
         Console.sendRawMessage(ChatColor.GREEN.toString() + "  count: " + count)
-        Console.sendRawMessage(ChatColor.GREEN.toString() + "  success: " + residences.size)
-        Console.sendRawMessage(ChatColor.GREEN.toString() + "  failed: " + (count - residences.size))
+        Console.sendRawMessage(ChatColor.GREEN.toString() + "  success: " + ownerToResidenceMap.size)
+        Console.sendRawMessage(ChatColor.GREEN.toString() + "  failed: " + (count - ownerToResidenceMap.size))
     }
 
     fun register(residence: Residence) {
-        getResidences().add(residence)
+        ownerToResidenceMap[residence.owner] = residence
     }
 
     fun unregister(residence: Residence) {
-        getResidences().remove(residence)
+        ownerToResidenceMap.remove(residence.owner)
     }
 
     @JvmStatic
     fun getResidenceByOwner(owner: String): Residence? {
-        return getResidences().stream()
-            .parallel()
-            .filter { it.isOwner(owner) }
-            .findAny()
-            .orElse(null)
+        return ownerToResidenceMap[owner]
     }
 
     fun getResidences(): MutableCollection<Residence> {
-        return residences
+        return ownerToResidenceMap.values
     }
 
     fun getResidenceByLocation(location: Location): Residence? {

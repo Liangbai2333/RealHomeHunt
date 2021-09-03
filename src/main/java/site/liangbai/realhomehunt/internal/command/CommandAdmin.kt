@@ -312,7 +312,7 @@ internal object CommandAdmin {
 
         if (attribute.allow(value)) {
             val event = ResidenceSetAttributeEvent(if (this is Player) this else null, residence, attribute, value)
-            if (!event.callEvent()) return
+            if (!event.post()) return
             val attributeName = attribute.name
             attribute.force(event.value)
             sendLang("command-admin-set-success", target, attributeName, value)
@@ -386,7 +386,7 @@ internal object CommandAdmin {
             return
         }
 
-        if (!ResidenceRemoveEvent(residence, if (this is Player) this else null).callEvent()) return
+        if (!ResidenceRemoveEvent(residence, if (this is Player) this else null).post()) return
 
         residence.remove()
 
@@ -432,7 +432,7 @@ internal object CommandAdmin {
 
         val event = ResidenceReelectEvent(this, residence, loc1, loc2)
 
-        if (!event.callEvent()) return
+        if (!event.post()) return
 
         residence.left = loc1
         residence.right = loc2
@@ -466,14 +466,14 @@ internal object CommandAdmin {
 
         val preEvent = ResidenceExpandEvent.Pre(this, residence, expand, size)
 
-        if (!preEvent.callEvent()) return
+        if (!preEvent.post()) return
 
         val pair = residence.expand(preEvent.expand, preEvent.size)
 
         val postEvent =
             ResidenceExpandEvent.Post(this, residence, pair.key, pair.value, preEvent.expand, preEvent.size)
 
-        if (!postEvent.callEvent()) return
+        if (!postEvent.post()) return
 
         residence.left = postEvent.changedLeft
         residence.right = postEvent.changedRight
@@ -516,13 +516,13 @@ internal object CommandAdmin {
 
         val residence = Residence.Builder().owner(target).left(loc1).right(loc2).build()
 
-        if (!ResidenceCreateEvent.Pre(this, residence).callEvent()) return
+        if (!ResidenceCreateEvent.Pre(this, residence).post()) return
 
         val defaultSpawn = Locations.getAverageLocation(loc1.world, loc1, loc2)
 
         residence.spawn = defaultSpawn
 
-        if (!ResidenceCreateEvent.Post(this, residence).callEvent()) return
+        if (!ResidenceCreateEvent.Post(this, residence).post()) return
 
         ResidenceManager.register(residence)
 

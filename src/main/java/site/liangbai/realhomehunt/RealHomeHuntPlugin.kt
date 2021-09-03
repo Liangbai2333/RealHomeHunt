@@ -19,12 +19,14 @@
 package site.liangbai.realhomehunt
 
 import com.craftingdead.core.event.GunEvent
+import io.izzel.arclight.api.Arclight
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.ModList
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.configuration.serialization.ConfigurationSerialization
 import site.liangbai.forgeeventbridge.event.EventBridge
+import site.liangbai.realhomehunt.api.nms.NMS
 import site.liangbai.realhomehunt.api.residence.Residence
 import site.liangbai.realhomehunt.api.residence.attribute.map.AttributeMap
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager
@@ -33,11 +35,12 @@ import site.liangbai.realhomehunt.internal.listener.forge.arclight.EventHandlerG
 import site.liangbai.realhomehunt.internal.listener.forge.arclight.EventHandlerTryPierceableBlock
 import site.liangbai.realhomehunt.internal.listener.forge.block.EventHolderTryPierceableBlock
 import site.liangbai.realhomehunt.internal.listener.forge.player.EventHolderGunHitBlock
+import site.liangbai.realhomehunt.internal.storage.impl.SqlStorage
 import site.liangbai.realhomehunt.util.Console
 import site.liangbai.realhomehunt.util.kt.isArclight
-import site.liangbai.realhomehunt.util.kt.registerForgeEvent
 import site.liangbai.realhomehuntforge.event.BlockRayTraceEvent
 import taboolib.common.LifeCycle
+import taboolib.common.env.RuntimeDependency
 import taboolib.common.platform.Awake
 import taboolib.common.platform.Plugin
 import taboolib.common.platform.function.disablePlugin
@@ -48,6 +51,12 @@ import taboolib.module.lang.Language
 import taboolib.module.nms.MinecraftVersion
 import taboolib.platform.BukkitPlugin
 
+/**
+ * I love you.
+ *
+ * @author Liangbai
+ */
+@RuntimeDependency("!com.google.code.gson:gson:2.8.8", test = "!com.google.gson.Gson")
 object RealHomeHuntPlugin : Plugin() {
     val inst by lazy {
         BukkitPlugin.getInstance()
@@ -67,21 +76,14 @@ object RealHomeHuntPlugin : Plugin() {
     @Awake(LifeCycle.ENABLE)
     fun init() {
         Config.init(inst)
-
         Language.reload()
-
         ResidenceManager.init(inst, Config.storage.type)
-
         processSuccess()
     }
 
     @Awake(LifeCycle.DISABLE)
     private fun closeStorage() {
         saveResidences()
-        doCloseStorage()
-    }
-
-    private fun doCloseStorage() {
         ResidenceManager.storage.close()
     }
 
@@ -92,7 +94,6 @@ object RealHomeHuntPlugin : Plugin() {
     @Awake(LifeCycle.ENABLE)
     private fun initForgeEventListener() {
         var rhhForgeLoaded = false
-
         val useBridge = isForgeEventBridgeLoaded()
 
         if (ModList.get().isLoaded(REAL_HOME_HUNT_FORGE_MOD_ID)) {
@@ -106,17 +107,13 @@ object RealHomeHuntPlugin : Plugin() {
         } else if (isArclight()) {
             Console.sendMessage("${ChatColor.YELLOW}WARN: Found the Arclight server, the plugin will use it, but the server can not found Forge-Event-Bridge mod.")
             Console.sendMessage("${ChatColor.YELLOW}WARN: If the plugin throw the NullPointerException, please update your Arclight version to 1.0.21 or newer, or use the Forge-Event-Bridge.")
-
             val bus = MinecraftForge.EVENT_BUS
-
-            registerForgeEvent(bus, EventHandlerGunHitBlock())
-
+            Arclight.registerForgeEvent(inst, bus, EventHandlerGunHitBlock())
             if (rhhForgeLoaded) {
-                registerForgeEvent(bus, EventHandlerTryPierceableBlock())
+                Arclight.registerForgeEvent(inst, bus, EventHandlerTryPierceableBlock())
             }
         } else {
             disablePlugin()
-
             throw IllegalStateException("can not found Forge-Event-Bridge mod, please install it.")
         }
     }
@@ -136,6 +133,17 @@ object RealHomeHuntPlugin : Plugin() {
     }
 
     private fun isForgeEventBridgeLoaded() = ModList.get().isLoaded(FORGE_EVENT_BRIDGE_MOD_ID)
+
+    @Awake(LifeCycle.ACTIVE)
+    private fun optimize() {
+        // 预热
+        inst
+        NMS.INSTANCE
+        val storage = ResidenceManager.storage
+        if (storage is SqlStorage<*, *>) {
+            storage.dataSource
+        }
+    }
 
     @Awake(LifeCycle.ENABLE)
     private fun initConfigurationSerializer() {

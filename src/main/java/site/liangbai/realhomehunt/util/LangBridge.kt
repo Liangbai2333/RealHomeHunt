@@ -29,5 +29,5 @@ fun Player.sendLang(node: String, vararg args: Any) {
     sendLang(node, *args)
 }
 
-fun Player.asLangText(node: String, vararg args: Any) = asLangText(node, args)
+fun Player.asLangText(node: String, vararg args: Any) = asLangText(node, *args)
 

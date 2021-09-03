@@ -26,7 +26,7 @@ import java.util.function.Consumer
 
 @Suppress("UNCHECKED_CAST")
 abstract class EventCallable<T : EventCallable<T>?>(async: Boolean = false) : Event(async) {
-    fun callEvent(): Boolean {
+    fun post(): Boolean {
         return if (call() is Cancellable) {
             !(this as Cancellable).isCancelled
         } else {
