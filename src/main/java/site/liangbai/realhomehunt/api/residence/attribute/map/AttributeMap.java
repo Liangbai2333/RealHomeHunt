@@ -52,9 +52,6 @@ public final class AttributeMap {
     }
 
     public static void registerAttributeSerializer() {
-        map.values().forEach(it -> {
-
-        });
         map.values().forEach(ConfigurationSerialization::registerClass);
     }
 
