@@ -40,6 +40,7 @@ import site.liangbai.realhomehunt.util.Guns
 import site.liangbai.realhomehunt.util.asLangText
 import site.liangbai.realhomehunt.util.kt.isIgnoreGun
 import site.liangbai.realhomehunt.util.kt.isIgnoreHitBlock
+import taboolib.common.platform.function.submit
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.Executors
@@ -108,7 +109,9 @@ class GunHitBlockProcessorImpl : IGunHitBlockProcessor {
                 }
                 val blockData = damageCache.block.blockData.clone()
                 val callBack = GameModeManager.submit(residence, player, gun, block, block.state, blockData)
-                sendBreakBlockPacket(damageCache.block, Config.dropItem && callBack.get())
+                submit {
+                    sendBreakBlockPacket(damageCache.block, Config.dropItem && callBack.get())
+                }
                 damageCachePool.removeDamageCache(damageCache)
             } else {
                 val blockSit = Guns.countBlockSit(damageCache.damage, damageCache.hardness)
