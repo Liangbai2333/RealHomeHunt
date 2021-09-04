@@ -49,7 +49,7 @@ internal object ListenerBlockPlace {
         val ignoreBlockInfo = Config.block.ignore.getByMaterial(type)
         val limit = ignoreBlockInfo?.amount ?: -1
         if (limit >= 0) {
-            val info = residence.getIgnoreBlockInfo(ignoreBlockInfo)
+            val info = residence.getIgnoreBlockInfo(ignoreBlockInfo!!)
             if (info.count >= limit) {
                 if (!player.hasPermission("rh.place")) {
                     val itemStack = ItemStack(block.type)

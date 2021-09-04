@@ -131,7 +131,7 @@ internal object Command {
                     }
                     .toMutableList()
 
-                players.addAll(if (residence != null) residence.administrators else emptyList())
+                players.addAll(residence?.administrators ?: emptyList())
 
                 players
             }
@@ -334,11 +334,6 @@ internal object Command {
                 sendLang("command-back-self-not-have-residence", label)
                 return
             }
-        }
-
-        if (residence.spawn == null) {
-            sendLang("command-back-self-not-have-spawn-point")
-            return
         }
 
         if (hasPermission("rh.unlimited.back")) {

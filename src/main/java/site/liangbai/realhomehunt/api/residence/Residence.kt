@@ -16,442 +16,306 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.api.residence;
+package site.liangbai.realhomehunt.api.residence
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import site.liangbai.realhomehunt.RealHomeHuntPlugin;
-import site.liangbai.realhomehunt.common.actionbar.impl.DynamicActionBar;
-import site.liangbai.realhomehunt.api.residence.attribute.IAttributable;
-import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager;
-import site.liangbai.realhomehunt.common.config.Config;
-import site.liangbai.realhomehunt.common.database.converter.IJsonEntity;
-import site.liangbai.realhomehunt.internal.task.UnloadPlayerAttackTask;
-import site.liangbai.realhomehunt.internal.task.UnloadWarnTask;
-import site.liangbai.realhomehunt.util.*;
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
+import org.bukkit.Bukkit
+import org.bukkit.Location
+import org.bukkit.configuration.serialization.ConfigurationSerializable
+import org.bukkit.entity.Player
+import site.liangbai.realhomehunt.RealHomeHuntPlugin.inst
+import site.liangbai.realhomehunt.api.residence.attribute.IAttributable
+import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager.isOpened
+import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager.remove
+import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager.save
+import site.liangbai.realhomehunt.common.actionbar.impl.DynamicActionBar
+import site.liangbai.realhomehunt.common.config.Config
+import site.liangbai.realhomehunt.common.database.converter.IJsonEntity
+import site.liangbai.realhomehunt.internal.task.UnloadPlayerAttackTask
+import site.liangbai.realhomehunt.internal.task.UnloadWarnTask
+import site.liangbai.realhomehunt.util.*
+import site.liangbai.realhomehunt.util.Locations.toBlockLocation
+import site.liangbai.realhomehunt.util.Sounds.playDragonAmbientSound
+import site.liangbai.realhomehunt.util.Sounds.playLevelUpSound
+import java.util.*
+import java.util.stream.Collectors
 
-import java.util.*;
-import java.util.stream.Collectors;
-
-public final class Residence implements ConfigurationSerializable {
-
-    private String owner;
-    private Location left;
-    private Location right;
-    private Location spawn;
-    private List<String> administrators;
-    private List<IgnoreBlockInfo> ignoreBlockInfoList;
-    private List<IAttributable<?>> attributes;
-
-    private final List<String> attacks = new ArrayList<>();
-    private boolean canWarn = true;
-    private Residence(Location left, Location right, Player owner) {
-        this(left, right, owner.getName());
-    }
-
-    private Residence(Location left, Location right, String owner) {
-        this.left = left;
-        this.right = right;
-        this.owner = owner;
-        this.administrators = new ArrayList<>();
-        this.ignoreBlockInfoList = new LinkedList<>();
-        this.attributes = new LinkedList<>();
-    }
-
-    @SuppressWarnings("unchecked")
-    public Residence(Map<String, Object> map) {
-        this.owner = (String) map.get("owner");
-        this.administrators = (List<String>) map.get("administrators");
-        this.left = (Location) map.get("left");
-        this.right = (Location) map.get("right");
-        this.ignoreBlockInfoList = (List<IgnoreBlockInfo>) map.get("ignoreBlockInfoList");
-
-        if (map.containsKey("attributes")) {
-            this.attributes = (List<IAttributable<?>>) map.get("attributes");
-        } else {
-            this.attributes = new LinkedList<>();
-        }
-
-        if (map.containsKey("spawn")) {
-            setSpawn((Location) map.get("spawn"));
-        }
-    }
-
-    public Residence() {
-    }
-
+class Residence : ConfigurationSerializable {
     // Data
+    lateinit var owner: String
+    lateinit var left: Location
+    lateinit var right: Location
+    lateinit var spawn: Location
+    lateinit var administrators: MutableList<String>
+    lateinit var ignoreBlockInfoList: MutableList<IgnoreBlockInfo>
+    lateinit var attributes: MutableList<IAttributable<*>>
+    private val attacks: MutableList<String> = ArrayList()
+    var isCanWarn = true
 
-    public String getOwner() {
-        return owner;
+    private constructor(left: Location, right: Location, owner: Player) : this(left, right, owner.name)
+
+    private constructor(left: Location, right: Location, owner: String) {
+        this.left = left
+        this.right = right
+        this.owner = owner
+        administrators = ArrayList()
+        ignoreBlockInfoList = LinkedList()
+        attributes = LinkedList()
     }
 
-    public Location getLeft() {
-        return left;
+    @Suppress("UNCHECKED_CAST")
+    constructor(map: Map<String, Any>) {
+        owner = map["owner"] as String
+        administrators = map["administrators"] as MutableList<String>
+        left = map["left"] as Location
+        right = map["right"] as Location
+        ignoreBlockInfoList = map["ignoreBlockInfoList"] as MutableList<IgnoreBlockInfo>
+        attributes = if ("attributes" in map) {
+            map["attributes"] as MutableList<IAttributable<*>>
+        } else {
+            LinkedList()
+        }
+        spawn = map["spawn"] as Location
     }
 
-    public Location getRight() {
-        return right;
-    }
-
-    public Location getSpawn() {
-        return spawn;
-    }
-
-    public List<String> getAdministrators() {
-        return administrators;
-    }
-
-    public List<IgnoreBlockInfo> getIgnoreBlockInfoList() {
-        return ignoreBlockInfoList;
-    }
-
-    public List<IAttributable<?>> getAttributes() {
-        return attributes;
-    }
-
-    public boolean isCanWarn() {
-        return canWarn;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }
-
-    public void setLeft(Location left) {
-        this.left = left;
-    }
-
-    public void setRight(Location right) {
-        this.right = right;
-    }
-
-    public void setSpawn(Location spawn) {
-        this.spawn = spawn;
-    }
-
-    public void setAdministrators(List<String> administrators) {
-        this.administrators = administrators;
-    }
-
-    public void setIgnoreBlockInfoList(List<IgnoreBlockInfo> ignoreBlockInfoList) {
-        this.ignoreBlockInfoList = ignoreBlockInfoList;
-    }
-
-    public void setAttributes(List<IAttributable<?>> attributes) {
-        this.attributes = attributes;
-    }
-
-    public void setCanWarn(boolean canWarn) {
-        this.canWarn = canWarn;
-    }
+    constructor() {}
 
     // Method
-
-    @NotNull
-    public IgnoreBlockInfo getIgnoreBlockInfo(Config.BlockSetting.BlockIgnoreSetting.IgnoreBlockInfo ignoreBlockInfo) {
+    fun getIgnoreBlockInfo(ignoreBlockInfo: Config.BlockSetting.BlockIgnoreSetting.IgnoreBlockInfo): IgnoreBlockInfo {
         return ignoreBlockInfoList.stream()
-                .filter(info -> {
-                    String name = info.type;
-
-                    if (ignoreBlockInfo.full != null && !ignoreBlockInfo.full.isEmpty() && ignoreBlockInfo.full.equalsIgnoreCase(name)) return true;
-
-                    if (ignoreBlockInfo.prefix.isEmpty() && ignoreBlockInfo.suffix.isEmpty()) return false;
-
-                    return name.startsWith(ignoreBlockInfo.prefix) && name.endsWith(ignoreBlockInfo.suffix);
-                })
-                .findFirst()
-                .orElseGet(() -> {
-                    IgnoreBlockInfo info;
-
-                    if (ignoreBlockInfo.full != null) {
-                        info = new IgnoreBlockInfo(ignoreBlockInfo.full);
+            .filter {
+                val name = it.type
+                if (ignoreBlockInfo.full != null && ignoreBlockInfo.full!!.isNotEmpty() && ignoreBlockInfo.full.equals(
+                        name,
+                        ignoreCase = true
+                    )
+                ) return@filter true
+                if (ignoreBlockInfo.prefix.isEmpty() && ignoreBlockInfo.suffix.isEmpty()) return@filter false
+                name!!.startsWith(ignoreBlockInfo.prefix) && name.endsWith(ignoreBlockInfo.suffix)
+            }
+            .findFirst()
+            .orElseGet {
+                val info: IgnoreBlockInfo = if (ignoreBlockInfo.full != null) {
+                    IgnoreBlockInfo(ignoreBlockInfo.full)
+                } else {
+                    val typeName: String = if (ignoreBlockInfo.prefix.isEmpty() && ignoreBlockInfo.suffix.isEmpty()) {
+                        "null"
                     } else {
-                        String typeName;
-
-                        if (ignoreBlockInfo.prefix.isEmpty() && ignoreBlockInfo.suffix.isEmpty()) {
-                            typeName = "null";
-                        } else {
-                            typeName = ignoreBlockInfo.prefix + ignoreBlockInfo.suffix;
-                        }
-
-                        info = new IgnoreBlockInfo(typeName);
+                        ignoreBlockInfo.prefix + ignoreBlockInfo.suffix
                     }
-
-                    ignoreBlockInfoList.add(info);
-
-                    return info;
-                });
+                    IgnoreBlockInfo(typeName)
+                }
+                info.also { ignoreBlockInfoList.add(it) }
+            }
     }
 
-    public boolean checkBooleanAttribute(Class<? extends IAttributable<Boolean>> attribute) {
-        return getAttribute(attribute).get();
+    fun checkBooleanAttribute(attribute: Class<out IAttributable<Boolean>?>): Boolean {
+        return getAttribute(attribute).get()
     }
 
-    @SuppressWarnings("unchecked")
-    @NotNull
-    public <T> IAttributable<T> getAttribute(Class<? extends IAttributable<T>> attribute) {
-        return (IAttributable<T>) getAttributeWithoutType(attribute);
+    @Suppress("UNCHECKED_CAST")
+    fun <T> getAttribute(attribute: Class<out IAttributable<T>?>): IAttributable<T> {
+        return getAttributeWithoutType(attribute) as IAttributable<T>
     }
 
-    @NotNull
-    public IAttributable<?> getAttributeWithoutType(@NotNull Class<? extends IAttributable<?>> attribute) {
-        return Objects.requireNonNull(attributes.stream()
-                .filter(it -> it.getClass().equals(attribute))
+    fun getAttributeWithoutType(attribute: Class<out IAttributable<*>?>): IAttributable<*> {
+        return Objects.requireNonNull(
+            attributes.stream()
+                .filter { it.javaClass == attribute }
                 .findFirst()
-                .orElseGet(() -> {
-                    IAttributable<?> iAttributable = Ref.newInstance(attribute);
-                    attributes.add(iAttributable);
-                    return iAttributable;
-                }));
+                .orElseGet {
+                    val iAttributable = Ref.newInstance(attribute)!!
+                    attributes.add(iAttributable)
+                    iAttributable
+                })
     }
 
-    public void attackBy(Player attacker) {
-        Player owner = Bukkit.getPlayerExact(getOwner());
-
-        Sounds.playDragonAmbientSound(attacker, 1, 0);
-
-        if (owner != null && owner.isOnline()) {
-            Sounds.playDragonAmbientSound(owner, 1, 0);
-
-            LangBridge.sendLang(owner, "action-hit-block-self-title", attacker.getName());
-
+    fun attackBy(attacker: Player) {
+        val ownerPlayer = Bukkit.getPlayerExact(owner)
+        playDragonAmbientSound(attacker, 1, 0.0)
+        ownerPlayer?.let {
+            playDragonAmbientSound(it, 1, 0.0)
+            it.sendLang("action-hit-block-self-title", attacker.name)
             if (Config.showActionBar) {
-                String message = LangBridge.asLangText(owner, "action-hit-block-self-action-bar", attacker.getName());
-
-                DynamicActionBar actionBar = new DynamicActionBar(message, 5, 20);
-
-                actionBar.show(owner, Config.actionBarShowMills);
+                val message = it.asLangText("action-hit-block-self-action-bar", attacker.name)
+                val actionBar = DynamicActionBar(message, 5, 20)
+                actionBar.show(it, Config.actionBarShowMills)
             }
         }
-
-        Messages.sendToAll("action-hit-block-all-message", getOwner(), attacker.getName());
-
-        addAttack(attacker.getName());
+        sendToAll("action-hit-block-all-message", owner, attacker.name)
+        addAttack(attacker.name)
     }
 
-    public void addAttack(String attack) {
-        attacks.add(attack);
-
-        new UnloadPlayerAttackTask(this, attack).runTaskLater(RealHomeHuntPlugin.INSTANCE.getInst(), Config.unloadPlayerAttackMills);
+    fun addAttack(attack: String) {
+        attacks.add(attack)
+        UnloadPlayerAttackTask(this, attack).runTaskLater(inst, Config.unloadPlayerAttackMills)
     }
 
-    public boolean hasAttack(String attack) {
-        return attacks.contains(attack);
+    fun hasAttack(attack: String): Boolean {
+        return attacks.contains(attack)
     }
 
-    public void warn(Player sender) {
-        setCanWarn(false);
-
-        getOnlineMembers().forEach(member -> {
-            LangBridge.sendLang(member, "action-warn-title", sender.getName());
-
-            Sounds.playLevelUpSound(member, 3, 0.5);
-        });
-
-        new UnloadWarnTask(this).runTaskLater(RealHomeHuntPlugin.INSTANCE.getInst(), Config.unloadWarnMills);
+    fun warn(sender: Player) {
+        isCanWarn = false
+        onlineMembers.forEach {
+            it.sendLang("action-warn-title", sender.name)
+            playLevelUpSound(it, 3, 0.5)
+        }
+        UnloadWarnTask(this).runTaskLater(inst, Config.unloadWarnMills)
     }
 
-    public List<Player> getOnlineMembers() {
-        List<Player> players = new ArrayList<>();
+    val onlineMembers: List<Player>
+        get() {
+            val players: MutableList<Player> = ArrayList()
+            val owner = Bukkit.getPlayerExact(owner)
+            if (owner != null) players.add(owner)
+            administrators
+                .mapNotNull { Bukkit.getPlayerExact(it) }
+                .forEach { players.add(it) }
+            return players
+        }
 
-        Player owner = Bukkit.getPlayerExact(getOwner());
-
-        if (owner != null) players.add(owner);
-
-        getAdministrators().stream()
-                .map(Bukkit::getPlayerExact)
-                .filter(Objects::nonNull)
-                .forEach(players::add);
-
-        return players;
+    fun removeAttack(attack: String) {
+        attacks.remove(attack)
     }
 
-    public void removeAttack(String attack) {
-        attacks.remove(attack);
+    fun isOwner(owner: String): Boolean {
+        return owner == owner
     }
 
-    public boolean isOwner(String owner) {
-        return getOwner().equals(owner);
+    fun isAdministrator(player: Player): Boolean {
+        return isAdministrator(player.name)
     }
 
-    public boolean isAdministrator(Player player) {
-        return isAdministrator(player.getName());
+    fun isAdministrator(player: String): Boolean {
+        return player in administrators || owner == player
     }
 
-    public boolean isAdministrator(String player) {
-        return administrators.contains(player) || getOwner().equals(player);
+    fun addAdministrator(player: String) {
+        if (isAdministrator(player)) return
+        administrators.add(player)
     }
 
-    public void addAdministrator(String player) {
-        if (isAdministrator(player)) return;
-
-        administrators.add(player);
+    fun removeAdministrator(player: String) {
+        administrators.remove(player)
     }
 
-    public void removeAdministrator(String player) {
-        administrators.remove(player);
+    fun save() {
+        save(this)
     }
 
-    public void save() {
-        ResidenceManager.save(this);
+    fun remove() {
+        remove(this)
     }
 
-    public void remove() {
-        ResidenceManager.remove(this);
-    }
-
-    public List<Player> findPlayersIn() {
+    fun findPlayersIn(): List<Player> {
         return Bukkit.getOnlinePlayers().stream()
-                .parallel()
-                .filter(it -> ResidenceManager.isOpened(it.getWorld()))
-                .filter(it -> ResidenceManager.isInResidence(Locations.toBlockLocation(it.getLocation()), this))
-                .collect(Collectors.toList());
+            .parallel()
+            .filter { isOpened(it.world) }
+            .filter { toBlockLocation(it.location) in this }
+            .collect(Collectors.toList())
     }
 
-    public boolean hasEnemyIn() {
-        return findPlayersIn().stream()
-                .anyMatch(it -> !isAdministrator(it));
+    fun hasEnemyIn(): Boolean {
+        return findPlayersIn().any { !isAdministrator(it) }
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Residence residence = (Residence) o;
-        return owner.equals(residence.owner);
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || javaClass != other.javaClass) return false
+        val residence = other as Residence
+        return owner == residence.owner
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(owner);
+    override fun hashCode(): Int {
+        return Objects.hash(owner)
     }
 
-    @NotNull
-    @Override
-    public Map<String, Object> serialize() {
-        Map<String, Object> map = new HashMap<>();
-
-        map.put("owner", getOwner());
-
-        map.put("administrators", administrators);
-
-        map.put("left", getLeft());
-
-        map.put("right", getRight());
-
-        map.put("ignoreBlockInfoList", ignoreBlockInfoList);
-
-        map.put("attributes", attributes);
-
-        if (getSpawn() != null) {
-            map.put("spawn", getSpawn());
-        }
-
-        return map;
+    override fun serialize(): Map<String, Any> {
+        val map: MutableMap<String, Any> = HashMap()
+        map["owner"] = owner
+        map["administrators"] = administrators
+        map["left"] = left
+        map["right"] = right
+        map["ignoreBlockInfoList"] = ignoreBlockInfoList
+        map["attributes"] = attributes
+        map["spawn"] = spawn
+        return map
     }
 
-    public static final class IgnoreBlockInfo implements ConfigurationSerializable, IJsonEntity<IgnoreBlockInfo> {
-        private String type;
+    class IgnoreBlockInfo : ConfigurationSerializable, IJsonEntity<IgnoreBlockInfo> {
+        var type: String? = null
+            private set
+        var count = 0
+            private set
 
-        private int count;
-
-        public IgnoreBlockInfo(String type) {
-            this.type = type;
+        constructor(type: String?) {
+            this.type = type
         }
 
-        public IgnoreBlockInfo() {
+        constructor()
+
+        constructor(map: Map<String?, Any?>) {
+            type = map["type"] as String?
+            count = map["count"] as Int
         }
 
-        @SuppressWarnings("unused")
-        public IgnoreBlockInfo(Map<String, Object> map) {
-            this.type = (String) map.get("type");
-            this.count = (int) map.get("count");
+        fun increaseCount() {
+            count++
         }
 
-        public String getType() {
-            return type;
+        fun deleteCount() {
+            count--
         }
 
-        public int getCount() {
-            return count;
+        override fun serialize(): Map<String, Any> {
+            val map: MutableMap<String, Any> = HashMap()
+            map["type"] = type!!
+            map["count"] = count
+            return map
         }
 
-        public void increaseCount() {
-            count++;
+        override fun convertToDatabaseColumn(attribute: IgnoreBlockInfo): String {
+            val jsonObject = JsonObject()
+            jsonObject.addProperty("type", type)
+            jsonObject.addProperty("count", count)
+            return jsonObject.toString()
         }
 
-        public void deleteCount() { count--; }
-
-        @NotNull
-        @Override
-        public Map<String, Object> serialize() {
-            Map<String, Object> map = new HashMap<>();
-
-            map.put("type", getType());
-
-            map.put("count", getCount());
-
-            return map;
-        }
-
-        @Override
-        public String convertToDatabaseColumn(IgnoreBlockInfo attribute) {
-            JsonObject jsonObject = new JsonObject();
-
-            jsonObject.addProperty("type", getType());
-            jsonObject.addProperty("count", getCount());
-
-            return jsonObject.toString();
-        }
-
-        @Override
-        public IgnoreBlockInfo convertToEntityAttribute(String dbData) {
-            JsonObject jsonObject = new JsonParser().parse(dbData).getAsJsonObject();
-
-            this.type = jsonObject.get("type").getAsString();
-            this.count = jsonObject.get("count").getAsInt();
-
-            return this;
+        override fun convertToEntityAttribute(dbData: String): IgnoreBlockInfo {
+            val jsonObject = JsonParser().parse(dbData).asJsonObject
+            type = jsonObject["type"].asString
+            count = jsonObject["count"].asInt
+            return this
         }
     }
 
-    public static final class Builder {
-        private String owner;
-
-        private Location left;
-
-        private Location right;
-
-        public Builder owner(Player owner) {
-            return owner(owner.getName());
+    class Builder {
+        private lateinit var owner: String
+        private lateinit var left: Location
+        private lateinit var right: Location
+        fun owner(owner: Player): Builder {
+            return owner(owner.name)
         }
 
-        public Builder owner(String owner) {
-            this.owner = owner;
-
-            return this;
+        fun owner(owner: String): Builder {
+            this.owner = owner
+            return this
         }
 
-        public Builder left(Location left) {
-            this.left = left.clone();
-
-            return this;
+        fun left(left: Location): Builder {
+            this.left = left.clone()
+            return this
         }
 
-        public Builder right(Location right) {
-            this.right = right.clone();
-
-            return this;
+        fun right(right: Location): Builder {
+            this.right = right.clone()
+            return this
         }
 
-        public Residence build() {
-            return new Residence(left, right, owner);
+        fun build(): Residence {
+            return Residence(left, right, owner)
         }
     }
 }

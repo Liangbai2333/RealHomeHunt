@@ -129,7 +129,7 @@ internal object ConverterManager {
         return converter.convertToEntityAttribute(data) as T
     }
 
-    fun <T> String.convertToEntityList(): List<T> {
+    fun <T> String.convertToEntityList(): MutableList<T> {
         val jsonArray = JSON_PARSER.parse(this).asJsonArray
         val list = mutableListOf<T>()
 

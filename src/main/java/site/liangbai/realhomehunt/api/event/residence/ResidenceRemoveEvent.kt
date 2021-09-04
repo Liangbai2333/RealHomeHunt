@@ -22,4 +22,4 @@ import org.bukkit.entity.Player
 import site.liangbai.realhomehunt.api.event.EventCancellable
 import site.liangbai.realhomehunt.api.residence.Residence
 
-class ResidenceRemoveEvent(val residence: Residence, val operator: Player?) : EventCancellable<ResidenceRemoveEvent?>()
+class ResidenceRemoveEvent(val residence: Residence, val operator: Player?) : EventCancellable<ResidenceRemoveEvent>()

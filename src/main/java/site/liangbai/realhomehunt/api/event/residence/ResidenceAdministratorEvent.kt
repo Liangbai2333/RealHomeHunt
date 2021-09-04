@@ -23,7 +23,7 @@ import site.liangbai.realhomehunt.api.event.EventCancellable
 import site.liangbai.realhomehunt.api.residence.Residence
 
 open class ResidenceAdministratorEvent(val residence: Residence, val operator: Player, val targetName: String) :
-    EventCancellable<ResidenceAdministratorEvent?>() {
+    EventCancellable<ResidenceAdministratorEvent>() {
 
     class Give(residence: Residence, operator: Player, targetName: String) :
         ResidenceAdministratorEvent(residence, operator, targetName)

@@ -19,6 +19,8 @@
 package site.liangbai.realhomehunt.api.cache;
 
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import site.liangbai.realhomehunt.api.residence.Residence;
 import site.liangbai.realhomehunt.common.bossbar.IBossBar;
 import site.liangbai.realhomehunt.util.Blocks;
 
@@ -57,12 +59,12 @@ public final class DamageCachePool {
                 .collect(Collectors.toList());
     }
 
-    public DamageCache getDamageCacheByBlock(Block block, Supplier<Double> hardness, Supplier<IBossBar> nonBossBar) {
+    public DamageCache getDamageCacheByBlock(Player operator, Residence residence, Block block, Supplier<Double> hardness, Supplier<IBossBar> nonBossBar) {
         return damageCaches.stream()
                 .filter(it -> it.getBlock().equals(block))
                 .findFirst()
                 .orElseGet(() -> {
-                    DamageCache damageCache = new DamageCache(block, hardness.get(), Blocks.nextId(), nonBossBar.get());
+                    DamageCache damageCache = new DamageCache(this, operator, residence, block, hardness.get(), Blocks.nextId(), nonBossBar.get());
 
                     damageCaches.add(damageCache);
 
@@ -71,26 +73,37 @@ public final class DamageCachePool {
     }
 
     public static final class DamageCache {
+        private final DamageCachePool parent;
+
+        private final Player operator;
+        private final Residence residence;
         private final Block block;
-
         private final IBossBar healthBossBar;
-
         private double damage;
-
         private double hardness;
-
         private final int id;
-
         private final List<Consumer<DamageCache>> consumers = new LinkedList<>();
 
-        public DamageCache(Block block, double hardness, int id, IBossBar healthBossBar) {
+        public DamageCache(DamageCachePool parent, Player operator, Residence residence, Block block, double hardness, int id, IBossBar healthBossBar) {
+            this.parent = parent;
+            this.operator = operator;
+            this.residence = residence;
             this.block = block;
-
             this.hardness = hardness;
-
             this.id = id;
-
             this.healthBossBar = healthBossBar;
+        }
+
+        public DamageCachePool getParent() {
+            return parent;
+        }
+
+        public Player getOperator() {
+            return operator;
+        }
+
+        public Residence getResidence() {
+            return residence;
         }
 
         public IBossBar getHealthBossBar() {

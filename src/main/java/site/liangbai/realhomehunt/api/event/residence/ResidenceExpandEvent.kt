@@ -25,14 +25,14 @@ import site.liangbai.realhomehunt.api.residence.Residence
 import site.liangbai.realhomehunt.common.expand.Expand
 
 open class ResidenceExpandEvent(val operator: CommandSender?, val residence: Residence?) :
-    EventCancellable<ResidenceExpandEvent?>() {
+    EventCancellable<ResidenceExpandEvent>() {
 
-    class Pre(operator: CommandSender?, residence: Residence?, var expand: Expand, var size: Double) :
+    class Pre(operator: CommandSender, residence: Residence, var expand: Expand, var size: Double) :
         ResidenceExpandEvent(operator, residence)
 
     class Post(
-        operator: CommandSender?,
-        residence: Residence?,
+        operator: CommandSender,
+        residence: Residence,
         var changedLeft: Location,
         var changedRight: Location,
         val expand: Expand,

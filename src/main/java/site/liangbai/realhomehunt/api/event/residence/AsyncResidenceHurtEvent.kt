@@ -26,14 +26,14 @@ import site.liangbai.realhomehunt.api.cache.DamageCachePool.DamageCache
 import site.liangbai.realhomehunt.api.event.EventCancellable
 import site.liangbai.realhomehunt.api.residence.Residence
 
-class ResidenceHurtEvent(
+class AsyncResidenceHurtEvent(
     val source: Player,
     val residence: Residence,
     val hitBlock: Block,
     val gun: ItemStack,
     val damageCache: DamageCache,
     blockHardness: Double
-) : EventCancellable<ResidenceHurtEvent?>() {
+) : EventCancellable<AsyncResidenceHurtEvent>(async = true) {
     val hitPos: Location
         get() = hitBlock.location.clone()
     var blockHardness: Double

@@ -38,6 +38,7 @@ internal object ResidenceManager {
     private val ownerToResidenceMap = hashMapOf<String, Residence>()
     lateinit var storage: IStorage
     lateinit var storageType: StorageType
+    var enabled = false
 
     fun init(plugin: Plugin, storageType: StorageType) {
         ownerToResidenceMap.clear()
@@ -63,6 +64,7 @@ internal object ResidenceManager {
         Console.sendRawMessage(ChatColor.GREEN.toString() + "  count: " + count)
         Console.sendRawMessage(ChatColor.GREEN.toString() + "  success: " + ownerToResidenceMap.size)
         Console.sendRawMessage(ChatColor.GREEN.toString() + "  failed: " + (count - ownerToResidenceMap.size))
+        enabled = true
     }
 
     fun register(residence: Residence) {

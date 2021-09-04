@@ -23,7 +23,7 @@ import site.liangbai.realhomehunt.api.event.EventCancellable
 import site.liangbai.realhomehunt.api.residence.Residence
 
 open class ResidenceCreateEvent(val player: Player, val residence: Residence) :
-    EventCancellable<ResidenceCreateEvent?>() {
+    EventCancellable<ResidenceCreateEvent>() {
 
     // Before the block check called.
     class Pre(player: Player, residence: Residence) : ResidenceCreateEvent(player, residence) {

@@ -43,9 +43,11 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import org.bukkit.ChatColor
 import org.bukkit.Location
+import org.bukkit.Material
 import org.bukkit.util.BoundingBox
 import org.bukkit.util.Vector
 import site.liangbai.realhomehunt.api.nms.NMS
+import site.liangbai.realhomehunt.common.config.Config
 import java.util.regex.Pattern
 
 private val BOOLEAN_PATTERN = Pattern.compile("true|false")
@@ -80,3 +82,7 @@ operator fun Vector.minus(other: Vector): Vector {
 operator fun Vector.plus(other: Vector): Vector {
     return this.add(other)
 }
+
+fun Material.isIgnoreGun() = Config.gun.ignore.isIgnored(this)
+
+fun Material.isIgnoreHitBlock() = Config.block.ignore.isIgnoreHit(this)

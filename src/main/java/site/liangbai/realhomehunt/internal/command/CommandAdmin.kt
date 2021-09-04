@@ -278,7 +278,7 @@ internal object CommandAdmin {
 
                 if (area != null) {
                     val residence =
-                        Residence.Builder().owner(offlinePlayer.name).left(area.highLocation).right(area.lowLocation)
+                        Residence.Builder().owner(offlinePlayer.name!!).left(area.highLocation).right(area.lowLocation)
                             .build()
                     val defaultSpawn =
                         Locations.getAverageLocation(residence.left.world, residence.left, residence.right)
@@ -349,7 +349,6 @@ internal object CommandAdmin {
             }
             val residenceList = storage.loadAll()
             residenceList
-                .filterNotNull()
                 .forEach { ResidenceManager.register(it) }
             ResidenceManager.getResidences().forEach { it.save() }
             sendLang(

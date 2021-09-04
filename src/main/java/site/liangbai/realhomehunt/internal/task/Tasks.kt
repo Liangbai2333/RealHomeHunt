@@ -16,16 +16,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.api.event.residence
+package site.liangbai.realhomehunt.internal.task
 
-import org.bukkit.entity.Player
-import site.liangbai.realhomehunt.api.event.EventCancellable
-import site.liangbai.realhomehunt.api.residence.attribute.IAttributable
-import site.liangbai.realhomehunt.api.residence.Residence
+import site.liangbai.realhomehunt.api.cache.DamageCachePool
+import site.liangbai.realhomehunt.util.Blocks
+import taboolib.common.platform.function.submit
 
-class ResidenceSetAttributeEvent(
-    val owner: Player?,
-    val residence: Residence,
-    val attributable: IAttributable<*>,
-    var value: String
-) : EventCancellable<ResidenceSetAttributeEvent>()
+fun DamageCachePool.DamageCache.delayUnload(delay: Long) {
+    val task = submit(delay = delay) {
+        Blocks.sendClearBreakAnimationPacket(id, block)
+        healthBossBar.hide()
+        parent.removeDamageCache(this@delayUnload)
+    }
+
+    updateOnce { task.cancel() }
+}

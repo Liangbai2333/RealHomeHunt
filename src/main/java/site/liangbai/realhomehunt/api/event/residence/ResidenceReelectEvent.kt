@@ -28,4 +28,4 @@ class ResidenceReelectEvent(
     val residence: Residence,
     var changedLeft: Location,
     var changedRight: Location
-) : EventCancellable<ResidenceReelectEvent?>()
+) : EventCancellable<ResidenceReelectEvent>()

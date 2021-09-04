@@ -20,7 +20,6 @@ command-back-other-not-have-permission: "&c你没有对方领地管理员的权�
 command-back-self-not-have-residence:
   - "&c你还没有领地, 无法回到出生点."
   - "&c回到他人领地(拥有管理员权限): /{0} back <玩家ID>"
-command-back-self-not-have-spawn-point: "领地还未设置出生点."
 command-back-teleport-done:
   - type: TITLE
     title: "&a传送成功"

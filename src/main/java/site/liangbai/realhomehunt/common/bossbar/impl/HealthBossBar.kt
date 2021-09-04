@@ -23,7 +23,11 @@ import org.bukkit.boss.BarColor
 import org.bukkit.boss.BarStyle
 import org.bukkit.boss.BossBar
 import org.bukkit.entity.Player
+import site.liangbai.realhomehunt.api.cache.DamageCachePool
+import site.liangbai.realhomehunt.api.residence.Residence
 import site.liangbai.realhomehunt.common.bossbar.IBossBar
+import site.liangbai.realhomehunt.util.Guns
+import site.liangbai.realhomehunt.util.asLangText
 
 class HealthBossBar(title: String, private val greenToYellowMix: Int, private val yellowToRedMix: Int) : IBossBar {
     private val bossBar: BossBar
@@ -62,5 +66,33 @@ class HealthBossBar(title: String, private val greenToYellowMix: Int, private va
         bossBar = Bukkit.createBossBar(title, BarColor.GREEN, BarStyle.SOLID)
         bossBar.progress = 1.0
         bossBar.isVisible = true
+    }
+
+    companion object {
+        fun IBossBar.updateForHealth(damageCache: DamageCachePool.DamageCache) {
+            update(100 - Guns.getHardnessMixPercent(damageCache.damage, damageCache.hardness))
+            val health = damageCache.hardness - damageCache.damage
+            val healthString = String.format("%.1f", health)
+            handle.setTitle(
+                damageCache.operator.asLangText(
+                    "action-hit-block-performer-boss-bar",
+                    damageCache.residence.owner,
+                    healthString,
+                    damageCache.hardness.toInt()
+                )
+            )
+        }
+
+        fun IBossBar.clearForHealth(damageCache: DamageCachePool.DamageCache) {
+            update(0)
+            handle.setTitle(
+                damageCache.operator.asLangText(
+                    "action-hit-block-performer-boss-bar",
+                    damageCache.residence.owner,
+                    0,
+                    damageCache.hardness.toInt()
+                )
+            )
+        }
     }
 }
