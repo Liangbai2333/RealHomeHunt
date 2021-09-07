@@ -185,7 +185,7 @@ internal object Command {
     val back = subCommand {
         val teleportPlayers: MutableSet<UUID> = mutableSetOf()
 
-        dynamic(optional = true, permission = "rh.unlimited.back") {
+        dynamic(optional = true) {
             suggestion<Player> { sender, _ ->
                 if (sender.hasPermission("rh.unlimited.back")) {
                     ResidenceManager.getResidences().map { it.owner }

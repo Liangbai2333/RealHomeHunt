@@ -32,7 +32,7 @@ abstract class NMS {
 
     abstract fun sendBreakAnimationPacket(id: Int, block: Block, breakSit: Int, receivers: List<Player>)
 
-    abstract fun sendBreakBlock(block: Block, dropItem: Boolean)
+    abstract fun sendBreakBlock(block: Block, dropItem: Boolean): Boolean
 
     abstract fun toBukkitEntity(entity: Entity): org.bukkit.entity.Entity
 

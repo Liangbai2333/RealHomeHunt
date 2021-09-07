@@ -66,18 +66,13 @@ class NMSImpl : NMS() {
         receivers.forEach { it.sendPacket(packet) }
     }
 
-    override fun sendBreakBlock(block: Block, dropItem: Boolean) {
+    override fun sendBreakBlock(block: Block, dropItem: Boolean): Boolean {
         val world = block.world
-
         val location = block.location
-
         val craftWorld = world as CraftWorld
-
         val worldServer = craftWorld.handle
-
         val blockPosition = BlockPosition(location.blockX, location.blockY, location.blockZ)
-
-        worldServer.b(blockPosition, dropItem)
+        return worldServer.b(blockPosition, dropItem)
     }
 
     override fun toBukkitEntity(entity: Entity): org.bukkit.entity.Entity = (entity as net.minecraft.server.v1_16_R3.Entity).bukkitEntity
