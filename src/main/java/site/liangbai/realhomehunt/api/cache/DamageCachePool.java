@@ -49,13 +49,13 @@ public final class DamageCachePool {
 
     public Optional<DamageCache> getDamageCacheByBlockOrEmpty(Block block) {
         return damageCaches.stream()
-                .filter(it -> it.getBlock().equals(block))
+                .filter(it -> it.getBlock() != null && it.getBlock().equals(block))
                 .findFirst();
     }
 
     public List<DamageCache> getDamageCacheWithoutBlock(Block block) {
         return damageCaches.stream()
-                .filter(it -> !it.getBlock().equals(block))
+                .filter(it -> it.getBlock() != null && !it.getBlock().equals(block))
                 .collect(Collectors.toList());
     }
 

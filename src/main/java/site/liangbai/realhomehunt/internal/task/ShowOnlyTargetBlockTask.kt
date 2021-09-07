@@ -58,7 +58,7 @@ internal object ShowOnlyTargetBlockTask {
                                 )
                             }
                         }
-                        RayTraceUtil.rayTraceBlock(it, range).ifPresent { result: Block? ->
+                        RayTraceUtil.rayTraceBlock(it, range).ifPresent { result: Block ->
                             damageCachePool!!.getDamageCacheWithoutBlock(result)
                                 .forEach { cache -> cache.healthBossBar.hide(it) }
                             damageCachePool.getDamageCacheByBlockOrEmpty(result)

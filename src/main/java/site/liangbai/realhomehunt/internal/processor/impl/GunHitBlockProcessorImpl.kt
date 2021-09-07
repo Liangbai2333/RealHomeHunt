@@ -93,6 +93,7 @@ class GunHitBlockProcessorImpl : IGunHitBlockProcessor {
                 return@execute
             }
             if (damageCache.hardness <= 0) {
+                damageCachePool.removeDamageCache(damageCache)
                 return@execute
             }
             damageCache.increaseDamage(Guns.countDamage(gun))

@@ -19,7 +19,7 @@ plugins {
 apply plugin: 'net.minecraftforge.gradle'
 
 group = 'site.liangbai'
-version = '1.4.0-rc4'
+version = '1.4.0-rc5'
 
 java {
     withSourcesJar()
