@@ -24,16 +24,16 @@ import site.liangbai.realhomehunt.api.residence.Residence;
 import site.liangbai.realhomehunt.common.bossbar.IBossBar;
 import site.liangbai.realhomehunt.util.Blocks;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public final class DamageCachePool {
-    private final List<DamageCache> damageCaches = new ArrayList<>();
+    private final List<DamageCache> damageCaches = new CopyOnWriteArrayList<>();
 
     public void addDamageCache(DamageCache damageCache) {
         if (!damageCaches.contains(damageCache)) damageCaches.add(damageCache);
@@ -49,13 +49,13 @@ public final class DamageCachePool {
 
     public Optional<DamageCache> getDamageCacheByBlockOrEmpty(Block block) {
         return damageCaches.stream()
-                .filter(it -> it.getBlock() != null && it.getBlock().equals(block))
+                .filter(it -> it.getBlock().equals(block))
                 .findFirst();
     }
 
     public List<DamageCache> getDamageCacheWithoutBlock(Block block) {
         return damageCaches.stream()
-                .filter(it -> it.getBlock() != null && !it.getBlock().equals(block))
+                .filter(it -> !it.getBlock().equals(block))
                 .collect(Collectors.toList());
     }
 

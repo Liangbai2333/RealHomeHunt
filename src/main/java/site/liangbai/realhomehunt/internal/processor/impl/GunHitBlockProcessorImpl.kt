@@ -104,13 +104,13 @@ class GunHitBlockProcessorImpl : IGunHitBlockProcessor {
             if (damageCache.damage >= damageCache.hardness) {
                 sendClearBreakAnimationPacket(damageCache.id, damageCache.block)
                 healthBossBar.clearForHealth(damageCache)
-                val upBlock = block.getRelative(BlockFace.UP)
-                if (!upBlock.type.isAir) {
-                    saveUpBlock(upBlock, residence)
-                }
-                val blockData = damageCache.block.blockData.clone()
-                val callBack = GameModeManager.submit(residence, player, gun, block, block.state, blockData)
                 submit {
+                    val upBlock = block.getRelative(BlockFace.UP)
+                    if (!upBlock.type.isAir) {
+                        saveUpBlock(upBlock, residence)
+                    }
+                    val blockData = damageCache.block.blockData.clone()
+                    val callBack = GameModeManager.submit(residence, player, gun, block, block.state, blockData)
                     sendBreakBlockPacket(damageCache.block, Config.dropItem && callBack.get())
                 }
                 damageCachePool.removeDamageCache(damageCache)
