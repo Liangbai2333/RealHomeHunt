@@ -189,13 +189,15 @@ internal object Command {
             suggestion<Player> { sender, _ ->
                 if (sender.hasPermission("rh.unlimited.back")) {
                     ResidenceManager.getResidences().map { it.owner }
-                } else ResidenceManager.getResidences()
-                    .filter {
-                        it.isAdministrator(
-                            sender.name
-                        ) && !it.isOwner(sender.name)
-                    }
-                    .map { it.owner }
+                } else {
+                    ResidenceManager.getResidences()
+                        .filter {
+                            it.isAdministrator(
+                                sender.name
+                            ) && !it.isOwner(sender.name)
+                        }
+                        .map { it.owner }
+                }
             }
 
             execute<Player> { sender, context, argument ->
@@ -321,17 +323,17 @@ internal object Command {
         if (target == name) {
             residence = ResidenceManager.getResidenceByOwner(name)
             if (residence == null) {
-                sendLang("command-back-other-not-have-residence")
-                return
-            }
-            if (!residence.isAdministrator(name) && !hasPermission("rh.unlimited.back")) {
-                sendLang("command-back-other-not-have-permission")
+                sendLang("command-back-self-not-have-residence", label)
                 return
             }
         } else {
             residence = ResidenceManager.getResidenceByOwner(target)
             if (residence == null) {
-                sendLang("command-back-self-not-have-residence", label)
+                sendLang("command-back-other-not-have-residence")
+                return
+            }
+            if (!residence.isAdministrator(name) && !hasPermission("rh.unlimited.back")) {
+                sendLang("command-back-other-not-have-permission")
                 return
             }
         }

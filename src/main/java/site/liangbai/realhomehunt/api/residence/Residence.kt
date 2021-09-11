@@ -181,7 +181,7 @@ class Residence : ConfigurationSerializable {
     }
 
     fun isOwner(owner: String): Boolean {
-        return owner == owner
+        return this.owner == owner
     }
 
     fun isAdministrator(player: Player): Boolean {
