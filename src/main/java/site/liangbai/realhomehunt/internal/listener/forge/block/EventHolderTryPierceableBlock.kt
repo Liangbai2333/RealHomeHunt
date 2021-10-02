@@ -27,8 +27,8 @@ import site.liangbai.realhomehunt.common.config.Config
 import site.liangbai.realhomehuntforge.event.BlockRayTraceEvent.TryPierceableBlock
 
 @Isolated
-class EventHolderTryPierceableBlock : EventHolder<EventWrapper.EventObject?> {
-    override fun handle(eventWrapper: EventWrapper<EventWrapper.EventObject?>) {
+class EventHolderTryPierceableBlock : EventHolder<EventWrapper.EventObject> {
+    override fun handle(eventWrapper: EventWrapper<EventWrapper.EventObject>) {
         val event = eventWrapper.getObject() as TryPierceableBlock
         val world = event.level.toBukkitWorld()
         val block = world.getBlockAt(event.rayTraceResult.blockPos.toLocation())

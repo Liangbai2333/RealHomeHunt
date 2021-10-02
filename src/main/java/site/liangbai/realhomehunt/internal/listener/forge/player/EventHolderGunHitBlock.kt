@@ -36,8 +36,8 @@ import site.liangbai.realhomehunt.internal.processor.Processors
  * @since 2021 /08/11 02:37 下午
  */
 @Isolated
-class EventHolderGunHitBlock : EventHolder<EventWrapper.EventObject?> {
-    override fun handle(eventWrapper: EventWrapper<EventWrapper.EventObject?>) {
+class EventHolderGunHitBlock : EventHolder<EventWrapper.EventObject> {
+    override fun handle(eventWrapper: EventWrapper<EventWrapper.EventObject>) {
         val event = eventWrapper.getObject() as HitBlock
         val entity = event.living.entity.toBukkitEntity() as? Player ?: return
         val gun = event.itemStack.toBukkitItemStack()
