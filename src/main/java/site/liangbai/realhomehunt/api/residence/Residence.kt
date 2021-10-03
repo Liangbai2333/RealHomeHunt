@@ -22,6 +22,7 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import org.bukkit.Bukkit
 import org.bukkit.Location
+import org.bukkit.block.Block
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.entity.Player
 import site.liangbai.realhomehunt.RealHomeHuntPlugin.inst
@@ -165,6 +166,18 @@ class Residence : ConfigurationSerializable {
         UnloadWarnTask(this).runTaskLater(inst, Config.unloadWarnMills)
     }
 
+    internal fun destroyBlock(block: Block) {
+        val upType = block.type
+        val info = Config.block.ignore.getByMaterial(upType)
+        if (info != null) {
+            val residenceIgnoreBlockInfo = getIgnoreBlockInfo(info)
+            if (residenceIgnoreBlockInfo.count > 0) {
+                residenceIgnoreBlockInfo.deleteCount()
+                save()
+            }
+        }
+    }
+
     val onlineMembers: List<Player>
         get() {
             val players: MutableList<Player> = ArrayList()
@@ -259,6 +272,10 @@ class Residence : ConfigurationSerializable {
         constructor(map: Map<String?, Any?>) {
             type = map["type"] as String?
             count = map["count"] as Int
+        }
+
+        fun increaseCount(count: Int) {
+            this.count += count
         }
 
         fun increaseCount() {

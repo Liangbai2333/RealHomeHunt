@@ -41,6 +41,14 @@ public final class GameModeManager {
         GAME_MODES.add(new RobChestGameMode());
     }
 
+    public static void registerGameMode(IGameMode gameMode) {
+        GAME_MODES.add(gameMode);
+    }
+
+    public static void unregisterGameMode(IGameMode gameMode) {
+        GAME_MODES.remove(gameMode);
+    }
+
     public static ICallback<Boolean> submit(Residence residence, Player player, ItemStack gun, Block block, BlockState snapshotState, BlockData blockData) {
         ICallback<Boolean> callBack = new BooleanCallback();
 

@@ -203,7 +203,6 @@ object Config {
             val suffix =it.getString("suffix", "")!!.uppercase()
             val full = it.getString("full")
             val amount = it.getInt("amount", -1)
-            val upBreak = it.getBoolean("up-break", false)
             val ignoreHit = it.getBoolean("ignore-hit", false)
             val useCustomPierceable = it.contains("custom-pierceable")
             val customPierceable = it.getBoolean("custom-pierceable", true)
@@ -213,7 +212,6 @@ object Config {
             info.prefix = prefix
             info.suffix = suffix
             info.amount = amount
-            info.isUpBreak = upBreak
             info.ignoreHit = ignoreHit
             info.useCustomPierceable = useCustomPierceable
             info.customPierceable = customPierceable
@@ -441,7 +439,6 @@ object Config {
                 var full: String? = null
                 @JvmField
                 var amount = 0
-                var isUpBreak = false
                 var ignoreHit = false
                 var useCustomPierceable = false
                 var customPierceable = false
@@ -453,14 +450,12 @@ object Config {
                     suffix: String,
                     full: String?,
                     amount: Int,
-                    upBreak: Boolean,
                     temp: Boolean
                 ) {
                     this.prefix = prefix
                     this.suffix = suffix
                     this.full = full
                     this.amount = amount
-                    isUpBreak = upBreak
                     this.temp = temp
                 }
 
@@ -503,7 +498,6 @@ object Config {
                             "",
                             material.name,
                             0,
-                            upBreak = false,
                             temp = true
                         ) else null
                 }

@@ -23,7 +23,7 @@ import site.liangbai.realhomehunt.api.residence.attribute.impl.BurnAttribute
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager
 import taboolib.common.platform.event.SubscribeEvent
 
-class ListenerBlockBurn {
+object ListenerBlockBurn {
     @SubscribeEvent
     fun onBlockBurn(event: BlockBurnEvent) {
         val block = event.block

@@ -38,7 +38,7 @@ import site.liangbai.realhomehunt.internal.processor.Processors
 @Isolated
 class EventHolderGunHitBlock : EventHolder<EventWrapper.EventObject> {
     override fun handle(eventWrapper: EventWrapper<EventWrapper.EventObject>) {
-        val event = eventWrapper.getObject() as HitBlock
+        val event = eventWrapper.`object` as HitBlock
         val entity = event.living.entity.toBukkitEntity() as? Player ?: return
         val gun = event.itemStack.toBukkitItemStack()
         val world = event.level.toBukkitWorld()

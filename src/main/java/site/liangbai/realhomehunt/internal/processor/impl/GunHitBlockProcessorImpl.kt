@@ -19,7 +19,6 @@
 package site.liangbai.realhomehunt.internal.processor.impl
 
 import org.bukkit.block.Block
-import org.bukkit.block.BlockFace
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import site.liangbai.realhomehunt.api.cache.DamageCachePool
@@ -30,7 +29,6 @@ import site.liangbai.realhomehunt.common.bossbar.factory.BossBarFactory
 import site.liangbai.realhomehunt.common.bossbar.impl.HealthBossBar.Companion.clearForHealth
 import site.liangbai.realhomehunt.common.bossbar.impl.HealthBossBar.Companion.updateForHealth
 import site.liangbai.realhomehunt.common.config.Config
-import site.liangbai.realhomehunt.internal.listener.player.block.ListenerBlockBreak.saveUpBlock
 import site.liangbai.realhomehunt.internal.processor.IGunHitBlockProcessor
 import site.liangbai.realhomehunt.internal.task.delayUnload
 import site.liangbai.realhomehunt.util.Blocks.sendBreakAnimationPacket
@@ -105,10 +103,6 @@ class GunHitBlockProcessorImpl : IGunHitBlockProcessor {
                 sendClearBreakAnimationPacket(damageCache.id, damageCache.block)
                 healthBossBar.clearForHealth(damageCache)
                 submit {
-                    val upBlock = block.getRelative(BlockFace.UP)
-                    if (!upBlock.type.isAir) {
-                        saveUpBlock(upBlock, residence)
-                    }
                     val blockData = damageCache.block.blockData.clone()
                     val callBack = GameModeManager.submit(residence, player, gun, block, block.state, blockData)
                     sendBreakBlockPacket(damageCache.block, Config.dropItem && callBack.get())

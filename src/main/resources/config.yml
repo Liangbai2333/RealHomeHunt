@@ -172,8 +172,6 @@ block:
       suffix: DOOR
       # 限制放置数量
       amount: 1
-      # 打击他下方的方块，他是否会被破坏，比如木门下方的方块被摧毁，木门也会跟着被摧毁
-      up-break: true
       # 是否屏蔽打击
       ignore-hit: true
     # 玻璃

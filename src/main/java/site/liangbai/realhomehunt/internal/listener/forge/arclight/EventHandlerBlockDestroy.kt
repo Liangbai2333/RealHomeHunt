@@ -18,24 +18,24 @@
 
 package site.liangbai.realhomehunt.internal.listener.forge.arclight
 
-import com.craftingdead.core.event.GunEvent
+import net.minecraft.world.World
 import net.minecraftforge.eventbus.api.SubscribeEvent
-import org.bukkit.entity.Player
-import site.liangbai.realhomehunt.internal.processor.Processors
-import site.liangbai.realhomehunt.util.kt.toBukkitEntity
-import site.liangbai.realhomehunt.util.kt.toBukkitItemStack
+import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager
 import site.liangbai.realhomehunt.util.kt.toBukkitWorld
 import site.liangbai.realhomehunt.util.kt.toLocation
+import site.liangbai.realhomehuntforge.event.BlockDestroyEvent
 import taboolib.common.Isolated
 
 @Isolated
-class EventHandlerGunHitBlock {
+class EventHandlerBlockDestroy {
     @SubscribeEvent
-    fun onGunHitBlock(event: GunEvent.HitBlock) {
-        val player = event.living.entity.toBukkitEntity() as? Player ?: return
-        val gun = event.itemStack.toBukkitItemStack()
-        val world = event.level.toBukkitWorld()
-        val block = world.getBlockAt(event.rayTraceResult.blockPos.toLocation())
-        Processors.GUN_HIT_BLOCK_PROCESSOR.processGunHitBlock(player, gun, block)
+    fun onBlockDestroy(event: BlockDestroyEvent) {
+        val world = (event.world as World).toBukkitWorld()
+        val location = event.pos.toLocation()
+        val block = world.getBlockAt(event.pos.toLocation())
+        val residence = ResidenceManager.getResidenceByLocation(location)
+        if (residence != null) {
+            residence.destroyBlock(block)
+        }
     }
 }

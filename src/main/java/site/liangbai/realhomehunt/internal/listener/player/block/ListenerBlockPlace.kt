@@ -18,6 +18,7 @@
 
 package site.liangbai.realhomehunt.internal.listener.player.block
 
+import org.bukkit.event.block.BlockMultiPlaceEvent
 import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.inventory.ItemStack
 import site.liangbai.realhomehunt.api.residence.attribute.impl.BuildAttribute
@@ -47,6 +48,7 @@ internal object ListenerBlockPlace {
         if (type.isAir) return
         val player = event.player
         val ignoreBlockInfo = Config.block.ignore.getByMaterial(type)
+        val putCount = if (event is BlockMultiPlaceEvent) event.replacedBlockStates.size else 1
         val limit = ignoreBlockInfo?.amount ?: -1
         if (limit >= 0) {
             val info = residence.getIgnoreBlockInfo(ignoreBlockInfo!!)
@@ -57,12 +59,12 @@ internal object ListenerBlockPlace {
                     player.sendLang("action-place-limit", name)
                     event.isCancelled = true
                 } else {
-                    info.increaseCount()
+                    info.increaseCount(putCount)
                     residence.save()
                 }
                 return
             }
-            info.increaseCount()
+            info.increaseCount(putCount)
             residence.save()
         }
     }

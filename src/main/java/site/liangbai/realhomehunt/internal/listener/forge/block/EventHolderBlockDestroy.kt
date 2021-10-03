@@ -18,21 +18,25 @@
 
 package site.liangbai.realhomehunt.internal.listener.forge.block
 
-import site.liangbai.realhomehunt.util.kt.toBukkitWorld
-import site.liangbai.realhomehunt.util.kt.toLocation
-import taboolib.common.Isolated
+import net.minecraft.world.World
 import site.liangbai.forgeeventbridge.event.EventHolder
 import site.liangbai.forgeeventbridge.wrapper.EventWrapper
-import site.liangbai.realhomehunt.common.config.Config
-import site.liangbai.realhomehuntforge.event.BlockRayTraceEvent.TryPierceableBlock
+import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager
+import site.liangbai.realhomehunt.util.kt.toBukkitWorld
+import site.liangbai.realhomehunt.util.kt.toLocation
+import site.liangbai.realhomehuntforge.event.BlockDestroyEvent
+import taboolib.common.Isolated
 
 @Isolated
-class EventHolderTryPierceableBlock : EventHolder<EventWrapper.EventObject> {
+class EventHolderBlockDestroy : EventHolder<EventWrapper.EventObject> {
     override fun handle(eventWrapper: EventWrapper<EventWrapper.EventObject>) {
-        val event = eventWrapper.`object` as TryPierceableBlock
-        val world = event.level.toBukkitWorld()
-        val block = world.getBlockAt(event.rayTraceResult.blockPos.toLocation())
-        val original = event.isPierceable
-        event.isPierceable = Config.block.ignore.isPierceable(block.type, original)
+        val event = eventWrapper.`object` as BlockDestroyEvent
+        val world = (event.world as World).toBukkitWorld()
+        val location = event.pos.toLocation()
+        val block = world.getBlockAt(event.pos.toLocation())
+        val residence = ResidenceManager.getResidenceByLocation(location)
+        if (residence != null) {
+            residence.destroyBlock(block)
+        }
     }
 }

@@ -33,11 +33,13 @@ import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager
 import site.liangbai.realhomehunt.common.config.Config
 import site.liangbai.realhomehunt.internal.listener.forge.arclight.EventHandlerGunHitBlock
 import site.liangbai.realhomehunt.internal.listener.forge.arclight.EventHandlerTryPierceableBlock
+import site.liangbai.realhomehunt.internal.listener.forge.block.EventHolderBlockDestroy
 import site.liangbai.realhomehunt.internal.listener.forge.block.EventHolderTryPierceableBlock
 import site.liangbai.realhomehunt.internal.listener.forge.player.EventHolderGunHitBlock
 import site.liangbai.realhomehunt.internal.storage.impl.SqlStorage
 import site.liangbai.realhomehunt.util.Console
 import site.liangbai.realhomehunt.util.kt.isArclight
+import site.liangbai.realhomehuntforge.event.BlockDestroyEvent
 import site.liangbai.realhomehuntforge.event.BlockRayTraceEvent
 import taboolib.common.LifeCycle
 import taboolib.common.env.RuntimeDependency
@@ -96,43 +98,42 @@ object RealHomeHuntPlugin : Plugin() {
 
     @Awake(LifeCycle.ENABLE)
     private fun initForgeEventListener() {
-        var rhhForgeLoaded = false
         val useBridge = isForgeEventBridgeLoaded()
 
-        if (ModList.get().isLoaded(REAL_HOME_HUNT_FORGE_MOD_ID)) {
-            rhhForgeLoaded = true
-        } else {
-            Console.sendMessage("${ChatColor.YELLOW}WARN: ${ChatColor.RED}Not found RealHomeHuntForge, and some features will fail.")
+        if (!ModList.get().isLoaded(REAL_HOME_HUNT_FORGE_MOD_ID)) {
+            disablePlugin()
+            throw IllegalStateException("can not found RealHomeHuntForge mod, please install it.")
         }
 
         if (useBridge) {
-            registerForgeEventBridgeListener(rhhForgeLoaded)
+            registerForgeEventBridgeListener()
         } else if (isArclight()) {
             Console.sendMessage("${ChatColor.YELLOW}WARN: Found the Arclight server, the plugin will use it, but the server can not found Forge-Event-Bridge mod.")
             Console.sendMessage("${ChatColor.YELLOW}WARN: If the plugin throw the NullPointerException, please update your Arclight version to 1.0.21 or newer, or use the Forge-Event-Bridge.")
             val bus = MinecraftForge.EVENT_BUS
             Arclight.registerForgeEvent(inst, bus, EventHandlerGunHitBlock())
-            if (rhhForgeLoaded) {
-                Arclight.registerForgeEvent(inst, bus, EventHandlerTryPierceableBlock())
-            }
+            Arclight.registerForgeEvent(inst, bus, EventHandlerTryPierceableBlock())
+            Arclight.registerForgeEvent(inst, bus, EventHolderBlockDestroy())
         } else {
             disablePlugin()
             throw IllegalStateException("can not found Forge-Event-Bridge mod, please install it.")
         }
     }
 
-    private fun registerForgeEventBridgeListener(useRhh: Boolean) {
+    private fun registerForgeEventBridgeListener() {
         EventHolderGunHitBlock().register(
             EventBridge.builder()
                 .target(GunEvent.HitBlock::class.java).build()
         )
 
-        if (useRhh) {
-            EventHolderTryPierceableBlock().register(
-                EventBridge.builder()
-                    .target(BlockRayTraceEvent.TryPierceableBlock::class.java).build()
-            )
-        }
+        EventHolderTryPierceableBlock().register(
+            EventBridge.builder()
+                .target(BlockRayTraceEvent.TryPierceableBlock::class.java).build()
+        )
+        EventHolderBlockDestroy().register(
+            EventBridge.builder()
+                .target(BlockDestroyEvent::class.java).build()
+        )
     }
 
     private fun isForgeEventBridgeLoaded() = ModList.get().isLoaded(FORGE_EVENT_BRIDGE_MOD_ID)

@@ -30,11 +30,8 @@ class EventHandlerTryPierceableBlock {
     @SubscribeEvent
     fun onTryPiecreableBlock(event: BlockRayTraceEvent.TryPierceableBlock) {
         val world = event.level.toBukkitWorld()
-
         val block = world.getBlockAt(event.rayTraceResult.blockPos.toLocation())
-
         val original = event.isPierceable
-
         event.isPierceable =
             Config.block.ignore.isPierceable(block.type, original)
     }
