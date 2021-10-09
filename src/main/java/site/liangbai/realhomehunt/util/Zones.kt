@@ -53,7 +53,7 @@ object Zones {
         }.alwaysShowAsync()
     }
 
-    fun useZoneEffectGroup(left: Location, right: Location, step: Double = 0.1, color: Color? = null, isBlockPos: Boolean = false, func: EffectGroup.() -> Unit): EffectGroup {
+    fun useZoneEffectGroup(left: Location, right: Location, step: Double = 0.2, color: Color? = null, isBlockPos: Boolean = false, func: EffectGroup.() -> Unit): EffectGroup {
         require(left.world == right.world) { "the two points' world must be same." }
         val box = boundingBoxOf(left, right, isBlockPos, clone = true)
 
