@@ -125,6 +125,7 @@ command-admin-help:
   - "&f[&6&l抄家系统&f] &r&2/{0} remove <玩家名> &e - 删除他人领地"
   - "&f[&6&l抄家系统&f] &r&2/{0} set <玩家名> <属性类型> <属性值> &e - 为他人领地设置属性"
   - "&f[&6&l抄家系统&f] &r&2/{0} administrator <玩家> <被设置权限的玩家> <true/false> &e - 为他人添加/删除领地管理员"
+  - "&f[&6&l抄家系统&f] &r&2/{0} show <玩家> &e - 开启/关闭显示他人的领地范围"
   - "&f[&6&l抄家系统&f] &r&2/{0} expand <玩家名> <类型[north/south/west/east/up/down/all]> <大小> &e - 为他人领地进行扩展"
   - "&f[&6&l抄家系统&f] &r&2/{0} reelect <玩家名> &e - 为他人领地重选范围"
 
@@ -166,6 +167,11 @@ command-admin-administrator-already-is-administrator: "&c对方已经在玩家�
 command-admin-administrator-success-give: "&a成功给予玩家: {1} 在 {0) 的领地权限."
 command-admin-administrator-is-not-administrator: "&c对方还没有在 {0} 的领地权限."
 command-admin-administrator-success-delete: "&a成功删除玩家: {1} 在 {0} 的领地权限."
+
+command-admin-show-have-not-residence: "&c{0} 还没有领地哦~"
+command-admin-show-not-opened: "&c此世界没有开放领地."
+command-admin-show-success-on: "&a成功开启显示 {0} 的领地范围"
+command-admin-show-success-off: "&a成功关闭显示 {0} 的领地范围"
 
 command-admin-expand-have-not-residence: "&c对方 {0} 还没有领地, 无法扩展领地大小."
 command-admin-expand-unknown-expand: "&c未知的拓展类型[{0}]."

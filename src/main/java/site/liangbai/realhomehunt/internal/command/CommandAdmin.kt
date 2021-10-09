@@ -35,6 +35,7 @@ import site.liangbai.realhomehunt.common.expand.Expand
 import site.liangbai.realhomehunt.internal.storage.impl.SqliteStorage
 import site.liangbai.realhomehunt.internal.storage.impl.YamlStorage
 import site.liangbai.realhomehunt.util.Locations
+import site.liangbai.realhomehunt.util.Zones
 import site.liangbai.realhomehunt.util.kt.expand
 import site.liangbai.realhomehunt.util.kt.isBoolean
 import site.liangbai.realhomehunt.util.sendToAll
@@ -185,6 +186,10 @@ internal object CommandAdmin {
     @CommandBody(permission = "rh.admin.administrator", optional = true)
     val administrator = subCommand {
         dynamic {
+            suggestion<CommandSender> { _, _ ->
+                ResidenceManager.getResidences().map { it.owner }
+            }
+
             dynamic {
                 suggestion<CommandSender>(uncheck = true) { _, context ->
                     val residence = ResidenceManager.getResidenceByOwner(context.argument(-1)!!)
@@ -209,6 +214,19 @@ internal object CommandAdmin {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    @CommandBody(permission = "rh.admin.show", optional = true)
+    val show = subCommand {
+        dynamic {
+            suggestion<Player> { _, _ ->
+                ResidenceManager.getResidences().map { it.owner }
+            }
+
+            execute<Player> { sender, _, argument ->
+                sender.commandShow(argument)
             }
         }
     }
@@ -380,6 +398,29 @@ internal object CommandAdmin {
         }
 
         residence.save()
+    }
+
+    private fun Player.commandShow(target: String) {
+        if (!ResidenceManager.isOpened(world)) {
+            sendLang("command-admin-show-not-opened")
+            return
+        }
+
+        val residence = ResidenceManager.getResidenceByOwner(target)
+
+        if (residence == null) {
+            sendLang("command-admin-show-have-not-residence", target)
+            return
+        }
+
+        if (Command.clearShowCacheFor(name, target)) {
+            sendLang("command-admin-show-success-off", target)
+        } else {
+            Command.showCaches.computeIfAbsent(name) {
+                mutableMapOf()
+            }[target] = Zones.startShowWithBlockLocation(this, residence.left, residence.right)
+            sendLang("command-admin-show-success-on", target)
+        }
     }
 
     private fun CommandSender.commandImport(filePath: String, cleanOldString: String) {
