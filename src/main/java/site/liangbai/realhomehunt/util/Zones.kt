@@ -60,7 +60,7 @@ object Zones {
         val minLoc = box.min.toLocation(left.world!!).toProxyLocation()
         val maxLoc = box.max.toLocation(left.world!!).toProxyLocation()
 
-        val cube = Cube(minLoc, maxLoc, object : ParticleSpawner {
+        val cube = Cube(minLoc, maxLoc, step, object : ParticleSpawner {
             override fun spawn(location: taboolib.common.util.Location) {
                 // TODO, empty object for custom.
             }
