@@ -19,7 +19,6 @@
 package site.liangbai.realhomehunt.internal.listener.player.residence
 
 import site.liangbai.realhomehunt.api.event.residence.ResidenceRemoveEvent
-import site.liangbai.realhomehunt.common.particle.EffectGroup
 import site.liangbai.realhomehunt.internal.command.Command
 import taboolib.common.platform.event.SubscribeEvent
 
@@ -27,10 +26,6 @@ internal object ListenerResidenceRemove {
     @SubscribeEvent
     fun onResidenceRemove(event: ResidenceRemoveEvent) {
         val owner: String = event.residence.owner
-        if (Command.showCaches.containsKey(owner)) {
-            val effectGroup: EffectGroup? = Command.showCaches[owner]
-            effectGroup?.turnOff()
-            Command.showCaches.remove(owner)
-        }
+        Command.clearAllShowCacheByOwner(owner)
     }
 }

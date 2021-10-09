@@ -111,16 +111,16 @@ class Residence : ConfigurationSerializable {
             }
     }
 
-    fun checkBooleanAttribute(attribute: Class<out IAttributable<Boolean>?>): Boolean {
+    fun checkBooleanAttribute(attribute: Class<out IAttributable<Boolean>>): Boolean {
         return getAttribute(attribute).get()
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun <T> getAttribute(attribute: Class<out IAttributable<T>?>): IAttributable<T> {
+    fun <T> getAttribute(attribute: Class<out IAttributable<T>>): IAttributable<T> {
         return getAttributeWithoutType(attribute) as IAttributable<T>
     }
 
-    fun getAttributeWithoutType(attribute: Class<out IAttributable<*>?>): IAttributable<*> {
+    fun getAttributeWithoutType(attribute: Class<out IAttributable<*>>): IAttributable<*> {
         return Objects.requireNonNull(
             attributes.stream()
                 .filter { it.javaClass == attribute }

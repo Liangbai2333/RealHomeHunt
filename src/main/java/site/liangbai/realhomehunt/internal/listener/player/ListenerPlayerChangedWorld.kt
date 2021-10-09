@@ -20,7 +20,6 @@ package site.liangbai.realhomehunt.internal.listener.player
 
 import org.bukkit.event.player.PlayerChangedWorldEvent
 import site.liangbai.realhomehunt.api.cache.SelectCache
-import site.liangbai.realhomehunt.common.particle.EffectGroup
 import site.liangbai.realhomehunt.internal.command.Command
 import taboolib.common.platform.event.SubscribeEvent
 
@@ -29,10 +28,6 @@ internal object ListenerPlayerChangedWorld {
     fun onPlayerChangedWorld(event: PlayerChangedWorldEvent) {
         SelectCache.pop(event.player)
         val name = event.player.name
-        if (Command.showCaches.containsKey(name)) {
-            val effectGroup: EffectGroup? = Command.showCaches[name]
-            effectGroup?.turnOff()
-            Command.showCaches.remove(name)
-        }
+        Command.clearAllShowCache(name)
     }
 }

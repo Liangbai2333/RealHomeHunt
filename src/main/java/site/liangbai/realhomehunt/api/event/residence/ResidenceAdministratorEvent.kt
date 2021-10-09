@@ -18,16 +18,16 @@
 
 package site.liangbai.realhomehunt.api.event.residence
 
-import org.bukkit.entity.Player
+import org.bukkit.command.CommandSender
 import site.liangbai.realhomehunt.api.event.EventCancellable
 import site.liangbai.realhomehunt.api.residence.Residence
 
-open class ResidenceAdministratorEvent(val residence: Residence, val operator: Player, val targetName: String) :
+open class ResidenceAdministratorEvent(val residence: Residence, val operator: CommandSender, val targetName: String) :
     EventCancellable<ResidenceAdministratorEvent>() {
 
-    class Give(residence: Residence, operator: Player, targetName: String) :
+    class Give(residence: Residence, operator: CommandSender, targetName: String) :
         ResidenceAdministratorEvent(residence, operator, targetName)
 
-    class Remove(residence: Residence, operator: Player, targetName: String) :
+    class Remove(residence: Residence, operator: CommandSender, targetName: String) :
         ResidenceAdministratorEvent(residence, operator, targetName)
 }

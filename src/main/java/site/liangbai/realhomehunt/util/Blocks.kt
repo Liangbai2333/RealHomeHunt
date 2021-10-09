@@ -46,8 +46,8 @@ object Blocks {
     }
 
     @JvmStatic
-    fun sendBreakBlockPacket(block: Block?, dropItem: Boolean): Boolean {
-        return NMS.INSTANCE.sendBreakBlock(block!!, dropItem)
+    fun sendBreakBlockPacket(block: Block, dropItem: Boolean): Boolean {
+        return NMS.INSTANCE.sendBreakBlock(block, dropItem)
     }
 
     @JvmStatic

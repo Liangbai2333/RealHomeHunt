@@ -44,7 +44,7 @@ import java.util.concurrent.ConcurrentHashMap
 
 @CommandHeader(name = "rh", aliases = ["rhh", "realhomehunt"], permission = "rh.command", permissionDefault = PermissionDefault.TRUE)
 internal object Command {
-    val showCaches: MutableMap<String, EffectGroup> = ConcurrentHashMap()
+    val showCaches: MutableMap<String, MutableMap<String, EffectGroup>> = ConcurrentHashMap()
 
     @CommandBody(permission = "rh.command.help", optional = true, permissionDefault = PermissionDefault.TRUE)
     val help = subCommand {
@@ -122,18 +122,11 @@ internal object Command {
             suggestion<Player>(uncheck = true) { sender, _ ->
                 val residence = ResidenceManager.getResidenceByOwner(sender.name)
 
-                val players = Bukkit.getOnlinePlayers()
+                Bukkit.getOnlinePlayers()
                     .map { it.name }
-                    .filter {
-                        residence == null || !residence.isAdministrator(
-                            it
-                        )
-                    }
+                    .filter { residence?.isAdministrator(it) ?: true }
                     .toMutableList()
-
-                players.addAll(residence?.administrators ?: emptyList())
-
-                players
+                    .also { residence?.run { it.addAll(this.administrators) } }
             }
 
             dynamic {
@@ -306,13 +299,12 @@ internal object Command {
             return
         }
 
-        if (showCaches.containsKey(name)) {
-            val effectGroup = showCaches[name]
-            effectGroup?.turnOff()
-            showCaches.remove(name)
+        if (clearShowCacheForSelf(name)) {
             sendLang("command-show-success-off")
         } else {
-            showCaches[name] = Zones.startShowWithBlockLocation(this, residence.left, residence.right)
+            showCaches.computeIfAbsent(name) {
+                mutableMapOf()
+            }[name] = Zones.startShowWithBlockLocation(this, residence.left, residence.right)
             sendLang("command-show-success-on")
         }
     }
@@ -527,5 +519,27 @@ internal object Command {
         sendLang("command-create-success")
 
         sendToAll("command-create-send-to-all", name)
+    }
+
+    fun clearShowCacheForSelf(player: String) = clearShowCacheFor(player, player)
+
+    fun clearShowCacheFor(player: String, target: String): Boolean {
+        return if (player in showCaches) {
+            showCaches[player]!!.let {
+                if (target !in it) {
+                    false
+                } else it.remove(target)?.turnOff().run { true }
+            }
+        } else false
+    }
+
+    fun clearAllShowCache(player: String) {
+        showCaches.remove(player)?.let { groups -> groups.forEach { it.value.turnOff() } }
+    }
+
+    fun clearAllShowCacheByOwner(owner: String) {
+        showCaches.forEach {
+            it.value.remove(owner)?.turnOff()
+        }
     }
 }

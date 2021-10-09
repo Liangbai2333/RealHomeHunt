@@ -124,6 +124,7 @@ command-admin-help:
   - "&f[&6&l抄家系统&f] &r&2/{0} create <玩家名> &e - 为他人创造领地"
   - "&f[&6&l抄家系统&f] &r&2/{0} remove <玩家名> &e - 删除他人领地"
   - "&f[&6&l抄家系统&f] &r&2/{0} set <玩家名> <属性类型> <属性值> &e - 为他人领地设置属性"
+  - "&f[&6&l抄家系统&f] &r&2/{0} administrator <玩家> <被设置权限的玩家> <true/false> &e - 为他人添加/删除领地管理员"
   - "&f[&6&l抄家系统&f] &r&2/{0} expand <玩家名> <类型[north/south/west/east/up/down/all]> <大小> &e - 为他人领地进行扩展"
   - "&f[&6&l抄家系统&f] &r&2/{0} reelect <玩家名> &e - 为他人领地重选范围"
 
@@ -158,6 +159,13 @@ command-admin-set-have-not-residence: "&c对方 {0} 还没有领地, 无法设�
 command-admin-set-unknown-attribute: "&c未知的属性名称: {0}."
 command-admin-set-success: "&a成功将 {0} 的领地属性 {1} 的值设定为: {2}."
 command-admin-set-not-allow: "&c不被允许的属性值, 该项属性允许的属性值为: {0}."
+
+command-admin-administrator-unknown-param: "&c第三个参数必须为 <true/false>"
+command-admin-administrator-have-not-residence: "&c{0} 还没有领地, 无法设置领地权限."
+command-admin-administrator-already-is-administrator: "&c对方已经在玩家领地 {0} 拥有领地权限."
+command-admin-administrator-success-give: "&a成功给予玩家: {1} 在 {0) 的领地权限."
+command-admin-administrator-is-not-administrator: "&c对方还没有在 {0} 的领地权限."
+command-admin-administrator-success-delete: "&a成功删除玩家: {1} 在 {0} 的领地权限."
 
 command-admin-expand-have-not-residence: "&c对方 {0} 还没有领地, 无法扩展领地大小."
 command-admin-expand-unknown-expand: "&c未知的拓展类型[{0}]."

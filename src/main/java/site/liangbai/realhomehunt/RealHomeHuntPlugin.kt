@@ -123,16 +123,18 @@ object RealHomeHuntPlugin : Plugin() {
     private fun registerForgeEventBridgeListener() {
         EventHolderGunHitBlock().register(
             EventBridge.builder()
-                .target(GunEvent.HitBlock::class.java).build()
+                .target(GunEvent.HitBlock::class.java)
+                .build()
         )
-
         EventHolderTryPierceableBlock().register(
             EventBridge.builder()
-                .target(BlockRayTraceEvent.TryPierceableBlock::class.java).build()
+                .target(BlockRayTraceEvent.TryPierceableBlock::class.java)
+                .build()
         )
         EventHolderBlockDestroy().register(
             EventBridge.builder()
-                .target(BlockDestroyEvent::class.java).build()
+                .target(BlockDestroyEvent::class.java)
+                .build()
         )
     }
 

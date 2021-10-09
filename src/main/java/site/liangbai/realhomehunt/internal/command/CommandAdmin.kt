@@ -182,6 +182,37 @@ internal object CommandAdmin {
         }
     }
 
+    @CommandBody(permission = "rh.admin.administrator", optional = true)
+    val administrator = subCommand {
+        dynamic {
+            dynamic {
+                suggestion<CommandSender>(uncheck = true) { _, context ->
+                    val residence = ResidenceManager.getResidenceByOwner(context.argument(-1)!!)
+
+                    Bukkit.getOnlinePlayers()
+                        .map { it.name }
+                        .filter { residence?.isAdministrator(it) ?: true }
+                        .toMutableList()
+                        .also { residence?.run { it.addAll(this.administrators) } }
+                }
+
+                dynamic {
+                    suggestion<CommandSender> { _, _ ->
+                        listOf("true", "false")
+                    }
+
+                    execute<CommandSender> { sender, context, argument ->
+                        argument.isBoolean().apply {
+                            if (!this) {
+                                sender.sendLang("command-admin-administrator-unknown-param")
+                            } else context.argument(-2)?.let { sender.commandAdministrator(it, context.argument(-1)!!, argument.toBoolean()) }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     @CommandBody(permission = "rh.admin.translate", optional = true)
     val translate = subCommand {
         dynamic {
@@ -320,6 +351,35 @@ internal object CommandAdmin {
         } else {
             sendLang("command-admin-set-not-allow", attribute.allowValues())
         }
+    }
+
+    private fun CommandSender.commandAdministrator(target: String, who: String, give: Boolean) {
+        val residence = ResidenceManager.getResidenceByOwner(target)
+
+        if (residence == null) {
+            sendLang("command-admin-administrator-have-not-residence", target)
+            return
+        }
+
+        if (give) {
+            if (residence.isAdministrator(who)) {
+                sendLang("command-admin-administrator-already-is-administrator", target, who)
+                return
+            }
+            if (!ResidenceAdministratorEvent.Give(residence, this, who).post()) return
+            residence.addAdministrator(who)
+            sendLang("command-admin-administrator-success-give", target, who)
+        } else {
+            if (!residence.isAdministrator(who)) {
+                sendLang("command-admin-administrator-is-not-administrator", target, who)
+                return
+            }
+            if (!ResidenceAdministratorEvent.Remove(residence, this, who).post()) return
+            residence.removeAdministrator(who)
+            sendLang("command-admin-administrator-success-delete", target, who)
+        }
+
+        residence.save()
     }
 
     private fun CommandSender.commandImport(filePath: String, cleanOldString: String) {
