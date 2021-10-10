@@ -31,6 +31,7 @@ import site.liangbai.realhomehunt.api.residence.Residence
 import site.liangbai.realhomehunt.api.residence.attribute.map.AttributeMap
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager
 import site.liangbai.realhomehunt.common.config.Config
+import site.liangbai.realhomehunt.internal.listener.forge.arclight.EventHandlerBlockDestroy
 import site.liangbai.realhomehunt.internal.listener.forge.arclight.EventHandlerGunHitBlock
 import site.liangbai.realhomehunt.internal.listener.forge.arclight.EventHandlerTryPierceableBlock
 import site.liangbai.realhomehunt.internal.listener.forge.block.EventHolderBlockDestroy
@@ -113,7 +114,7 @@ object RealHomeHuntPlugin : Plugin() {
             val bus = MinecraftForge.EVENT_BUS
             Arclight.registerForgeEvent(inst, bus, EventHandlerGunHitBlock())
             Arclight.registerForgeEvent(inst, bus, EventHandlerTryPierceableBlock())
-            Arclight.registerForgeEvent(inst, bus, EventHolderBlockDestroy())
+            Arclight.registerForgeEvent(inst, bus, EventHandlerBlockDestroy())
         } else {
             disablePlugin()
             throw IllegalStateException("can not found Forge-Event-Bridge mod, please install it.")
