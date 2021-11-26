@@ -21,21 +21,22 @@ package site.liangbai.realhomehunt.api.residence.attribute.impl;
 import java.util.Map;
 
 /**
- * The type Ignite attribute.
+ * The type Glow attribute.
  *
  * @author Liangbai
  * @since 2021 /08/10 05:01 下午
  */
-public final class IgniteAttribute extends BooleanAttribute {
-    public IgniteAttribute(Map<String, Object> map) {
-        super(map);
+public final class Glow extends BooleanAttribute {
+    public Glow() {
+        set(true);
     }
 
-    public IgniteAttribute() {
+    public Glow(Map<String, Object> map) {
+        super(map);
     }
 
     @Override
     public String getName() {
-        return "ignite";
+        return "glow";
     }
 }

@@ -19,8 +19,8 @@
 package site.liangbai.realhomehunt.internal.listener.player.block
 
 import org.bukkit.event.block.BlockBreakEvent
-import site.liangbai.realhomehunt.api.residence.attribute.impl.BreakAttribute
-import site.liangbai.realhomehunt.api.residence.attribute.impl.BuildAttribute
+import site.liangbai.realhomehunt.api.residence.attribute.impl.Break
+import site.liangbai.realhomehunt.api.residence.attribute.impl.Build
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager
 import taboolib.common.platform.event.SubscribeEvent
 
@@ -31,9 +31,7 @@ internal object ListenerBlockBreak {
         val residence = ResidenceManager.getResidenceByLocation(event.block.location)
             ?: return
         if (!residence.isAdministrator(event.player) && !event.player.hasPermission("rh.break")
-            && !residence.checkBooleanAttribute(BreakAttribute::class.java) && !residence.checkBooleanAttribute(
-                BuildAttribute::class.java
-            )
+            && !residence.checkBooleanAttribute<Break>() && !residence.checkBooleanAttribute<Build>()
         ) {
             event.isCancelled = true
             return

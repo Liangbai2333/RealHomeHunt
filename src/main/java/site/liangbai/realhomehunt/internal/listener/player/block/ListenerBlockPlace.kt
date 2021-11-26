@@ -21,8 +21,8 @@ package site.liangbai.realhomehunt.internal.listener.player.block
 import org.bukkit.event.block.BlockMultiPlaceEvent
 import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.inventory.ItemStack
-import site.liangbai.realhomehunt.api.residence.attribute.impl.BuildAttribute
-import site.liangbai.realhomehunt.api.residence.attribute.impl.PlaceAttribute
+import site.liangbai.realhomehunt.api.residence.attribute.impl.Build
+import site.liangbai.realhomehunt.api.residence.attribute.impl.Place
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager
 import site.liangbai.realhomehunt.common.config.Config
 import site.liangbai.realhomehunt.util.sendLang
@@ -36,9 +36,7 @@ internal object ListenerBlockPlace {
         val residence = ResidenceManager.getResidenceByLocation(event.block.location)
             ?: return
         if (!residence.isAdministrator(event.player) && !event.player.hasPermission("rh.place")
-            && !residence.checkBooleanAttribute(PlaceAttribute::class.java) && !residence.checkBooleanAttribute(
-                BuildAttribute::class.java
-            )
+            && !residence.checkBooleanAttribute<Place>() && !residence.checkBooleanAttribute<Build>()
         ) {
             event.isCancelled = true
             return

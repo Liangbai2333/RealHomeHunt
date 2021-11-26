@@ -20,8 +20,8 @@ package site.liangbai.realhomehunt.internal.listener.entity
 
 import org.bukkit.entity.Player
 import org.bukkit.event.hanging.HangingBreakByEntityEvent
-import site.liangbai.realhomehunt.api.residence.attribute.impl.BreakAttribute
-import site.liangbai.realhomehunt.api.residence.attribute.impl.BuildAttribute
+import site.liangbai.realhomehunt.api.residence.attribute.impl.Break
+import site.liangbai.realhomehunt.api.residence.attribute.impl.Build
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager
 import taboolib.common.platform.event.SubscribeEvent
 
@@ -34,9 +34,7 @@ internal object ListenerHangingBreakByEntity {
         val residence = ResidenceManager.getResidenceByLocation(event.entity.location)
             ?: return
         if (!residence.isAdministrator(player) && !player.hasPermission("rh.break")
-            && !residence.checkBooleanAttribute(BreakAttribute::class.java) && !residence.checkBooleanAttribute(
-                BuildAttribute::class.java
-            )
+            && !residence.checkBooleanAttribute<Break>() && !residence.checkBooleanAttribute<Build>()
         ) {
             event.isCancelled = true
         }

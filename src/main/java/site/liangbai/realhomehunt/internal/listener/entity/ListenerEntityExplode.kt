@@ -19,7 +19,7 @@
 package site.liangbai.realhomehunt.internal.listener.entity
 
 import org.bukkit.event.entity.EntityExplodeEvent
-import site.liangbai.realhomehunt.api.residence.attribute.impl.ExplodeAttribute
+import site.liangbai.realhomehunt.api.residence.attribute.impl.Explode
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager
 import taboolib.common.platform.event.SubscribeEvent
 
@@ -33,7 +33,7 @@ internal object ListenerEntityExplode {
             .filter { !it.type.isAir }
             .filter {
                 val residence = ResidenceManager.getResidenceByLocation(it.location)
-                residence != null && !residence.checkBooleanAttribute(ExplodeAttribute::class.java)
+                residence != null && !residence.checkBooleanAttribute<Explode>()
             }
             .forEach { blocks.remove(it) }
     }

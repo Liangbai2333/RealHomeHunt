@@ -31,20 +31,20 @@ public final class AttributeMap {
     private static final Map<String, Class<? extends IAttributable<?>>> map = new HashMap<>();
 
     static {
-        registerAttribute("creature", CreatureAttribute.class);
-        registerAttribute("animals", AnimalsAttribute.class);
-        registerAttribute("monster", MonsterAttribute.class);
-        registerAttribute("explode", ExplodeAttribute.class);
-        registerAttribute("burn", BurnAttribute.class);
-        registerAttribute("ignite", IgniteAttribute.class);
-        registerAttribute("spread-fire", SpreadFireAttribute.class);
-        registerAttribute("glow", GlowAttribute.class);
-        registerAttribute("break", BreakAttribute.class);
-        registerAttribute("place", PlaceAttribute.class);
-        registerAttribute("build", BuildAttribute.class);
-        registerAttribute("open-door", OpenDoorAttribute.class);
-        registerAttribute("piston", PistonAttribute.class);
-        registerAttribute("piston-protection", PistonProtectionAttribute.class);
+        registerAttribute("creature", Creature.class);
+        registerAttribute("animals", Animals.class);
+        registerAttribute("monster", Monster.class);
+        registerAttribute("explode", Explode.class);
+        registerAttribute("burn", Burn.class);
+        registerAttribute("ignite", Ignite.class);
+        registerAttribute("spread-fire", SpreadFire.class);
+        registerAttribute("glow", Glow.class);
+        registerAttribute("break", Break.class);
+        registerAttribute("place", Place.class);
+        registerAttribute("build", Build.class);
+        registerAttribute("open-door", OpenDoor.class);
+        registerAttribute("piston", Piston.class);
+        registerAttribute("piston-protection", PistonProtection.class);
     }
 
     public static void registerAttribute(String type, Class<? extends IAttributable<?>> attributeClass) {

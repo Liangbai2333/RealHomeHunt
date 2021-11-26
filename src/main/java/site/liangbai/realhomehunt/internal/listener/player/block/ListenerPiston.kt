@@ -20,8 +20,8 @@ package site.liangbai.realhomehunt.internal.listener.player.block
 
 import org.bukkit.event.block.BlockPistonExtendEvent
 import org.bukkit.event.block.BlockPistonRetractEvent
-import site.liangbai.realhomehunt.api.residence.attribute.impl.PistonAttribute
-import site.liangbai.realhomehunt.api.residence.attribute.impl.PistonProtectionAttribute
+import site.liangbai.realhomehunt.api.residence.attribute.impl.Piston
+import site.liangbai.realhomehunt.api.residence.attribute.impl.PistonProtection
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager
 import taboolib.common.platform.event.SubscribeEvent
 
@@ -36,7 +36,7 @@ internal object ListenerPiston {
     fun onPistonExtend(event: BlockPistonExtendEvent) {
         if (!ResidenceManager.isOpened(event.block.world)) return
         val residence = ResidenceManager.getResidenceByLocation(event.block.location)
-        if (residence != null && !residence.checkBooleanAttribute(PistonAttribute::class.java)) {
+        if (residence != null && !residence.checkBooleanAttribute<Piston>()) {
             event.isCancelled = true
         }
         for (block in event.blocks) {
@@ -46,8 +46,8 @@ internal object ListenerPiston {
             val to = ResidenceManager.getResidenceByLocation(
                 location.clone().add(direction.modX.toDouble(), direction.modY.toDouble(), direction.modZ.toDouble())
             )
-            if (from != null && from.checkBooleanAttribute(PistonProtectionAttribute::class.java)
-                || to != null && to.checkBooleanAttribute(PistonProtectionAttribute::class.java)
+            if (from != null && from.checkBooleanAttribute<PistonProtection>()
+                || to != null && to.checkBooleanAttribute<PistonProtection>()
             ) {
                 event.isCancelled = true
                 return
@@ -59,13 +59,13 @@ internal object ListenerPiston {
     fun onPistonRetract(event: BlockPistonRetractEvent) {
         if (!ResidenceManager.isOpened(event.block.world)) return
         var residence = ResidenceManager.getResidenceByLocation(event.block.location)
-        if (residence != null && !residence.checkBooleanAttribute(PistonAttribute::class.java)) {
+        if (residence != null && !residence.checkBooleanAttribute<Piston>()) {
             event.isCancelled = true
         }
         if (event.isSticky) {
             for (block in event.blocks) {
                 residence = ResidenceManager.getResidenceByLocation(block.location.clone())
-                if (residence != null && residence.checkBooleanAttribute(PistonProtectionAttribute::class.java)) {
+                if (residence != null && residence.checkBooleanAttribute<PistonProtection>()) {
                     event.isCancelled = true
                     return
                 }

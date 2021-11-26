@@ -111,8 +111,8 @@ class Residence : ConfigurationSerializable {
             }
     }
 
-    fun checkBooleanAttribute(attribute: Class<out IAttributable<Boolean>>): Boolean {
-        return getAttribute(attribute).get()
+    inline fun <reified T : IAttributable<Boolean>> checkBooleanAttribute(): Boolean {
+        return getAttribute(T::class.java).get()
     }
 
     @Suppress("UNCHECKED_CAST")

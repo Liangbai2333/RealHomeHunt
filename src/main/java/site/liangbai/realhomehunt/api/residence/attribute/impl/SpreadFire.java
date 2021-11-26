@@ -21,22 +21,21 @@ package site.liangbai.realhomehunt.api.residence.attribute.impl;
 import java.util.Map;
 
 /**
- * The type Glow attribute.
+ * The type Spread fire attribute.
  *
  * @author Liangbai
- * @since 2021 /08/10 05:01 下午
+ * @since 2021 /08/10 05:02 下午
  */
-public final class GlowAttribute extends BooleanAttribute {
-    public GlowAttribute() {
-        set(true);
+public final class SpreadFire extends BooleanAttribute {
+    public SpreadFire(Map<String, Object> map) {
+        super(map);
     }
 
-    public GlowAttribute(Map<String, Object> map) {
-        super(map);
+    public SpreadFire() {
     }
 
     @Override
     public String getName() {
-        return "glow";
+        return "spread-fire";
     }
 }

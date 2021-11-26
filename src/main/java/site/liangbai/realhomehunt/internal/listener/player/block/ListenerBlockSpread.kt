@@ -20,7 +20,7 @@ package site.liangbai.realhomehunt.internal.listener.player.block
 
 import org.bukkit.Material
 import org.bukkit.event.block.BlockSpreadEvent
-import site.liangbai.realhomehunt.api.residence.attribute.impl.SpreadFireAttribute
+import site.liangbai.realhomehunt.api.residence.attribute.impl.SpreadFire
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager
 import taboolib.common.platform.event.SubscribeEvent
 
@@ -32,7 +32,7 @@ internal object ListenerBlockSpread {
         if (!ResidenceManager.isOpened(block.world)) return
         val residence = ResidenceManager.getResidenceByLocation(block.location)
         if (residence != null) {
-            if (!residence.checkBooleanAttribute(SpreadFireAttribute::class.java)) event.isCancelled = true
+            if (!residence.checkBooleanAttribute<SpreadFire>()) event.isCancelled = true
         }
     }
 }

@@ -21,7 +21,7 @@ package site.liangbai.realhomehunt.internal.task
 import org.bukkit.Bukkit
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
-import site.liangbai.realhomehunt.api.residence.attribute.impl.GlowAttribute
+import site.liangbai.realhomehunt.api.residence.attribute.impl.Glow
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager
 import site.liangbai.realhomehunt.util.Locations
 import site.liangbai.realhomehunt.util.kt.filterNotActive
@@ -55,10 +55,10 @@ internal object PlayerGlowTask {
                     )
                     val residence = ResidenceManager.getResidenceByLocation(location)
                     if (residence != null) {
-                        if (residence.checkBooleanAttribute(GlowAttribute::class.java) && !it.isGlowing) {
+                        if (residence.checkBooleanAttribute<Glow>() && !it.isGlowing) {
                             it.isGlowing = true
                             glowing.add(it.uniqueId)
-                        } else if (!residence.checkBooleanAttribute(GlowAttribute::class.java) && it.isGlowing) {
+                        } else if (!residence.checkBooleanAttribute<Glow>() && it.isGlowing) {
                             it.isGlowing = false
                             glowing.remove(it.uniqueId)
                         }

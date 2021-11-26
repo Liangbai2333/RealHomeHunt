@@ -21,21 +21,22 @@ package site.liangbai.realhomehunt.api.residence.attribute.impl;
 import java.util.Map;
 
 /**
- * The type Build attribute.
+ * The type Creature attribute.
  *
  * @author Liangbai
- * @since 2021 /08/10 12:04 下午
+ * @since 2021 /08/10 05:01 下午
  */
-public final class BuildAttribute extends BooleanAttribute {
-    public BuildAttribute(Map<String, Object> map) {
-        super(map);
+public class Creature extends BooleanAttribute {
+    public Creature() {
+        set(true);
     }
 
-    public BuildAttribute() {
+    public Creature(Map<String, Object> map) {
+        super(map);
     }
 
     @Override
     public String getName() {
-        return "build";
+        return "creature";
     }
 }

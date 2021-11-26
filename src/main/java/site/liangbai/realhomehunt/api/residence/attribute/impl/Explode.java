@@ -21,21 +21,21 @@ package site.liangbai.realhomehunt.api.residence.attribute.impl;
 import java.util.Map;
 
 /**
- * The type Break attribute.
+ * The type Explode attribute.
  *
  * @author Liangbai
- * @since 2021 /08/10 12:04 下午
+ * @since 2021 /08/10 05:01 下午
  */
-public final class BreakAttribute extends BooleanAttribute {
-    public BreakAttribute() {
+public final class Explode extends BooleanAttribute {
+    public Explode(Map<String, Object> map) {
+        super(map);
     }
 
-    public BreakAttribute(Map<String, Object> map) {
-        super(map);
+    public Explode() {
     }
 
     @Override
     public String getName() {
-        return "break";
+        return "explode";
     }
 }

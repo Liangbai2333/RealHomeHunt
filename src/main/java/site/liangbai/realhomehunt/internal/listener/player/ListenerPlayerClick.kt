@@ -21,7 +21,7 @@ package site.liangbai.realhomehunt.internal.listener.player
 import org.bukkit.block.Container
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
-import site.liangbai.realhomehunt.api.residence.attribute.impl.OpenDoorAttribute
+import site.liangbai.realhomehunt.api.residence.attribute.impl.OpenDoor
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager
 import site.liangbai.realhomehunt.common.config.Config
 import site.liangbai.realhomehunt.util.Blocks
@@ -35,7 +35,7 @@ internal object ListenerPlayerClick {
         if (!Blocks.isDoor(block)) return
         val residence = ResidenceManager.getResidenceByLocation(block.location)
             ?: return
-        if (!residence.isAdministrator(event.player) && !residence.checkBooleanAttribute(OpenDoorAttribute::class.java)) event.isCancelled =
+        if (!residence.isAdministrator(event.player) && !residence.checkBooleanAttribute<OpenDoor>()) event.isCancelled =
             true
     }
 

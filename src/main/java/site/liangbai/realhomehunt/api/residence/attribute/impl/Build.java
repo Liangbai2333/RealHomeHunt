@@ -21,21 +21,21 @@ package site.liangbai.realhomehunt.api.residence.attribute.impl;
 import java.util.Map;
 
 /**
- * The type Burn attribute.
+ * The type Build attribute.
  *
  * @author Liangbai
- * @since 2021 /08/10 05:01 下午
+ * @since 2021 /08/10 12:04 下午
  */
-public final class BurnAttribute extends BooleanAttribute {
-    public BurnAttribute(Map<String, Object> map) {
+public final class Build extends BooleanAttribute {
+    public Build(Map<String, Object> map) {
         super(map);
     }
 
-    public BurnAttribute() {
+    public Build() {
     }
 
     @Override
     public String getName() {
-        return "burn";
+        return "build";
     }
 }

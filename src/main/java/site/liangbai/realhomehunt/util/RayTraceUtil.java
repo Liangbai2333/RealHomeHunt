@@ -29,15 +29,11 @@ import java.util.Optional;
 public class RayTraceUtil {
     public static Optional<Block> rayTraceBlock(Player player, double distance) {
         Location location = player.getEyeLocation();
-
         Vector start = player.getEyeLocation().getDirection();
-
         RayTraceResult rayTraceResult = player.getWorld().rayTraceBlocks(location, start, distance);
-
         if (rayTraceResult == null) {
             return Optional.empty();
         }
-
         return Optional.ofNullable(rayTraceResult.getHitBlock());
     }
 }

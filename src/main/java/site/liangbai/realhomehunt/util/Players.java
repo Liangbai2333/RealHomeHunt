@@ -41,7 +41,6 @@ public final class Players {
     public static void addListenerAlways(Consumer<Player> consumer) {
         listenerList.add(player -> {
             consumer.accept(player);
-
             return false;
         });
     }

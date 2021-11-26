@@ -21,22 +21,21 @@ package site.liangbai.realhomehunt.api.residence.attribute.impl;
 import java.util.Map;
 
 /**
- * The type Piston protection attribute.
+ * The type Burn attribute.
  *
  * @author Liangbai
- * @since 2021 /08/10 12:05 下午
+ * @since 2021 /08/10 05:01 下午
  */
-public final class PistonProtectionAttribute extends BooleanAttribute {
-    public PistonProtectionAttribute() {
-        set(true);
+public final class Burn extends BooleanAttribute {
+    public Burn(Map<String, Object> map) {
+        super(map);
     }
 
-    public PistonProtectionAttribute(Map<String, Object> map) {
-        super(map);
+    public Burn() {
     }
 
     @Override
     public String getName() {
-        return "piston-protection";
+        return "burn";
     }
 }

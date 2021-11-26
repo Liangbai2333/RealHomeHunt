@@ -18,12 +18,10 @@
 
 package site.liangbai.realhomehunt.internal.listener.entity.living
 
-import org.bukkit.entity.Animals
-import org.bukkit.entity.Monster
 import org.bukkit.event.entity.CreatureSpawnEvent
-import site.liangbai.realhomehunt.api.residence.attribute.impl.AnimalsAttribute
-import site.liangbai.realhomehunt.api.residence.attribute.impl.CreatureAttribute
-import site.liangbai.realhomehunt.api.residence.attribute.impl.MonsterAttribute
+import site.liangbai.realhomehunt.api.residence.attribute.impl.Animals
+import site.liangbai.realhomehunt.api.residence.attribute.impl.Creature
+import site.liangbai.realhomehunt.api.residence.attribute.impl.Monster
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager
 import taboolib.common.platform.event.SubscribeEvent
 
@@ -34,15 +32,15 @@ internal object ListenerCreatureSpawn {
         val spawnLocation = event.location
         val residence = ResidenceManager.getResidenceByLocation(spawnLocation)
         if (residence != null) {
-            if (!residence.checkBooleanAttribute(CreatureAttribute::class.java)) {
+            if (!residence.checkBooleanAttribute<Creature>()) {
                 event.isCancelled = true
                 return
             }
-            if (entity is Monster && !residence.checkBooleanAttribute(MonsterAttribute::class.java)) {
+            if (entity is org.bukkit.entity.Monster && !residence.checkBooleanAttribute<Monster>()) {
                 event.isCancelled = true
                 return
             }
-            if (entity is Animals && !residence.checkBooleanAttribute(AnimalsAttribute::class.java)) {
+            if (entity is org.bukkit.entity.Animals && !residence.checkBooleanAttribute<Animals>()) {
                 event.isCancelled = true
             }
         }

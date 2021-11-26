@@ -21,21 +21,21 @@ package site.liangbai.realhomehunt.api.residence.attribute.impl;
 import java.util.Map;
 
 /**
- * The type Open door attribute.
+ * The type Break attribute.
  *
  * @author Liangbai
  * @since 2021 /08/10 12:04 下午
  */
-public final class OpenDoorAttribute extends BooleanAttribute {
-    public OpenDoorAttribute(Map<String, Object> map) {
-        super(map);
+public final class Break extends BooleanAttribute {
+    public Break() {
     }
 
-    public OpenDoorAttribute() {
+    public Break(Map<String, Object> map) {
+        super(map);
     }
 
     @Override
     public String getName() {
-        return "open-door";
+        return "break";
     }
 }

@@ -19,7 +19,7 @@
 package site.liangbai.realhomehunt.internal.listener.player.block
 
 import org.bukkit.event.block.BlockBurnEvent
-import site.liangbai.realhomehunt.api.residence.attribute.impl.BurnAttribute
+import site.liangbai.realhomehunt.api.residence.attribute.impl.Burn
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager
 import taboolib.common.platform.event.SubscribeEvent
 
@@ -30,7 +30,7 @@ object ListenerBlockBurn {
         if (!ResidenceManager.isOpened(block.world)) return
         val residence = ResidenceManager.getResidenceByLocation(block.location)
         if (residence != null) {
-            if (!residence.checkBooleanAttribute(BurnAttribute::class.java)) event.isCancelled = true
+            if (!residence.checkBooleanAttribute<Burn>()) event.isCancelled = true
         }
     }
 }
