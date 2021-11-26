@@ -143,7 +143,6 @@ object RealHomeHuntPlugin : Plugin() {
 
     @Awake(LifeCycle.ACTIVE)
     private fun optimize() {
-        // 预热
         inst
         NMS.INSTANCE
         val storage = ResidenceManager.storage
