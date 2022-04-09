@@ -1,6 +1,6 @@
 /*
  * RealHomeHunt
- * Copyright (C) 2021  Liangbai
+ * Copyright (C) 2022  Liangbai
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
@@ -18,18 +18,25 @@
 
 package site.liangbai.realhomehunt.api.nms
 
-import net.minecraft.entity.Entity
-import net.minecraft.item.ItemStack
-import net.minecraft.server.v1_16_R3.BlockPosition
-import net.minecraft.server.v1_16_R3.ChatMessageType
-import net.minecraft.server.v1_16_R3.PacketPlayOutChat
-import net.minecraft.util.math.BlockPos
-import net.minecraft.world.World
+import net.minecraft.core.BlockPos
+import net.minecraft.core.BlockPosition
+import net.minecraft.network.chat.ChatMessageType
+import net.minecraft.network.protocol.game.PacketPlayOutBlockBreakAnimation
+import net.minecraft.network.protocol.game.PacketPlayOutChat
+import net.minecraft.server.level.WorldServer
+import net.minecraft.world.entity.Entity
+import net.minecraft.world.item.Item
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.level.storage.ServerLevelData
+import org.bukkit.Bukkit
 import org.bukkit.Location
+import org.bukkit.World
 import org.bukkit.block.Block
-import org.bukkit.craftbukkit.v1_16_R3.CraftWorld
-import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack
-import org.bukkit.craftbukkit.v1_16_R3.util.CraftChatMessage
+import org.bukkit.craftbukkit.v1_18_R2.CraftServer
+import org.bukkit.craftbukkit.v1_18_R2.CraftWorld
+import org.bukkit.craftbukkit.v1_18_R2.entity.CraftEntity
+import org.bukkit.craftbukkit.v1_18_R2.inventory.CraftItemStack
+import org.bukkit.craftbukkit.v1_18_R2.util.CraftChatMessage
 import org.bukkit.entity.Player
 import taboolib.common.reflect.Reflex.Companion.getProperty
 import taboolib.common.reflect.Reflex.Companion.setProperty
@@ -38,6 +45,7 @@ import taboolib.module.nms.sendPacket
 
 class NMSImpl : NMS() {
     val isUniversal = MinecraftVersion.isUniversal
+    private val server = Bukkit.getServer() as CraftServer
 
     fun Player.sendPacketI(packet: Any, vararg fields: Pair<String, Any?>) {
         sendPacket(setFields(packet, *fields))
@@ -53,7 +61,7 @@ class NMSImpl : NMS() {
     }
 
     override fun sendActionBar(player: Player, message: String) {
-        player.sendPacket(PacketPlayOutChat(CraftChatMessage.fromStringOrNull(message), ChatMessageType.GAME_INFO, player.uniqueId))
+        player.sendPacket(PacketPlayOutChat(CraftChatMessage.fromStringOrNull(message), ChatMessageType.values()[2], player.uniqueId))
     }
 
     override fun sendBreakAnimationPacket(id: Int, block: Block, breakSit: Int, receivers: List<Player>) {
@@ -61,7 +69,7 @@ class NMSImpl : NMS() {
 
         val blockPos = BlockPosition(location.blockX, location.blockY, location.blockZ)
 
-        val packet = net.minecraft.server.v1_16_R3.PacketPlayOutBlockBreakAnimation(id, blockPos, breakSit)
+        val packet = PacketPlayOutBlockBreakAnimation(id, blockPos, breakSit)
 
         receivers.forEach { it.sendPacket(packet) }
     }
@@ -75,17 +83,20 @@ class NMSImpl : NMS() {
         return worldServer.b(blockPosition, dropItem)
     }
 
-    override fun toBukkitEntity(entity: Entity): org.bukkit.entity.Entity = (entity as net.minecraft.server.v1_16_R3.Entity).bukkitEntity
+    override fun toBukkitEntity(entity: Entity): org.bukkit.entity.Entity = CraftEntity.getEntity(server, entity)
 
     override fun toBukkitLocation(blockPos: BlockPos) = Location(null, blockPos.x.toDouble(), blockPos.y.toDouble(), blockPos.z.toDouble())
 
-    override fun toBukkitWorld(world: World): org.bukkit.World = (world as net.minecraft.server.v1_16_R3.World).world
+    override fun toBukkitWorld(world: net.minecraft.world.level.World): World = toBukkitWorldByName((world as WorldServer).getProperty<ServerLevelData>("serverLevelData")!!.levelName)
+    override fun toBukkitWorldByName(name: String): World = server.getWorld(name)!!
 
-    override fun toBukkitItemStack(itemStack: ItemStack): org.bukkit.inventory.ItemStack = CraftItemStack.asCraftMirror(itemStack as net.minecraft.server.v1_16_R3.ItemStack)
+    override fun toBukkitItemStack(itemStack: ItemStack): org.bukkit.inventory.ItemStack = CraftItemStack.asCraftMirror(itemStack)
 
     override fun toMinecraftItemStack(itemStack: org.bukkit.inventory.ItemStack): ItemStack {
         return (if (itemStack is CraftItemStack) {
-            itemStack.getProperty<net.minecraft.server.v1_16_R3.ItemStack>("handle") ?: CraftItemStack.asNMSCopy(itemStack)
+            itemStack.getProperty<ItemStack>("handle") ?: CraftItemStack.asNMSCopy(itemStack)
         } else CraftItemStack.asNMSCopy(itemStack)) as ItemStack
     }
+
+    override fun asMinecraftItem(itemStack: ItemStack): Item = itemStack.c()
 }

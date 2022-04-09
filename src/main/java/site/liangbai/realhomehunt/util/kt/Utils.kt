@@ -1,6 +1,6 @@
 /*
  * RealHomeHunt
- * Copyright (C) 2021  Liangbai
+ * Copyright (C) 2022  Liangbai
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
@@ -37,10 +37,10 @@
 
 package site.liangbai.realhomehunt.util.kt
 
-import net.minecraft.entity.Entity
-import net.minecraft.item.ItemStack
-import net.minecraft.util.math.BlockPos
-import net.minecraft.world.World
+import net.minecraft.core.BlockPos
+import net.minecraft.world.entity.Entity
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.level.World
 import org.bukkit.ChatColor
 import org.bukkit.Location
 import org.bukkit.Material
@@ -67,6 +67,8 @@ fun org.bukkit.inventory.ItemStack.toMinecraftItemStack() = NMS.INSTANCE.toMinec
 fun String.colored() = ChatColor.translateAlternateColorCodes('&', this)
 
 fun Long.asTicks() = this * 20
+
+fun ItemStack.asItem() = NMS.INSTANCE.asMinecraftItem(this)
 
 fun boundingBoxOf(left: Location, right: Location, isBlockPos: Boolean = false, clone: Boolean = true): BoundingBox {
     val left0 = if (clone) left.clone() else left

@@ -1,6 +1,6 @@
 /*
  * RealHomeHunt
- * Copyright (C) 2021  Liangbai
+ * Copyright (C) 2022  Liangbai
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
@@ -18,19 +18,20 @@
 
 package site.liangbai.realhomehunt.internal.listener.forge.arclight
 
-import net.minecraft.world.World
+import net.minecraft.world.level.World
 import net.minecraftforge.eventbus.api.SubscribeEvent
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager
 import site.liangbai.realhomehunt.util.kt.toBukkitWorld
 import site.liangbai.realhomehunt.util.kt.toLocation
 import site.liangbai.realhomehuntforge.event.BlockDestroyEvent
 import taboolib.common.Isolated
+import taboolib.common.reflect.Reflex.Companion.getProperty
 
 @Isolated
 class EventHandlerBlockDestroy {
     @SubscribeEvent
     fun onBlockDestroy(event: BlockDestroyEvent) {
-        val world = (event.world as World).toBukkitWorld()
+        val world = event.getProperty<World>("world")!!.toBukkitWorld()
         val location = event.pos.toLocation()
         val block = world.getBlockAt(event.pos.toLocation())
         val residence = ResidenceManager.getResidenceByLocation(location)

@@ -1,6 +1,6 @@
 /*
  * RealHomeHunt
- * Copyright (C) 2021  Liangbai
+ * Copyright (C) 2022  Liangbai
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
@@ -18,10 +18,10 @@
 
 package site.liangbai.realhomehunt.api.nms
 
-import net.minecraft.entity.Entity
-import net.minecraft.item.ItemStack
-import net.minecraft.util.math.BlockPos
-import net.minecraft.world.World
+import net.minecraft.core.BlockPos
+import net.minecraft.world.entity.Entity
+import net.minecraft.world.item.Item
+import net.minecraft.world.item.ItemStack
 import org.bukkit.Location
 import org.bukkit.block.Block
 import org.bukkit.entity.Player
@@ -38,11 +38,15 @@ abstract class NMS {
 
     abstract fun toBukkitLocation(blockPos: BlockPos): Location
 
-    abstract fun toBukkitWorld(world: World): org.bukkit.World
+    abstract fun toBukkitWorld(world: net.minecraft.world.level.World): org.bukkit.World
+
+    abstract fun toBukkitWorldByName(name: String): org.bukkit.World
 
     abstract fun toBukkitItemStack(itemStack: ItemStack): org.bukkit.inventory.ItemStack
 
     abstract fun toMinecraftItemStack(itemStack: org.bukkit.inventory.ItemStack): ItemStack
+
+    abstract fun asMinecraftItem(itemStack: ItemStack): Item
 
     companion object {
         @JvmStatic

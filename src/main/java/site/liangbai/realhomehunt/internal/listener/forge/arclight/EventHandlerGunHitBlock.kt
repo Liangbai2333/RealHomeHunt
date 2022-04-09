@@ -1,6 +1,6 @@
 /*
  * RealHomeHunt
- * Copyright (C) 2021  Liangbai
+ * Copyright (C) 2022  Liangbai
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
@@ -19,6 +19,7 @@
 package site.liangbai.realhomehunt.internal.listener.forge.arclight
 
 import com.craftingdead.core.event.GunEvent
+import net.minecraft.world.level.World
 import net.minecraftforge.eventbus.api.SubscribeEvent
 import org.bukkit.entity.Player
 import site.liangbai.realhomehunt.internal.processor.Processors
@@ -27,6 +28,7 @@ import site.liangbai.realhomehunt.util.kt.toBukkitItemStack
 import site.liangbai.realhomehunt.util.kt.toBukkitWorld
 import site.liangbai.realhomehunt.util.kt.toLocation
 import taboolib.common.Isolated
+import taboolib.common.reflect.Reflex.Companion.getProperty
 
 @Isolated
 class EventHandlerGunHitBlock {
@@ -34,7 +36,7 @@ class EventHandlerGunHitBlock {
     fun onGunHitBlock(event: GunEvent.HitBlock) {
         val player = event.living.entity.toBukkitEntity() as? Player ?: return
         val gun = event.itemStack.toBukkitItemStack()
-        val world = event.level.toBukkitWorld()
+        val world = event.getProperty<World>("level")!!.toBukkitWorld()
         val block = world.getBlockAt(event.rayTraceResult.blockPos.toLocation())
         Processors.GUN_HIT_BLOCK_PROCESSOR.processGunHitBlock(player, gun, block)
     }

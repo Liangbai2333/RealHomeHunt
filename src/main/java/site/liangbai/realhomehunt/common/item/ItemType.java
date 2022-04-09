@@ -1,6 +1,6 @@
 /*
  * RealHomeHunt
- * Copyright (C) 2021  Liangbai
+ * Copyright (C) 2022  Liangbai
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
@@ -19,10 +19,10 @@
 package site.liangbai.realhomehunt.common.item;
 
 import com.craftingdead.core.world.item.ClothingItem;
-import com.craftingdead.core.world.item.GunItem;
+import com.craftingdead.core.world.item.gun.GunItem;
 import com.craftingdead.core.world.item.MagazineItem;
 import com.craftingdead.core.world.item.StorageItem;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import site.liangbai.realhomehunt.common.config.Config;
 import site.liangbai.realhomehunt.util.kt.Utils;
 
@@ -30,10 +30,10 @@ import java.util.Arrays;
 import java.util.function.Predicate;
 
 public enum ItemType {
-    GUN(it -> it.getItem() instanceof GunItem, 0.1),
-    MAGAZINE(it -> it.getItem() instanceof MagazineItem, 0.3),
-    STORAGE(it -> it.getItem() instanceof StorageItem, 0.3),
-    CLOTHING(it -> it.getItem() instanceof ClothingItem, 0.3),
+    GUN(it -> Utils.asItem(it) instanceof GunItem, 0.1),
+    MAGAZINE(it -> Utils.asItem(it) instanceof MagazineItem, 0.3),
+    STORAGE(it -> Utils.asItem(it) instanceof StorageItem, 0.3),
+    CLOTHING(it -> Utils.asItem(it) instanceof ClothingItem, 0.3),
     // Must be last.
     GLOBAL(it -> true, 0.5);
 

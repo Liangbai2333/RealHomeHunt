@@ -1,6 +1,6 @@
 /*
  * RealHomeHunt
- * Copyright (C) 2021  Liangbai
+ * Copyright (C) 2022  Liangbai
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
@@ -219,7 +219,7 @@ internal object Command {
 
             dynamic {
                 suggestion<Player> { sender, context ->
-                    val type: String = context.argument(-1)!!
+                    val type: String = context.argument(-1)
 
                     if (type.isEmpty()) {
                         return@suggestion null
@@ -505,19 +505,12 @@ internal object Command {
         val defaultSpawn = Locations.getAverageLocation(loc1.world, loc1, loc2)
 
         residence.spawn = defaultSpawn
-
         if (!ResidenceCreateEvent.Post(this, residence).post()) return
-
         ResidenceManager.register(residence)
-
         residence.save()
-
         SelectCache.pop(this)
-
         Sounds.playLevelUpSound(this, 1, 0.0)
-
         sendLang("command-create-success")
-
         sendToAll("command-create-send-to-all", name)
     }
 

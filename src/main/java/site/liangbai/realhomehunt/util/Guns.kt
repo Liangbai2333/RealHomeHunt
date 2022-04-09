@@ -1,6 +1,6 @@
 /*
  * RealHomeHunt
- * Copyright (C) 2021  Liangbai
+ * Copyright (C) 2022  Liangbai
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
@@ -18,10 +18,11 @@
 
 package site.liangbai.realhomehunt.util
 
-import com.craftingdead.core.world.item.GunItem
+import com.craftingdead.core.world.item.gun.GunItem
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemStack
 import site.liangbai.realhomehunt.common.config.Config
+import site.liangbai.realhomehunt.util.kt.asItem
 import site.liangbai.realhomehunt.util.kt.toMinecraftItemStack
 
 object Guns {
@@ -50,7 +51,7 @@ object Guns {
             if (it == null) {
                 0.0
             } else {
-                Config.gun.custom.getCustomDamage(gun.type, it.gunType.damage.toDouble(), powerLevel)
+                Config.gun.custom.getCustomDamage(gun.type, it.damage.toDouble(), powerLevel)
             }
         }
     }
@@ -59,14 +60,14 @@ object Guns {
 
     fun getDistance(gun: ItemStack): Double {
         return gun.withGun {
-            it?.gunType?.range ?: 0.0
+            it?.range ?: 0.0
         }
     }
 
     fun <R> ItemStack.withGun(func: (GunItem?) -> R): R {
         val itemStack = toMinecraftItemStack()
 
-        val item = itemStack.item
+        val item = itemStack.asItem()
         return if (item is GunItem) {
             func(item)
         } else func(null)

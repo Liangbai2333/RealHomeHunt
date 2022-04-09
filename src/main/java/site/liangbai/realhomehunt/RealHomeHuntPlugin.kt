@@ -1,6 +1,6 @@
 /*
  * RealHomeHunt
- * Copyright (C) 2021  Liangbai
+ * Copyright (C) 2022  Liangbai
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
@@ -18,14 +18,12 @@
 
 package site.liangbai.realhomehunt
 
-import com.craftingdead.core.event.GunEvent
 import io.izzel.arclight.api.Arclight
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.ModList
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.configuration.serialization.ConfigurationSerialization
-import site.liangbai.forgeeventbridge.event.EventBridge
 import site.liangbai.realhomehunt.api.nms.NMS
 import site.liangbai.realhomehunt.api.residence.Residence
 import site.liangbai.realhomehunt.api.residence.attribute.map.AttributeMap
@@ -34,14 +32,9 @@ import site.liangbai.realhomehunt.common.config.Config
 import site.liangbai.realhomehunt.internal.listener.forge.arclight.EventHandlerBlockDestroy
 import site.liangbai.realhomehunt.internal.listener.forge.arclight.EventHandlerGunHitBlock
 import site.liangbai.realhomehunt.internal.listener.forge.arclight.EventHandlerTryPierceableBlock
-import site.liangbai.realhomehunt.internal.listener.forge.block.EventHolderBlockDestroy
-import site.liangbai.realhomehunt.internal.listener.forge.block.EventHolderTryPierceableBlock
-import site.liangbai.realhomehunt.internal.listener.forge.player.EventHolderGunHitBlock
 import site.liangbai.realhomehunt.internal.storage.impl.SqlStorage
 import site.liangbai.realhomehunt.util.Console
 import site.liangbai.realhomehunt.util.kt.isArclight
-import site.liangbai.realhomehuntforge.event.BlockDestroyEvent
-import site.liangbai.realhomehuntforge.event.BlockRayTraceEvent
 import taboolib.common.LifeCycle
 import taboolib.common.env.RuntimeDependency
 import taboolib.common.platform.Awake
@@ -65,12 +58,11 @@ object RealHomeHuntPlugin : Plugin() {
         BukkitPlugin.getInstance()
     }
 
-    private const val FORGE_EVENT_BRIDGE_MOD_ID = "forgeeventbridge"
     private const val REAL_HOME_HUNT_FORGE_MOD_ID = "realhomehuntforge"
 
     override fun onLoad() {
-        if (MinecraftVersion.majorLegacy < 11600 || !MinecraftVersion.isSupported) {
-            info("The version ${MinecraftVersion.runningVersion} is not supported, at least be 1.16+")
+        if (MinecraftVersion.majorLegacy < 11800 || !MinecraftVersion.isSupported) {
+            info("The version ${MinecraftVersion.runningVersion} is not supported, at least be 1.18+")
 
             disablePlugin()
         }
@@ -99,47 +91,21 @@ object RealHomeHuntPlugin : Plugin() {
 
     @Awake(LifeCycle.ENABLE)
     private fun initForgeEventListener() {
-        val useBridge = isForgeEventBridgeLoaded()
-
-        if (!ModList.get().isLoaded(REAL_HOME_HUNT_FORGE_MOD_ID)) {
-            disablePlugin()
-            throw IllegalStateException("can not found RealHomeHuntForge mod, please install it.")
-        }
-
-        if (useBridge) {
-            registerForgeEventBridgeListener()
-        } else if (isArclight()) {
-            Console.sendMessage("${ChatColor.YELLOW}WARN: Found the Arclight server, the plugin will use it, but the server can not found Forge-Event-Bridge mod.")
-            Console.sendMessage("${ChatColor.YELLOW}WARN: If the plugin throw the NullPointerException, please update your Arclight version to 1.0.21 or newer, or use the Forge-Event-Bridge.")
+        if (isArclight()) {
+            Console.sendMessage("${ChatColor.YELLOW}WARN: If the plugin throw the NullPointerException, please update your Arclight version to 1.0.3 or newer.")
             val bus = MinecraftForge.EVENT_BUS
+            if (!ModList.get().isLoaded(REAL_HOME_HUNT_FORGE_MOD_ID)) {
+                Console.sendMessage("${ChatColor.YELLOW}WARN: Could not found the RealHomeHuntForge Mod, it may produce error.")
+            } else {
+                Arclight.registerForgeEvent(inst, bus, EventHandlerTryPierceableBlock())
+                Arclight.registerForgeEvent(inst, bus, EventHandlerBlockDestroy())
+            }
             Arclight.registerForgeEvent(inst, bus, EventHandlerGunHitBlock())
-            Arclight.registerForgeEvent(inst, bus, EventHandlerTryPierceableBlock())
-            Arclight.registerForgeEvent(inst, bus, EventHandlerBlockDestroy())
         } else {
             disablePlugin()
-            throw IllegalStateException("can not found Forge-Event-Bridge mod, please install it.")
+            throw IllegalStateException("can not found Arclight server.")
         }
     }
-
-    private fun registerForgeEventBridgeListener() {
-        EventHolderGunHitBlock().register(
-            EventBridge.builder()
-                .target(GunEvent.HitBlock::class.java)
-                .build()
-        )
-        EventHolderTryPierceableBlock().register(
-            EventBridge.builder()
-                .target(BlockRayTraceEvent.TryPierceableBlock::class.java)
-                .build()
-        )
-        EventHolderBlockDestroy().register(
-            EventBridge.builder()
-                .target(BlockDestroyEvent::class.java)
-                .build()
-        )
-    }
-
-    private fun isForgeEventBridgeLoaded() = ModList.get().isLoaded(FORGE_EVENT_BRIDGE_MOD_ID)
 
     @Awake(LifeCycle.ACTIVE)
     private fun optimize() {
