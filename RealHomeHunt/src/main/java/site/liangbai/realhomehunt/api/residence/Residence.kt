@@ -93,12 +93,12 @@ class Residence : ConfigurationSerializable {
                     )
                 ) return@filter true
                 if (ignoreBlockInfo.prefix.isEmpty() && ignoreBlockInfo.suffix.isEmpty()) return@filter false
-                name!!.startsWith(ignoreBlockInfo.prefix) && name.endsWith(ignoreBlockInfo.suffix)
+                name.startsWith(ignoreBlockInfo.prefix) && name.endsWith(ignoreBlockInfo.suffix)
             }
             .findFirst()
             .orElseGet {
                 val info: IgnoreBlockInfo = if (ignoreBlockInfo.full != null) {
-                    IgnoreBlockInfo(ignoreBlockInfo.full)
+                    IgnoreBlockInfo(ignoreBlockInfo.full!!)
                 } else {
                     val typeName: String = if (ignoreBlockInfo.prefix.isEmpty() && ignoreBlockInfo.suffix.isEmpty()) {
                         "null"
@@ -261,19 +261,19 @@ class Residence : ConfigurationSerializable {
 
     class IgnoreBlockInfo : ConfigurationSerializable,
         IJsonEntity<IgnoreBlockInfo> {
-        var type: String? = null
+        lateinit var type: String
             private set
         var count = 0
             private set
 
-        constructor(type: String?) {
+        constructor(type: String) {
             this.type = type
         }
 
         constructor()
 
         constructor(map: Map<String?, Any?>) {
-            type = map["type"] as String?
+            type = map["type"] as String
             count = map["count"] as Int
         }
 
@@ -291,20 +291,20 @@ class Residence : ConfigurationSerializable {
 
         override fun serialize(): Map<String, Any> {
             val map: MutableMap<String, Any> = HashMap()
-            map["type"] = type!!
+            map["type"] = type
             map["count"] = count
             return map
         }
 
         override fun convertToDatabaseColumn(attribute: IgnoreBlockInfo): String {
             val jsonObject = JsonObject()
-            jsonObject.addProperty("type", type)
-            jsonObject.addProperty("count", count)
+            jsonObject.addProperty("type", attribute.type)
+            jsonObject.addProperty("count", attribute.count)
             return jsonObject.toString()
         }
 
         override fun convertToEntityAttribute(dbData: String): IgnoreBlockInfo {
-            val jsonObject = JsonParser().parse(dbData).asJsonObject
+            val jsonObject = JsonParser.parseString(dbData).asJsonObject
             type = jsonObject["type"].asString
             count = jsonObject["count"].asInt
             return this

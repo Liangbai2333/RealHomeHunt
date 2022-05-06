@@ -33,7 +33,6 @@ import taboolib.common.reflect.Reflex.Companion.invokeConstructor
 import kotlin.reflect.KClass
 
 internal object ConverterManager {
-    private val JSON_PARSER = JsonParser()
     private val converters = mutableMapOf<Class<*>, Class<out IJsonEntity<out Any>>>()
     private val nameConverters = mutableMapOf<String, Class<out IJsonEntity<out Any>>>()
 
@@ -76,7 +75,7 @@ internal object ConverterManager {
         }
 
         override fun convertToEntityAttribute(dbData: String): Any {
-            return JSON_PARSER.parse(dbData).toString()
+            return JsonParser.parseString(dbData).toString()
         }
     }
 
@@ -84,8 +83,7 @@ internal object ConverterManager {
         val jsonObject = JsonObject()
         val converter = matches(this::class.java)
         jsonObject.addProperty("converter", converter::class.java.simpleName)
-        jsonObject.addProperty("data", converter.convertToDatabaseColumn(this))
-        val jsonElement = JSON_PARSER.parse(converter.convertToDatabaseColumn(this))
+        val jsonElement = JsonParser.parseString(converter.convertToDatabaseColumn(this))
             ?: throw IllegalArgumentException("convert value must be a json element text.")
         jsonObject.add("data", jsonElement)
         return jsonObject
@@ -102,11 +100,11 @@ internal object ConverterManager {
     fun <T> List<T>.convertToString(): String {
         val jsonArray = JsonArray()
 
-        for (value in this) {
-            if (value is String) {
-                jsonArray.add(value)
+        forEach {
+            if (it is String) {
+                jsonArray.add(it)
             } else {
-                jsonArray.add(value?.convertToJsonObject())
+                jsonArray.add(it?.convertToJsonObject())
             }
         }
 
@@ -115,7 +113,7 @@ internal object ConverterManager {
 
     @Suppress("UNCHECKED_CAST", "DEPRECATION")
     fun <T> String.convertToEntity(): T {
-        val jsonElement = JSON_PARSER.parse(this)
+        val jsonElement = JsonParser.parseString(this)
         if (!jsonElement.isJsonObject) {
             return this as T
         }
@@ -130,7 +128,7 @@ internal object ConverterManager {
     }
 
     fun <T> String.convertToEntityList(): MutableList<T> {
-        val jsonArray = JSON_PARSER.parse(this).asJsonArray
+        val jsonArray = JsonParser.parseString(this).asJsonArray
         val list = mutableListOf<T>()
 
         jsonArray.forEach {

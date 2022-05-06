@@ -35,7 +35,7 @@ class AttributeConverter :
     }
 
     override fun convertToEntityAttribute(dbData: String): IAttributable<IAttributable<*>> {
-        val jsonObject = JsonParser().parse(dbData).asJsonObject
+        val jsonObject = JsonParser.parseString(dbData).asJsonObject
         val target = jsonObject["target"].asString
         val clazz = AttributeMap.getMapWithType<IAttributable<*>>(target)
         val attributable = Ref.newInstance(clazz)

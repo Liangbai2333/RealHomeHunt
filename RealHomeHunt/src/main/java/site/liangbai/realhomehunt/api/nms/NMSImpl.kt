@@ -82,7 +82,7 @@ class NMSImpl : NMS() {
         val location = block.location
         val craftWorld = world as CraftWorld
         // 没有办法，之后再看看怎么改动吧
-        val worldServer = craftWorld.getProperty<Any>("handle")!!
+        val worldServer = craftWorld.getProperty<Any>("world")!!
         val blockPosition = BlockPosition(location.blockX, location.blockY, location.blockZ)
         return worldServer.invokeMethod("b", blockPosition, dropItem)!!
     }

@@ -1,4 +1,4 @@
 rootProject.name = 'real-home-hunt'
-include 'real-home-hunt-core'
+include 'RealHomeHunt'
 include 'real-home-hunt-forge'
 

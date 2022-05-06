@@ -48,7 +48,7 @@ class LocationConverter :
     }
 
     override fun convertToEntityAttribute(dbData: String): Location {
-        val jsonObject = JsonParser().parse(dbData).asJsonObject
+        val jsonObject = JsonParser.parseString(dbData).asJsonObject
         var world: World? = null
         if (jsonObject.has("world")) {
             val worldName = jsonObject["world"].asString

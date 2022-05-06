@@ -42,7 +42,7 @@ class ZoneConverter : IJsonEntity<Zone> {
     }
 
     override fun convertToEntityAttribute(dbData: String): Zone {
-        val json = JsonParser().parse(dbData).asJsonObject
+        val json = JsonParser.parseString(dbData).asJsonObject
 
         val left = locationConverter.convertToEntityAttribute(json["left"].toString())
         val right = locationConverter.convertToEntityAttribute(json["right"].toString())
