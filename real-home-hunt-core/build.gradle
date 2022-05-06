@@ -36,5 +36,6 @@ dependencies {
     implementation 'io.izzel.arclight:arclight-api:1.2.6'
     implementation fg.deobf("curse.maven:crafting_dead-${crafting_dead_project_id}:${crafting_dead_file_id}")
     implementation group: 'org.jetbrains', name: 'annotations', version: '21.0.1'
+    implementation project(':real-home-hunt-forge')
     implementation fileTree(dir: 'libs', includes: ['*.jar'])
 }

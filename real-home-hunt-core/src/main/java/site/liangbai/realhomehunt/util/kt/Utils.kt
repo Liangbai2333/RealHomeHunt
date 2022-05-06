@@ -56,7 +56,7 @@ fun CharSequence.isBoolean() = BOOLEAN_PATTERN.matcher(this).matches()
 
 fun ItemStack.toBukkitItemStack() = NMS.INSTANCE.toBukkitItemStack(this)
 
-fun World.toBukkitWorld() = NMS.INSTANCE.toBukkitWorld(this)
+fun Any.toBukkitWorld() = NMS.INSTANCE.toBukkitWorld(this)
 
 fun BlockPos.toLocation() = NMS.INSTANCE.toBukkitLocation(this)
 

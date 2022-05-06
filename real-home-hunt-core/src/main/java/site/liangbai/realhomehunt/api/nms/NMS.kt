@@ -38,7 +38,7 @@ abstract class NMS {
 
     abstract fun toBukkitLocation(blockPos: BlockPos): Location
 
-    abstract fun toBukkitWorld(world: net.minecraft.world.level.World): org.bukkit.World
+    abstract fun toBukkitWorld(world: Any): org.bukkit.World
 
     abstract fun toBukkitWorldByName(name: String): org.bukkit.World
 

@@ -23,7 +23,6 @@ import net.minecraft.core.BlockPosition
 import net.minecraft.network.chat.ChatMessageType
 import net.minecraft.network.protocol.game.PacketPlayOutBlockBreakAnimation
 import net.minecraft.network.protocol.game.PacketPlayOutChat
-import net.minecraft.server.level.WorldServer
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
@@ -39,10 +38,14 @@ import org.bukkit.craftbukkit.v1_18_R2.inventory.CraftItemStack
 import org.bukkit.craftbukkit.v1_18_R2.util.CraftChatMessage
 import org.bukkit.entity.Player
 import taboolib.common.reflect.Reflex.Companion.getProperty
+import taboolib.common.reflect.Reflex.Companion.invokeMethod
 import taboolib.common.reflect.Reflex.Companion.setProperty
 import taboolib.module.nms.MinecraftVersion
 import taboolib.module.nms.sendPacket
 
+/**
+ * 暂时没有好的办法让1.18的NMS和Forge共存，所以用反射。
+ */
 class NMSImpl : NMS() {
     val isUniversal = MinecraftVersion.isUniversal
     private val server = Bukkit.getServer() as CraftServer
@@ -78,16 +81,17 @@ class NMSImpl : NMS() {
         val world = block.world
         val location = block.location
         val craftWorld = world as CraftWorld
-        val worldServer = craftWorld.handle
+        // 没有办法，之后再看看怎么改动吧
+        val worldServer = craftWorld.getProperty<Any>("handle")!!
         val blockPosition = BlockPosition(location.blockX, location.blockY, location.blockZ)
-        return worldServer.b(blockPosition, dropItem)
+        return worldServer.invokeMethod("b", blockPosition, dropItem)!!
     }
 
     override fun toBukkitEntity(entity: Entity): org.bukkit.entity.Entity = CraftEntity.getEntity(server, entity)
 
     override fun toBukkitLocation(blockPos: BlockPos) = Location(null, blockPos.x.toDouble(), blockPos.y.toDouble(), blockPos.z.toDouble())
 
-    override fun toBukkitWorld(world: net.minecraft.world.level.World): World = toBukkitWorldByName((world as WorldServer).getProperty<ServerLevelData>("serverLevelData")!!.levelName)
+    override fun toBukkitWorld(world: Any): World = toBukkitWorldByName(world.getProperty<ServerLevelData>("serverLevelData")!!.levelName)
     override fun toBukkitWorldByName(name: String): World = server.getWorld(name)!!
 
     override fun toBukkitItemStack(itemStack: ItemStack): org.bukkit.inventory.ItemStack = CraftItemStack.asCraftMirror(itemStack)
@@ -98,5 +102,5 @@ class NMSImpl : NMS() {
         } else CraftItemStack.asNMSCopy(itemStack)) as ItemStack
     }
 
-    override fun asMinecraftItem(itemStack: ItemStack): Item = itemStack.c()
+    override fun asMinecraftItem(itemStack: ItemStack): Item = itemStack.item
 }

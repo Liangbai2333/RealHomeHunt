@@ -1,0 +1,24 @@
+modLoader="javafml"
+loaderVersion="[27,)"
+license="AGPL v3.0"
+[[mods]]
+modId="realhomehuntforge"
+version="${file.jarVersion}"
+displayName="RealHomeHuntForge"
+credits="Liangbai"
+authors="Liangbai"
+description='''
+The mod for Bukkit RealHomeHuntPlugin
+'''
+[[dependencies.realhomehuntforge]]
+    modId="forge"
+    mandatory=true
+    versionRange="[39,)"
+    ordering="NONE"
+    side="SERVER"
+[[dependencies.realhomehuntforge]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.18.1,1.19)"
+    ordering="NONE"
+    side="SERVER"

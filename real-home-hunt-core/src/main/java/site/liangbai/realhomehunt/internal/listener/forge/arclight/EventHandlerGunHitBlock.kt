@@ -19,7 +19,6 @@
 package site.liangbai.realhomehunt.internal.listener.forge.arclight
 
 import com.craftingdead.core.event.GunEvent
-import net.minecraft.world.level.World
 import net.minecraftforge.eventbus.api.SubscribeEvent
 import org.bukkit.entity.Player
 import site.liangbai.realhomehunt.internal.processor.Processors
@@ -36,7 +35,7 @@ class EventHandlerGunHitBlock {
     fun onGunHitBlock(event: GunEvent.HitBlock) {
         val player = event.living.entity.toBukkitEntity() as? Player ?: return
         val gun = event.itemStack.toBukkitItemStack()
-        val world = event.getProperty<World>("level")!!.toBukkitWorld()
+        val world = event.getProperty<Any>("level")!!.toBukkitWorld()
         val block = world.getBlockAt(event.rayTraceResult.blockPos.toLocation())
         Processors.GUN_HIT_BLOCK_PROCESSOR.processGunHitBlock(player, gun, block)
     }

@@ -1,2 +1,13 @@
-group 'site.liangbai'
-version '1.0.3'
+plugins {
+    id 'real-home-hunt'
+    id 'org.spongepowered.mixin'
+    id 'java-library'
+}
+
+dependencies {
+    implementation fg.deobf("curse.maven:crafting_dead-${crafting_dead_project_id}:${crafting_dead_file_id}")
+}
+
+mixin {
+    add sourceSets.main, "mixins.realhomehuntforge.refmap.json"
+}

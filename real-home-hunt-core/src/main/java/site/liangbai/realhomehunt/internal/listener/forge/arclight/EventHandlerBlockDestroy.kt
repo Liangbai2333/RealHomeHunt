@@ -18,7 +18,6 @@
 
 package site.liangbai.realhomehunt.internal.listener.forge.arclight
 
-import net.minecraft.world.level.World
 import net.minecraftforge.eventbus.api.SubscribeEvent
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager
 import site.liangbai.realhomehunt.util.kt.toBukkitWorld
@@ -31,7 +30,7 @@ import taboolib.common.reflect.Reflex.Companion.getProperty
 class EventHandlerBlockDestroy {
     @SubscribeEvent
     fun onBlockDestroy(event: BlockDestroyEvent) {
-        val world = event.getProperty<World>("world")!!.toBukkitWorld()
+        val world = event.getProperty<Any>("world")!!.toBukkitWorld()
         val location = event.pos.toLocation()
         val block = world.getBlockAt(event.pos.toLocation())
         val residence = ResidenceManager.getResidenceByLocation(location)
