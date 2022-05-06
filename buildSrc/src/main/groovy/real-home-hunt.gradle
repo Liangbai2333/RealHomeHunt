@@ -1,0 +1,83 @@
+plugins {
+    id 'net.minecraftforge.gradle'
+    id 'java'
+    id 'idea'
+    id 'org.cadixdev.licenser'
+}
+
+group = 'site.liangbai'
+version = "${module_version}"
+
+java {
+    withSourcesJar()
+
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
+minecraft {
+    mappings channel: 'official', version: "${minecraft_version}"
+}
+
+repositories {
+    mavenCentral()
+    // For test
+    mavenLocal()
+    maven { url 'https://repo1.maven.org/maven2' }
+    maven { url 'https://repo.tabooproject.org/repository/releases' }
+    maven { url 'https://maven.izzel.io/releases' }
+    maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+    maven { url 'https://maven.izzel.io/releases' }
+    maven { url 'https://maven.parchmentmc.org' }
+
+    maven {
+        name 'cursemaven'
+        url 'https://www.cursemaven.com'
+        content {
+            includeGroup 'curse.maven'
+        }
+    }
+}
+
+dependencies {
+    minecraft group: 'net.minecraftforge', name: 'forge', version: "${minecraft_version}-${forge_version}"
+    implementation group: 'org.spongepowered', name: 'mixin', version: "${mixin_version}"
+    annotationProcessor("org.spongepowered:mixin:${mixin_version}:processor")
+    testAnnotationProcessor("org.spongepowered:mixin:${mixin_version}:processor")
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+jar {
+    manifest {
+        attributes([
+                "Implementation-Project": project.name,
+                "Implementation-Version": project.version,
+                "Implementation-Author": "Liangbai",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                "Implementation-Builder": System.properties.getProperty('user.name'),
+                "Implementation-Os": System.properties.getProperty('os.name') + System.properties.getProperty('os.arch') + System.properties.getProperty('os.version')
+        ])
+    }
+
+    archiveBaseName = project.name
+    archiveVersion = "${minecraft_version}-${version}"
+    from rootProject.file('LICENSE.txt')
+    finalizedBy('reobfJar')
+}
+
+license {
+    include 'site/liangbai/**/*.java'
+    include 'site/liangbai/**/*.kt'
+
+    header = rootProject.file('HEADER.txt')
+
+    ext {
+        organization = 'Liangbai'
+        year = 2022
+    }
+}
