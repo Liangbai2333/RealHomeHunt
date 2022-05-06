@@ -23,7 +23,6 @@ import site.liangbai.realhomehunt.api.residence.attribute.impl.Break
 import site.liangbai.realhomehunt.api.residence.attribute.impl.Build
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager
 import taboolib.common.platform.event.SubscribeEvent
-import taboolib.common.platform.function.submit
 
 internal object ListenerBlockBreak {
     @SubscribeEvent
