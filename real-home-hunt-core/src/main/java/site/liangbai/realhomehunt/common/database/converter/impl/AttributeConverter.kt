@@ -25,7 +25,8 @@ import site.liangbai.realhomehunt.api.residence.attribute.map.AttributeMap
 import site.liangbai.realhomehunt.common.database.converter.IJsonEntity
 import site.liangbai.realhomehunt.util.Ref
 
-class AttributeConverter : IJsonEntity<IAttributable<*>> {
+class AttributeConverter :
+    IJsonEntity<IAttributable<*>> {
     override fun convertToDatabaseColumn(attribute: IAttributable<*>): String {
         val jsonObject = JsonObject()
         jsonObject.addProperty("target", attribute.name)

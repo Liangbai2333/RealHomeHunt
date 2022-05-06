@@ -571,7 +571,8 @@ object Config {
 
         class DropItemSetting {
             @JvmField
-            val itemTypeToDoubleChanceEnumMap: MutableMap<ItemType, Double> = EnumMap(ItemType::class.java)
+            val itemTypeToDoubleChanceEnumMap: MutableMap<ItemType, Double> = EnumMap(
+                ItemType::class.java)
             val materialToDoubleChanceEnumMap: MutableMap<Material, Double> = EnumMap(Material::class.java)
             fun getChance(itemStack: ItemStack): Double {
                 val type = itemStack.type

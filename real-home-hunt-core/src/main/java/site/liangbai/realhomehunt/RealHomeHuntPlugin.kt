@@ -48,8 +48,6 @@ import taboolib.module.nms.MinecraftVersion
 import taboolib.platform.BukkitPlugin
 
 /**
- * I love you.
- *
  * @author Liangbai
  */
 @RuntimeDependency("!com.google.code.gson:gson:2.8.8", test = "!com.google.gson.Gson")

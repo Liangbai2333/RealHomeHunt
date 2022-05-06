@@ -140,7 +140,8 @@ class Residence : ConfigurationSerializable {
             it.sendLang("action-hit-block-self-title", attacker.name)
             if (Config.showActionBar) {
                 val message = it.asLangText("action-hit-block-self-action-bar", attacker.name)
-                val actionBar = DynamicActionBar(message, 5, 20)
+                val actionBar =
+                    DynamicActionBar(message, 5, 20)
                 actionBar.show(it, Config.actionBarShowMills)
             }
         }
@@ -150,7 +151,8 @@ class Residence : ConfigurationSerializable {
 
     fun addAttack(attack: String) {
         attacks.add(attack)
-        UnloadPlayerAttackTask(this, attack).runTaskLater(inst, Config.unloadPlayerAttackMills)
+        UnloadPlayerAttackTask(this, attack)
+            .runTaskLater(inst, Config.unloadPlayerAttackMills)
     }
 
     fun hasAttack(attack: String): Boolean {
@@ -257,7 +259,8 @@ class Residence : ConfigurationSerializable {
         return map
     }
 
-    class IgnoreBlockInfo : ConfigurationSerializable, IJsonEntity<IgnoreBlockInfo> {
+    class IgnoreBlockInfo : ConfigurationSerializable,
+        IJsonEntity<IgnoreBlockInfo> {
         var type: String? = null
             private set
         var count = 0

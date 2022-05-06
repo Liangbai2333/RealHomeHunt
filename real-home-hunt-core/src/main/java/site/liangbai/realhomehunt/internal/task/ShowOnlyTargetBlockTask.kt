@@ -20,9 +20,6 @@ package site.liangbai.realhomehunt.internal.task
 
 import org.bukkit.Bukkit
 import org.bukkit.block.Block
-import org.bukkit.entity.Player
-import site.liangbai.realhomehunt.api.cache.DamageCachePool.DamageCache
-import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager
 import site.liangbai.realhomehunt.common.config.Config
 import site.liangbai.realhomehunt.internal.processor.Processors
 import site.liangbai.realhomehunt.util.Guns
@@ -32,7 +29,6 @@ import site.liangbai.realhomehunt.util.kt.filterNotOpenedWorld
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
 import taboolib.common.platform.function.submit
-import java.util.function.Consumer
 
 internal object ShowOnlyTargetBlockTask {
     @Awake(LifeCycle.ACTIVE)

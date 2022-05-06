@@ -18,9 +18,7 @@
 
 package site.liangbai.realhomehunt.util.kt
 
-import org.bukkit.entity.Player
 import site.liangbai.realhomehunt.api.residence.Residence
-import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager
 
 fun Residence.getAdministratorListString(): String {
     val stringBuilder = StringBuilder()
