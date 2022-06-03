@@ -33,6 +33,8 @@ import taboolib.common.reflect.Reflex.Companion.getProperty
 class EventHandlerGunHitBlock {
     @SubscribeEvent
     fun onGunHitBlock(event: GunEvent.HitBlock) {
+        val gunItem = event.gun
+        if (!gunItem.isTriggerPressed || gunItem.ammoProvider.expectedMagazine.size == 0) return
         val player = event.living.entity.toBukkitEntity() as? Player ?: return
         val gun = event.itemStack.toBukkitItemStack()
         val world = event.getProperty<Any>("level")!!.toBukkitWorld()
