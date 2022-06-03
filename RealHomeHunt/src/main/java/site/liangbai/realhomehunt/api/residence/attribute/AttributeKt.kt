@@ -16,21 +16,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.api.residence.attribute.impl;
+package site.liangbai.realhomehunt.api.residence.attribute
 
-import java.util.Map;
+import org.bukkit.command.CommandSender
+import taboolib.platform.util.asLangTextOrNull
 
-/**
- * The type Build attribute.
- *
- * @author Liangbai
- * @since 2021 /08/10 12:04 下午
- */
-public final class Build extends BooleanAttribute {
-    public Build(Map<String, Object> map) {
-        super(map);
-    }
-
-    public Build() {
-    }
+fun IAttributable<out Any>.getName(requester: CommandSender): String {
+    val source = this::class.java.simpleName
+    return requester.asLangTextOrNull("attribute-${source.lowercase()}-name", requester.name)
+        ?: source
 }

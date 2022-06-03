@@ -33,9 +33,4 @@ public final class Ignite extends BooleanAttribute {
 
     public Ignite() {
     }
-
-    @Override
-    public String getName() {
-        return "ignite";
-    }
 }

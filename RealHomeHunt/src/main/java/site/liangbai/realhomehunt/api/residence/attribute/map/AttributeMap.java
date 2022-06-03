@@ -28,7 +28,8 @@ import java.util.List;
 import java.util.Map;
 
 public final class AttributeMap {
-    private static final Map<String, Class<? extends IAttributable<?>>> map = new HashMap<>();
+    private static final Map<String, Class<? extends IAttributable<?>>> stringToTypeMap = new HashMap<>();
+    private static final Map<Class<? extends IAttributable<?>>, String> typeToStringMap = new HashMap<>();
 
     static {
         registerAttribute("creature", Creature.class);
@@ -48,11 +49,12 @@ public final class AttributeMap {
     }
 
     public static void registerAttribute(String type, Class<? extends IAttributable<?>> attributeClass) {
-        map.put(type, attributeClass);
+        stringToTypeMap.put(type, attributeClass);
+        typeToStringMap.put(attributeClass, type);
     }
 
     public static void registerAttributeSerializer() {
-        map.values().forEach(ConfigurationSerialization::registerClass);
+        stringToTypeMap.values().forEach(ConfigurationSerialization::registerClass);
     }
 
     @SuppressWarnings("unchecked")
@@ -60,11 +62,15 @@ public final class AttributeMap {
         return (Class<IAttributable<T>>) getMap(type);
     }
 
+    public static String getRefName(IAttributable<?> attributable) {
+        return typeToStringMap.get(attributable.getClass());
+    }
+
     public static Class<? extends IAttributable<?>> getMap(String type) {
-        return map.get(type);
+        return stringToTypeMap.get(type);
     }
 
     public static List<String> getTypes() {
-        return new ArrayList<>(map.keySet());
+        return new ArrayList<>(stringToTypeMap.keySet());
     }
 }

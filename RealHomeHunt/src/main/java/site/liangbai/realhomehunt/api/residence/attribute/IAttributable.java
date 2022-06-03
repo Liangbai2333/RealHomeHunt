@@ -31,7 +31,5 @@ public interface IAttributable<T> extends ConfigurationSerializable {
 
     void force(Object value);
 
-    String getName();
-
     List<String> allowValues();
 }

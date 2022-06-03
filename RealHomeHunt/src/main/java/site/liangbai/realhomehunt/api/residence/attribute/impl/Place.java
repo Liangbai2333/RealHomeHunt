@@ -33,9 +33,4 @@ public final class Place extends BooleanAttribute {
 
     public Place() {
     }
-
-    @Override
-    public String getName() {
-        return "place";
-    }
 }

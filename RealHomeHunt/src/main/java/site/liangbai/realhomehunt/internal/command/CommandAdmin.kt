@@ -28,6 +28,7 @@ import site.liangbai.realhomehunt.RealHomeHuntPlugin.inst
 import site.liangbai.realhomehunt.api.cache.SelectCache
 import site.liangbai.realhomehunt.api.event.residence.*
 import site.liangbai.realhomehunt.api.residence.Residence
+import site.liangbai.realhomehunt.api.residence.attribute.getName
 import site.liangbai.realhomehunt.api.residence.attribute.map.AttributeMap
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager
 import site.liangbai.realhomehunt.common.config.Config.StorageSetting.SqliteSetting
@@ -362,7 +363,7 @@ internal object CommandAdmin {
         if (attribute.allow(value)) {
             val event = ResidenceSetAttributeEvent(if (this is Player) this else null, residence, attribute, value)
             if (!event.post()) return
-            val attributeName = attribute.name
+            val attributeName = attribute.getName(this)
             attribute.force(event.value)
             sendLang("command-admin-set-success", target, attributeName, value)
             residence.save()

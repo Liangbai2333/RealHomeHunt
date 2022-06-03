@@ -34,9 +34,4 @@ public class Creature extends BooleanAttribute {
     public Creature(Map<String, Object> map) {
         super(map);
     }
-
-    @Override
-    public String getName() {
-        return "creature";
-    }
 }

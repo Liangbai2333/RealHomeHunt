@@ -33,9 +33,4 @@ public final class Monster extends Creature {
 
     public Monster() {
     }
-
-    @Override
-    public String getName() {
-        return "monster";
-    }
 }

@@ -33,9 +33,4 @@ public final class Break extends BooleanAttribute {
     public Break(Map<String, Object> map) {
         super(map);
     }
-
-    @Override
-    public String getName() {
-        return "break";
-    }
 }

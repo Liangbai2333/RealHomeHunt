@@ -34,9 +34,4 @@ public final class Glow extends BooleanAttribute {
     public Glow(Map<String, Object> map) {
         super(map);
     }
-
-    @Override
-    public String getName() {
-        return "glow";
-    }
 }

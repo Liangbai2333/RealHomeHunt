@@ -215,3 +215,17 @@ action-warn-title:
     fadein: 10
     stay: 70
     fadeout: 20
+
+attribute-creature-name: "生物生成"
+attribute-monster-name: "怪物生成"
+attribute-animals-name: "动物生成"
+attribute-build-name: "建造"
+attribute-break-name: "破坏"
+attribute-place-name: "放置"
+attribute-explode-name: "爆炸"
+attribute-glow-name: "人物发光"
+attribute-ignite-name: "方块点燃"
+attribute-opendoor-name: "开关门"
+attribute-piston-name: "活塞推动"
+attribute-pistonprotection-name: "禁止被活塞推动方块"
+attribute-spreadfire-name: "火势蔓延"

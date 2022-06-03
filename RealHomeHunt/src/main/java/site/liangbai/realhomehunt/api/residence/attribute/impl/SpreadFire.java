@@ -33,9 +33,4 @@ public final class SpreadFire extends BooleanAttribute {
 
     public SpreadFire() {
     }
-
-    @Override
-    public String getName() {
-        return "spread-fire";
-    }
 }

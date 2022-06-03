@@ -28,6 +28,7 @@ import site.liangbai.realhomehunt.api.event.residence.ResidenceAdministratorEven
 import site.liangbai.realhomehunt.api.event.residence.ResidenceCreateEvent
 import site.liangbai.realhomehunt.api.event.residence.ResidenceSetAttributeEvent
 import site.liangbai.realhomehunt.api.residence.Residence
+import site.liangbai.realhomehunt.api.residence.attribute.getName
 import site.liangbai.realhomehunt.api.residence.attribute.map.AttributeMap
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager
 import site.liangbai.realhomehunt.common.config.Config
@@ -277,7 +278,7 @@ internal object Command {
         if (attribute.allow(value)) {
             val event = ResidenceSetAttributeEvent(this, residence, attribute, value)
             if (!event.post()) return
-            val attributeName = attribute.name
+            val attributeName = attribute.getName(this)
             attribute.force(event.value)
             sendLang("command-set-success", attributeName, value)
             residence.save()
@@ -411,7 +412,7 @@ internal object Command {
                 "command-info-self-show",
                 residence.owner,
                 residence.getAdministratorListString(),
-                residence.getAttributeListString()
+                residence.getAttributeListString(this)
             )
         } else {
             val residence = ResidenceManager.getResidenceByOwner(target)
@@ -424,7 +425,7 @@ internal object Command {
                 target,
                 residence.owner,
                 residence.getAdministratorListString(),
-                residence.getAttributeListString()
+                residence.getAttributeListString(this)
             )
         }
     }

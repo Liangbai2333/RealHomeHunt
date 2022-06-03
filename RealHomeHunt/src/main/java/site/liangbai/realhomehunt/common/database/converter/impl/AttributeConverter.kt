@@ -29,7 +29,7 @@ class AttributeConverter :
     IJsonEntity<IAttributable<*>> {
     override fun convertToDatabaseColumn(attribute: IAttributable<*>): String {
         val jsonObject = JsonObject()
-        jsonObject.addProperty("target", attribute.name)
+        jsonObject.addProperty("target", AttributeMap.getRefName(attribute))
         jsonObject.addProperty("value", attribute.get().toString())
         return jsonObject.toString()
     }
@@ -39,7 +39,7 @@ class AttributeConverter :
         val target = jsonObject["target"].asString
         val clazz = AttributeMap.getMapWithType<IAttributable<*>>(target)
         val attributable = Ref.newInstance(clazz)
-        attributable.force(jsonObject["value"].toString())
+        attributable.force(jsonObject["value"].asString)
         return attributable
     }
 }

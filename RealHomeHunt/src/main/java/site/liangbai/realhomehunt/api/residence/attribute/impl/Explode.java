@@ -33,9 +33,4 @@ public final class Explode extends BooleanAttribute {
 
     public Explode() {
     }
-
-    @Override
-    public String getName() {
-        return "explode";
-    }
 }

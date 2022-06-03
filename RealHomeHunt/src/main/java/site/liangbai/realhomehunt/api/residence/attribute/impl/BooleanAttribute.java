@@ -52,9 +52,7 @@ public abstract class BooleanAttribute implements IAttributable<Boolean> {
 
     @Override
     public boolean allow(Object object) {
-        if (object instanceof String) {
-            String str = (String) object;
-
+        if (object instanceof String str) {
             return booleanPattern.matcher(str).matches();
         }
 
@@ -63,8 +61,8 @@ public abstract class BooleanAttribute implements IAttributable<Boolean> {
 
     @Override
     public void force(Object value) {
-        if (value instanceof String) {
-            set(Boolean.parseBoolean((String) value));
+        if (value instanceof String str) {
+            set(Boolean.parseBoolean(str));
 
             return;
         }

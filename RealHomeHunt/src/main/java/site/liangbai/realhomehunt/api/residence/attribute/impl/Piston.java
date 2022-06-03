@@ -33,9 +33,4 @@ public final class Piston extends BooleanAttribute {
 
     public Piston() {
     }
-
-    @Override
-    public String getName() {
-        return "piston";
-    }
 }

@@ -33,9 +33,4 @@ public final class Animals extends Creature {
     public Animals(Map<String, Object> map) {
         super(map);
     }
-
-    @Override
-    public String getName() {
-        return "animals";
-    }
 }

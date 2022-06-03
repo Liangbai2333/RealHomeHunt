@@ -18,7 +18,9 @@
 
 package site.liangbai.realhomehunt.util.kt
 
+import org.bukkit.command.CommandSender
 import site.liangbai.realhomehunt.api.residence.Residence
+import site.liangbai.realhomehunt.api.residence.attribute.getName
 
 fun Residence.getAdministratorListString(): String {
     val stringBuilder = StringBuilder()
@@ -31,13 +33,13 @@ fun Residence.getAdministratorListString(): String {
     return stringBuilder.substring(0, stringBuilder.lastIndexOf("\n"))
 }
 
-fun Residence.getAttributeListString(): String {
+fun Residence.getAttributeListString(requester: CommandSender): String {
     val stringBuilder = StringBuilder()
     if (attributes.isEmpty()) return ""
     attributes.forEach {
         stringBuilder.append(
             " "
-        ).append("-").append(" ").append(it.name).append(":").append(" ").append(it.get()).append("\n")
+        ).append("-").append(" ").append(it.getName(requester)).append(":").append(" ").append(it.get()).append("\n")
     }
     return stringBuilder.substring(0, stringBuilder.lastIndexOf("\n"))
 }

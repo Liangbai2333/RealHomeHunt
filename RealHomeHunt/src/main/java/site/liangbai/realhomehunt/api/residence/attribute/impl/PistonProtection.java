@@ -34,9 +34,4 @@ public final class PistonProtection extends BooleanAttribute {
     public PistonProtection(Map<String, Object> map) {
         super(map);
     }
-
-    @Override
-    public String getName() {
-        return "piston-protection";
-    }
 }

@@ -33,9 +33,4 @@ public final class Burn extends BooleanAttribute {
 
     public Burn() {
     }
-
-    @Override
-    public String getName() {
-        return "burn";
-    }
 }
