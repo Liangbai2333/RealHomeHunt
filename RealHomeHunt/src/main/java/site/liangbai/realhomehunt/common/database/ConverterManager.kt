@@ -90,8 +90,8 @@ internal object ConverterManager {
     }
 
     fun Any.convertToString(): String {
-        if (this is String) {
-            return this
+        if (this is String || this::class.javaPrimitiveType != null) {
+            return toString()
         }
 
         return convertToJsonObject().toString()
@@ -101,8 +101,8 @@ internal object ConverterManager {
         val jsonArray = JsonArray()
 
         forEach {
-            if (it is String) {
-                jsonArray.add(it)
+            if (it is String || this::class.javaPrimitiveType != null) {
+                jsonArray.add(it.toString())
             } else {
                 jsonArray.add(it?.convertToJsonObject())
             }
