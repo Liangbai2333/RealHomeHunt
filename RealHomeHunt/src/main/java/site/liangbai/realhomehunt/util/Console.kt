@@ -16,27 +16,29 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.util;
+package site.liangbai.realhomehunt.util
 
-import org.bukkit.Bukkit;
-import site.liangbai.realhomehunt.common.config.Config;
+import org.bukkit.Bukkit
+import site.liangbai.realhomehunt.common.config.Config
 
-public final class Console {
-    public static void sendMessage(String message) {
-        Bukkit.getConsoleSender().sendMessage(message);
+object Console {
+    fun sendMessage(message: String?) {
+        Bukkit.getConsoleSender().sendMessage(message)
     }
 
-    public static void sendMessage(String message, String prefix) {
-        sendMessage(prefix + message);
+    fun sendMessage(message: String, prefix: String) {
+        sendMessage(prefix + message)
     }
 
-    public static void sendMessage(String message, boolean prefix) {
+    fun sendMessage(message: String, prefix: Boolean) {
         if (prefix) {
-            sendMessage(message, Config.prefix);
-        } else sendMessage(message);
+            sendMessage(message, Config.prefix)
+        } else sendMessage(message)
     }
 
-    public static void sendRawMessage(String message) {
-        sendMessage(message, true);
+    fun sendRawMessage(message: String) {
+        sendMessage(message, true)
     }
 }
+
+fun pluginInfo(message: String) = Console.sendRawMessage(message)

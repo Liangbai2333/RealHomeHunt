@@ -139,7 +139,7 @@ internal object Command {
                     argument.isBoolean().apply {
                         if (!this) {
                             sender.sendLang("command-administrator-unknown-param")
-                        } else context.argument(-1)?.let { sender.commandAdministrator(it, argument.toBoolean()) }
+                        } else context.argument(-1).let { sender.commandAdministrator(it, argument.toBoolean()) }
                     }
                 }
             }
@@ -235,7 +235,7 @@ internal object Command {
                 }
 
                 execute<Player> { sender, context, argument ->
-                    sender.commandSet(context.argument(-1)!!, argument)
+                    sender.commandSet(context.argument(-1), argument)
                 }
             }
         }
@@ -360,7 +360,7 @@ internal object Command {
 
         val blockLocation = Locations.toBlockLocation(location)
 
-        if (!ResidenceManager.isInResidence(blockLocation, residence)) {
+        if (blockLocation !in residence) {
             sendLang("command-setspawn-not-in-residence")
             return
         }

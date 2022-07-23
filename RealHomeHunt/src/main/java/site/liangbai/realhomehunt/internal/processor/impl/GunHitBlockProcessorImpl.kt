@@ -54,6 +54,8 @@ class GunHitBlockProcessorImpl : IGunHitBlockProcessor {
 
     override val damageCachePoolMap: MutableMap<UUID, DamageCachePool> = ConcurrentHashMap()
 
+
+
     override fun processGunHitBlock(player: Player, gun: ItemStack, block: Block) {
         if (!ResidenceManager.isOpened(player.world)) {
             return
@@ -64,9 +66,7 @@ class GunHitBlockProcessorImpl : IGunHitBlockProcessor {
         if (block.type.isIgnoreHitBlock()) {
             return
         }
-        val damageCachePool = damageCachePoolMap.computeIfAbsent(player.uniqueId) {
-            DamageCachePool()
-        }
+        val damageCachePool = player.findDamageCachePool()
 
         executor.execute {
             val residence = ResidenceManager.getResidenceByLocation(block.location)
@@ -118,5 +118,9 @@ class GunHitBlockProcessorImpl : IGunHitBlockProcessor {
                 residence.attackBy(player)
             }
         }
+    }
+
+    private fun Player.findDamageCachePool() = damageCachePoolMap.computeIfAbsent(uniqueId) {
+        DamageCachePool()
     }
 }

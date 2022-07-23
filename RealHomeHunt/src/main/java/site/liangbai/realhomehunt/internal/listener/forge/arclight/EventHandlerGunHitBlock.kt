@@ -27,17 +27,16 @@ import site.liangbai.realhomehunt.util.kt.toBukkitItemStack
 import site.liangbai.realhomehunt.util.kt.toBukkitWorld
 import site.liangbai.realhomehunt.util.kt.toLocation
 import taboolib.common.Isolated
-import taboolib.common.reflect.Reflex.Companion.getProperty
 
 @Isolated
 class EventHandlerGunHitBlock {
     @SubscribeEvent
     fun onGunHitBlock(event: GunEvent.HitBlock) {
         val gunItem = event.gun
-        if (!gunItem.isTriggerPressed || gunItem.ammoProvider.expectedMagazine.size == 0) return
+        if (!gunItem.isTriggerPressed || gunItem.ammoProvider.expectedMagazine.size <= 0) return
         val player = event.living.entity.toBukkitEntity() as? Player ?: return
         val gun = event.itemStack.toBukkitItemStack()
-        val world = event.getProperty<Any>("level")!!.toBukkitWorld()
+        val world = event.level.toBukkitWorld()
         val block = world.getBlockAt(event.rayTraceResult.blockPos.toLocation())
         Processors.GUN_HIT_BLOCK_PROCESSOR.processGunHitBlock(player, gun, block)
     }

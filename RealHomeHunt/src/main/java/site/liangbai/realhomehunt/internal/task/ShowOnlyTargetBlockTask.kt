@@ -40,7 +40,7 @@ internal object ShowOnlyTargetBlockTask {
                     .filterNotOpenedWorld()
                     .forEach {
                         val itemStack = it.inventory.itemInMainHand
-                        if (itemStack == null || itemStack.type.isAir) return@forEach
+                        if (itemStack.type.isAir) return@forEach
                         val range = Guns.getDistance(itemStack)
                         if (range <= 0.0) return@forEach
                         val rayTraceResult = RayTraceUtil.rayTraceBlock(it, range)

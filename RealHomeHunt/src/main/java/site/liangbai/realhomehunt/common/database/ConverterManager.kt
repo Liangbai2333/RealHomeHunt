@@ -29,7 +29,7 @@ import site.liangbai.realhomehunt.common.database.converter.IJsonEntity
 import site.liangbai.realhomehunt.common.database.converter.impl.AttributeConverter
 import site.liangbai.realhomehunt.common.database.converter.impl.LocationConverter
 import site.liangbai.realhomehunt.common.database.converter.impl.ZoneConverter
-import taboolib.common.reflect.Reflex.Companion.invokeConstructor
+import taboolib.library.reflex.Reflex.Companion.invokeConstructor
 import kotlin.reflect.KClass
 
 internal object ConverterManager {

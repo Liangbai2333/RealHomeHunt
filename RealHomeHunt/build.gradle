@@ -1,7 +1,7 @@
 plugins {
     id 'real-home-hunt'
     id 'java-library'
-    id 'io.izzel.taboolib' version '1.38'
+    id 'io.izzel.taboolib' version '1.41'
     id 'org.jetbrains.kotlin.jvm' version '1.6.10'
 }
 
@@ -14,6 +14,7 @@ taboolib {
         it.dependencies {
             it.name("Residence").optional(true)
             it.name("Multiverse-Core").optional(true)
+            it.name("PlaceholderAPI").optional(true)
         }
     }
     install("common")
@@ -27,7 +28,7 @@ taboolib {
     install("module-nms")
     install("module-nms-util")
     classifier = null
-    version = "6.0.7-62"
+    version = "6.0.9-40"
 }
 
 dependencies {
@@ -38,4 +39,13 @@ dependencies {
     implementation group: 'org.jetbrains', name: 'annotations', version: '21.0.1'
     implementation project(':real-home-hunt-forge')
     implementation fileTree(dir: 'libs', includes: ['*.jar'])
+}
+
+// ?????
+compileKotlin {
+    kotlinOptions {
+        freeCompilerArgs += [
+                "-Xjvm-default=all",
+        ]
+    }
 }

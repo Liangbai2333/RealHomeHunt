@@ -24,13 +24,12 @@ import site.liangbai.realhomehunt.util.kt.toBukkitWorld
 import site.liangbai.realhomehunt.util.kt.toLocation
 import site.liangbai.realhomehuntforge.event.BlockDestroyEvent
 import taboolib.common.Isolated
-import taboolib.common.reflect.Reflex.Companion.getProperty
 
 @Isolated
 class EventHandlerBlockDestroy {
     @SubscribeEvent
     fun onBlockDestroy(event: BlockDestroyEvent) {
-        val world = event.getProperty<Any>("world")!!.toBukkitWorld()
+        val world = event.world.toBukkitWorld()
         val location = event.pos.toLocation()
         val block = world.getBlockAt(event.pos.toLocation())
         val residence = ResidenceManager.getResidenceByLocation(location)

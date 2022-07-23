@@ -31,8 +31,8 @@ import site.liangbai.realhomehunt.api.residence.Residence
 import site.liangbai.realhomehunt.common.config.Config
 import site.liangbai.realhomehunt.common.config.Config.BlockSetting.BlockIgnoreSetting
 import site.liangbai.realhomehunt.internal.task.NaturallyDropItemTask
-import taboolib.common.reflect.Reflex.Companion.getProperty
-import taboolib.common.reflect.Reflex.Companion.setProperty
+import taboolib.library.reflex.Reflex.Companion.getProperty
+import taboolib.library.reflex.Reflex.Companion.setProperty
 import java.util.concurrent.ConcurrentHashMap
 
 object Blocks {

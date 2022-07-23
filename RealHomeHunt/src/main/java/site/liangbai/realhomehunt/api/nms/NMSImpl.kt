@@ -26,7 +26,6 @@ import net.minecraft.network.protocol.game.PacketPlayOutChat
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
-import net.minecraft.world.level.storage.ServerLevelData
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.World
@@ -37,9 +36,9 @@ import org.bukkit.craftbukkit.v1_18_R2.entity.CraftEntity
 import org.bukkit.craftbukkit.v1_18_R2.inventory.CraftItemStack
 import org.bukkit.craftbukkit.v1_18_R2.util.CraftChatMessage
 import org.bukkit.entity.Player
-import taboolib.common.reflect.Reflex.Companion.getProperty
-import taboolib.common.reflect.Reflex.Companion.invokeMethod
-import taboolib.common.reflect.Reflex.Companion.setProperty
+import taboolib.library.reflex.Reflex.Companion.getProperty
+import taboolib.library.reflex.Reflex.Companion.invokeMethod
+import taboolib.library.reflex.Reflex.Companion.setProperty
 import taboolib.module.nms.MinecraftVersion
 import taboolib.module.nms.sendPacket
 
@@ -83,6 +82,7 @@ class NMSImpl : NMS() {
         val craftWorld = world as CraftWorld
         // 没有办法，之后再看看怎么改动吧
         val worldServer = craftWorld.getProperty<Any>("world")!!
+
         val blockPosition = BlockPosition(location.blockX, location.blockY, location.blockZ)
         return worldServer.invokeMethod("b", blockPosition, dropItem)!!
     }
@@ -91,7 +91,7 @@ class NMSImpl : NMS() {
 
     override fun toBukkitLocation(blockPos: BlockPos) = Location(null, blockPos.x.toDouble(), blockPos.y.toDouble(), blockPos.z.toDouble())
 
-    override fun toBukkitWorld(world: Any): World = toBukkitWorldByName(world.getProperty<ServerLevelData>("serverLevelData")!!.levelName)
+    override fun toBukkitWorld(world: Any): World = world.invokeMethod<World>("getWorld")!!
     override fun toBukkitWorldByName(name: String): World = server.getWorld(name)!!
 
     override fun toBukkitItemStack(itemStack: ItemStack): org.bukkit.inventory.ItemStack = CraftItemStack.asCraftMirror(itemStack)

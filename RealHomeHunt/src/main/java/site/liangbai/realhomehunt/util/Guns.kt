@@ -18,7 +18,7 @@
 
 package site.liangbai.realhomehunt.util
 
-import com.craftingdead.core.world.item.gun.GunItem
+import com.craftingdead.core.world.item.GunItem
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemStack
 import site.liangbai.realhomehunt.common.config.Config
@@ -51,16 +51,16 @@ object Guns {
             if (it == null) {
                 0.0
             } else {
-                Config.gun.custom.getCustomDamage(gun.type, it.damage.toDouble(), powerLevel)
+                Config.gun.custom.getCustomDamage(gun.type, it.asGun().damage.toDouble(), powerLevel)
             }
         }
     }
 
 
 
-    fun getDistance(gun: ItemStack): Double {
+    fun getDistance(gun: ItemStack):  Double {
         return gun.withGun {
-            it?.range ?: 0.0
+            it?.asGun()?.range ?: 0.0
         }
     }
 

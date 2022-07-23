@@ -42,6 +42,7 @@ import site.liangbai.realhomehunt.internal.storage.StorageType
 import site.liangbai.realhomehunt.util.Console
 import site.liangbai.realhomehunt.util.kt.asTicks
 import site.liangbai.realhomehunt.util.kt.colored
+import site.liangbai.realhomehunt.util.pluginInfo
 import java.io.File
 import java.util.*
 
@@ -122,25 +123,25 @@ object Config {
         actionBarShowMills = yamlConfiguration.getLong("action-bar-show-mills", 600).asTicks()
         confirmWaitMills = yamlConfiguration.getLong("confirm-wait-mills", 15).asTicks()
         dropItem = yamlConfiguration.getBoolean("drop-item", false)
-        Console.sendRawMessage(ChatColor.GREEN.toString() + "Linking storage settings...")
+        pluginInfo(ChatColor.GREEN.toString() + "Linking storage settings...")
         linkStorageConfig(yamlConfiguration)
-        Console.sendRawMessage(ChatColor.GREEN.toString() + "Linking storage settings successful.")
-        Console.sendRawMessage(ChatColor.GREEN.toString() + "Linking residence settings...")
+        pluginInfo(ChatColor.GREEN.toString() + "Linking storage settings successful.")
+        pluginInfo(ChatColor.GREEN.toString() + "Linking residence settings...")
         linkResidenceConfig(yamlConfiguration)
-        Console.sendRawMessage(ChatColor.GREEN.toString() + "Linking residence settings successful.")
-        Console.sendRawMessage(ChatColor.GREEN.toString() + "Linking block settings...")
+        pluginInfo(ChatColor.GREEN.toString() + "Linking residence settings successful.")
+        pluginInfo(ChatColor.GREEN.toString() + "Linking block settings...")
         linkBlockConfig(yamlConfiguration)
-        Console.sendRawMessage(ChatColor.GREEN.toString() + "Linking block settings successful.")
-        Console.sendRawMessage(ChatColor.GREEN.toString() + "Linking auto fix residence settings...")
+        pluginInfo(ChatColor.GREEN.toString() + "Linking block settings successful.")
+        pluginInfo(ChatColor.GREEN.toString() + "Linking auto fix residence settings...")
         linkAutoFixResidenceConfig(yamlConfiguration)
-        Console.sendRawMessage(ChatColor.GREEN.toString() + "Linking auto fix residence settings successful.")
-        Console.sendRawMessage(ChatColor.GREEN.toString() + "Linking rob chest mode settings...")
+        pluginInfo(ChatColor.GREEN.toString() + "Linking auto fix residence settings successful.")
+        pluginInfo(ChatColor.GREEN.toString() + "Linking rob chest mode settings...")
         linkRobChestModeConfig(yamlConfiguration)
-        Console.sendRawMessage(ChatColor.GREEN.toString() + "Linking rob chest mode settings successful.")
-        Console.sendRawMessage(ChatColor.GREEN.toString() + "Linking gun settings...")
+        pluginInfo(ChatColor.GREEN.toString() + "Linking rob chest mode settings successful.")
+        pluginInfo(ChatColor.GREEN.toString() + "Linking gun settings...")
         linkGunConfig(yamlConfiguration)
-        Console.sendRawMessage(ChatColor.GREEN.toString() + "Linking gun settings successful.")
-        Console.sendRawMessage(ChatColor.GREEN.toString() + "Reload config successful.")
+        pluginInfo(ChatColor.GREEN.toString() + "Linking gun settings successful.")
+        pluginInfo(ChatColor.GREEN.toString() + "Reload config successful.")
     }
 
     private fun linkResidenceConfig(section: ConfigurationSection) {
@@ -169,7 +170,7 @@ object Config {
         try {
             toolSetting.showParticle = Particle.valueOf(particleName)
         } catch (t: Throwable) {
-            Console.sendRawMessage(ChatColor.RED.toString() + "can not find the particle: " + particleName + ", use default: REDSTONE")
+            pluginInfo(ChatColor.RED.toString() + "can not find the particle: " + particleName + ", use default: REDSTONE")
             toolSetting.showParticle = Particle.REDSTONE
         }
         toolSetting.showParticleStep = residenceToolSection.getDouble("show-particle-step", 0.1)
@@ -258,14 +259,14 @@ object Config {
         val customSetting = GunSetting.GunCustomSetting()
         customSetting.customInfoList.addAll(
             customSection?.getKeys(false)?.mapNotNull { customSection.getConfigurationSection(it) }?.map {
-                    val type = Material.matchMaterial(
-                        it.getString("type") ?: throw throw IllegalStateException("can not load config part: gun.custom.${it.name}.type")
-                    ) ?: throw throw IllegalStateException("can not found the gun type: ${it.getString("type")}")
+                val type = Material.matchMaterial(
+                    it.getString("type") ?: throw throw IllegalStateException("can not load config part: gun.custom.${it.name}.type")
+                ) ?: throw throw IllegalStateException("can not found the gun type: ${it.getString("type")}")
 
-                    val info = GunSetting.GunCustomSetting.GunCustomInfo(type, it.getDouble("damage", -1.0), it.getBoolean("without", false))
+                val info = GunSetting.GunCustomSetting.GunCustomInfo(type, it.getDouble("damage", -1.0), it.getBoolean("without", false))
 
-                    info
-                } ?: emptyList()
+                info
+            } ?: emptyList()
         )
         gun.custom = customSetting
     }
@@ -494,12 +495,12 @@ object Config {
                     ) && name.endsWith(it.suffix))
                 }.let {
                     it ?: if (!material.isSolid && block.bannedNotSolid) IgnoreBlockInfo(
-                            "",
-                            "",
-                            material.name,
-                            0,
-                            temp = true
-                        ) else null
+                        "",
+                        "",
+                        material.name,
+                        0,
+                        temp = true
+                    ) else null
                 }
             }
         }

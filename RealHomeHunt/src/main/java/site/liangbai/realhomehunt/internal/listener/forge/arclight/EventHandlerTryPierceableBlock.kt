@@ -18,22 +18,20 @@
 
 package site.liangbai.realhomehunt.internal.listener.forge.arclight
 
-import net.minecraft.core.BlockPos
 import net.minecraftforge.eventbus.api.SubscribeEvent
 import site.liangbai.realhomehunt.common.config.Config
 import site.liangbai.realhomehunt.util.kt.toBukkitWorld
 import site.liangbai.realhomehunt.util.kt.toLocation
 import site.liangbai.realhomehuntforge.event.BlockRayTraceEvent
 import taboolib.common.Isolated
-import taboolib.common.reflect.Reflex.Companion.getProperty
 
 @Isolated
 class EventHandlerTryPierceableBlock {
     @SubscribeEvent
     fun onTryPiecreableBlock(event: BlockRayTraceEvent.TryPierceableBlock) {
-        val world = event.getProperty<Any>("level")!!.toBukkitWorld()
-        val pos = event.getProperty<Any>("rayTraceResult")?.getProperty<BlockPos>("blockPos")
-        val block = world.getBlockAt(pos!!.toLocation())
+        val world = event.level.toBukkitWorld()
+        val pos = event.rayTraceResult.blockPos
+        val block = world.getBlockAt(pos.toLocation())
         val original = event.isPierceable
         event.isPierceable =
             Config.block.ignore.isPierceable(block.type, original)

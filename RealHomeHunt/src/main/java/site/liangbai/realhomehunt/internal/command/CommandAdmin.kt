@@ -91,7 +91,7 @@ internal object CommandAdmin {
                     }
 
                     execute<CommandSender> { sender, context, argument ->
-                        sender.commandExpand(context.argument(-2)!!, context.argument(-1)!!, argument)
+                        sender.commandExpand(context.argument(-2), context.argument(-1), argument)
                     }
                 }
             }
@@ -116,7 +116,7 @@ internal object CommandAdmin {
                 }
 
                 execute<CommandSender> { sender, context, argument ->
-                    sender.commandImport(context.argument(-1)!!, argument)
+                    sender.commandImport(context.argument(-1), argument)
                 }
             }
         }
@@ -162,13 +162,13 @@ internal object CommandAdmin {
 
                 dynamic {
                     suggestion<CommandSender> { _, context ->
-                        val type: String = context.argument(-1)!!
+                        val type: String = context.argument(-1)
 
                         if (type.isEmpty()) {
                             return@suggestion null
                         }
 
-                        val residence = ResidenceManager.getResidenceByOwner(context.argument(-2)!!) ?: return@suggestion null
+                        val residence = ResidenceManager.getResidenceByOwner(context.argument(-2)) ?: return@suggestion null
 
                         val attributeClass = AttributeMap.getMap(type)
 
@@ -177,7 +177,7 @@ internal object CommandAdmin {
                     }
 
                     execute<CommandSender> { sender, context, argument ->
-                        sender.commandSet(context.argument(-2)!!, context.argument(-1)!!, argument)
+                        sender.commandSet(context.argument(-2), context.argument(-1), argument)
                     }
                 }
             }
@@ -193,7 +193,7 @@ internal object CommandAdmin {
 
             dynamic {
                 suggestion<CommandSender>(uncheck = true) { _, context ->
-                    val residence = ResidenceManager.getResidenceByOwner(context.argument(-1)!!)
+                    val residence = ResidenceManager.getResidenceByOwner(context.argument(-1))
 
                     Bukkit.getOnlinePlayers()
                         .map { it.name }
@@ -211,7 +211,8 @@ internal object CommandAdmin {
                         argument.isBoolean().apply {
                             if (!this) {
                                 sender.sendLang("command-admin-administrator-unknown-param")
-                            } else context.argument(-2)?.let { sender.commandAdministrator(it, context.argument(-1)!!, argument.toBoolean()) }
+                            } else context.argument(-2)
+                                .let { sender.commandAdministrator(it, context.argument(-1), argument.toBoolean()) }
                         }
                     }
                 }

@@ -19,7 +19,7 @@
 package site.liangbai.realhomehunt.common.item;
 
 import com.craftingdead.core.world.item.ClothingItem;
-import com.craftingdead.core.world.item.gun.GunItem;
+import com.craftingdead.core.world.item.GunItem;
 import com.craftingdead.core.world.item.MagazineItem;
 import com.craftingdead.core.world.item.StorageItem;
 import net.minecraft.world.item.ItemStack;

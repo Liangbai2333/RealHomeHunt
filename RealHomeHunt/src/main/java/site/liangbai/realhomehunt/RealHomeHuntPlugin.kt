@@ -33,8 +33,8 @@ import site.liangbai.realhomehunt.internal.listener.forge.arclight.EventHandlerB
 import site.liangbai.realhomehunt.internal.listener.forge.arclight.EventHandlerGunHitBlock
 import site.liangbai.realhomehunt.internal.listener.forge.arclight.EventHandlerTryPierceableBlock
 import site.liangbai.realhomehunt.internal.storage.impl.SqlStorage
-import site.liangbai.realhomehunt.util.Console
 import site.liangbai.realhomehunt.util.kt.isArclight
+import site.liangbai.realhomehunt.util.pluginInfo
 import taboolib.common.LifeCycle
 import taboolib.common.env.RuntimeDependency
 import taboolib.common.platform.Awake
@@ -90,10 +90,10 @@ object RealHomeHuntPlugin : Plugin() {
     @Awake(LifeCycle.ENABLE)
     private fun initForgeEventListener() {
         if (isArclight()) {
-            Console.sendMessage("${ChatColor.YELLOW}WARN: If the plugin throw the NullPointerException, please update your Arclight version to 1.0.3 or newer.")
+            pluginInfo("${ChatColor.YELLOW}WARN: If the plugin throw the NullPointerException, please update your Arclight version to 1.0.3 or newer.")
             val bus = MinecraftForge.EVENT_BUS
             if (!ModList.get().isLoaded(REAL_HOME_HUNT_FORGE_MOD_ID)) {
-                Console.sendMessage("${ChatColor.YELLOW}WARN: Could not found the RealHomeHuntForge Mod, it may produce error.")
+                pluginInfo("${ChatColor.YELLOW}WARN: Could not found the RealHomeHuntForge Mod, it may produce error.")
             } else {
                 Arclight.registerForgeEvent(inst, bus, EventHandlerTryPierceableBlock())
                 Arclight.registerForgeEvent(inst, bus, EventHandlerBlockDestroy())
@@ -129,6 +129,6 @@ object RealHomeHuntPlugin : Plugin() {
     }
 
     private fun processSuccess() {
-        Console.sendRawMessage("${ChatColor.GREEN}Succeed in enabling $pluginId v$pluginVersion plugin, unique author: Liangbai.")
+        pluginInfo("${ChatColor.GREEN}Succeed in enabling $pluginId v$pluginVersion plugin, unique author: Liangbai.")
     }
 }

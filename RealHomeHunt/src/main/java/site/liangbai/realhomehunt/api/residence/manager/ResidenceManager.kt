@@ -31,8 +31,8 @@ import site.liangbai.realhomehunt.internal.storage.StorageType
 import site.liangbai.realhomehunt.internal.storage.impl.MySQLStorage
 import site.liangbai.realhomehunt.internal.storage.impl.SqliteStorage
 import site.liangbai.realhomehunt.internal.storage.impl.YamlStorage
-import site.liangbai.realhomehunt.util.Console
 import site.liangbai.realhomehunt.util.contains
+import site.liangbai.realhomehunt.util.pluginInfo
 
 internal object ResidenceManager {
     private val ownerToResidenceMap = hashMapOf<String, Residence>()
@@ -52,18 +52,18 @@ internal object ResidenceManager {
             storage = MySQLStorage(Config.storage.mySqlSetting)
         }
         ResidenceManager.storageType = storageType
-        Console.sendRawMessage(ChatColor.GREEN.toString() + "Using storage: " + ChatColor.YELLOW + storageType.name)
-        Console.sendRawMessage(ChatColor.GREEN.toString() + "Loading player residence data...")
+        pluginInfo(ChatColor.GREEN.toString() + "Using storage: " + ChatColor.YELLOW + storageType.name)
+        pluginInfo(ChatColor.GREEN.toString() + "Loading player residence data...")
         val residenceList: List<Residence> = storage.loadAll()
         residenceList.forEach {
             ownerToResidenceMap[it.owner] = it
         }
-        Console.sendRawMessage(ChatColor.GREEN.toString() + "Loading player residence data successful.")
-        Console.sendRawMessage(ChatColor.GREEN.toString() + "Player residence data load info: ")
+        pluginInfo(ChatColor.GREEN.toString() + "Loading player residence data successful.")
+        pluginInfo(ChatColor.GREEN.toString() + "Player residence data load info: ")
         val count = storage.count()
-        Console.sendRawMessage(ChatColor.GREEN.toString() + "  count: " + count)
-        Console.sendRawMessage(ChatColor.GREEN.toString() + "  success: " + ownerToResidenceMap.size)
-        Console.sendRawMessage(ChatColor.GREEN.toString() + "  failed: " + (count - ownerToResidenceMap.size))
+        pluginInfo(ChatColor.GREEN.toString() + "  count: " + count)
+        pluginInfo(ChatColor.GREEN.toString() + "  success: " + ownerToResidenceMap.size)
+        pluginInfo(ChatColor.GREEN.toString() + "  failed: " + (count - ownerToResidenceMap.size))
         enabled = true
     }
 
