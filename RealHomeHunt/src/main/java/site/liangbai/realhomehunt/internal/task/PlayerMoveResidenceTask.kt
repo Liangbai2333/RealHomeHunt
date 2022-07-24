@@ -19,6 +19,10 @@
 package site.liangbai.realhomehunt.internal.task
 
 import org.bukkit.Bukkit
+import site.liangbai.realhomehunt.api.event.residence.AsyncPlayerMoveChangedResidenceEvent
+import site.liangbai.realhomehunt.api.event.residence.AsyncPlayerMoveInResidenceEvent
+import site.liangbai.realhomehunt.api.event.residence.AsyncPlayerMoveOutResidenceEvent
+import site.liangbai.realhomehunt.api.residence.Residence
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager
 import site.liangbai.realhomehunt.util.Locations
 import site.liangbai.realhomehunt.util.kt.filterNotActive
@@ -29,8 +33,8 @@ import taboolib.common.platform.function.submit
 import taboolib.platform.util.sendLang
 import java.util.concurrent.ConcurrentHashMap
 
-internal object PlayerMoveToResidenceMessageTask {
-    private val moveToResidenceCache: MutableMap<String, String> = ConcurrentHashMap()
+internal object PlayerMoveResidenceTask {
+    private val moveToResidenceCache: MutableMap<String, Residence> = ConcurrentHashMap()
 
     @Awake(LifeCycle.ACTIVE)
     fun setup() {
@@ -42,22 +46,20 @@ internal object PlayerMoveToResidenceMessageTask {
                     val name = it.name
                     val location = Locations.toBlockLocation(it.location)
                     val residence = ResidenceManager.getResidenceByLocation(location)
-                    if (residence == null) {
-                        if (name in moveToResidenceCache) {
-                            val other = moveToResidenceCache[name]!!
-                            it.sendLang("action-residence-move-out", other)
-                            moveToResidenceCache.remove(name)
-                        }
-                    } else {
+                    if (residence == null && name in moveToResidenceCache) {
+                        AsyncPlayerMoveOutResidenceEvent(it, moveToResidenceCache[name]!!)
+                            .post().run { moveToResidenceCache.remove(name) }
+                        //
+                    } else if (residence != null) {
                         val lastResidence = moveToResidenceCache[name]
-                        if (residence.owner != lastResidence) {
-                            val other = residence.owner
+                        if (residence.owner != lastResidence?.owner) {
                             if (lastResidence != null) {
-                                it.sendLang("action-residence-move-out", lastResidence)
+                                AsyncPlayerMoveOutResidenceEvent(it, lastResidence).post()
+                                AsyncPlayerMoveChangedResidenceEvent(it, residence, lastResidence).post()
                             }
+                            AsyncPlayerMoveInResidenceEvent(it, residence).post()
 
-                            it.sendLang("action-residence-move-in", other)
-                            moveToResidenceCache[name] = other
+                            moveToResidenceCache[name] = residence
                         }
                     }
                 }
