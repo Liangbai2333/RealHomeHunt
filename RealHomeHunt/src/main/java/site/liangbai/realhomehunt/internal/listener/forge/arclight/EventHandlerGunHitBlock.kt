@@ -34,7 +34,7 @@ class EventHandlerGunHitBlock {
     fun onGunHitBlock(event: GunEvent.HitBlock) {
         val gunItem = event.gun
         if (!gunItem.isTriggerPressed || gunItem.ammoProvider.expectedMagazine.size <= 0) return
-        val player = event.living.entity.toBukkitEntity() as? Player ?: return
+        val player = event.living().entity().toBukkitEntity() as? Player ?: return
         val gun = event.itemStack.toBukkitItemStack()
         val world = event.level.toBukkitWorld()
         val block = world.getBlockAt(event.rayTraceResult.blockPos.toLocation())

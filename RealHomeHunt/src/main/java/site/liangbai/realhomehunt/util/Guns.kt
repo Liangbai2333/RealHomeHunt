@@ -18,11 +18,11 @@
 
 package site.liangbai.realhomehunt.util
 
-import com.craftingdead.core.world.item.GunItem
+import com.craftingdead.core.world.item.gun.Gun
+import com.craftingdead.core.world.item.gun.TypedGun
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemStack
 import site.liangbai.realhomehunt.common.config.Config
-import site.liangbai.realhomehunt.util.kt.asItem
 import site.liangbai.realhomehunt.util.kt.toMinecraftItemStack
 
 object Guns {
@@ -51,7 +51,7 @@ object Guns {
             if (it == null) {
                 0.0
             } else {
-                Config.gun.custom.getCustomDamage(gun.type, it.asGun().damage.toDouble(), powerLevel)
+                Config.gun.custom.getCustomDamage(gun.type, it.configuration.damage.toDouble(), powerLevel)
             }
         }
     }
@@ -60,16 +60,16 @@ object Guns {
 
     fun getDistance(gun: ItemStack):  Double {
         return gun.withGun {
-            it?.asGun()?.range ?: 0.0
+            it?.configuration?.range ?: 0.0
         }
     }
 
-    fun <R> ItemStack.withGun(func: (GunItem?) -> R): R {
+    fun <R> ItemStack.withGun(func: (TypedGun?) -> R): R {
         val itemStack = toMinecraftItemStack()
-
-        val item = itemStack.asItem()
-        return if (item is GunItem) {
-            func(item)
+        var gun: Gun? = null
+        itemStack.getCapability(Gun.CAPABILITY).ifPresent { gun = it }
+        return if (gun is TypedGun) {
+            func(gun as TypedGun)
         } else func(null)
     }
 }
