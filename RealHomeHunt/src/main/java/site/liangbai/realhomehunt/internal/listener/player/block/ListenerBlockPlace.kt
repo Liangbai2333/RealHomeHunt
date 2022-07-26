@@ -20,7 +20,6 @@ package site.liangbai.realhomehunt.internal.listener.player.block
 
 import org.bukkit.event.block.BlockMultiPlaceEvent
 import org.bukkit.event.block.BlockPlaceEvent
-import org.bukkit.inventory.ItemStack
 import site.liangbai.realhomehunt.api.residence.attribute.impl.Build
 import site.liangbai.realhomehunt.api.residence.attribute.impl.Place
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager
@@ -52,7 +51,7 @@ internal object ListenerBlockPlace {
             val info = residence.getIgnoreBlockInfo(ignoreBlockInfo!!)
             if (info.count >= limit) {
                 if (!player.hasPermission("rh.place")) {
-                    val itemStack = ItemStack(block.type)
+                    val itemStack = event.itemInHand
                     val name = I18n.instance.getName(player, itemStack)
                     player.sendLang("action-place-limit", name)
                     event.isCancelled = true

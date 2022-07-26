@@ -204,6 +204,10 @@ block:
     button:
       suffix: BUTTON
       amount: -1
+    # 允许种子播种
+    stem:
+      suffix: STEM
+      amount: -1
   # 自定义硬度
   custom:
     obsidian:
