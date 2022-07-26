@@ -11,3 +11,14 @@ dependencies {
 mixin {
     add sourceSets.main, "mixins.realhomehuntforge.refmap.json"
 }
+
+jar {
+    manifest {
+        attributes([
+                "Implementation-Title": project.name,
+                "Implementation-Version": project.version,
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                "MixinConfigs": 'mixins.realhomehuntforge.json'
+        ])
+    }
+}

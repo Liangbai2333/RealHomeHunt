@@ -40,7 +40,7 @@ public abstract class MixinLevel {
                     target = "Lnet/minecraft/world/level/block/state/BlockState;getBlock()Lnet/minecraft/world/level/block/Block;",
                     shift = At.Shift.BEFORE
             ),
-            locals = LocalCapture.CAPTURE_FAILHARD,
+            locals = LocalCapture.CAPTURE_FAILSOFT,
             cancellable = true
     )
     private void inject_destroyBlock(BlockPos p_46626_, boolean arg1, Entity arg2, int arg3, CallbackInfoReturnable<Boolean> cir, BlockState blockstate, FluidState fluidstate) {
