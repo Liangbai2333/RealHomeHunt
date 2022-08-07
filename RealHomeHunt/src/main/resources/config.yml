@@ -113,7 +113,7 @@ residence:
     # 圈地范围显示使用的粒子, REDSTONE为红石
     show-particle: REDSTONE
     # 可以理解为细腻程度, 但是是越低越细腻
-    show-particle-step: 0.1
+    show-particle-step: 0.3
     # 颜色设置
     particle-color:
       # 是否开启, 如果开启只能使用红石粒子或其他可以被颜色渲染的粒子
