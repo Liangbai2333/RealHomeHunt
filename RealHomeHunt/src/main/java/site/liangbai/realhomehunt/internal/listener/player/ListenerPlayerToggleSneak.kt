@@ -20,6 +20,8 @@ package site.liangbai.realhomehunt.internal.listener.player
 
 import org.bukkit.event.player.PlayerToggleSneakEvent
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager
+import site.liangbai.realhomehunt.api.residence.util.WarningTools.buffering
+import site.liangbai.realhomehunt.api.residence.util.WarningTools.tryWarn
 import site.liangbai.realhomehunt.common.config.Config
 import taboolib.common.platform.event.SubscribeEvent
 import taboolib.platform.util.sendLang
@@ -43,10 +45,10 @@ internal object ListenerPlayerToggleSneak {
             player.sendLang("action-warn-is-not-administrator")
             return
         }
-        if (!residence.isCanWarn) {
+        if (residence.buffering) {
             player.sendLang("action-warn-wait-message")
             return
         }
-        residence.warn(player)
+        residence.tryWarn(player)
     }
 }

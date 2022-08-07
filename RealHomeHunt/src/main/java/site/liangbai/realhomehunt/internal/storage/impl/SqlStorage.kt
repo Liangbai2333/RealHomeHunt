@@ -54,7 +54,7 @@ abstract class SqlStorage<T: Host<E>, E : ColumnBuilder> : IStorage {
                     set("right", residence.right.convertToString())
                     set("administrators", residence.administrators.convertToString())
                     set("attributes", residence.attributes.convertToString())
-                    set("ignoreBlockInfoList", residence.ignoreBlockInfoList.convertToString())
+                    set("ignoreBlockInfoList", residence.ignoreBlockCounterList.convertToString())
                     set("spawn", residence.spawn.convertToString())
                     where {
                         "owner" eq residence.owner
@@ -70,7 +70,7 @@ abstract class SqlStorage<T: Host<E>, E : ColumnBuilder> : IStorage {
                         residence.right.convertToString(),
                         residence.administrators.convertToString(),
                         residence.attributes.convertToString(),
-                        residence.ignoreBlockInfoList.convertToString(),
+                        residence.ignoreBlockCounterList.convertToString(),
                         residence.spawn.convertToString()
                     )
                 }
@@ -90,7 +90,7 @@ abstract class SqlStorage<T: Host<E>, E : ColumnBuilder> : IStorage {
             residence.right = getString("right").convertToEntity()
             residence.administrators = getString("administrators").convertToEntityList()
             residence.attributes = getString("attributes").convertToEntityList()
-            residence.ignoreBlockInfoList = getString("ignoreBlockInfoList").convertToEntityList()
+            residence.ignoreBlockCounterList = getString("ignoreBlockInfoList").convertToEntityList()
             residence.spawn = getString("spawn").convertToEntity()
             count++
             cache.add(residence.owner)

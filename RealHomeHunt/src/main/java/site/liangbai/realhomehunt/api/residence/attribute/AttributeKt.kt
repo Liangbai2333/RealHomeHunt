@@ -19,6 +19,7 @@
 package site.liangbai.realhomehunt.api.residence.attribute
 
 import org.bukkit.command.CommandSender
+import taboolib.library.reflex.Reflex.Companion.invokeConstructor
 import taboolib.platform.util.asLangTextOrNull
 
 fun IAttributable<out Any>.getName(requester: CommandSender): String {
@@ -26,3 +27,7 @@ fun IAttributable<out Any>.getName(requester: CommandSender): String {
     return requester.asLangTextOrNull("attribute-${source.lowercase()}-name", requester.name)
         ?: source
 }
+
+fun <T> Class<out IAttributable<T>>.create() = invokeConstructor()
+
+fun Class<out IAttributable<*>>.create2() = invokeConstructor()

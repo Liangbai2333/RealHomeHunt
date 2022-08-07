@@ -122,12 +122,13 @@ internal object Command {
         dynamic {
             suggestion<Player>(uncheck = true) { sender, _ ->
                 val residence = ResidenceManager.getResidenceByOwner(sender.name)
-
-                Bukkit.getOnlinePlayers()
-                    .map { it.name }
-                    .filter { residence?.isAdministrator(it) ?: true }
-                    .toMutableList()
-                    .also { residence?.run { it.addAll(this.administrators) } }
+                residence?.let { res ->
+                    Bukkit.getOnlinePlayers()
+                        .map { it.name }
+                        .filter { !res.isAdministrator(it) }
+                        .toMutableList()
+                        .also { res.run { it.addAll(this.administrators) } }
+                }
             }
 
             dynamic {

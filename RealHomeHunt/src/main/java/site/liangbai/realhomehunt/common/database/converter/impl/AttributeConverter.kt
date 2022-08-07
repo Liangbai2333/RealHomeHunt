@@ -21,9 +21,9 @@ package site.liangbai.realhomehunt.common.database.converter.impl
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import site.liangbai.realhomehunt.api.residence.attribute.IAttributable
+import site.liangbai.realhomehunt.api.residence.attribute.create
 import site.liangbai.realhomehunt.api.residence.attribute.map.AttributeMap
 import site.liangbai.realhomehunt.common.database.converter.IJsonEntity
-import site.liangbai.realhomehunt.util.Ref
 
 class AttributeConverter :
     IJsonEntity<IAttributable<*>> {
@@ -38,7 +38,7 @@ class AttributeConverter :
         val jsonObject = JsonParser.parseString(dbData).asJsonObject
         val target = jsonObject["target"].asString
         val clazz = AttributeMap.getMapWithType<IAttributable<*>>(target)
-        val attributable = Ref.newInstance(clazz)
+        val attributable = clazz.create()
         attributable.force(jsonObject["value"].asString)
         return attributable
     }

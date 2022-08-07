@@ -203,6 +203,9 @@ object Config {
             val prefix = it.getString("prefix", "")!!.uppercase()
             val suffix =it.getString("suffix", "")!!.uppercase()
             val full = it.getString("full")
+            if (prefix.isEmpty() && suffix.isEmpty() && full != null && full.isEmpty()) {
+                throw IllegalStateException("can not load empty ignore block config body from: block.ignore.${it.name}")
+            }
             val amount = it.getInt("amount", -1)
             val ignoreHit = it.getBoolean("ignore-hit", false)
             val useCustomPierceable = it.contains("custom-pierceable")

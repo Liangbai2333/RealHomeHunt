@@ -48,20 +48,20 @@ internal object ListenerBlockPlace {
         val putCount = if (event is BlockMultiPlaceEvent) event.replacedBlockStates.size else 1
         val limit = ignoreBlockInfo?.amount ?: -1
         if (limit >= 0) {
-            val info = residence.getIgnoreBlockInfo(ignoreBlockInfo!!)
-            if (info.count >= limit) {
+            val counter = residence.getIgnoreBlockCounter(ignoreBlockInfo!!)
+            if (counter.count >= limit) {
                 if (!player.hasPermission("rh.place")) {
                     val itemStack = event.itemInHand
                     val name = I18n.instance.getName(player, itemStack)
                     player.sendLang("action-place-limit", name)
                     event.isCancelled = true
                 } else {
-                    info.increaseCount(putCount)
+                    counter.increaseCount(putCount)
                     residence.save()
                 }
                 return
             }
-            info.increaseCount(putCount)
+            counter.increaseCount(putCount)
             residence.save()
         }
     }

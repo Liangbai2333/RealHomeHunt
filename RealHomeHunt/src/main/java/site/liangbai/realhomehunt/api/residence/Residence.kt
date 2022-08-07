@@ -25,20 +25,15 @@ import org.bukkit.Location
 import org.bukkit.block.Block
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.entity.Player
-import site.liangbai.realhomehunt.RealHomeHuntPlugin.inst
 import site.liangbai.realhomehunt.api.residence.attribute.IAttributable
+import site.liangbai.realhomehunt.api.residence.attribute.create2
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager.isOpened
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager.remove
 import site.liangbai.realhomehunt.api.residence.manager.ResidenceManager.save
-import site.liangbai.realhomehunt.common.actionbar.impl.DynamicActionBar
 import site.liangbai.realhomehunt.common.config.Config
 import site.liangbai.realhomehunt.common.database.converter.IJsonEntity
-import site.liangbai.realhomehunt.internal.task.UnloadPlayerAttackTask
-import site.liangbai.realhomehunt.internal.task.UnloadWarnTask
-import site.liangbai.realhomehunt.util.*
 import site.liangbai.realhomehunt.util.Locations.toBlockLocation
-import site.liangbai.realhomehunt.util.Sounds.playDragonAmbientSound
-import site.liangbai.realhomehunt.util.Sounds.playLevelUpSound
+import site.liangbai.realhomehunt.util.contains
 import java.util.*
 import java.util.stream.Collectors
 
@@ -49,10 +44,8 @@ class Residence : ConfigurationSerializable {
     lateinit var right: Location
     lateinit var spawn: Location
     lateinit var administrators: MutableList<String>
-    lateinit var ignoreBlockInfoList: MutableList<IgnoreBlockInfo>
+    lateinit var ignoreBlockCounterList: MutableList<IgnoreBlockCounter>
     lateinit var attributes: MutableList<IAttributable<*>>
-    private val attacks: MutableList<String> = ArrayList()
-    var isCanWarn = true
 
     private constructor(left: Location, right: Location, owner: Player) : this(left, right, owner.name)
 
@@ -61,7 +54,7 @@ class Residence : ConfigurationSerializable {
         this.right = right
         this.owner = owner
         administrators = ArrayList()
-        ignoreBlockInfoList = LinkedList()
+        ignoreBlockCounterList = LinkedList()
         attributes = LinkedList()
     }
 
@@ -71,7 +64,7 @@ class Residence : ConfigurationSerializable {
         administrators = map["administrators"] as MutableList<String>
         left = map["left"] as Location
         right = map["right"] as Location
-        ignoreBlockInfoList = map["ignoreBlockInfoList"] as MutableList<IgnoreBlockInfo>
+        ignoreBlockCounterList = map["ignoreBlockInfoList"] as MutableList<IgnoreBlockCounter>
         attributes = if ("attributes" in map) {
             map["attributes"] as MutableList<IAttributable<*>>
         } else {
@@ -82,33 +75,32 @@ class Residence : ConfigurationSerializable {
 
     constructor() {}
 
+    private fun Config.BlockSetting.BlockIgnoreSetting.IgnoreBlockInfo.getDefaultTypeName(): String {
+        return if (full != null) {
+            full!!
+        } else if (prefix.isEmpty() && suffix.isEmpty()) {
+            "null".also { throw IllegalStateException("Error config which has unusual ignore block data.") }
+        } else {
+            prefix + suffix
+        }
+    }
+
+    private fun Config.BlockSetting.BlockIgnoreSetting.IgnoreBlockInfo.matchType(name: String): Boolean {
+        if (full != null && full!!.isNotEmpty() && full.equals(
+                name,
+                ignoreCase = true
+            )
+        ) {
+            return true
+        }
+        if (prefix.isEmpty() && suffix.isEmpty()) return false
+        return name.startsWith(prefix) && name.endsWith(suffix)
+    }
+
     // Method
-    fun getIgnoreBlockInfo(ignoreBlockInfo: Config.BlockSetting.BlockIgnoreSetting.IgnoreBlockInfo): IgnoreBlockInfo {
-        return ignoreBlockInfoList.stream()
-            .filter {
-                val name = it.type
-                if (ignoreBlockInfo.full != null && ignoreBlockInfo.full!!.isNotEmpty() && ignoreBlockInfo.full.equals(
-                        name,
-                        ignoreCase = true
-                    )
-                ) return@filter true
-                if (ignoreBlockInfo.prefix.isEmpty() && ignoreBlockInfo.suffix.isEmpty()) return@filter false
-                name.startsWith(ignoreBlockInfo.prefix) && name.endsWith(ignoreBlockInfo.suffix)
-            }
-            .findFirst()
-            .orElseGet {
-                val info: IgnoreBlockInfo = if (ignoreBlockInfo.full != null) {
-                    IgnoreBlockInfo(ignoreBlockInfo.full!!)
-                } else {
-                    val typeName: String = if (ignoreBlockInfo.prefix.isEmpty() && ignoreBlockInfo.suffix.isEmpty()) {
-                        "null"
-                    } else {
-                        ignoreBlockInfo.prefix + ignoreBlockInfo.suffix
-                    }
-                    IgnoreBlockInfo(typeName)
-                }
-                info.also { ignoreBlockInfoList.add(it) }
-            }
+    fun getIgnoreBlockCounter(ignoreBlockInfo: Config.BlockSetting.BlockIgnoreSetting.IgnoreBlockInfo): IgnoreBlockCounter {
+        return ignoreBlockCounterList.firstOrNull { ignoreBlockInfo.matchType(it.type) } ?: IgnoreBlockCounter(ignoreBlockInfo.getDefaultTypeName())
+                .also { ignoreBlockCounterList.add(it) }
     }
 
     inline fun <reified T : IAttributable<Boolean>> checkBooleanAttribute(): Boolean {
@@ -116,65 +108,24 @@ class Residence : ConfigurationSerializable {
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun <T> getAttribute(attribute: Class<out IAttributable<T>>): IAttributable<T> {
-        return getAttributeWithoutType(attribute) as IAttributable<T>
+    fun <T> getAttribute(attributeClass: Class<out IAttributable<T>>): IAttributable<T> {
+        return getAttributeWithoutType(attributeClass) as IAttributable<T>
     }
 
-    fun getAttributeWithoutType(attribute: Class<out IAttributable<*>>): IAttributable<*> {
+    fun getAttributeWithoutType(attributeClass: Class<out IAttributable<*>>): IAttributable<*> {
         return Objects.requireNonNull(
-            attributes.stream()
-                .filter { it.javaClass == attribute }
-                .findFirst()
-                .orElseGet {
-                    val iAttributable = Ref.newInstance(attribute)!!
-                    attributes.add(iAttributable)
-                    iAttributable
-                })
-    }
-
-    fun attackBy(attacker: Player) {
-        val ownerPlayer = Bukkit.getPlayerExact(owner)
-        playDragonAmbientSound(attacker, 1, 0.0)
-        ownerPlayer?.let {
-            playDragonAmbientSound(it, 1, 0.0)
-            it.sendLang("action-hit-block-self-title", attacker.name)
-            if (Config.showActionBar) {
-                val message = it.asLangText("action-hit-block-self-action-bar", attacker.name)
-                val actionBar =
-                    DynamicActionBar(message, 5, 20)
-                actionBar.show(it, Config.actionBarShowMills)
-            }
-        }
-        sendToAll("action-hit-block-all-message", owner, attacker.name)
-        addAttack(attacker.name)
-    }
-
-    fun addAttack(attack: String) {
-        attacks.add(attack)
-        UnloadPlayerAttackTask(this, attack)
-            .runTaskLater(inst, Config.unloadPlayerAttackMills)
-    }
-
-    fun hasAttack(attack: String): Boolean {
-        return attacks.contains(attack)
-    }
-
-    fun warn(sender: Player) {
-        isCanWarn = false
-        onlineMembers.forEach {
-            it.sendLang("action-warn-title", sender.name)
-            playLevelUpSound(it, 3, 0.5)
-        }
-        UnloadWarnTask(this).runTaskLater(inst, Config.unloadWarnMills)
+            attributes.firstOrNull { it.javaClass == attributeClass } ?: attributeClass.create2()
+                .also { attributes.add(it) }
+        )
     }
 
     internal fun destroyBlock(block: Block) {
         val upType = block.type
         val info = Config.block.ignore.getByMaterial(upType)
         if (info != null) {
-            val residenceIgnoreBlockInfo = getIgnoreBlockInfo(info)
-            if (residenceIgnoreBlockInfo.count > 0) {
-                residenceIgnoreBlockInfo.deleteCount()
+            val counter = getIgnoreBlockCounter(info)
+            if (counter.count > 0) {
+                counter.deleteCount()
                 save()
             }
         }
@@ -190,10 +141,6 @@ class Residence : ConfigurationSerializable {
                 .forEach { players.add(it) }
             return players
         }
-
-    fun removeAttack(attack: String) {
-        attacks.remove(attack)
-    }
 
     fun isOwner(owner: String): Boolean {
         return this.owner == owner
@@ -253,14 +200,14 @@ class Residence : ConfigurationSerializable {
         map["administrators"] = administrators
         map["left"] = left
         map["right"] = right
-        map["ignoreBlockInfoList"] = ignoreBlockInfoList
+        map["ignoreBlockInfoList"] = ignoreBlockCounterList
         map["attributes"] = attributes
         map["spawn"] = spawn
         return map
     }
 
-    class IgnoreBlockInfo : ConfigurationSerializable,
-        IJsonEntity<IgnoreBlockInfo> {
+    class IgnoreBlockCounter : ConfigurationSerializable,
+        IJsonEntity<IgnoreBlockCounter> {
         lateinit var type: String
             private set
         var count = 0
@@ -270,6 +217,7 @@ class Residence : ConfigurationSerializable {
             this.type = type
         }
 
+        // For converter
         constructor()
 
         constructor(map: Map<String?, Any?>) {
@@ -296,18 +244,18 @@ class Residence : ConfigurationSerializable {
             return map
         }
 
-        override fun convertToDatabaseColumn(attribute: IgnoreBlockInfo): String {
+        override fun convertToDatabaseColumn(attribute: IgnoreBlockCounter): String {
             val jsonObject = JsonObject()
             jsonObject.addProperty("type", attribute.type)
             jsonObject.addProperty("count", attribute.count)
             return jsonObject.toString()
         }
 
-        override fun convertToEntityAttribute(dbData: String): IgnoreBlockInfo {
+        override fun convertToEntityAttribute(dbData: String): IgnoreBlockCounter {
             val jsonObject = JsonParser.parseString(dbData).asJsonObject
-            type = jsonObject["type"].asString
-            count = jsonObject["count"].asInt
-            return this
+            val counter = IgnoreBlockCounter(jsonObject["type"].asString)
+            counter.count = jsonObject["count"].asInt
+            return counter
         }
     }
 

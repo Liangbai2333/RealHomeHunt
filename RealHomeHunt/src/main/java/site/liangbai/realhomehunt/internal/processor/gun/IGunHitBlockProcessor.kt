@@ -16,15 +16,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.util;
+package site.liangbai.realhomehunt.internal.processor.gun
 
-public class Ref {
+import org.bukkit.block.Block
+import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
+import java.util.UUID
+import site.liangbai.realhomehunt.api.cache.DamageCachePool
 
-    public static <T> T newInstance(Class<T> clazz) {
-        try {
-            return clazz.getConstructor().newInstance();
-        } catch (Throwable e) {
-            throw new IllegalStateException("could not find a empty constructor for: " + (clazz != null ? clazz.getSimpleName() : "Unknown"), e);
-        }
-    }
+interface IGunHitBlockProcessor {
+    fun processGunHitBlock(player: Player, gun: ItemStack, block: Block)
+    val damageCachePoolMap: Map<UUID, DamageCachePool>
 }

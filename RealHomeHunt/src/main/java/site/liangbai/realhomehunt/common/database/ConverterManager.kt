@@ -42,7 +42,7 @@ internal object ConverterManager {
         Zone::class convert ZoneConverter::class
         Location::class convert LocationConverter::class
         IAttributable::class convert AttributeConverter::class
-        Residence.IgnoreBlockInfo::class convert Residence.IgnoreBlockInfo::class
+        Residence.IgnoreBlockCounter::class convert Residence.IgnoreBlockCounter::class
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -87,7 +87,7 @@ internal object ConverterManager {
             ?: throw IllegalArgumentException("convert value must be a json element text.")
         jsonObject.add("data", jsonElement)
         return jsonObject
-    }
+     }
 
     fun Any.convertToString(): String {
         if (this is String || this::class.javaPrimitiveType != null) {

@@ -30,7 +30,6 @@ import site.liangbai.realhomehunt.util.kt.filterNotOpenedWorld
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
 import taboolib.common.platform.function.submit
-import taboolib.platform.util.sendLang
 import java.util.concurrent.ConcurrentHashMap
 
 internal object PlayerMoveResidenceTask {

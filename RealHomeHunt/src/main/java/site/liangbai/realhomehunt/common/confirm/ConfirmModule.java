@@ -39,7 +39,6 @@ public final class ConfirmModule {
 
     public static void pushConfirmCache(Player player, Residence residence, long waitMills, IConfirmProcessor confirmProcessor) {
         confirmCacheMap.put(player.getUniqueId(), new Pair<>(residence, confirmProcessor));
-
         new BukkitRunnable() {
 
             @Override

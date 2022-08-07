@@ -1,8 +1,8 @@
 plugins {
     id 'real-home-hunt'
     id 'java-library'
-    id 'io.izzel.taboolib' version '1.41'
-    id 'org.jetbrains.kotlin.jvm' version '1.6.10'
+    id 'io.izzel.taboolib' version '1.42'
+    id 'org.jetbrains.kotlin.jvm' version '1.7.10'
 }
 
 taboolib {
@@ -28,7 +28,7 @@ taboolib {
     install("module-nms")
     install("module-nms-util")
     classifier = null
-    version = "6.0.9-40"
+    version = "6.0.9-55"
 }
 
 dependencies {

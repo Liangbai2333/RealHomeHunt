@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package site.liangbai.realhomehunt.api.gamemode.impl
+package site.liangbai.realhomehunt.internal.processor.block.impl
 
 import org.bukkit.block.Block
 import org.bukkit.block.BlockState
@@ -24,9 +24,9 @@ import org.bukkit.block.Container
 import org.bukkit.block.data.BlockData
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
-import site.liangbai.realhomehunt.api.gamemode.IGameMode
 import site.liangbai.realhomehunt.api.residence.Residence
 import site.liangbai.realhomehunt.common.config.Config
+import site.liangbai.realhomehunt.internal.processor.block.IBlockBreakProcessor
 import site.liangbai.realhomehunt.internal.task.NaturallyDropItemTask
 import site.liangbai.realhomehunt.util.Blocks
 import site.liangbai.realhomehunt.util.Chances
@@ -39,7 +39,7 @@ import site.liangbai.realhomehunt.util.callback.ICallback
  * @author Liangbai
  * @since 2021 /08/10 11:15 上午
  */
-class RobChestGameMode : IGameMode {
+class RobChestProcessor : IBlockBreakProcessor {
     override fun isEnabled(): Boolean {
         return Config.robChestMode.enabled
     }

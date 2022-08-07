@@ -27,6 +27,7 @@ import taboolib.common.Isolated
 
 @Isolated
 class EventHandlerBlockDestroy {
+    // For Gun Hit
     @SubscribeEvent
     fun onBlockDestroy(event: BlockDestroyEvent) {
         val world = event.world.toBukkitWorld()

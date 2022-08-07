@@ -118,7 +118,7 @@ object RealHomeHuntPlugin : Plugin() {
     @Awake(LifeCycle.ENABLE)
     private fun initConfigurationSerializer() {
         ConfigurationSerialization.registerClass(Residence::class.java)
-        ConfigurationSerialization.registerClass(Residence.IgnoreBlockInfo::class.java)
+        ConfigurationSerialization.registerClass(Residence.IgnoreBlockCounter::class.java)
 
         AttributeMap.registerAttributeSerializer()
     }
