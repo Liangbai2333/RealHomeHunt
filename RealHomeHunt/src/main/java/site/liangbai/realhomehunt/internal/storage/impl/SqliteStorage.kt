@@ -55,7 +55,7 @@ class SqliteStorage(plugin: Plugin, setting: SqliteSetting) : SqlStorage<Host<SQ
         }
 
         add {
-            name("ignoreBlockInfoList")
+            name("ignoreBlockCounterList")
             type(ColumnTypeSQLite.TEXT)
         }
 

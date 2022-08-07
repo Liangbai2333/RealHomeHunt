@@ -53,7 +53,7 @@ class MySQLStorage(setting: Config.StorageSetting.MySqlSetting) : SqlStorage<Hos
         }
 
         add {
-            name("ignoreBlockInfoList")
+            name("ignoreBlockCounterList")
             type(ColumnTypeSQL.TEXT)
         }
 

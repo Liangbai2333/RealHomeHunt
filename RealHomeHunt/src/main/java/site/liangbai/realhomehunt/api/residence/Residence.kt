@@ -64,7 +64,7 @@ class Residence : ConfigurationSerializable {
         administrators = map["administrators"] as MutableList<String>
         left = map["left"] as Location
         right = map["right"] as Location
-        ignoreBlockCounterList = map["ignoreBlockInfoList"] as MutableList<IgnoreBlockCounter>
+        ignoreBlockCounterList = map["ignoreBlockCounterList"] as MutableList<IgnoreBlockCounter>
         attributes = if ("attributes" in map) {
             map["attributes"] as MutableList<IAttributable<*>>
         } else {
@@ -200,7 +200,7 @@ class Residence : ConfigurationSerializable {
         map["administrators"] = administrators
         map["left"] = left
         map["right"] = right
-        map["ignoreBlockInfoList"] = ignoreBlockCounterList
+        map["ignoreBlockCounterList"] = ignoreBlockCounterList
         map["attributes"] = attributes
         map["spawn"] = spawn
         return map
