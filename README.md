@@ -1,2 +1,2 @@
 # RealHomeHunt
-A bukkit plugin for Crafting Dead, it can create a residence for players and others can destory it.
+高性能、高质量、高拓展性的掠夺抄家插件
