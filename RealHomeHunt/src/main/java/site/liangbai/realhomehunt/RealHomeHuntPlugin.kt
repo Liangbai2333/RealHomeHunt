@@ -87,6 +87,10 @@ object RealHomeHuntPlugin : Plugin() {
         ResidenceManager.getResidences().forEach(Residence::save)
     }
 
+    private fun processSuccess() {
+        pluginInfo("${ChatColor.GREEN}Succeed in enabling $pluginId v$pluginVersion plugin, unique author: Liangbai.")
+    }
+
     @Awake(LifeCycle.ENABLE)
     private fun initForgeEventListener() {
         if (isArclight()) {
@@ -126,9 +130,5 @@ object RealHomeHuntPlugin : Plugin() {
     @Awake(LifeCycle.DISABLE)
     private fun cancelTasks() {
         Bukkit.getScheduler().cancelTasks(inst)
-    }
-
-    private fun processSuccess() {
-        pluginInfo("${ChatColor.GREEN}Succeed in enabling $pluginId v$pluginVersion plugin, unique author: Liangbai.")
     }
 }

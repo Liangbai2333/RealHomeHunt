@@ -20,9 +20,7 @@ package site.liangbai.realhomehunt.api.nms
 
 import net.minecraft.core.BlockPos
 import net.minecraft.core.BlockPosition
-import net.minecraft.network.chat.ChatMessageType
 import net.minecraft.network.protocol.game.PacketPlayOutBlockBreakAnimation
-import net.minecraft.network.protocol.game.PacketPlayOutChat
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
@@ -34,13 +32,13 @@ import org.bukkit.craftbukkit.v1_18_R2.CraftServer
 import org.bukkit.craftbukkit.v1_18_R2.CraftWorld
 import org.bukkit.craftbukkit.v1_18_R2.entity.CraftEntity
 import org.bukkit.craftbukkit.v1_18_R2.inventory.CraftItemStack
-import org.bukkit.craftbukkit.v1_18_R2.util.CraftChatMessage
 import org.bukkit.entity.Player
 import taboolib.library.reflex.Reflex.Companion.getProperty
 import taboolib.library.reflex.Reflex.Companion.invokeMethod
 import taboolib.library.reflex.Reflex.Companion.setProperty
 import taboolib.module.nms.MinecraftVersion
 import taboolib.module.nms.sendPacket
+import taboolib.platform.util.sendActionBar
 
 /**
  * 暂时没有好的办法让1.18的NMS和Forge共存，所以用反射。
@@ -63,7 +61,7 @@ class NMSImpl : NMS() {
     }
 
     override fun sendActionBar(player: Player, message: String) {
-        player.sendPacket(PacketPlayOutChat(CraftChatMessage.fromStringOrNull(message), ChatMessageType.values()[2], player.uniqueId))
+        player.sendActionBar(message)
     }
 
     override fun sendBreakAnimationPacket(id: Int, block: Block, breakSit: Int, receivers: List<Player>) {
