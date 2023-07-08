@@ -31,7 +31,7 @@ import taboolib.common.Isolated
 @Isolated
 class EventHandlerGunHitBlock {
     @SubscribeEvent
-    fun onGunHitBlock(event: GunEvent.HitBlock) {
+    fun onGunHitBlock(event: GunEvent.BlockHit) {
         val gunItem = event.gun
         if (!gunItem.isTriggerPressed || gunItem.ammoProvider.expectedMagazine.size <= 0) return
         val player = event.living().entity().toBukkitEntity() as? Player ?: return

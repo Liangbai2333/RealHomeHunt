@@ -25,7 +25,7 @@ import org.bukkit.entity.Player
 import site.liangbai.realhomehunt.common.config.Config
 import site.liangbai.realhomehunt.common.particle.EffectGroup
 import site.liangbai.realhomehunt.util.kt.boundingBoxOf
-import taboolib.module.effect.Cube
+import taboolib.module.effect.shape.Cube
 import taboolib.module.effect.ParticleSpawner
 import taboolib.platform.util.toProxyLocation
 
